@@ -9,6 +9,10 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 });
 
+/* =========================
+   CORS
+========================= */
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -61,8 +65,10 @@ app.post("/api/chat", async (req, res) => {
       ]
     }));
 
+    /* =========================
+       IMAGE UPLOAD
+    ========================= */
 
-    /* إذا المستخدم أرسل صورة */
     if (
       image &&
       typeof image === "string" &&
@@ -73,9 +79,12 @@ app.post("/api/chat", async (req, res) => {
       if (lastUserIndex >= 0) {
         const base64Data = image.split(",")[1];
 
+        const match = image.match(
+          /^data:(image\/[^;]+);base64,/
+        );
+
         const mimeType =
-          image.match(/^data:(image\/[^;]+);base64,/)?.[1] ||
-          "image/png";
+          match?.[1] || "image/png";
 
         contents[lastUserIndex] = {
           role: "user",
@@ -87,7 +96,7 @@ app.post("/api/chat", async (req, res) => {
             },
             {
               inlineData: {
-                mimeType: mimeType,
+                mimeType,
                 data: base64Data
               }
             }
@@ -97,15 +106,21 @@ app.post("/api/chat", async (req, res) => {
     }
 
 
+    /* =========================
+       GEMINI CHAT
+    ========================= */
+
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: contents,
+      model: "gemini-3.6-flash",
+
+      contents,
+
       config: {
         systemInstruction:
           "You are A S AI, a helpful general-purpose AI assistant. " +
-          "Answer clearly and naturally. " +
+          "Answer clearly, accurately and naturally. " +
           "Reply in the same language used by the user. " +
-          "If the user sends an image, analyze it carefully."
+          "When the user sends an image, analyze it carefully."
       }
     });
 
@@ -117,7 +132,10 @@ app.post("/api/chat", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("GEMINI CHAT ERROR:", error);
+    console.error(
+      "GEMINI CHAT ERROR:",
+      error
+    );
 
     res.status(500).json({
       error:
@@ -151,37 +169,41 @@ app.post("/api/images", async (req, res) => {
     }
 
 
-    /*
-      ملاحظة:
-      توليد الصور يحتاج نموذج صور متاح
-      لحساب Gemini الخاص بك.
-    */
-
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-exp-image-generation",
+      model:
+        "gemini-2.0-flash-exp-image-generation",
+
       contents: prompt,
+
       config: {
-        responseModalities: ["TEXT", "IMAGE"]
+        responseModalities: [
+          "TEXT",
+          "IMAGE"
+        ]
       }
     });
 
 
     const parts =
-      response?.candidates?.[0]?.content?.parts || [];
+      response?.candidates?.[0]?.content?.parts ||
+      [];
 
     const imagePart = parts.find(
       part => part.inlineData
     );
 
+
     if (!imagePart) {
       return res.status(500).json({
-        error: "لم تصل الصورة من Gemini."
+        error:
+          "لم تصل الصورة من Gemini."
       });
     }
 
 
     const mimeType =
-      imagePart.inlineData.mimeType || "image/png";
+      imagePart.inlineData.mimeType ||
+      "image/png";
 
     const imageBase64 =
       imagePart.inlineData.data;
@@ -193,11 +215,14 @@ app.post("/api/images", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("GEMINI IMAGE ERROR:", error);
+    console.error(
+      "GEMINI IMAGE ERROR:",
+      error
+    );
 
     res.status(500).json({
       error:
-        "حدث خطأ أثناء إنشاء الصورة بواسطة Gemini."
+        "حدث خطأ أثناء إنشاء الصورة."
     });
   }
 });
