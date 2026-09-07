@@ -1,15 +1,14 @@
 const express = require("express");
-const OpenAI = require("openai");
 const path = require("path");
+const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
 });
 
-/* السماح لموقع GitHub Pages بالاتصال بالسيرفر */
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -25,15 +24,16 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: "20mb" }));
 app.use(express.static(__dirname));
 
+
 /* =========================
-   CHAT
+   CHAT + IMAGE UNDERSTANDING
 ========================= */
 
 app.post("/api/chat", async (req, res) => {
   try {
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY is not configured."
+        error: "GEMINI_API_KEY is not configured."
       });
     }
 
@@ -52,10 +52,15 @@ app.post("/api/chat", async (req, res) => {
       )
       .slice(-20);
 
-    let input = safeMessages.map(m => ({
-      role: m.role,
-      content: m.content
+    let contents = safeMessages.map(m => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [
+        {
+          text: m.content
+        }
+      ]
     }));
+
 
     /* إذا المستخدم أرسل صورة */
     if (
@@ -63,50 +68,60 @@ app.post("/api/chat", async (req, res) => {
       typeof image === "string" &&
       image.startsWith("data:image/")
     ) {
-      const lastUserIndex = input.length - 1;
+      const lastUserIndex = contents.length - 1;
 
       if (lastUserIndex >= 0) {
-        input[lastUserIndex] = {
+        const base64Data = image.split(",")[1];
+
+        const mimeType =
+          image.match(/^data:(image\/[^;]+);base64,/)?.[1] ||
+          "image/png";
+
+        contents[lastUserIndex] = {
           role: "user",
-          content: [
+          parts: [
             {
-              type: "input_text",
               text:
-                safeMessages[lastUserIndex].content ||
+                safeMessages[lastUserIndex]?.content ||
                 "حلل هذه الصورة."
             },
             {
-              type: "input_image",
-              image_url: image
+              inlineData: {
+                mimeType: mimeType,
+                data: base64Data
+              }
             }
           ]
         };
       }
     }
 
-    const response = await client.responses.create({
-      model: "gpt-5.6-luna",
 
-      instructions:
-        "You are A S AI, a helpful general-purpose AI assistant. " +
-        "Answer clearly and naturally. " +
-        "Reply in the same language used by the user. " +
-        "If the user sends an image, analyze it carefully.",
-
-      input
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: contents,
+      config: {
+        systemInstruction:
+          "You are A S AI, a helpful general-purpose AI assistant. " +
+          "Answer clearly and naturally. " +
+          "Reply in the same language used by the user. " +
+          "If the user sends an image, analyze it carefully."
+      }
     });
+
 
     res.json({
       reply:
-        response.output_text ||
+        response.text ||
         "لم يصلني رد من الذكاء الاصطناعي."
     });
 
   } catch (error) {
-    console.error("CHAT ERROR:", error);
+    console.error("GEMINI CHAT ERROR:", error);
 
     res.status(500).json({
-      error: "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي."
+      error:
+        "حدث خطأ أثناء الاتصال بـ Gemini."
     });
   }
 });
@@ -118,9 +133,9 @@ app.post("/api/chat", async (req, res) => {
 
 app.post("/api/images", async (req, res) => {
   try {
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY is not configured."
+        error: "GEMINI_API_KEY is not configured."
       });
     }
 
@@ -135,29 +150,54 @@ app.post("/api/images", async (req, res) => {
       });
     }
 
-    const result = await client.images.generate({
-      model: "gpt-image-2",
-      prompt,
-      size: "1024x1024"
+
+    /*
+      ملاحظة:
+      توليد الصور يحتاج نموذج صور متاح
+      لحساب Gemini الخاص بك.
+    */
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-exp-image-generation",
+      contents: prompt,
+      config: {
+        responseModalities: ["TEXT", "IMAGE"]
+      }
     });
 
-    const imageBase64 = result?.data?.[0]?.b64_json;
 
-    if (!imageBase64) {
+    const parts =
+      response?.candidates?.[0]?.content?.parts || [];
+
+    const imagePart = parts.find(
+      part => part.inlineData
+    );
+
+    if (!imagePart) {
       return res.status(500).json({
-        error: "لم تصل الصورة."
+        error: "لم تصل الصورة من Gemini."
       });
     }
 
+
+    const mimeType =
+      imagePart.inlineData.mimeType || "image/png";
+
+    const imageBase64 =
+      imagePart.inlineData.data;
+
+
     res.json({
-      image_url: `data:image/png;base64,${imageBase64}`
+      image_url:
+        `data:${mimeType};base64,${imageBase64}`
     });
 
   } catch (error) {
-    console.error("IMAGE ERROR:", error);
+    console.error("GEMINI IMAGE ERROR:", error);
 
     res.status(500).json({
-      error: "حدث خطأ أثناء إنشاء الصورة."
+      error:
+        "حدث خطأ أثناء إنشاء الصورة بواسطة Gemini."
     });
   }
 });
@@ -168,7 +208,9 @@ app.post("/api/images", async (req, res) => {
 ========================= */
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(
+    path.join(__dirname, "index.html")
+  );
 });
 
 
@@ -177,5 +219,7 @@ app.get("/", (req, res) => {
 ========================= */
 
 app.listen(port, () => {
-  console.log(`A S AI running on port ${port}`);
+  console.log(
+    `A S AI running on port ${port}`
+  );
 });
