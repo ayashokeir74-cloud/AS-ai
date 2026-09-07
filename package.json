@@ -1,13 +1,12 @@
 {
-  "name": "as-ai",
+  "name": "as-ai-1",
   "version": "1.0.0",
-  "private": true,
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "openai": "^5.20.0"
+    "@google/genai": "latest",
+    "express": "^4.21.2"
   }
 }
