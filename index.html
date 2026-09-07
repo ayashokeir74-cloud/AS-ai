@@ -5,53 +5,202 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>A S AI</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff;height:100vh;overflow:hidden}
-.app{height:100vh;display:flex}.side{width:270px;background:#080c18;border-left:1px solid #20283d;padding:18px;display:flex;flex-direction:column}
-.logo{font-size:26px;font-weight:800;margin:8px 5px 25px}.logo span{color:#6ea8ff}
-.new{border:1px solid #2d3a58;background:#111a2e;color:white;border-radius:14px;padding:13px;cursor:pointer;font-size:15px}.new:hover{background:#182540}
-.history{margin-top:25px;color:#8994aa;font-size:13px}.bottom{margin-top:auto;color:#69758d;font-size:12px;text-align:center}
-.main{flex:1;display:flex;flex-direction:column;min-width:0}.top{height:65px;border-bottom:1px solid #20283d;display:flex;align-items:center;padding:0 22px;font-weight:700}
-.chat{flex:1;overflow:auto;padding:30px 7%;scroll-behavior:smooth}.welcome{text-align:center;margin:8vh auto 35px;max-width:700px}.orb{width:74px;height:74px;margin:auto;border-radius:50%;background:linear-gradient(135deg,#6ea8ff,#9b6cff);box-shadow:0 0 45px #587fff66;display:grid;place-items:center;font-size:25px;font-weight:bold}.welcome h1{font-size:36px;margin:20px 0 10px}.welcome p{color:#9ba6bc}
-.msg{display:flex;gap:12px;margin:22px auto;max-width:850px}.avatar{width:38px;height:38px;border-radius:12px;background:#18243b;display:grid;place-items:center;flex:none;font-size:13px;font-weight:bold}.user .avatar{background:#2b3650}.bubble{background:#111a2c;border:1px solid #202c45;padding:14px 17px;border-radius:17px;line-height:1.7;white-space:pre-wrap;word-break:break-word}.user .bubble{background:#18243a}
-.composer{padding:15px 7% 20px;background:linear-gradient(transparent,#0b1020 25%)}.box{max-width:850px;margin:auto;display:flex;gap:8px;background:#111827;border:1px solid #2d3953;border-radius:18px;padding:8px;box-shadow:0 10px 40px #0005}.box textarea{flex:1;background:transparent;border:0;outline:0;color:#fff;resize:none;min-height:44px;max-height:140px;padding:11px;font:inherit}.send{width:48px;height:48px;border:0;border-radius:13px;background:#6ea8ff;color:#07101f;font-size:20px;cursor:pointer}.send:disabled{opacity:.4}.hint{text-align:center;color:#657087;font-size:11px;margin-top:8px}
-@media(max-width:700px){.side{display:none}.chat{padding:20px 15px}.composer{padding:12px}.welcome h1{font-size:29px}.top{padding:0 15px}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff;height:100vh;overflow:hidden}
+.app{height:100vh;display:flex}
+.side{width:270px;background:#080c18;border-left:1px solid #20283d;padding:18px;display:flex;flex-direction:column}
+.logo{font-size:26px;font-weight:800;margin:8px 5px 25px}
+.logo span{color:#6ea8ff}
+.new{border:1px solid #2d3a58;background:#111a2e;color:white;border-radius:14px;padding:13px;cursor:pointer;font-size:15px}
+.new:hover{background:#182540}
+.history{margin-top:25px;color:#8994aa;font-size:13px}
+.bottom{margin-top:auto;color:#69758d;font-size:12px;text-align:center}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{height:65px;border-bottom:1px solid #20283d;display:flex;align-items:center;padding:0 22px;font-weight:700}
+.chat{flex:1;overflow:auto;padding:30px 7%;scroll-behavior:smooth}
+.welcome{text-align:center;margin:8vh auto 35px;max-width:700px}
+.orb{width:74px;height:74px;margin:auto;border-radius:50%;background:linear-gradient(135deg,#6ea8ff,#9b6cff);box-shadow:0 0 45px #587fff66;display:grid;place-items:center;font-size:25px;font-weight:bold}
+.welcome h1{font-size:36px;margin:20px 0 10px}
+.welcome p{color:#9ba6bc}
+.msg{display:flex;gap:12px;margin:22px auto;max-width:850px}
+.avatar{width:38px;height:38px;border-radius:12px;background:#18243b;display:grid;place-items:center;flex:none;font-size:13px;font-weight:bold}
+.user .avatar{background:#2b3650}
+.bubble{background:#111a2c;border:1px solid #202c45;padding:14px 17px;border-radius:17px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.user .bubble{background:#18243a}
+.composer{padding:15px 7% 20px;background:linear-gradient(transparent,#0b1020 25%)}
+.box{max-width:850px;margin:auto;display:flex;gap:8px;background:#111827;border:1px solid #2d3953;border-radius:18px;padding:8px;box-shadow:0 10px 40px #0005}
+.box textarea{flex:1;background:transparent;border:0;outline:0;color:#fff;resize:none;min-height:44px;max-height:140px;padding:11px;font:inherit}
+.send{width:48px;height:48px;border:0;border-radius:13px;background:#6ea8ff;color:#07101f;font-size:20px;cursor:pointer}
+.send:disabled{opacity:.4}
+.hint{text-align:center;color:#657087;font-size:11px;margin-top:8px}
+@media(max-width:700px){
+.side{display:none}
+.chat{padding:20px 15px}
+.composer{padding:12px}
+.welcome h1{font-size:29px}
+.top{padding:0 15px}
+}
 </style>
 </head>
+
 <body>
 <div class="app">
-<aside class="side"><div class="logo">A S <span>AI</span></div><button class="new" onclick="newChat()">＋ محادثة جديدة</button><div class="history">المحادثة الحالية</div><div class="bottom">A S AI<br>مساعدك الذكي</div></aside>
+
+<aside class="side">
+<div class="logo">A S <span>AI</span></div>
+<button class="new" onclick="newChat()">＋ محادثة جديدة</button>
+<div class="history">المحادثة الحالية</div>
+<div class="bottom">A S AI<br>مساعدك الذكي</div>
+</aside>
+
 <main class="main">
+
 <header class="top">A S AI</header>
-<section class="chat" id="chat"><div class="welcome" id="welcome"><div class="orb">AS</div><h1>مرحباً، أنا A S AI</h1><p>اكتب سؤالك وخلّينا نبدأ.</p></div></section>
-<div class="composer"><div class="box"><textarea id="input" placeholder="اكتب رسالتك هنا..." rows="1"></textarea><button class="send" id="send" onclick="sendMessage()">➤</button></div><div class="hint">A S AI</div></div>
-</main></div>
+
+<section class="chat" id="chat">
+<div class="welcome" id="welcome">
+<div class="orb">AS</div>
+<h1>مرحباً، أنا A S AI</h1>
+<p>اكتب سؤالك وخلّينا نبدأ.</p>
+</div>
+</section>
+
+<div class="composer">
+<div class="box">
+<textarea id="input" placeholder="اكتب رسالتك هنا..." rows="1"></textarea>
+<button class="send" id="send" onclick="sendMessage()">➤</button>
+</div>
+<div class="hint">A S AI</div>
+</div>
+
+</main>
+</div>
+
 <script>
-const input=document.getElementById("input"),chat=document.getElementById("chat"),send=document.getElementById("send");
+const API_URL="https://as-ai-1.onrender.com/api/chat";
+
+const input=document.getElementById("input");
+const chat=document.getElementById("chat");
+const send=document.getElementById("send");
+
 let history=[];
-input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}});
-input.addEventListener("input",()=>{input.style.height="auto";input.style.height=Math.min(input.scrollHeight,140)+"px"});
+
+input.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+input.addEventListener("input",()=>{
+  input.style.height="auto";
+  input.style.height=Math.min(input.scrollHeight,140)+"px";
+});
+
 function addMessage(text,who){
   document.getElementById("welcome")?.remove();
-  const row=document.createElement("div");row.className="msg "+who;
-  const av=document.createElement("div");av.className="avatar";av.textContent=who==="user"?"أنت":"AS";
-  const b=document.createElement("div");b.className="bubble";b.textContent=text;
-  row.append(av,b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;
+
+  const row=document.createElement("div");
+  row.className="msg "+who;
+
+  const av=document.createElement("div");
+  av.className="avatar";
+  av.textContent=who==="user"?"أنت":"AS";
+
+  const b=document.createElement("div");
+  b.className="bubble";
+  b.textContent=text;
+
+  row.append(av,b);
+  chat.appendChild(row);
+  chat.scrollTop=chat.scrollHeight;
 }
+
 async function sendMessage(){
-  const text=input.value.trim();if(!text||send.disabled)return;
-  addMessage(text,"user");history.push({role:"user",content:text});
-  input.value="";input.style.height="auto";send.disabled=true;
-  const loading=document.createElement("div");loading.className="msg ai";loading.id="loading";
-  loading.innerHTML='<div class="avatar">AS</div><div class="bubble">يفكر...</div>';chat.appendChild(loading);chat.scrollTop=chat.scrollHeight;
+
+  const text=input.value.trim();
+
+  if(!text||send.disabled)return;
+
+  addMessage(text,"user");
+
+  history.push({
+    role:"user",
+    content:text
+  });
+
+  input.value="";
+  input.style.height="auto";
+  send.disabled=true;
+
+  const loading=document.createElement("div");
+  loading.className="msg ai";
+  loading.id="loading";
+
+  loading.innerHTML=
+    '<div class="avatar">AS</div><div class="bubble">يفكر...</div>';
+
+  chat.appendChild(loading);
+  chat.scrollTop=chat.scrollHeight;
+
   try{
-    const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:history})});
-    const data=await r.json();loading.remove();
-    if(!r.ok)throw new Error(data.error||"حدث خطأ");
-    addMessage(data.reply,"ai");history.push({role:"assistant",content:data.reply});
-  }catch(e){loading.remove();addMessage("تعذر الاتصال بالذكاء الاصطناعي. تأكد من إعداد API على السيرفر.","ai")}
-  send.disabled=false;input.focus();
+
+    const r=await fetch(API_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        messages:history
+      })
+    });
+
+    const data=await r.json();
+
+    loading.remove();
+
+    if(!r.ok){
+      throw new Error(data.error||"حدث خطأ");
+    }
+
+    addMessage(data.reply,"ai");
+
+    history.push({
+      role:"assistant",
+      content:data.reply
+    });
+
+  }catch(e){
+
+    console.error(e);
+
+    loading.remove();
+
+    addMessage(
+      "تعذر الاتصال بالذكاء الاصطناعي. تأكد أن السيرفر يعمل على Render وأن API Key مضبوط.",
+      "ai"
+    );
+  }
+
+  send.disabled=false;
+  input.focus();
 }
-function newChat(){history=[];chat.innerHTML='<div class="welcome" id="welcome"><div class="orb">AS</div><h1>مرحباً، أنا A S AI</h1><p>اكتب سؤالك وخلّينا نبدأ.</p></div>';input.focus()}
+
+function newChat(){
+
+  history=[];
+
+  chat.innerHTML=`
+    <div class="welcome" id="welcome">
+      <div class="orb">AS</div>
+      <h1>مرحباً، أنا A S AI</h1>
+      <p>اكتب سؤالك وخلّينا نبدأ.</p>
+    </div>
+  `;
+
+  input.focus();
+}
 </script>
+
 </body>
 </html>
