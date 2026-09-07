@@ -9,11 +9,11 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "20mb" }));
 app.use(express.static(__dirname));
 
 /* =========================
-   AI CHAT
+   AI CHAT + IMAGE UNDERSTANDING
 ========================= */
 
 app.post("/api/chat", async (req, res) => {
@@ -29,22 +29,55 @@ app.post("/api/chat", async (req, res) => {
       : [];
 
     const safeMessages = messages
-      .filter(
-        m =>
-          m &&
-          (m.role === "user" || m.role === "assistant") &&
-          typeof m.content === "string"
+      .filter(m =>
+        m &&
+        (m.role === "user" || m.role === "assistant") &&
+        typeof m.content === "string"
       )
       .slice(-20);
 
+    const image = req.body.image;
+
+    let input = safeMessages.map(m => ({
+      role: m.role,
+      content: m.content
+    }));
+
+    /* إذا المستخدم رفع صورة */
+    if (
+      image &&
+      typeof image === "string" &&
+      image.startsWith("data:image/")
+    ) {
+      const lastUserIndex = input.length - 1;
+
+      if (lastUserIndex >= 0) {
+        input[lastUserIndex] = {
+          role: "user",
+          content: [
+            {
+              type: "input_text",
+              text: safeMessages[lastUserIndex].content
+            },
+            {
+              type: "input_image",
+              image_url: image
+            }
+          ]
+        };
+      }
+    }
+
     const response = await client.responses.create({
       model: "gpt-5.6-luna",
+
       instructions:
-        "You are A S AI, a helpful general-purpose AI assistant. Answer clearly, accurately and naturally. Reply in the language used by the user.",
-      input: safeMessages.map(m => ({
-        role: m.role,
-        content: m.content
-      }))
+        "You are A S AI, a helpful general-purpose AI assistant. " +
+        "Answer clearly, accurately and naturally. " +
+        "Reply in the language used by the user. " +
+        "When the user sends an image, analyze it carefully and explain what you can see.",
+
+      input: input
     });
 
     res.json({
@@ -54,7 +87,6 @@ app.post("/api/chat", async (req, res) => {
     });
 
   } catch (error) {
-
     console.error("CHAT ERROR:", error);
 
     res.status(500).json({
@@ -70,7 +102,6 @@ app.post("/api/chat", async (req, res) => {
 
 app.post("/api/images", async (req, res) => {
   try {
-
     if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({
         error: "OPENAI_API_KEY is not configured."
@@ -113,7 +144,6 @@ app.post("/api/images", async (req, res) => {
     });
 
   } catch (error) {
-
     console.error("IMAGE ERROR:", error);
 
     res.status(500).json({
@@ -124,7 +154,7 @@ app.post("/api/images", async (req, res) => {
 
 
 /* =========================
-   HOME PAGE
+   HOME
 ========================= */
 
 app.get("/", (req, res) => {
