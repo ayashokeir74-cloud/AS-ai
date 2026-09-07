@@ -27,6 +27,10 @@ body{
   overflow:hidden;
 }
 
+button{
+  font-family:inherit;
+}
+
 .app{
   height:100vh;
   display:flex;
@@ -51,16 +55,20 @@ body{
   font-weight:700;
 }
 
+.logo,
+.welcome-logo{
+  background:linear-gradient(135deg,#10a37f,#087f65);
+  box-shadow:0 0 25px #10a37f33;
+}
+
 .logo{
   width:40px;
   height:40px;
   border-radius:12px;
-  background:linear-gradient(135deg,#10a37f,#087f65);
   display:grid;
   place-items:center;
   font-size:13px;
   font-weight:800;
-  box-shadow:0 0 25px #10a37f33;
 }
 
 .brand span{
@@ -84,16 +92,16 @@ body{
   border:1px solid #30353c;
 }
 
-.new-chat:hover,
-.image-button:hover{
-  background:#20242a;
-}
-
 .image-button{
   margin-top:9px;
   background:#111f1b;
   color:#c9fff1;
   border:1px solid #1e604f;
+}
+
+.new-chat:hover,
+.image-button:hover{
+  background:#20242a;
 }
 
 .history-title{
@@ -168,12 +176,10 @@ body{
   height:82px;
   margin:auto;
   border-radius:24px;
-  background:linear-gradient(135deg,#10a37f,#087f65);
   display:grid;
   place-items:center;
   font-size:26px;
   font-weight:800;
-  box-shadow:0 15px 60px #10a37f35;
   animation:float 3s ease-in-out infinite;
 }
 
@@ -254,11 +260,64 @@ body{
   background:#20242a;
 }
 
-.generated-image{
-  max-width:100%;
+.message-image{
+  max-width:min(600px,100%);
   border-radius:15px;
-  margin-top:5px;
   display:block;
+  margin-bottom:10px;
+}
+
+.generated-image{
+  width:100%;
+  max-width:600px;
+  border-radius:15px;
+  display:block;
+}
+
+.image-actions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.download-btn{
+  border:1px solid #34443f;
+  background:#10221d;
+  color:#c9fff1;
+  padding:9px 13px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.download-btn:hover{
+  background:#17342b;
+}
+
+.reactions{
+  display:flex;
+  gap:5px;
+  margin-top:9px;
+}
+
+.reaction{
+  border:1px solid transparent;
+  background:transparent;
+  color:#8e969f;
+  border-radius:8px;
+  padding:5px 7px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.reaction:hover{
+  background:#252a30;
+  color:white;
+}
+
+.reaction.active{
+  background:#25332f;
+  border-color:#31594e;
 }
 
 .composer{
@@ -298,6 +357,22 @@ textarea::placeholder{
   color:#737b86;
 }
 
+.icon-button{
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:12px;
+  background:#252a30;
+  color:white;
+  cursor:pointer;
+  font-size:18px;
+  flex:none;
+}
+
+.icon-button:hover{
+  background:#30363d;
+}
+
 .send{
   width:44px;
   height:44px;
@@ -307,14 +382,17 @@ textarea::placeholder{
   color:white;
   cursor:pointer;
   font-size:19px;
+  flex:none;
 }
 
 .send:hover{
   background:#0d8e70;
 }
 
-.send:disabled{
+.send:disabled,
+.icon-button:disabled{
   opacity:.35;
+  cursor:not-allowed;
 }
 
 .hint{
@@ -346,6 +424,34 @@ textarea::placeholder{
   40%{opacity:1}
 }
 
+.preview{
+  max-width:850px;
+  margin:0 auto 8px;
+  position:relative;
+  display:none;
+}
+
+.preview img{
+  max-width:160px;
+  max-height:120px;
+  border-radius:12px;
+  border:1px solid #343941;
+  display:block;
+}
+
+.remove-preview{
+  position:absolute;
+  top:-7px;
+  right:-7px;
+  width:25px;
+  height:25px;
+  border:0;
+  border-radius:50%;
+  background:#d64545;
+  color:white;
+  cursor:pointer;
+}
+
 @media(max-width:700px){
 
   .sidebar{
@@ -358,7 +464,7 @@ textarea::placeholder{
   }
 
   .chat{
-    padding:20px 12px;
+    padding:20px 10px;
   }
 
   .welcome{
@@ -379,11 +485,25 @@ textarea::placeholder{
   }
 
   .message{
-    margin:20px 5px;
+    margin:20px 3px;
+  }
+
+  .bubble{
+    font-size:14px;
   }
 
   .composer{
-    padding:8px 10px 13px;
+    padding:8px 8px 13px;
+  }
+
+  .composer-box{
+    gap:5px;
+  }
+
+  .icon-button,
+  .send{
+    width:42px;
+    height:42px;
   }
 }
 </style>
@@ -408,9 +528,7 @@ textarea::placeholder{
     🎨 إنشاء صورة
   </button>
 
-  <div class="history-title">
-    المحادثات
-  </div>
+  <div class="history-title">المحادثات</div>
 
   <div class="history-item">
     💬 المحادثة الحالية
@@ -432,49 +550,67 @@ textarea::placeholder{
 
 <section class="chat" id="chat">
 
-  <div class="welcome" id="welcome">
+<div class="welcome" id="welcome">
 
-    <div class="welcome-logo">AS</div>
+  <div class="welcome-logo">AS</div>
 
-    <h1>مرحباً، أنا A S AI</h1>
+  <h1>مرحباً، أنا A S AI</h1>
 
-    <p>كيف يمكنني مساعدتك اليوم؟</p>
+  <p>كيف يمكنني مساعدتك اليوم؟</p>
 
-    <div class="tools">
+  <div class="tools">
 
-      <div class="tool" onclick="useSuggestion('اشرح لي البرمجة بطريقة سهلة')">
-        💡<br>
-        <b>شرح وتعلّم</b><br>
-        <small>اشرح لي أي موضوع بطريقة سهلة</small>
-      </div>
+    <div class="tool" onclick="useSuggestion('اشرح لي البرمجة بطريقة سهلة')">
+      💡<br>
+      <b>شرح وتعلّم</b><br>
+      <small>اشرح لي أي موضوع بطريقة سهلة</small>
+    </div>
 
-      <div class="tool" onclick="startImageMode()">
-        🎨<br>
-        <b>إنشاء صورة</b><br>
-        <small>اكتب وصف الصورة التي تريدها</small>
-      </div>
+    <div class="tool" onclick="startImageMode()">
+      🎨<br>
+      <b>إنشاء صورة</b><br>
+      <small>اكتب وصف الصورة التي تريدها</small>
+    </div>
 
-      <div class="tool" onclick="useSuggestion('ساعدني في كتابة فكرة لمشروع')">
-        🚀<br>
-        <b>أفكار ومشاريع</b><br>
-        <small>ساعدني في تطوير فكرة جديدة</small>
-      </div>
+    <div class="tool" onclick="useSuggestion('ساعدني في كتابة فكرة لمشروع')">
+      🚀<br>
+      <b>أفكار ومشاريع</b><br>
+      <small>ساعدني في تطوير فكرة جديدة</small>
+    </div>
 
-      <div class="tool" onclick="useSuggestion('ما الذي تستطيع مساعدتي فيه؟')">
-        ✨<br>
-        <b>ماذا تستطيع؟</b><br>
-        <small>اعرض لي قدرات A S AI</small>
-      </div>
-
+    <div class="tool" onclick="useSuggestion('ما الذي تستطيع مساعدتي فيه؟')">
+      ✨<br>
+      <b>ماذا تستطيع؟</b><br>
+      <small>اعرض لي قدرات A S AI</small>
     </div>
 
   </div>
+</div>
 
 </section>
 
 <div class="composer">
 
+  <div class="preview" id="preview">
+    <button class="remove-preview" onclick="removeImage()">×</button>
+    <img id="previewImage">
+  </div>
+
   <div class="composer-box">
+
+    <button
+      class="icon-button"
+      id="uploadButton"
+      onclick="document.getElementById('imageInput').click()"
+      title="رفع صورة"
+    >📎</button>
+
+    <input
+      type="file"
+      id="imageInput"
+      accept="image/png,image/jpeg,image/webp"
+      hidden
+    >
 
     <textarea
       id="input"
@@ -491,7 +627,7 @@ textarea::placeholder{
   </div>
 
   <div class="hint">
-    A S AI
+    A S AI • يمكنك رفع صورة أو إنشاء صورة
   </div>
 
 </div>
@@ -502,25 +638,30 @@ textarea::placeholder{
 <script>
 
 const API_URL="https://as-ai-1.onrender.com/api/chat";
-
-/* هذا المسار سنفعّله في server.js بعدين */
 const IMAGE_API_URL="https://as-ai-1.onrender.com/api/images";
 
 const input=document.getElementById("input");
 const chat=document.getElementById("chat");
 const send=document.getElementById("send");
+const imageInput=document.getElementById("imageInput");
+const preview=document.getElementById("preview");
+const previewImage=document.getElementById("previewImage");
 
 let history=[];
 let imageMode=false;
+let selectedImage=null;
 
 
-/* ENTER */
+/* =========================
+   ENTER
+========================= */
 
 input.addEventListener("keydown",function(e){
 
   if(e.key==="Enter" && !e.shiftKey){
 
     e.preventDefault();
+
     sendMessage();
 
   }
@@ -528,7 +669,9 @@ input.addEventListener("keydown",function(e){
 });
 
 
-/* AUTO RESIZE */
+/* =========================
+   AUTO RESIZE
+========================= */
 
 input.addEventListener("input",function(){
 
@@ -540,61 +683,127 @@ input.addEventListener("input",function(){
 });
 
 
-/* MESSAGE */
+/* =========================
+   IMAGE SELECT
+========================= */
+
+imageInput.addEventListener("change",function(){
+
+  const file=this.files[0];
+
+  if(!file){
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+    alert("الملف يجب أن يكون صورة.");
+    return;
+  }
+
+  if(file.size>8*1024*1024){
+    alert("حجم الصورة كبير. اختر صورة أقل من 8MB.");
+    imageInput.value="";
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=function(e){
+
+    selectedImage=e.target.result;
+
+    previewImage.src=selectedImage;
+    preview.style.display="block";
+
+    input.placeholder="اكتب ماذا تريد أن يفعل A S AI بالصورة...";
+
+    input.focus();
+  };
+
+  reader.readAsDataURL(file);
+
+});
+
+
+/* =========================
+   REMOVE IMAGE
+========================= */
+
+function removeImage(){
+
+  selectedImage=null;
+  imageInput.value="";
+  preview.style.display="none";
+  previewImage.src="";
+
+  input.placeholder=imageMode
+    ? "اكتب وصف الصورة التي تريد إنشاءها..."
+    : "اكتب رسالتك إلى A S AI...";
+}
+
+
+/* =========================
+   ADD TEXT MESSAGE
+========================= */
 
 function addMessage(text,who){
 
   document.getElementById("welcome")?.remove();
 
   const row=document.createElement("div");
-
   row.className="message "+who;
 
   const avatar=document.createElement("div");
-
   avatar.className="avatar";
   avatar.textContent=who==="user"?"أنت":"AS";
 
   const bubble=document.createElement("div");
-
   bubble.className="bubble";
   bubble.textContent=text;
 
   row.appendChild(avatar);
   row.appendChild(bubble);
 
+  if(who==="ai"){
+    addReactions(bubble);
+  }
+
   chat.appendChild(row);
 
   chat.scrollTop=chat.scrollHeight;
 }
 
 
-/* IMAGE MESSAGE */
+/* =========================
+   ADD IMAGE USER MESSAGE
+========================= */
 
-function addImageMessage(url){
+function addUserImageMessage(image,text){
 
   document.getElementById("welcome")?.remove();
 
   const row=document.createElement("div");
-
-  row.className="message ai";
+  row.className="message user";
 
   const avatar=document.createElement("div");
-
   avatar.className="avatar";
-  avatar.textContent="AS";
+  avatar.textContent="أنت";
 
   const bubble=document.createElement("div");
-
   bubble.className="bubble";
 
   const img=document.createElement("img");
-
-  img.className="generated-image";
-  img.src=url;
-  img.alt="صورة تم إنشاؤها بواسطة A S AI";
+  img.className="message-image";
+  img.src=image;
+  img.alt="الصورة المرسلة";
 
   bubble.appendChild(img);
+
+  if(text){
+    const caption=document.createElement("div");
+    caption.textContent=text;
+    bubble.appendChild(caption);
+  }
 
   row.appendChild(avatar);
   row.appendChild(bubble);
@@ -605,7 +814,102 @@ function addImageMessage(url){
 }
 
 
-/* LOADING */
+/* =========================
+   GENERATED IMAGE
+========================= */
+
+function addImageMessage(url){
+
+  document.getElementById("welcome")?.remove();
+
+  const row=document.createElement("div");
+  row.className="message ai";
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent="AS";
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+
+  const img=document.createElement("img");
+  img.className="generated-image";
+  img.src=url;
+  img.alt="صورة أنشأها A S AI";
+
+  const actions=document.createElement("div");
+  actions.className="image-actions";
+
+  const download=document.createElement("button");
+  download.className="download-btn";
+  download.textContent="⬇️ تنزيل الصورة";
+
+  download.onclick=function(){
+
+    const a=document.createElement("a");
+
+    a.href=url;
+    a.download="AS-AI-image.png";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+  };
+
+  actions.appendChild(download);
+
+  bubble.appendChild(img);
+  bubble.appendChild(actions);
+
+  addReactions(bubble);
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+
+  chat.appendChild(row);
+
+  chat.scrollTop=chat.scrollHeight;
+}
+
+
+/* =========================
+   REACTIONS
+========================= */
+
+function addReactions(container){
+
+  const reactions=document.createElement("div");
+  reactions.className="reactions";
+
+  ["👍","❤️","😂","😮"].forEach(emoji=>{
+
+    const button=document.createElement("button");
+
+    button.className="reaction";
+    button.textContent=emoji;
+
+    button.onclick=function(){
+
+      container
+        .querySelectorAll(".reaction")
+        .forEach(b=>b.classList.remove("active"));
+
+      button.classList.add("active");
+
+    };
+
+    reactions.appendChild(button);
+
+  });
+
+  container.appendChild(reactions);
+}
+
+
+/* =========================
+   LOADING
+========================= */
 
 function showLoading(){
 
@@ -631,32 +935,46 @@ function showLoading(){
 }
 
 
-/* SEND */
+/* =========================
+   SEND
+========================= */
 
 async function sendMessage(){
 
   const text=input.value.trim();
 
-  if(!text || send.disabled){
+  if(!text && !selectedImage){
     return;
   }
 
-  if(imageMode){
+  if(send.disabled){
+    return;
+  }
+
+  if(imageMode && !selectedImage){
 
     await generateImage(text);
 
     return;
   }
 
-  addMessage(text,"user");
+  const imageToSend=selectedImage;
+
+  if(imageToSend){
+    addUserImageMessage(imageToSend,text);
+  }else{
+    addMessage(text,"user");
+  }
 
   history.push({
     role:"user",
-    content:text
+    content:text || "حلل هذه الصورة."
   });
 
   input.value="";
   input.style.height="auto";
+
+  removeImage();
 
   send.disabled=true;
 
@@ -665,6 +983,7 @@ async function sendMessage(){
   try{
 
     const response=await fetch(API_URL,{
+
       method:"POST",
 
       headers:{
@@ -672,8 +991,13 @@ async function sendMessage(){
       },
 
       body:JSON.stringify({
-        messages:history
+
+        messages:history,
+
+        image:imageToSend || null
+
       })
+
     });
 
     const data=await response.json();
@@ -712,9 +1036,15 @@ async function sendMessage(){
 }
 
 
-/* IMAGE GENERATION */
+/* =========================
+   IMAGE GENERATION
+========================= */
 
 async function generateImage(prompt){
+
+  if(!prompt){
+    return;
+  }
 
   addMessage(prompt,"user");
 
@@ -728,6 +1058,7 @@ async function generateImage(prompt){
   try{
 
     const response=await fetch(IMAGE_API_URL,{
+
       method:"POST",
 
       headers:{
@@ -737,6 +1068,7 @@ async function generateImage(prompt){
       body:JSON.stringify({
         prompt:prompt
       })
+
     });
 
     const data=await response.json();
@@ -747,19 +1079,13 @@ async function generateImage(prompt){
       throw new Error(data.error||"فشل إنشاء الصورة");
     }
 
-    if(data.image_url){
+    const image=data.image_url || data.image;
 
-      addImageMessage(data.image_url);
-
-    }else if(data.image){
-
-      addImageMessage(data.image);
-
-    }else{
-
+    if(!image){
       throw new Error("لم تصل الصورة من السيرفر");
-
     }
+
+    addImageMessage(image);
 
   }catch(error){
 
@@ -768,7 +1094,7 @@ async function generateImage(prompt){
     document.getElementById("loading")?.remove();
 
     addMessage(
-      "تعذر إنشاء الصورة حالياً. ميزة إنشاء الصور تحتاج تفعيلها على السيرفر.",
+      "تعذر إنشاء الصورة حالياً. تأكد أن خدمة الصور والـAPI مفعّلين على Render.",
       "ai"
     );
 
@@ -784,7 +1110,9 @@ async function generateImage(prompt){
 }
 
 
-/* IMAGE MODE */
+/* =========================
+   IMAGE MODE
+========================= */
 
 function startImageMode(){
 
@@ -793,11 +1121,12 @@ function startImageMode(){
   input.placeholder="اكتب وصف الصورة التي تريد إنشاءها...";
 
   input.focus();
-
 }
 
 
-/* SUGGESTION */
+/* =========================
+   SUGGESTION
+========================= */
 
 function useSuggestion(text){
 
@@ -816,12 +1145,16 @@ function useSuggestion(text){
 }
 
 
-/* NEW CHAT */
+/* =========================
+   NEW CHAT
+========================= */
 
 function newChat(){
 
   history=[];
   imageMode=false;
+
+  removeImage();
 
   input.value="";
   input.placeholder="اكتب رسالتك إلى A S AI...";
