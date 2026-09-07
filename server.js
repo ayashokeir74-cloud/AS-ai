@@ -9,11 +9,24 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
+/* السماح لموقع GitHub Pages بالاتصال بالسيرفر */
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
 app.use(express.json({ limit: "20mb" }));
 app.use(express.static(__dirname));
 
 /* =========================
-   AI CHAT + IMAGE UNDERSTANDING
+   CHAT
 ========================= */
 
 app.post("/api/chat", async (req, res) => {
@@ -28,22 +41,23 @@ app.post("/api/chat", async (req, res) => {
       ? req.body.messages
       : [];
 
+    const image = req.body.image;
+
     const safeMessages = messages
-      .filter(m =>
-        m &&
-        (m.role === "user" || m.role === "assistant") &&
-        typeof m.content === "string"
+      .filter(
+        m =>
+          m &&
+          (m.role === "user" || m.role === "assistant") &&
+          typeof m.content === "string"
       )
       .slice(-20);
-
-    const image = req.body.image;
 
     let input = safeMessages.map(m => ({
       role: m.role,
       content: m.content
     }));
 
-    /* إذا المستخدم رفع صورة */
+    /* إذا المستخدم أرسل صورة */
     if (
       image &&
       typeof image === "string" &&
@@ -57,7 +71,9 @@ app.post("/api/chat", async (req, res) => {
           content: [
             {
               type: "input_text",
-              text: safeMessages[lastUserIndex].content
+              text:
+                safeMessages[lastUserIndex].content ||
+                "حلل هذه الصورة."
             },
             {
               type: "input_image",
@@ -73,17 +89,17 @@ app.post("/api/chat", async (req, res) => {
 
       instructions:
         "You are A S AI, a helpful general-purpose AI assistant. " +
-        "Answer clearly, accurately and naturally. " +
-        "Reply in the language used by the user. " +
-        "When the user sends an image, analyze it carefully and explain what you can see.",
+        "Answer clearly and naturally. " +
+        "Reply in the same language used by the user. " +
+        "If the user sends an image, analyze it carefully.",
 
-      input: input
+      input
     });
 
     res.json({
       reply:
         response.output_text ||
-        "لم يصلني نص من الذكاء الاصطناعي."
+        "لم يصلني رد من الذكاء الاصطناعي."
     });
 
   } catch (error) {
@@ -119,15 +135,9 @@ app.post("/api/images", async (req, res) => {
       });
     }
 
-    if (prompt.length > 2000) {
-      return res.status(400).json({
-        error: "The image description is too long."
-      });
-    }
-
     const result = await client.images.generate({
       model: "gpt-image-2",
-      prompt: prompt,
+      prompt,
       size: "1024x1024"
     });
 
@@ -135,7 +145,7 @@ app.post("/api/images", async (req, res) => {
 
     if (!imageBase64) {
       return res.status(500).json({
-        error: "لم تصل الصورة من نموذج الصور."
+        error: "لم تصل الصورة."
       });
     }
 
