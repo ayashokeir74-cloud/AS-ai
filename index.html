@@ -4,123 +4,649 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>A S AI</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff;height:100vh;overflow:hidden}
-.app{height:100vh;display:flex}
-.side{width:270px;background:#080c18;border-left:1px solid #20283d;padding:18px;display:flex;flex-direction:column}
-.logo{font-size:26px;font-weight:800;margin:8px 5px 25px}
-.logo span{color:#6ea8ff}
-.new{border:1px solid #2d3a58;background:#111a2e;color:white;border-radius:14px;padding:13px;cursor:pointer;font-size:15px}
-.new:hover{background:#182540}
-.history{margin-top:25px;color:#8994aa;font-size:13px}
-.bottom{margin-top:auto;color:#69758d;font-size:12px;text-align:center}
-.main{flex:1;display:flex;flex-direction:column;min-width:0}
-.top{height:65px;border-bottom:1px solid #20283d;display:flex;align-items:center;padding:0 22px;font-weight:700}
-.chat{flex:1;overflow:auto;padding:30px 7%;scroll-behavior:smooth}
-.welcome{text-align:center;margin:8vh auto 35px;max-width:700px}
-.orb{width:74px;height:74px;margin:auto;border-radius:50%;background:linear-gradient(135deg,#6ea8ff,#9b6cff);box-shadow:0 0 45px #587fff66;display:grid;place-items:center;font-size:25px;font-weight:bold}
-.welcome h1{font-size:36px;margin:20px 0 10px}
-.welcome p{color:#9ba6bc}
-.msg{display:flex;gap:12px;margin:22px auto;max-width:850px}
-.avatar{width:38px;height:38px;border-radius:12px;background:#18243b;display:grid;place-items:center;flex:none;font-size:13px;font-weight:bold}
-.user .avatar{background:#2b3650}
-.bubble{background:#111a2c;border:1px solid #202c45;padding:14px 17px;border-radius:17px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
-.user .bubble{background:#18243a}
-.composer{padding:15px 7% 20px;background:linear-gradient(transparent,#0b1020 25%)}
-.box{max-width:850px;margin:auto;display:flex;gap:8px;background:#111827;border:1px solid #2d3953;border-radius:18px;padding:8px;box-shadow:0 10px 40px #0005}
-.box textarea{flex:1;background:transparent;border:0;outline:0;color:#fff;resize:none;min-height:44px;max-height:140px;padding:11px;font:inherit}
-.send{width:48px;height:48px;border:0;border-radius:13px;background:#6ea8ff;color:#07101f;font-size:20px;cursor:pointer}
-.send:disabled{opacity:.4}
-.hint{text-align:center;color:#657087;font-size:11px;margin-top:8px}
+
+:root{
+  --bg:#0b0d10;
+  --panel:#111418;
+  --panel2:#171a1f;
+  --border:#292e35;
+  --text:#f5f5f5;
+  --muted:#8f98a3;
+  --accent:#10a37f;
+}
+
+body{
+  margin:0;
+  font-family:Arial,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+}
+
+.app{
+  height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:270px;
+  background:#080a0d;
+  border-left:1px solid var(--border);
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  margin-bottom:18px;
+  font-size:21px;
+  font-weight:700;
+}
+
+.logo{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#10a37f,#087f65);
+  display:grid;
+  place-items:center;
+  font-size:13px;
+  font-weight:800;
+  box-shadow:0 0 25px #10a37f33;
+}
+
+.brand span{
+  color:#10a37f;
+}
+
+.new-chat,
+.image-button{
+  width:100%;
+  padding:13px;
+  border-radius:11px;
+  cursor:pointer;
+  font-size:14px;
+  text-align:right;
+  transition:.2s;
+}
+
+.new-chat{
+  background:#15181d;
+  color:white;
+  border:1px solid #30353c;
+}
+
+.new-chat:hover,
+.image-button:hover{
+  background:#20242a;
+}
+
+.image-button{
+  margin-top:9px;
+  background:#111f1b;
+  color:#c9fff1;
+  border:1px solid #1e604f;
+}
+
+.history-title{
+  color:#737b86;
+  font-size:12px;
+  margin:25px 10px 10px;
+}
+
+.history-item{
+  padding:11px;
+  border-radius:9px;
+  color:#c9cdd2;
+  font-size:13px;
+}
+
+.sidebar-bottom{
+  margin-top:auto;
+  border-top:1px solid var(--border);
+  padding:15px 8px 5px;
+  color:#737b86;
+  font-size:11px;
+  line-height:1.7;
+}
+
+.main{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.header{
+  height:60px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+  font-size:15px;
+  font-weight:600;
+}
+
+.status{
+  color:#10a37f;
+  font-size:11px;
+  margin-right:10px;
+}
+
+.chat{
+  flex:1;
+  overflow-y:auto;
+  padding:30px 15px;
+  scroll-behavior:smooth;
+}
+
+.chat::-webkit-scrollbar{
+  width:7px;
+}
+
+.chat::-webkit-scrollbar-thumb{
+  background:#292e35;
+  border-radius:20px;
+}
+
+.welcome{
+  max-width:760px;
+  margin:10vh auto 40px;
+  text-align:center;
+}
+
+.welcome-logo{
+  width:82px;
+  height:82px;
+  margin:auto;
+  border-radius:24px;
+  background:linear-gradient(135deg,#10a37f,#087f65);
+  display:grid;
+  place-items:center;
+  font-size:26px;
+  font-weight:800;
+  box-shadow:0 15px 60px #10a37f35;
+  animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+
+.welcome h1{
+  font-size:34px;
+  margin:24px 0 10px;
+}
+
+.welcome p{
+  color:var(--muted);
+}
+
+.tools{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:35px;
+}
+
+.tool{
+  padding:17px;
+  background:#12151a;
+  border:1px solid #282d34;
+  border-radius:13px;
+  color:#ddd;
+  cursor:pointer;
+  text-align:right;
+  transition:.2s;
+}
+
+.tool:hover{
+  background:#1b1f25;
+  transform:translateY(-2px);
+}
+
+.message{
+  max-width:850px;
+  margin:25px auto;
+  display:flex;
+  gap:13px;
+  align-items:flex-start;
+}
+
+.avatar{
+  width:37px;
+  height:37px;
+  flex:none;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:11px;
+  font-weight:700;
+  background:#303640;
+}
+
+.ai .avatar{
+  background:linear-gradient(135deg,#10a37f,#087f65);
+}
+
+.bubble{
+  max-width:calc(100% - 50px);
+  padding:12px 15px;
+  border-radius:14px;
+  background:#171a1f;
+  border:1px solid #262b32;
+  line-height:1.8;
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-size:14px;
+}
+
+.user .bubble{
+  background:#20242a;
+}
+
+.generated-image{
+  max-width:100%;
+  border-radius:15px;
+  margin-top:5px;
+  display:block;
+}
+
+.composer{
+  padding:12px 15px 18px;
+  background:linear-gradient(transparent,#0b0d10 25%);
+}
+
+.composer-box{
+  max-width:850px;
+  margin:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:8px;
+  background:#171a1f;
+  border:1px solid #343941;
+  border-radius:17px;
+  box-shadow:0 8px 35px #0008;
+}
+
+textarea{
+  flex:1;
+  min-height:45px;
+  max-height:150px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:white;
+  font-family:inherit;
+  font-size:14px;
+  line-height:1.6;
+  padding:10px;
+}
+
+textarea::placeholder{
+  color:#737b86;
+}
+
+.send{
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:12px;
+  background:#10a37f;
+  color:white;
+  cursor:pointer;
+  font-size:19px;
+}
+
+.send:hover{
+  background:#0d8e70;
+}
+
+.send:disabled{
+  opacity:.35;
+}
+
+.hint{
+  text-align:center;
+  color:#626a74;
+  font-size:10px;
+  margin-top:8px;
+}
+
+.loading{
+  display:flex;
+  gap:5px;
+  padding:6px;
+}
+
+.loading span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#9299a3;
+  animation:dot 1.2s infinite;
+}
+
+.loading span:nth-child(2){animation-delay:.15s}
+.loading span:nth-child(3){animation-delay:.3s}
+
+@keyframes dot{
+  0%,80%,100%{opacity:.3}
+  40%{opacity:1}
+}
+
 @media(max-width:700px){
-.side{display:none}
-.chat{padding:20px 15px}
-.composer{padding:12px}
-.welcome h1{font-size:29px}
-.top{padding:0 15px}
+
+  .sidebar{
+    display:none;
+  }
+
+  .header{
+    height:56px;
+    padding:0 15px;
+  }
+
+  .chat{
+    padding:20px 12px;
+  }
+
+  .welcome{
+    margin-top:7vh;
+  }
+
+  .welcome-logo{
+    width:68px;
+    height:68px;
+  }
+
+  .welcome h1{
+    font-size:27px;
+  }
+
+  .tools{
+    grid-template-columns:1fr;
+  }
+
+  .message{
+    margin:20px 5px;
+  }
+
+  .composer{
+    padding:8px 10px 13px;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
-<aside class="side">
-<div class="logo">A S <span>AI</span></div>
-<button class="new" onclick="newChat()">＋ محادثة جديدة</button>
-<div class="history">المحادثة الحالية</div>
-<div class="bottom">A S AI<br>مساعدك الذكي</div>
+<aside class="sidebar">
+
+  <div class="brand">
+    <div class="logo">AS</div>
+    A S <span>AI</span>
+  </div>
+
+  <button class="new-chat" onclick="newChat()">
+    ＋ محادثة جديدة
+  </button>
+
+  <button class="image-button" onclick="startImageMode()">
+    🎨 إنشاء صورة
+  </button>
+
+  <div class="history-title">
+    المحادثات
+  </div>
+
+  <div class="history-item">
+    💬 المحادثة الحالية
+  </div>
+
+  <div class="sidebar-bottom">
+    A S AI<br>
+    مساعدك الذكي
+  </div>
+
 </aside>
 
 <main class="main">
 
-<header class="top">A S AI</header>
+<header class="header">
+  A S AI
+  <span class="status">● متصل</span>
+</header>
 
 <section class="chat" id="chat">
-<div class="welcome" id="welcome">
-<div class="orb">AS</div>
-<h1>مرحباً، أنا A S AI</h1>
-<p>اكتب سؤالك وخلّينا نبدأ.</p>
-</div>
+
+  <div class="welcome" id="welcome">
+
+    <div class="welcome-logo">AS</div>
+
+    <h1>مرحباً، أنا A S AI</h1>
+
+    <p>كيف يمكنني مساعدتك اليوم؟</p>
+
+    <div class="tools">
+
+      <div class="tool" onclick="useSuggestion('اشرح لي البرمجة بطريقة سهلة')">
+        💡<br>
+        <b>شرح وتعلّم</b><br>
+        <small>اشرح لي أي موضوع بطريقة سهلة</small>
+      </div>
+
+      <div class="tool" onclick="startImageMode()">
+        🎨<br>
+        <b>إنشاء صورة</b><br>
+        <small>اكتب وصف الصورة التي تريدها</small>
+      </div>
+
+      <div class="tool" onclick="useSuggestion('ساعدني في كتابة فكرة لمشروع')">
+        🚀<br>
+        <b>أفكار ومشاريع</b><br>
+        <small>ساعدني في تطوير فكرة جديدة</small>
+      </div>
+
+      <div class="tool" onclick="useSuggestion('ما الذي تستطيع مساعدتي فيه؟')">
+        ✨<br>
+        <b>ماذا تستطيع؟</b><br>
+        <small>اعرض لي قدرات A S AI</small>
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
 <div class="composer">
-<div class="box">
-<textarea id="input" placeholder="اكتب رسالتك هنا..." rows="1"></textarea>
-<button class="send" id="send" onclick="sendMessage()">➤</button>
-</div>
-<div class="hint">A S AI</div>
+
+  <div class="composer-box">
+
+    <textarea
+      id="input"
+      rows="1"
+      placeholder="اكتب رسالتك إلى A S AI..."
+    ></textarea>
+
+    <button
+      class="send"
+      id="send"
+      onclick="sendMessage()"
+    >↑</button>
+
+  </div>
+
+  <div class="hint">
+    A S AI
+  </div>
+
 </div>
 
 </main>
 </div>
 
 <script>
+
 const API_URL="https://as-ai-1.onrender.com/api/chat";
+
+/* هذا المسار سنفعّله في server.js بعدين */
+const IMAGE_API_URL="https://as-ai-1.onrender.com/api/images";
 
 const input=document.getElementById("input");
 const chat=document.getElementById("chat");
 const send=document.getElementById("send");
 
 let history=[];
+let imageMode=false;
 
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter"&&!e.shiftKey){
+
+/* ENTER */
+
+input.addEventListener("keydown",function(e){
+
+  if(e.key==="Enter" && !e.shiftKey){
+
     e.preventDefault();
     sendMessage();
+
   }
+
 });
 
-input.addEventListener("input",()=>{
-  input.style.height="auto";
-  input.style.height=Math.min(input.scrollHeight,140)+"px";
+
+/* AUTO RESIZE */
+
+input.addEventListener("input",function(){
+
+  this.style.height="auto";
+
+  this.style.height=
+    Math.min(this.scrollHeight,150)+"px";
+
 });
+
+
+/* MESSAGE */
 
 function addMessage(text,who){
+
   document.getElementById("welcome")?.remove();
 
   const row=document.createElement("div");
-  row.className="msg "+who;
 
-  const av=document.createElement("div");
-  av.className="avatar";
-  av.textContent=who==="user"?"أنت":"AS";
+  row.className="message "+who;
 
-  const b=document.createElement("div");
-  b.className="bubble";
-  b.textContent=text;
+  const avatar=document.createElement("div");
 
-  row.append(av,b);
+  avatar.className="avatar";
+  avatar.textContent=who==="user"?"أنت":"AS";
+
+  const bubble=document.createElement("div");
+
+  bubble.className="bubble";
+  bubble.textContent=text;
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+
   chat.appendChild(row);
+
   chat.scrollTop=chat.scrollHeight;
 }
+
+
+/* IMAGE MESSAGE */
+
+function addImageMessage(url){
+
+  document.getElementById("welcome")?.remove();
+
+  const row=document.createElement("div");
+
+  row.className="message ai";
+
+  const avatar=document.createElement("div");
+
+  avatar.className="avatar";
+  avatar.textContent="AS";
+
+  const bubble=document.createElement("div");
+
+  bubble.className="bubble";
+
+  const img=document.createElement("img");
+
+  img.className="generated-image";
+  img.src=url;
+  img.alt="صورة تم إنشاؤها بواسطة A S AI";
+
+  bubble.appendChild(img);
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+
+  chat.appendChild(row);
+
+  chat.scrollTop=chat.scrollHeight;
+}
+
+
+/* LOADING */
+
+function showLoading(){
+
+  const row=document.createElement("div");
+
+  row.className="message ai";
+  row.id="loading";
+
+  row.innerHTML=`
+    <div class="avatar">AS</div>
+    <div class="bubble">
+      <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
+
+  chat.appendChild(row);
+
+  chat.scrollTop=chat.scrollHeight;
+}
+
+
+/* SEND */
 
 async function sendMessage(){
 
   const text=input.value.trim();
 
-  if(!text||send.disabled)return;
+  if(!text || send.disabled){
+    return;
+  }
+
+  if(imageMode){
+
+    await generateImage(text);
+
+    return;
+  }
 
   addMessage(text,"user");
 
@@ -131,75 +657,224 @@ async function sendMessage(){
 
   input.value="";
   input.style.height="auto";
+
   send.disabled=true;
 
-  const loading=document.createElement("div");
-  loading.className="msg ai";
-  loading.id="loading";
-
-  loading.innerHTML=
-    '<div class="avatar">AS</div><div class="bubble">يفكر...</div>';
-
-  chat.appendChild(loading);
-  chat.scrollTop=chat.scrollHeight;
+  showLoading();
 
   try{
 
-    const r=await fetch(API_URL,{
+    const response=await fetch(API_URL,{
       method:"POST",
+
       headers:{
         "Content-Type":"application/json"
       },
+
       body:JSON.stringify({
         messages:history
       })
     });
 
-    const data=await r.json();
+    const data=await response.json();
 
-    loading.remove();
+    document.getElementById("loading")?.remove();
 
-    if(!r.ok){
+    if(!response.ok){
       throw new Error(data.error||"حدث خطأ");
     }
 
-    addMessage(data.reply,"ai");
+    const reply=data.reply||"لم يصلني رد.";
+
+    addMessage(reply,"ai");
 
     history.push({
       role:"assistant",
-      content:data.reply
+      content:reply
     });
 
-  }catch(e){
+  }catch(error){
 
-    console.error(e);
+    console.error(error);
 
-    loading.remove();
+    document.getElementById("loading")?.remove();
 
     addMessage(
-      "تعذر الاتصال بالذكاء الاصطناعي. تأكد أن السيرفر يعمل على Render وأن API Key مضبوط.",
+      "تعذر الاتصال بالذكاء الاصطناعي حالياً.",
       "ai"
     );
+
   }
 
   send.disabled=false;
+
   input.focus();
 }
+
+
+/* IMAGE GENERATION */
+
+async function generateImage(prompt){
+
+  addMessage(prompt,"user");
+
+  input.value="";
+  input.style.height="auto";
+
+  send.disabled=true;
+
+  showLoading();
+
+  try{
+
+    const response=await fetch(IMAGE_API_URL,{
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        prompt:prompt
+      })
+    });
+
+    const data=await response.json();
+
+    document.getElementById("loading")?.remove();
+
+    if(!response.ok){
+      throw new Error(data.error||"فشل إنشاء الصورة");
+    }
+
+    if(data.image_url){
+
+      addImageMessage(data.image_url);
+
+    }else if(data.image){
+
+      addImageMessage(data.image);
+
+    }else{
+
+      throw new Error("لم تصل الصورة من السيرفر");
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById("loading")?.remove();
+
+    addMessage(
+      "تعذر إنشاء الصورة حالياً. ميزة إنشاء الصور تحتاج تفعيلها على السيرفر.",
+      "ai"
+    );
+
+  }
+
+  imageMode=false;
+
+  input.placeholder="اكتب رسالتك إلى A S AI...";
+
+  send.disabled=false;
+
+  input.focus();
+}
+
+
+/* IMAGE MODE */
+
+function startImageMode(){
+
+  imageMode=true;
+
+  input.placeholder="اكتب وصف الصورة التي تريد إنشاءها...";
+
+  input.focus();
+
+}
+
+
+/* SUGGESTION */
+
+function useSuggestion(text){
+
+  imageMode=false;
+
+  input.placeholder="اكتب رسالتك إلى A S AI...";
+
+  input.value=text;
+
+  input.style.height="auto";
+
+  input.style.height=
+    Math.min(input.scrollHeight,150)+"px";
+
+  input.focus();
+}
+
+
+/* NEW CHAT */
 
 function newChat(){
 
   history=[];
+  imageMode=false;
+
+  input.value="";
+  input.placeholder="اكتب رسالتك إلى A S AI...";
 
   chat.innerHTML=`
+
     <div class="welcome" id="welcome">
-      <div class="orb">AS</div>
+
+      <div class="welcome-logo">AS</div>
+
       <h1>مرحباً، أنا A S AI</h1>
-      <p>اكتب سؤالك وخلّينا نبدأ.</p>
+
+      <p>كيف يمكنني مساعدتك اليوم؟</p>
+
+      <div class="tools">
+
+        <div class="tool"
+          onclick="useSuggestion('اشرح لي البرمجة بطريقة سهلة')">
+          💡<br>
+          <b>شرح وتعلّم</b><br>
+          <small>اشرح لي أي موضوع بطريقة سهلة</small>
+        </div>
+
+        <div class="tool"
+          onclick="startImageMode()">
+          🎨<br>
+          <b>إنشاء صورة</b><br>
+          <small>اكتب وصف الصورة التي تريدها</small>
+        </div>
+
+        <div class="tool"
+          onclick="useSuggestion('ساعدني في كتابة فكرة لمشروع')">
+          🚀<br>
+          <b>أفكار ومشاريع</b><br>
+          <small>ساعدني في تطوير فكرة جديدة</small>
+        </div>
+
+        <div class="tool"
+          onclick="useSuggestion('ما الذي تستطيع مساعدتي فيه؟')">
+          ✨<br>
+          <b>ماذا تستطيع؟</b><br>
+          <small>اعرض لي قدرات A S AI</small>
+        </div>
+
+      </div>
+
     </div>
+
   `;
 
   input.focus();
 }
+
 </script>
 
 </body>
