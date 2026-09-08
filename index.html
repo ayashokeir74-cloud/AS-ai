@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
   <title>Sultan AI — مساعدك الذكي</title>
+
   <meta
     name="description"
     content="Sultan AI — مساعد ذكاء اصطناعي سريع للمحادثة، البحث، البرمجة، تحليل الملفات والصور."
   />
+
   <meta name="theme-color" content="#090909" />
 
   <style>
@@ -81,11 +83,10 @@
       border: 0;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    /* =========================================================
-       BACKGROUND
-       ========================================================= */
+    /* ================= BACKGROUND ================= */
 
     .background {
       position: fixed;
@@ -93,6 +94,7 @@
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
+
       background:
         radial-gradient(
           circle at 80% 15%,
@@ -104,7 +106,12 @@
           rgba(255, 132, 0, 0.055),
           transparent 25%
         ),
-        linear-gradient(135deg, #060606, #0b0b0c 50%, #070707);
+        linear-gradient(
+          135deg,
+          #060606,
+          #0b0b0c 50%,
+          #070707
+        );
     }
 
     .background::before {
@@ -112,11 +119,26 @@
       position: absolute;
       inset: 0;
       opacity: 0.18;
+
       background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+        linear-gradient(
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        );
+
       background-size: 45px 45px;
-      mask-image: linear-gradient(to bottom, black, transparent 85%);
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent 85%
+        );
     }
 
     .orb {
@@ -146,97 +168,134 @@
 
     @keyframes floatOrb {
       0%, 100% {
-        transform: translate3d(0, 0, 0);
+        transform: translate3d(0,0,0);
       }
 
       50% {
-        transform: translate3d(-25px, 22px, 0);
+        transform: translate3d(-25px,22px,0);
       }
     }
 
-    /* =========================================================
-       APP
-       ========================================================= */
+    /* ================= APP ================= */
 
     .app {
       position: relative;
       z-index: 1;
+
       display: flex;
+
       width: 100%;
       height: 100%;
     }
 
-    /* =========================================================
-       SIDEBAR
-       ========================================================= */
+    /* ================= SIDEBAR ================= */
 
     .sidebar {
       position: relative;
+
       width: var(--sidebar);
       height: 100%;
+
       flex-shrink: 0;
+
       display: flex;
       flex-direction: column;
+
       padding: 18px;
+
       border-left: 1px solid var(--border);
+
       background:
         linear-gradient(
           180deg,
-          rgba(15, 15, 16, 0.94),
-          rgba(9, 9, 10, 0.96)
+          rgba(15,15,16,.94),
+          rgba(9,9,10,.96)
         );
+
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.25);
-      transition: transform 0.3s ease;
+
+      box-shadow:
+        -20px 0 60px rgba(0,0,0,.25);
+
+      transition:
+        transform .3s ease,
+        box-shadow .3s ease;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
+
       padding: 7px 5px 20px;
     }
 
     .brand-logo {
       position: relative;
+
       width: 43px;
       height: 43px;
+
       display: grid;
       place-items: center;
+
       flex-shrink: 0;
+
       border-radius: 14px;
-      background: linear-gradient(145deg, #ff9c30, #ff6500);
+
+      background:
+        linear-gradient(
+          145deg,
+          #ff9c30,
+          #ff6500
+        );
+
       color: #111;
+
       font-size: 21px;
       font-weight: 1000;
+
       box-shadow:
-        0 0 25px rgba(255, 121, 0, 0.22),
+        0 0 25px rgba(255,121,0,.22),
         inset 0 1px 0 rgba(255,255,255,.3);
-      animation: logoPulse 3s ease-in-out infinite;
+
+      animation:
+        logoPulse 3s ease-in-out infinite;
     }
 
     .brand-logo::after {
       content: "";
+
       position: absolute;
       inset: -5px;
+
       border-radius: 17px;
-      border: 1px solid rgba(255, 135, 20, 0.22);
-      animation: logoRing 3s ease-in-out infinite;
+
+      border:
+        1px solid
+        rgba(255,135,20,.22);
+
+      animation:
+        logoRing 3s ease-in-out infinite;
     }
 
     @keyframes logoPulse {
-      0%, 100% {
-        box-shadow: 0 0 22px rgba(255,121,0,.18);
+      0%,100% {
+        box-shadow:
+          0 0 22px
+          rgba(255,121,0,.18);
       }
 
       50% {
-        box-shadow: 0 0 34px rgba(255,121,0,.32);
+        box-shadow:
+          0 0 34px
+          rgba(255,121,0,.32);
       }
     }
 
     @keyframes logoRing {
-      0%, 100% {
+      0%,100% {
         transform: scale(1);
         opacity: .6;
       }
@@ -249,6 +308,7 @@
 
     .brand-text strong {
       display: block;
+
       font-size: 17px;
       font-weight: 900;
       letter-spacing: -.3px;
@@ -256,28 +316,42 @@
 
     .brand-text span {
       display: block;
+
       margin-top: 2px;
+
       color: var(--text-3);
+
       font-size: 11px;
     }
 
     .new-chat {
       width: 100%;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       gap: 9px;
+
       min-height: 47px;
-      border: 1px solid var(--border-orange);
+
+      border:
+        1px solid
+        var(--border-orange);
+
       border-radius: 14px;
+
       background:
         linear-gradient(
           135deg,
-          rgba(255, 121, 0, .14),
-          rgba(255, 121, 0, .05)
+          rgba(255,121,0,.14),
+          rgba(255,121,0,.05)
         );
+
       color: #fff;
+
       font-weight: 800;
+
       transition:
         transform .2s ease,
         background .2s ease,
@@ -286,8 +360,13 @@
 
     .new-chat:hover {
       transform: translateY(-2px);
-      background: rgba(255, 121, 0, .18);
-      box-shadow: 0 12px 30px rgba(255, 121, 0, .1);
+
+      background:
+        rgba(255,121,0,.18);
+
+      box-shadow:
+        0 12px 30px
+        rgba(255,121,0,.1);
     }
 
     .new-chat:active {
@@ -302,53 +381,111 @@
 
     .section-title {
       margin: 27px 7px 9px;
+
       color: var(--text-3);
+
       font-size: 11px;
       font-weight: 800;
+
       letter-spacing: .5px;
     }
 
     .side-item {
+      position: relative;
+
       display: flex;
       align-items: center;
+
       gap: 11px;
+
       width: 100%;
-      padding: 12px 12px;
+
+      padding: 12px;
+
       margin-bottom: 5px;
+
       border-radius: 12px;
+
       color: var(--text-2);
+
       background: transparent;
+
       text-align: right;
-      transition: .2s ease;
+
+      transition:
+        .2s ease;
+
+      overflow: hidden;
+    }
+
+    .side-item::after {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      right: 0;
+      bottom: 0;
+
+      width: 3px;
+
+      border-radius: 5px;
+
+      background: var(--orange);
+
+      transform:
+        scaleY(0);
+
+      transition:
+        transform .2s ease;
     }
 
     .side-item:hover {
       color: #fff;
-      background: rgba(255,255,255,.045);
+
+      background:
+        rgba(255,255,255,.045);
     }
 
     .side-item.active {
       color: #fff;
-      background: linear-gradient(
-        90deg,
-        rgba(255,121,0,.13),
-        rgba(255,121,0,.035)
-      );
-      border: 1px solid rgba(255,121,0,.09);
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255,121,0,.13),
+          rgba(255,121,0,.035)
+        );
+
+      border:
+        1px solid
+        rgba(255,121,0,.09);
+    }
+
+    .side-item.active::after {
+      transform: scaleY(1);
     }
 
     .side-icon {
       width: 30px;
       height: 30px;
+
       display: grid;
       place-items: center;
+
       border-radius: 9px;
-      background: rgba(255,255,255,.045);
+
+      background:
+        rgba(255,255,255,.045);
+
       font-size: 15px;
+
+      flex-shrink: 0;
     }
 
     .side-item.active .side-icon {
-      background: rgba(255,121,0,.13);
+      background:
+        rgba(255,121,0,.13);
     }
 
     .side-item span:last-child {
@@ -358,54 +495,78 @@
 
     .creator {
       margin-top: auto;
+
       padding: 13px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid
+        var(--border);
+
       border-radius: 15px;
-      background: rgba(255,255,255,.025);
+
+      background:
+        rgba(255,255,255,.025);
     }
 
     .creator-label {
       color: var(--text-3);
+
       font-size: 10px;
+
       margin-bottom: 5px;
     }
 
     .creator-name {
       color: #fff;
+
       font-size: 12px;
+
       font-weight: 800;
     }
 
-    /* =========================================================
-       MAIN
-       ========================================================= */
+    /* ================= MAIN ================= */
 
     .main {
       position: relative;
+
       flex: 1;
+
       min-width: 0;
+
       height: 100%;
+
       display: flex;
       flex-direction: column;
     }
 
-    /* =========================================================
-       TOPBAR
-       ========================================================= */
+    /* ================= TOPBAR ================= */
 
     .topbar {
       position: relative;
       z-index: 60;
+
       height: var(--topbar);
+
       flex-shrink: 0;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       padding: 0 24px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(7,7,8,.58);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+        rgba(7,7,8,.58);
+
+      backdrop-filter:
+        blur(22px);
+
+      -webkit-backdrop-filter:
+        blur(22px);
     }
 
     .top-left {
@@ -416,20 +577,31 @@
 
     .mobile-menu {
       display: none;
+
       position: relative;
+
       z-index: 100;
+
       width: 39px;
       height: 39px;
+
       border-radius: 11px;
-      background: rgba(255,255,255,.05);
+
+      background:
+        rgba(255,255,255,.05);
+
       color: #fff;
+
       font-size: 19px;
+
       pointer-events: auto;
+
       touch-action: manipulation;
     }
 
     .mobile-menu:hover {
-      background: rgba(255,121,0,.12);
+      background:
+        rgba(255,121,0,.12);
     }
 
     .mobile-menu:active {
@@ -439,23 +611,35 @@
     .status {
       display: flex;
       align-items: center;
+
       gap: 8px;
+
       color: var(--text-2);
+
       font-size: 12px;
+
       font-weight: 700;
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
+
       border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 12px rgba(53,210,124,.55);
-      animation: statusBlink 2s infinite;
+
+      background:
+        var(--success);
+
+      box-shadow:
+        0 0 12px
+        rgba(53,210,124,.55);
+
+      animation:
+        statusBlink 2s infinite;
     }
 
     @keyframes statusBlink {
-      0%, 100% {
+      0%,100% {
         opacity: 1;
       }
 
@@ -473,13 +657,24 @@
     .mode-pill {
       display: flex;
       align-items: center;
+
       gap: 7px;
+
       padding: 9px 12px;
-      border: 1px solid rgba(255,121,0,.16);
+
+      border:
+        1px solid
+        rgba(255,121,0,.16);
+
       border-radius: 999px;
-      background: rgba(255,121,0,.06);
+
+      background:
+        rgba(255,121,0,.06);
+
       color: #f3f3f3;
+
       font-size: 11px;
+
       font-weight: 800;
     }
 
@@ -487,16 +682,21 @@
       color: var(--orange-2);
     }
 
-    /* =========================================================
-       CHAT
-       ========================================================= */
+    /* ================= CHAT ================= */
 
     .chat {
       flex: 1;
+
       min-height: 0;
+
       overflow-y: auto;
+
       scroll-behavior: smooth;
-      padding: 30px 22px 150px;
+
+      padding:
+        30px
+        22px
+        150px;
     }
 
     .chat::-webkit-scrollbar {
@@ -508,77 +708,122 @@
     }
 
     .chat::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,.08);
+      background:
+        rgba(255,255,255,.08);
+
       border-radius: 99px;
     }
 
     .chat-inner {
-      width: min(100%, 900px);
+      width: min(100%,900px);
+
       margin: 0 auto;
     }
 
-    /* =========================================================
-       WELCOME
-       ========================================================= */
+    /* ================= WELCOME ================= */
 
     .welcome {
-      min-height: calc(100vh - 260px);
+      min-height:
+        calc(100vh - 260px);
+
       display: flex;
+
       align-items: center;
       justify-content: center;
+
       flex-direction: column;
+
       text-align: center;
+
       padding: 25px 0;
     }
 
     .hero-logo {
       position: relative;
+
       width: 82px;
       height: 82px;
+
       display: grid;
       place-items: center;
+
       border-radius: 26px;
+
       margin-bottom: 24px;
+
       color: #121212;
-      background: linear-gradient(145deg, #ffb04c, #ff6700);
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffb04c,
+          #ff6700
+        );
+
       font-size: 38px;
+
       font-weight: 1000;
+
       box-shadow:
-        0 0 50px rgba(255,121,0,.16),
-        0 20px 50px rgba(0,0,0,.4);
-      animation: heroFloat 4s ease-in-out infinite;
+        0 0 50px
+        rgba(255,121,0,.16),
+        0 20px 50px
+        rgba(0,0,0,.4);
+
+      animation:
+        heroFloat 4s ease-in-out infinite;
     }
 
     .hero-logo::before {
       content: "";
+
       position: absolute;
+
       inset: -10px;
-      border: 1px solid rgba(255,121,0,.13);
+
+      border:
+        1px solid
+        rgba(255,121,0,.13);
+
       border-radius: 33px;
     }
 
     .hero-logo::after {
       content: "";
+
       position: absolute;
+
       inset: -20px;
-      border: 1px solid rgba(255,121,0,.05);
+
+      border:
+        1px solid
+        rgba(255,121,0,.05);
+
       border-radius: 40px;
     }
 
     @keyframes heroFloat {
-      0%, 100% {
-        transform: translateY(0) rotate(0deg);
+      0%,100% {
+        transform:
+          translateY(0)
+          rotate(0deg);
       }
 
       50% {
-        transform: translateY(-7px) rotate(1deg);
+        transform:
+          translateY(-7px)
+          rotate(1deg);
       }
     }
 
     .welcome h1 {
-      font-size: clamp(27px, 4vw, 42px);
+      font-size:
+        clamp(27px,4vw,42px);
+
       font-weight: 950;
+
       letter-spacing: -1.3px;
+
       background:
         linear-gradient(
           100deg,
@@ -587,37 +832,61 @@
           #ff9b35 75%,
           #ff6b00
         );
+
       -webkit-background-clip: text;
       background-clip: text;
+
       color: transparent;
     }
 
     .welcome p {
       max-width: 610px;
+
       margin-top: 11px;
+
       color: var(--text-3);
+
       font-size: 14px;
+
       line-height: 1.8;
     }
 
     .quick-grid {
-      width: min(100%, 760px);
+      width:
+        min(100%,760px);
+
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+
+      grid-template-columns:
+        repeat(4,1fr);
+
       gap: 10px;
+
       margin-top: 28px;
     }
 
     .quick {
       position: relative;
+
       min-height: 82px;
+
       padding: 14px;
+
       text-align: right;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid
+        var(--border);
+
       border-radius: 15px;
-      background: rgba(255,255,255,.025);
+
+      background:
+        rgba(255,255,255,.025);
+
       color: #eee;
+
       overflow: hidden;
+
       transition:
         transform .22s ease,
         border-color .22s ease,
@@ -626,21 +895,39 @@
 
     .quick::before {
       content: "";
+
       position: absolute;
+
       width: 100px;
       height: 100px;
+
       top: -60px;
       right: -50px;
+
       border-radius: 50%;
-      background: rgba(255,121,0,.12);
+
+      background:
+        rgba(255,121,0,.12);
+
       filter: blur(15px);
+
       transition: .3s ease;
     }
 
     .quick:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,121,0,.22);
-      background: rgba(255,121,0,.045);
+      transform:
+        translateY(-4px);
+
+      border-color:
+        rgba(255,121,0,.22);
+
+      background:
+        rgba(255,121,0,.045);
+    }
+
+    .quick:active {
+      transform:
+        scale(.97);
     }
 
     .quick:hover::before {
@@ -649,81 +936,122 @@
 
     .quick-icon {
       position: relative;
+
       display: block;
+
       margin-bottom: 8px;
+
       font-size: 19px;
     }
 
     .quick strong {
       position: relative;
+
       display: block;
+
       font-size: 12px;
+
       font-weight: 850;
     }
 
     .quick small {
       position: relative;
+
       display: block;
+
       margin-top: 4px;
+
       color: var(--text-3);
+
       font-size: 10px;
+
       line-height: 1.5;
     }
 
-    /* =========================================================
-       MESSAGES
-       ========================================================= */
+    /* ================= MESSAGES ================= */
 
     .message {
       display: flex;
+
       gap: 12px;
+
       margin: 0 0 22px;
-      animation: messageIn .28s ease both;
+
+      animation:
+        messageIn .28s ease both;
     }
 
     @keyframes messageIn {
       from {
         opacity: 0;
-        transform: translateY(8px);
+        transform:
+          translateY(8px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform:
+          translateY(0);
       }
     }
 
     .message.user {
-      justify-content: flex-start;
+      justify-content:
+        flex-start;
     }
 
     .message.assistant {
-      justify-content: flex-start;
+      justify-content:
+        flex-start;
     }
 
     .avatar {
       width: 34px;
       height: 34px;
+
       flex: 0 0 34px;
+
       display: grid;
       place-items: center;
+
       border-radius: 11px;
+
       font-size: 13px;
+
       font-weight: 950;
-      background: rgba(255,255,255,.06);
+
+      background:
+        rgba(255,255,255,.06);
+
       color: #fff;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid
+        var(--border);
     }
 
     .assistant .avatar {
       color: #121212;
-      background: linear-gradient(145deg, #ffac45, #ff6800);
-      border-color: transparent;
-      box-shadow: 0 5px 18px rgba(255,121,0,.12);
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffac45,
+          #ff6800
+        );
+
+      border-color:
+        transparent;
+
+      box-shadow:
+        0 5px 18px
+        rgba(255,121,0,.12);
     }
 
     .message-body {
-      max-width: min(82%, 760px);
+      max-width:
+        min(82%,760px);
+
       min-width: 0;
     }
 
@@ -732,24 +1060,39 @@
     }
 
     .message-name {
-      margin: 2px 0 6px;
-      color: var(--text-3);
+      margin:
+        2px 0 6px;
+
+      color:
+        var(--text-3);
+
       font-size: 10px;
+
       font-weight: 800;
     }
 
     .message-text {
       color: #e8e8e8;
+
       font-size: 14px;
+
       line-height: 1.85;
+
       word-break: break-word;
+
       white-space: pre-wrap;
     }
 
     .user .message-text {
       padding: 12px 15px;
-      border: 1px solid rgba(255,121,0,.14);
-      border-radius: 17px 17px 4px 17px;
+
+      border:
+        1px solid
+        rgba(255,121,0,.14);
+
+      border-radius:
+        17px 17px 4px 17px;
+
       background:
         linear-gradient(
           135deg,
@@ -769,123 +1112,216 @@
 
     .message-text code.inline-code {
       padding: 2px 6px;
+
       border-radius: 6px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.055);
-      color: #ffb15d;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.055);
+
+      color:
+        #ffb15d;
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        monospace;
+
       font-size: 12px;
     }
 
     .code-wrap {
       margin: 13px 0;
+
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,.09);
+
+      border:
+        1px solid
+        rgba(255,255,255,.09);
+
       border-radius: 13px;
+
       background: #080808;
     }
 
     .code-head {
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
       padding: 8px 11px;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      background: rgba(255,255,255,.025);
-      color: var(--text-3);
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+
+      background:
+        rgba(255,255,255,.025);
+
+      color:
+        var(--text-3);
+
       font-size: 10px;
     }
 
     .code-copy {
       padding: 4px 8px;
+
       border-radius: 6px;
-      background: rgba(255,255,255,.05);
+
+      background:
+        rgba(255,255,255,.05);
+
       color: #ccc;
+
       font-size: 10px;
     }
 
     pre.code {
       margin: 0;
+
       padding: 13px;
+
       overflow-x: auto;
+
       color: #ddd;
+
       direction: ltr;
+
       text-align: left;
-      font: 12px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      font:
+        12px/1.7
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+
       white-space: pre;
     }
 
     .message-actions {
       display: flex;
+
       gap: 6px;
+
       margin-top: 7px;
+
       opacity: 0;
-      transition: opacity .2s ease;
+
+      transition:
+        opacity .2s ease;
     }
 
-    .message:hover .message-actions,
+    .message:hover
+    .message-actions,
     .message-actions:focus-within {
       opacity: 1;
     }
 
     .action-btn {
       padding: 5px 8px;
+
       border-radius: 7px;
-      background: rgba(255,255,255,.04);
-      color: var(--text-3);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color:
+        var(--text-3);
+
       font-size: 10px;
+
       transition: .2s ease;
     }
 
     .action-btn:hover {
       color: #fff;
-      background: rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.08);
     }
 
     .tool-badges {
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 6px;
+
       margin-top: 9px;
     }
 
     .tool-badge {
       padding: 5px 8px;
+
       border-radius: 999px;
-      border: 1px solid rgba(255,121,0,.12);
-      background: rgba(255,121,0,.055);
+
+      border:
+        1px solid
+        rgba(255,121,0,.12);
+
+      background:
+        rgba(255,121,0,.055);
+
       color: #d7d7d7;
+
       font-size: 9px;
     }
 
-    /* =========================================================
-       TYPING
-       ========================================================= */
+    /* ================= TYPING ================= */
 
     .typing {
       display: flex;
+
       align-items: center;
+
       gap: 11px;
+
       margin-bottom: 22px;
-      animation: messageIn .2s ease both;
+
+      animation:
+        messageIn .2s ease both;
     }
 
     .typing-box {
       display: flex;
+
       align-items: center;
+
       gap: 5px;
+
       padding: 11px 13px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid
+        var(--border);
+
       border-radius: 14px;
-      background: rgba(255,255,255,.025);
+
+      background:
+        rgba(255,255,255,.025);
     }
 
     .typing-dot {
       width: 6px;
       height: 6px;
+
       border-radius: 50%;
-      background: var(--orange-2);
-      animation: typing .9s infinite ease-in-out;
+
+      background:
+        var(--orange-2);
+
+      animation:
+        typing .9s infinite
+        ease-in-out;
     }
 
     .typing-dot:nth-child(2) {
@@ -897,7 +1333,7 @@
     }
 
     @keyframes typing {
-      0%, 60%, 100% {
+      0%,60%,100% {
         transform: translateY(0);
         opacity: .4;
       }
@@ -908,80 +1344,116 @@
       }
     }
 
-    /* =========================================================
-       FILE PREVIEWS
-       ========================================================= */
+    /* ================= FILES ================= */
 
     .attachments {
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 7px;
+
       margin-bottom: 8px;
     }
 
     .attachment {
       display: flex;
+
       align-items: center;
+
       gap: 8px;
+
       max-width: 240px;
+
       padding: 7px 9px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid
+        var(--border);
+
       border-radius: 10px;
-      background: rgba(255,255,255,.035);
+
+      background:
+        rgba(255,255,255,.035);
     }
 
     .attachment-preview {
       width: 32px;
       height: 32px;
+
       flex: 0 0 32px;
+
       overflow: hidden;
+
       display: grid;
       place-items: center;
+
       border-radius: 7px;
-      background: rgba(255,121,0,.08);
+
+      background:
+        rgba(255,121,0,.08);
+
       font-size: 13px;
     }
 
     .attachment-preview img {
       width: 100%;
       height: 100%;
+
       object-fit: cover;
     }
 
     .attachment-name {
       min-width: 0;
+
       overflow: hidden;
+
       text-overflow: ellipsis;
+
       white-space: nowrap;
+
       color: #ccc;
+
       font-size: 10px;
     }
 
     .remove-file {
       width: 23px;
       height: 23px;
+
       flex: 0 0 23px;
+
       border-radius: 6px;
-      background: rgba(255,255,255,.05);
+
+      background:
+        rgba(255,255,255,.05);
+
       color: #aaa;
     }
 
     .remove-file:hover {
-      background: rgba(255,70,70,.12);
+      background:
+        rgba(255,70,70,.12);
+
       color: #fff;
     }
 
-    /* =========================================================
-       COMPOSER
-       ========================================================= */
+    /* ================= COMPOSER ================= */
 
     .composer-area {
       position: absolute;
+
       left: 0;
       right: 0;
       bottom: 0;
+
       z-index: 10;
-      padding: 15px 20px calc(15px + env(safe-area-inset-bottom));
+
+      padding:
+        15px
+        20px
+        calc(15px + env(safe-area-inset-bottom));
+
       background:
         linear-gradient(
           to top,
@@ -989,69 +1461,109 @@
           rgba(7,7,7,.86) 70%,
           transparent
         );
+
       pointer-events: none;
     }
 
     .composer-wrap {
-      width: min(100%, 900px);
+      width:
+        min(100%,900px);
+
       margin: 0 auto;
+
       pointer-events: auto;
     }
 
     .composer {
       position: relative;
+
       display: flex;
+
       align-items: flex-end;
+
       gap: 8px;
+
       min-height: 62px;
+
       padding: 9px;
-      border: 1px solid rgba(255,255,255,.1);
+
+      border:
+        1px solid
+        rgba(255,255,255,.1);
+
       border-radius: 20px;
+
       background:
         linear-gradient(
           145deg,
           rgba(24,24,25,.95),
           rgba(12,12,13,.96)
         );
+
       box-shadow:
         0 15px 50px rgba(0,0,0,.4),
-        inset 0 1px 0 rgba(255,255,255,.025);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+
+      backdrop-filter:
+        blur(25px);
+
+      -webkit-backdrop-filter:
+        blur(25px);
+
       transition:
         border-color .2s ease,
         box-shadow .2s ease;
     }
 
     .composer:focus-within {
-      border-color: rgba(255,121,0,.27);
+      border-color:
+        rgba(255,121,0,.27);
+
       box-shadow:
         0 15px 50px rgba(0,0,0,.42),
-        0 0 0 3px rgba(255,121,0,.035);
+        0 0 0 3px
+        rgba(255,121,0,.035);
     }
 
     .input-tools {
       display: flex;
+
       align-items: center;
+
       gap: 5px;
     }
 
     .tool-button {
       width: 40px;
       height: 40px;
+
       flex: 0 0 40px;
+
       display: grid;
       place-items: center;
+
       border-radius: 12px;
-      background: rgba(255,255,255,.045);
+
+      background:
+        rgba(255,255,255,.045);
+
       color: #bdbdc0;
+
       font-size: 18px;
+
       transition: .2s ease;
     }
 
     .tool-button:hover {
       color: #fff;
-      background: rgba(255,121,0,.1);
+
+      background:
+        rgba(255,121,0,.1);
+    }
+
+    .tool-button:active {
+      transform: scale(.93);
     }
 
     #fileInput {
@@ -1060,19 +1572,33 @@
 
     #messageInput {
       flex: 1;
+
       min-width: 0;
+
       max-height: 160px;
+
       min-height: 42px;
+
       padding: 10px 8px;
+
       border: 0;
+
       outline: 0;
+
       resize: none;
+
       overflow-y: auto;
+
       background: transparent;
+
       color: #f3f3f3;
+
       direction: rtl;
+
       text-align: right;
+
       font-size: 14px;
+
       line-height: 1.6;
     }
 
@@ -1082,18 +1608,36 @@
 
     .send-button {
       position: relative;
+
       width: 44px;
       height: 44px;
+
       flex: 0 0 44px;
+
       display: grid;
       place-items: center;
+
       overflow: hidden;
+
       border-radius: 13px;
-      background: linear-gradient(145deg, #ff9d38, #ff6500);
+
+      background:
+        linear-gradient(
+          145deg,
+          #ff9d38,
+          #ff6500
+        );
+
       color: #111;
+
       font-size: 19px;
+
       font-weight: 1000;
-      box-shadow: 0 8px 22px rgba(255,121,0,.16);
+
+      box-shadow:
+        0 8px 22px
+        rgba(255,121,0,.16);
+
       transition:
         transform .18s ease,
         box-shadow .18s ease,
@@ -1102,29 +1646,41 @@
 
     .send-button::before {
       content: "";
+
       position: absolute;
+
       top: -80%;
       left: -30%;
+
       width: 40%;
       height: 260%;
+
       transform: rotate(25deg);
-      background: rgba(255,255,255,.24);
-      animation: sendShine 4s infinite;
+
+      background:
+        rgba(255,255,255,.24);
+
+      animation:
+        sendShine 4s infinite;
     }
 
     @keyframes sendShine {
-      0%, 65% {
+      0%,65% {
         left: -40%;
       }
 
-      85%, 100% {
+      85%,100% {
         left: 140%;
       }
     }
 
     .send-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(255,121,0,.27);
+
+      box-shadow:
+        0 12px 30px
+        rgba(255,121,0,.27);
+
       filter: brightness(1.05);
     }
 
@@ -1133,58 +1689,96 @@
     }
 
     .send-button.stop {
-      background: linear-gradient(145deg, #ff6565, #e73333);
+      background:
+        linear-gradient(
+          145deg,
+          #ff6565,
+          #e73333
+        );
+
       color: #fff;
     }
 
     .composer-hint {
       margin-top: 7px;
+
       text-align: center;
+
       color: #505054;
+
       font-size: 9px;
     }
 
-    /* =========================================================
-       TOAST
-       ========================================================= */
+    /* ================= TOAST ================= */
 
     .toast {
       position: fixed;
+
       z-index: 100;
+
       right: 20px;
+
       bottom: 100px;
+
       max-width: 310px;
+
       padding: 11px 14px;
-      border: 1px solid rgba(255,255,255,.09);
+
+      border:
+        1px solid
+        rgba(255,255,255,.09);
+
       border-radius: 12px;
-      background: rgba(22,22,23,.95);
+
+      background:
+        rgba(22,22,23,.95);
+
       color: #ddd;
-      box-shadow: 0 15px 40px rgba(0,0,0,.35);
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.35);
+
       font-size: 11px;
-      transform: translateY(15px);
+
+      transform:
+        translateY(15px);
+
       opacity: 0;
+
       pointer-events: none;
+
       transition: .25s ease;
-      backdrop-filter: blur(15px);
+
+      backdrop-filter:
+        blur(15px);
     }
 
     .toast.show {
-      transform: translateY(0);
+      transform:
+        translateY(0);
+
       opacity: 1;
     }
 
-    /* =========================================================
-       MOBILE OVERLAY
-       ========================================================= */
+    /* ================= OVERLAY ================= */
 
     .overlay {
       position: fixed;
+
       inset: 0;
+
       z-index: 45;
-      background: rgba(0,0,0,.62);
+
+      background:
+        rgba(0,0,0,.62);
+
       opacity: 0;
+
       visibility: hidden;
+
       pointer-events: none;
+
       transition:
         opacity .25s ease,
         visibility .25s ease;
@@ -1192,13 +1786,13 @@
 
     .overlay.show {
       opacity: 1;
+
       visibility: visible;
+
       pointer-events: auto;
     }
 
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
+    /* ================= MOBILE ================= */
 
     @media (max-width: 850px) {
 
@@ -1208,25 +1802,40 @@
 
       .sidebar {
         position: fixed;
+
         top: 0;
         right: 0;
         bottom: 0;
+
         z-index: 50;
-        width: min(var(--sidebar), 88vw);
-        transform: translate3d(105%, 0, 0);
-        box-shadow: -20px 0 70px rgba(0,0,0,.5);
+
+        width:
+          min(var(--sidebar),88vw);
+
+        transform:
+          translate3d(105%,0,0);
+
+        box-shadow:
+          -20px 0 70px
+          rgba(0,0,0,.5);
+
         pointer-events: none;
+
         visibility: hidden;
       }
 
       .sidebar.open {
-        transform: translate3d(0, 0, 0);
+        transform:
+          translate3d(0,0,0);
+
         pointer-events: auto;
+
         visibility: visible;
       }
 
       .mobile-menu {
         display: grid;
+
         place-items: center;
       }
 
@@ -1235,11 +1844,15 @@
       }
 
       .chat {
-        padding: 20px 14px 140px;
+        padding:
+          20px
+          14px
+          140px;
       }
 
       .quick-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2,1fr);
       }
 
       .message-body {
@@ -1267,13 +1880,16 @@
       }
 
       .welcome {
-        min-height: calc(100vh - 220px);
+        min-height:
+          calc(100vh - 220px);
       }
 
       .hero-logo {
         width: 70px;
         height: 70px;
+
         border-radius: 22px;
+
         font-size: 31px;
       }
 
@@ -1306,11 +1922,13 @@
       .avatar {
         width: 31px;
         height: 31px;
+
         flex-basis: 31px;
       }
 
       .message-body {
-        max-width: calc(100% - 40px);
+        max-width:
+          calc(100% - 40px);
       }
 
       .message-text {
@@ -1325,12 +1943,14 @@
       .tool-button {
         width: 37px;
         height: 37px;
+
         flex-basis: 37px;
       }
 
       .send-button {
         width: 41px;
         height: 41px;
+
         flex-basis: 41px;
       }
 
@@ -1348,10 +1968,17 @@
       *,
       *::before,
       *::after {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .001ms !important;
+        animation-duration:
+          .001ms !important;
+
+        animation-iteration-count:
+          1 !important;
+
+        scroll-behavior:
+          auto !important;
+
+        transition-duration:
+          .001ms !important;
       }
     }
   </style>
@@ -1364,79 +1991,159 @@
     <div class="orb two"></div>
   </div>
 
-  <div class="overlay" id="overlay"></div>
+  <div
+    class="overlay"
+    id="overlay"
+  ></div>
 
   <div class="app">
 
-    <!-- SIDEBAR -->
+    <!-- ================= SIDEBAR ================= -->
 
-    <aside class="sidebar" id="sidebar">
+    <aside
+      class="sidebar"
+      id="sidebar"
+    >
 
       <div class="brand">
-        <div class="brand-logo">S</div>
+
+        <div class="brand-logo">
+          S
+        </div>
 
         <div class="brand-text">
-          <strong>Sultan AI</strong>
-          <span>Smart AI Assistant</span>
+          <strong>
+            Sultan AI
+          </strong>
+
+          <span>
+            Smart AI Assistant
+          </span>
         </div>
+
       </div>
 
-      <button class="new-chat" id="newChatBtn">
-        <span class="plus">＋</span>
-        <span>محادثة جديدة</span>
+      <button
+        class="new-chat"
+        id="newChatBtn"
+        type="button"
+      >
+        <span class="plus">
+          ＋
+        </span>
+
+        <span>
+          محادثة جديدة
+        </span>
       </button>
 
-      <div class="section-title">مساحة العمل</div>
+      <div class="section-title">
+        مساحة العمل
+      </div>
 
-      <button class="side-item active" id="chatSideBtn">
-        <span class="side-icon">💬</span>
-        <span>المحادثة</span>
+      <button
+        class="side-item active"
+        id="chatSideBtn"
+        type="button"
+      >
+        <span class="side-icon">
+          💬
+        </span>
+
+        <span>
+          المحادثة
+        </span>
       </button>
-
-      <button class="side-item" id="filesSideBtn">
-        <span class="side-icon">📁</span>
-        <span>الملفات والصور</span>
-      </button>
-
-      <button class="side-item" id="fastSideBtn">
-        <span class="side-icon">⚡</span>
-        <span>الوضع السريع</span>
-      </button>
-
-      <div class="section-title">القدرات</div>
 
       <button
         class="side-item"
+        id="filesSideBtn"
+        type="button"
+      >
+        <span class="side-icon">
+          📁
+        </span>
+
+        <span>
+          الملفات والصور
+        </span>
+      </button>
+
+      <button
+        class="side-item"
+        id="fastSideBtn"
+        type="button"
+      >
+        <span class="side-icon">
+          ⚡
+        </span>
+
+        <span>
+          الوضع السريع
+        </span>
+      </button>
+
+      <div class="section-title">
+        القدرات
+      </div>
+
+      <button
+        class="side-item"
+        type="button"
         data-prompt="ابحث لي على الويب عن آخر المعلومات المهمة اليوم واشرحها باختصار."
       >
-        <span class="side-icon">🌐</span>
-        <span>بحث الويب</span>
+        <span class="side-icon">
+          🌐
+        </span>
+
+        <span>
+          بحث الويب
+        </span>
       </button>
 
       <button
         class="side-item"
+        type="button"
         data-prompt="ساعدني بكتابة وتحسين هذا الكود واشرح لي الأخطاء بطريقة بسيطة."
       >
-        <span class="side-icon">💻</span>
-        <span>البرمجة</span>
+        <span class="side-icon">
+          💻
+        </span>
+
+        <span>
+          البرمجة
+        </span>
       </button>
 
       <button
         class="side-item"
+        type="button"
         data-prompt="سأرسل لك ملفاً. حلله واستخرج أهم المعلومات الموجودة بداخله."
       >
-        <span class="side-icon">🧠</span>
-        <span>تحليل الملفات</span>
+        <span class="side-icon">
+          🧠
+        </span>
+
+        <span>
+          تحليل الملفات
+        </span>
       </button>
 
       <div class="creator">
-        <div class="creator-label">تم التطوير بواسطة</div>
-        <div class="creator-name">علي حسين سلطان · AS</div>
+
+        <div class="creator-label">
+          تم التطوير بواسطة
+        </div>
+
+        <div class="creator-name">
+          علي حسين سلطان · AS
+        </div>
+
       </div>
 
     </aside>
 
-    <!-- MAIN -->
+    <!-- ================= MAIN ================= -->
 
     <main class="main">
 
@@ -1456,8 +2163,13 @@
           </button>
 
           <div class="status">
+
             <span class="status-dot"></span>
-            <span>Sultan AI Online</span>
+
+            <span>
+              Sultan AI Online
+            </span>
+
           </div>
 
         </div>
@@ -1465,26 +2177,47 @@
         <div class="top-actions">
 
           <div class="mode-pill">
+
             <span>⚡</span>
-            <b>Lightning</b>
-            <span>Mode</span>
+
+            <b>
+              Lightning
+            </b>
+
+            <span>
+              Mode
+            </span>
+
           </div>
 
         </div>
 
       </header>
 
-      <!-- CHAT -->
+      <!-- ================= CHAT ================= -->
 
-      <section class="chat" id="chat">
+      <section
+        class="chat"
+        id="chat"
+      >
 
-        <div class="chat-inner" id="chatInner">
+        <div
+          class="chat-inner"
+          id="chatInner"
+        >
 
-          <div class="welcome" id="welcome">
+          <div
+            class="welcome"
+            id="welcome"
+          >
 
-            <div class="hero-logo">S</div>
+            <div class="hero-logo">
+              S
+            </div>
 
-            <h1>أهلا فيك مع Sultan AI</h1>
+            <h1>
+              أهلا فيك مع Sultan AI
+            </h1>
 
             <p>
               مساعدك الذكي للمحادثة، البحث، البرمجة،
@@ -1495,38 +2228,74 @@
 
               <button
                 class="quick"
+                type="button"
                 data-prompt="اشرح لي ما الذي تستطيع فعله وما هي أهم قدراتك؟"
               >
-                <span class="quick-icon">🧠</span>
-                <strong>اسأل Sultan AI</strong>
-                <small>تعرف على قدراته</small>
+                <span class="quick-icon">
+                  🧠
+                </span>
+
+                <strong>
+                  اسأل Sultan AI
+                </strong>
+
+                <small>
+                  تعرف على قدراته
+                </small>
               </button>
 
               <button
                 class="quick"
+                type="button"
                 data-prompt="ابحث على الويب عن أحدث المعلومات المهمة في التقنية اليوم، واذكر المصادر."
               >
-                <span class="quick-icon">🌐</span>
-                <strong>بحث على الويب</strong>
-                <small>معلومات حديثة</small>
+                <span class="quick-icon">
+                  🌐
+                </span>
+
+                <strong>
+                  بحث على الويب
+                </strong>
+
+                <small>
+                  معلومات حديثة
+                </small>
               </button>
 
               <button
                 class="quick"
+                type="button"
                 data-prompt="اكتب لي مثالاً احترافياً في البرمجة واشرح لي كيف يعمل خطوة بخطوة."
               >
-                <span class="quick-icon">💻</span>
-                <strong>برمجة</strong>
-                <small>كود وشرح</small>
+                <span class="quick-icon">
+                  💻
+                </span>
+
+                <strong>
+                  برمجة
+                </strong>
+
+                <small>
+                  كود وشرح
+                </small>
               </button>
 
               <button
                 class="quick"
+                type="button"
                 data-prompt="ما هي أفضل طريقة لتحليل ملف أو صورة؟ سأرسل لك ملفاً الآن."
               >
-                <span class="quick-icon">📎</span>
-                <strong>ملفات وصور</strong>
-                <small>تحليل المحتوى</small>
+                <span class="quick-icon">
+                  📎
+                </span>
+
+                <strong>
+                  ملفات وصور
+                </strong>
+
+                <small>
+                  تحليل المحتوى
+                </small>
               </button>
 
             </div>
@@ -1537,13 +2306,16 @@
 
       </section>
 
-      <!-- COMPOSER -->
+      <!-- ================= COMPOSER ================= -->
 
       <div class="composer-area">
 
         <div class="composer-wrap">
 
-          <div class="attachments" id="attachments"></div>
+          <div
+            class="attachments"
+            id="attachments"
+          ></div>
 
           <div class="composer">
 
@@ -1562,20 +2334,7 @@
                 id="fileInput"
                 type="file"
                 multiple
-                accept="
-                  image/*,
-                  text/plain,
-                  text/csv,
-                  text/markdown,
-                  application/pdf,
-                  application/json,
-                  application/javascript,
-                  text/javascript,
-                  text/html,
-                  text/css,
-                  text/xml,
-                  application/xml
-                "
+                accept="image/*,text/plain,text/csv,text/markdown,application/pdf,application/json,application/javascript,text/javascript,text/html,text/css,text/xml,application/xml"
               />
 
             </div>
@@ -1611,42 +2370,84 @@
 
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div
+    class="toast"
+    id="toast"
+  ></div>
 
   <script>
+
     /* =========================================================
-       SULTAN AI V4 FRONTEND
+       SULTAN AI V4
+       FULL FIXED FRONTEND
        ========================================================= */
 
-    const chat = document.getElementById("chat");
-    const chatInner = document.getElementById("chatInner");
+    const chat =
+      document.getElementById("chat");
 
-    const messageInput = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendBtn");
+    const chatInner =
+      document.getElementById("chatInner");
 
-    const attachBtn = document.getElementById("attachBtn");
-    const fileInput = document.getElementById("fileInput");
-    const attachments = document.getElementById("attachments");
+    const messageInput =
+      document.getElementById("messageInput");
 
-    const newChatBtn = document.getElementById("newChatBtn");
+    const sendBtn =
+      document.getElementById("sendBtn");
 
-    const mobileMenu = document.getElementById("mobileMenu");
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+    const attachBtn =
+      document.getElementById("attachBtn");
 
-    const toast = document.getElementById("toast");
+    const fileInput =
+      document.getElementById("fileInput");
+
+    const attachments =
+      document.getElementById("attachments");
+
+    const newChatBtn =
+      document.getElementById("newChatBtn");
+
+    const mobileMenu =
+      document.getElementById("mobileMenu");
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const overlay =
+      document.getElementById("overlay");
+
+    const toast =
+      document.getElementById("toast");
+
+    const chatSideBtn =
+      document.getElementById("chatSideBtn");
+
+    const filesSideBtn =
+      document.getElementById("filesSideBtn");
+
+    const fastSideBtn =
+      document.getElementById("fastSideBtn");
+
 
     let conversation = [];
+
     let selectedFiles = [];
 
     let sending = false;
+
     let abortController = null;
 
-    const MAX_HISTORY = 20;
-    const MAX_FILES = 5;
-    const MAX_FILE_SIZE = 20 * 1024 * 1024;
-
     let lastUserText = "";
+
+    let fastMode = false;
+
+
+    const MAX_HISTORY = 20;
+
+    const MAX_FILES = 5;
+
+    const MAX_FILE_SIZE =
+      20 * 1024 * 1024;
+
 
     /* =========================================================
        TOAST
@@ -1655,93 +2456,364 @@
     let toastTimer = null;
 
     function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
 
-      clearTimeout(toastTimer);
+      toast.textContent =
+        message;
 
-      toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2600);
+      toast.classList.add(
+        "show"
+      );
+
+      clearTimeout(
+        toastTimer
+      );
+
+      toastTimer =
+        setTimeout(() => {
+
+          toast.classList.remove(
+            "show"
+          );
+
+        }, 2600);
     }
 
+
     /* =========================================================
-       MOBILE SIDEBAR — FIX
+       SIDEBAR
        ========================================================= */
 
     function openSidebar() {
-      if (window.innerWidth > 850) return;
 
-      sidebar.classList.add("open");
-      overlay.classList.add("show");
-      document.body.classList.add("sidebar-open");
+      if (
+        window.innerWidth > 850
+      ) {
+        return;
+      }
 
-      mobileMenu.setAttribute("aria-expanded", "true");
+      sidebar.classList.add(
+        "open"
+      );
+
+      overlay.classList.add(
+        "show"
+      );
+
+      document.body.classList.add(
+        "sidebar-open"
+      );
+
+      mobileMenu.setAttribute(
+        "aria-expanded",
+        "true"
+      );
     }
+
 
     function closeSidebar() {
-      sidebar.classList.remove("open");
-      overlay.classList.remove("show");
-      document.body.classList.remove("sidebar-open");
 
-      mobileMenu.setAttribute("aria-expanded", "false");
+      sidebar.classList.remove(
+        "open"
+      );
+
+      overlay.classList.remove(
+        "show"
+      );
+
+      document.body.classList.remove(
+        "sidebar-open"
+      );
+
+      mobileMenu.setAttribute(
+        "aria-expanded",
+        "false"
+      );
     }
+
 
     function toggleSidebar() {
-      if (sidebar.classList.contains("open")) {
+
+      if (
+        sidebar.classList.contains(
+          "open"
+        )
+      ) {
+
         closeSidebar();
+
       } else {
+
         openSidebar();
+
       }
     }
 
-    mobileMenu.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      toggleSidebar();
-    });
 
-    overlay.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      closeSidebar();
-    });
+    mobileMenu.addEventListener(
+      "click",
+      function(event) {
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeSidebar();
+        event.preventDefault();
+        event.stopPropagation();
+
+        toggleSidebar();
+
       }
-    });
+    );
 
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 850) {
-        closeSidebar();
+
+    mobileMenu.addEventListener(
+      "touchend",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        toggleSidebar();
+
+      },
+      {
+        passive: false
       }
-    });
+    );
+
+
+    overlay.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        closeSidebar();
+
+      }
+    );
+
+
+    overlay.addEventListener(
+      "touchend",
+      function(event) {
+
+        event.preventDefault();
+
+        closeSidebar();
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeSidebar();
+
+        }
+
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      function() {
+
+        if (
+          window.innerWidth > 850
+        ) {
+
+          closeSidebar();
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       ACTIVE SIDEBAR BUTTON
+       ========================================================= */
+
+    function setActiveSideButton(
+      button
+    ) {
+
+      document
+        .querySelectorAll(
+          ".sidebar .side-item"
+        )
+        .forEach(item => {
+
+          item.classList.remove(
+            "active"
+          );
+
+        });
+
+      if (button) {
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+    }
+
 
     /* =========================================================
        NEW CHAT
        ========================================================= */
 
-    newChatBtn.addEventListener("click", () => {
+    newChatBtn.addEventListener(
+      "click",
+      function(event) {
 
-      conversation = [];
-      selectedFiles = [];
-      lastUserText = "";
+        event.preventDefault();
 
-      renderAttachments();
+        conversation = [];
 
-      chatInner.innerHTML = "";
-      chatInner.appendChild(createWelcome());
+        selectedFiles = [];
 
-      messageInput.value = "";
-      autoResize();
+        lastUserText = "";
 
-      closeSidebar();
+        renderAttachments();
 
-      showToast("تم إنشاء محادثة جديدة ✨");
-      messageInput.focus();
-    });
+        chatInner.innerHTML =
+          "";
+
+        chatInner.appendChild(
+          createWelcome()
+        );
+
+        messageInput.value =
+          "";
+
+        autoResize();
+
+        setActiveSideButton(
+          chatSideBtn
+        );
+
+        closeSidebar();
+
+        showToast(
+          "تم إنشاء محادثة جديدة ✨"
+        );
+
+        setTimeout(() => {
+
+          messageInput.focus();
+
+        }, 100);
+
+      }
+    );
+
+
+    /* =========================================================
+       CHAT BUTTON
+       ========================================================= */
+
+    chatSideBtn.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        setActiveSideButton(
+          chatSideBtn
+        );
+
+        closeSidebar();
+
+        messageInput.focus();
+
+        scrollToBottom();
+
+      }
+    );
+
+
+    /* =========================================================
+       FILES BUTTON
+       ========================================================= */
+
+    filesSideBtn.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        setActiveSideButton(
+          filesSideBtn
+        );
+
+        closeSidebar();
+
+        showToast(
+          "📁 اختر الملف أو الصورة"
+        );
+
+        setTimeout(() => {
+
+          fileInput.click();
+
+        }, 120);
+
+      }
+    );
+
+
+    /* =========================================================
+       FAST MODE
+       ========================================================= */
+
+    fastSideBtn.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        fastMode =
+          !fastMode;
+
+        setActiveSideButton(
+          fastMode
+            ? fastSideBtn
+            : chatSideBtn
+        );
+
+        closeSidebar();
+
+        if (fastMode) {
+
+          showToast(
+            "⚡ تم تفعيل الوضع السريع"
+          );
+
+        } else {
+
+          showToast(
+            "الوضع السريع متوقف"
+          );
+
+        }
+
+        messageInput.focus();
+
+      }
+    );
+
 
     /* =========================================================
        WELCOME
@@ -1749,15 +2821,26 @@
 
     function createWelcome() {
 
-      const box = document.createElement("div");
+      const box =
+        document.createElement(
+          "div"
+        );
 
-      box.className = "welcome";
-      box.id = "welcome";
+      box.className =
+        "welcome";
+
+      box.id =
+        "welcome";
 
       box.innerHTML = `
-        <div class="hero-logo">S</div>
 
-        <h1>أهلا فيك مع Sultan AI</h1>
+        <div class="hero-logo">
+          S
+        </div>
+
+        <h1>
+          أهلا فيك مع Sultan AI
+        </h1>
 
         <p>
           مساعدك الذكي للمحادثة، البحث، البرمجة،
@@ -1768,38 +2851,85 @@
 
           <button
             class="quick"
+            type="button"
             data-prompt="اشرح لي ما الذي تستطيع فعله وما هي أهم قدراتك؟"
           >
-            <span class="quick-icon">🧠</span>
-            <strong>اسأل Sultan AI</strong>
-            <small>تعرف على قدراته</small>
+
+            <span class="quick-icon">
+              🧠
+            </span>
+
+            <strong>
+              اسأل Sultan AI
+            </strong>
+
+            <small>
+              تعرف على قدراته
+            </small>
+
           </button>
+
 
           <button
             class="quick"
+            type="button"
             data-prompt="ابحث على الويب عن أحدث المعلومات المهمة في التقنية اليوم، واذكر المصادر."
           >
-            <span class="quick-icon">🌐</span>
-            <strong>بحث على الويب</strong>
-            <small>معلومات حديثة</small>
+
+            <span class="quick-icon">
+              🌐
+            </span>
+
+            <strong>
+              بحث على الويب
+            </strong>
+
+            <small>
+              معلومات حديثة
+            </small>
+
           </button>
+
 
           <button
             class="quick"
+            type="button"
             data-prompt="اكتب لي مثالاً احترافياً في البرمجة واشرح لي كيف يعمل خطوة بخطوة."
           >
-            <span class="quick-icon">💻</span>
-            <strong>برمجة</strong>
-            <small>كود وشرح</small>
+
+            <span class="quick-icon">
+              💻
+            </span>
+
+            <strong>
+              برمجة
+            </strong>
+
+            <small>
+              كود وشرح
+            </small>
+
           </button>
+
 
           <button
             class="quick"
+            type="button"
             data-prompt="ما هي أفضل طريقة لتحليل ملف أو صورة؟ سأرسل لك ملفاً الآن."
           >
-            <span class="quick-icon">📎</span>
-            <strong>ملفات وصور</strong>
-            <small>تحليل المحتوى</small>
+
+            <span class="quick-icon">
+              📎
+            </span>
+
+            <strong>
+              ملفات وصور
+            </strong>
+
+            <small>
+              تحليل المحتوى
+            </small>
+
           </button>
 
         </div>
@@ -1808,53 +2938,69 @@
       return box;
     }
 
+
     /* =========================================================
        QUICK PROMPTS
        ========================================================= */
 
-    document.addEventListener("click", (event) => {
+    document.addEventListener(
+      "click",
+      function(event) {
 
-      const button =
-        event.target.closest("[data-prompt]");
+        const button =
+          event.target.closest(
+            "[data-prompt]"
+          );
 
-      if (!button) return;
+        if (!button) {
+          return;
+        }
 
-      const prompt = button.dataset.prompt;
+        const prompt =
+          button.dataset.prompt;
 
-      messageInput.value = prompt;
+        messageInput.value =
+          prompt;
 
-      autoResize();
+        autoResize();
 
-      messageInput.focus();
+        messageInput.focus();
 
-      closeSidebar();
-    });
+        closeSidebar();
+
+      }
+    );
+
 
     /* =========================================================
-       TEXTAREA AUTO RESIZE
+       TEXTAREA
        ========================================================= */
 
     function autoResize() {
 
-      messageInput.style.height = "auto";
+      messageInput.style.height =
+        "auto";
 
-      const height = Math.min(
-        messageInput.scrollHeight,
-        160
-      );
+      const height =
+        Math.min(
+          messageInput.scrollHeight,
+          160
+        );
 
       messageInput.style.height =
         height + "px";
     }
+
 
     messageInput.addEventListener(
       "input",
       autoResize
     );
 
+
     messageInput.addEventListener(
       "keydown",
-      (event) => {
+      function(event) {
 
         if (
           event.key === "Enter" &&
@@ -1864,70 +3010,101 @@
           event.preventDefault();
 
           if (!sending) {
+
             sendMessage();
+
           }
+
         }
+
       }
     );
+
 
     /* =========================================================
        FILE INPUT
        ========================================================= */
 
-    attachBtn.addEventListener("click", () => {
-      fileInput.click();
-    });
+    attachBtn.addEventListener(
+      "click",
+      function(event) {
 
-    fileInput.addEventListener("change", () => {
+        event.preventDefault();
 
-      const incoming =
-        Array.from(fileInput.files || []);
+        fileInput.click();
 
-      if (!incoming.length) return;
-
-      for (const file of incoming) {
-
-        if (
-          selectedFiles.length >=
-          MAX_FILES
-        ) {
-
-          showToast(
-            `الحد الأقصى ${MAX_FILES} ملفات.`
-          );
-
-          break;
-        }
-
-        if (
-          file.size >
-          MAX_FILE_SIZE
-        ) {
-
-          showToast(
-            `الملف ${file.name} أكبر من 20MB.`
-          );
-
-          continue;
-        }
-
-        const duplicate =
-          selectedFiles.some(
-            item =>
-              item.name === file.name &&
-              item.size === file.size &&
-              item.lastModified === file.lastModified
-          );
-
-        if (duplicate) continue;
-
-        selectedFiles.push(file);
       }
+    );
 
-      renderAttachments();
 
-      fileInput.value = "";
-    });
+    fileInput.addEventListener(
+      "change",
+      function() {
+
+        const incoming =
+          Array.from(
+            fileInput.files || []
+          );
+
+        if (!incoming.length) {
+          return;
+        }
+
+        for (
+          const file of incoming
+        ) {
+
+          if (
+            selectedFiles.length >=
+            MAX_FILES
+          ) {
+
+            showToast(
+              `الحد الأقصى ${MAX_FILES} ملفات.`
+            );
+
+            break;
+          }
+
+          if (
+            file.size >
+            MAX_FILE_SIZE
+          ) {
+
+            showToast(
+              `الملف ${file.name} أكبر من 20MB.`
+            );
+
+            continue;
+          }
+
+          const duplicate =
+            selectedFiles.some(
+              item =>
+                item.name === file.name &&
+                item.size === file.size &&
+                item.lastModified ===
+                  file.lastModified
+            );
+
+          if (duplicate) {
+            continue;
+          }
+
+          selectedFiles.push(
+            file
+          );
+
+        }
+
+        renderAttachments();
+
+        fileInput.value =
+          "";
+
+      }
+    );
+
 
     /* =========================================================
        FILE PREVIEWS
@@ -1935,38 +3112,58 @@
 
     function renderAttachments() {
 
-      attachments.innerHTML = "";
+      attachments.innerHTML =
+        "";
 
       selectedFiles.forEach(
-        (file, index) => {
+        function(file,index) {
 
           const item =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           item.className =
             "attachment";
 
+
           const preview =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           preview.className =
             "attachment-preview";
 
+
           if (
-            file.type.startsWith("image/")
+            file.type.startsWith(
+              "image/"
+            )
           ) {
 
             const img =
-              document.createElement("img");
+              document.createElement(
+                "img"
+              );
 
             img.src =
-              URL.createObjectURL(file);
+              URL.createObjectURL(
+                file
+              );
 
-            img.onload = () => {
-              URL.revokeObjectURL(img.src);
-            };
+            img.onload =
+              function() {
 
-            preview.appendChild(img);
+                URL.revokeObjectURL(
+                  img.src
+                );
+
+              };
+
+            preview.appendChild(
+              img
+            );
 
           } else {
 
@@ -1976,10 +3173,14 @@
                 .endsWith(".pdf")
                 ? "📄"
                 : "📎";
+
           }
 
+
           const name =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           name.className =
             "attachment-name";
@@ -1987,22 +3188,28 @@
           name.textContent =
             file.name;
 
+
           const remove =
-            document.createElement("button");
+            document.createElement(
+              "button"
+            );
 
           remove.className =
             "remove-file";
 
-          remove.type = "button";
+          remove.type =
+            "button";
 
-          remove.textContent = "×";
+          remove.textContent =
+            "×";
 
           remove.title =
             "إزالة الملف";
 
+
           remove.addEventListener(
             "click",
-            () => {
+            function() {
 
               selectedFiles.splice(
                 index,
@@ -2010,59 +3217,99 @@
               );
 
               renderAttachments();
+
             }
           );
 
-          item.appendChild(preview);
-          item.appendChild(name);
-          item.appendChild(remove);
 
-          attachments.appendChild(item);
+          item.appendChild(
+            preview
+          );
+
+          item.appendChild(
+            name
+          );
+
+          item.appendChild(
+            remove
+          );
+
+          attachments.appendChild(
+            item
+          );
+
         }
       );
     }
 
+
     /* =========================================================
-       BASE64 FILE PREPARATION
+       FILE TO DATA URL
        ========================================================= */
 
-    function fileToDataURL(file) {
+    function fileToDataURL(
+      file
+    ) {
 
       return new Promise(
-        (resolve, reject) => {
+        function(resolve,reject) {
 
           const reader =
             new FileReader();
 
-          reader.onload = () => {
+          reader.onload =
+            function() {
 
-            resolve({
-              name: file.name,
-              type:
-                file.type ||
-                "application/octet-stream",
-              size: file.size,
-              data: reader.result
-            });
-          };
+              resolve({
 
-          reader.onerror = () =>
-            reject(
-              new Error(
-                `تعذر قراءة الملف ${file.name}`
-              )
-            );
+                name:
+                  file.name,
 
-          reader.readAsDataURL(file);
+                type:
+                  file.type ||
+                  "application/octet-stream",
+
+                size:
+                  file.size,
+
+                data:
+                  reader.result
+
+              });
+
+            };
+
+
+          reader.onerror =
+            function() {
+
+              reject(
+                new Error(
+                  `تعذر قراءة الملف ${file.name}`
+                )
+              );
+
+            };
+
+
+          reader.readAsDataURL(
+            file
+          );
+
         }
       );
     }
 
-    async function prepareFiles(files) {
+
+    async function prepareFiles(
+      files
+    ) {
 
       const output = [];
 
-      for (const file of files) {
+      for (
+        const file of files
+      ) {
 
         if (
           file.size >
@@ -2072,80 +3319,110 @@
           throw new Error(
             `الملف ${file.name} أكبر من 20MB.`
           );
+
         }
 
         output.push(
-          await fileToDataURL(file)
+          await fileToDataURL(
+            file
+          )
         );
+
       }
 
       return output;
     }
 
+
     /* =========================================================
-       SAFE HTML ESCAPE
+       ESCAPE HTML
        ========================================================= */
 
-    function escapeHTML(value) {
+    function escapeHTML(
+      value
+    ) {
 
       return String(value)
+
         .replace(
           /&/g,
           "&amp;"
         )
+
         .replace(
           /</g,
           "&lt;"
         )
+
         .replace(
           />/g,
           "&gt;"
         )
+
         .replace(
           /"/g,
           "&quot;"
         )
+
         .replace(
           /'/g,
           "&#039;"
         );
     }
 
+
     /* =========================================================
-       MARKDOWN-LIKE RENDERER
+       ASSISTANT TEXT
        ========================================================= */
 
-    function renderAssistantText(text) {
+    function renderAssistantText(
+      text
+    ) {
 
       let source =
         String(text || "");
 
       const codeBlocks = [];
 
+
       source =
         source.replace(
           /```([a-zA-Z0-9_+-]*)\n?([\s\S]*?)```/g,
-          (_, language, code) => {
+
+          function(
+            _,
+            language,
+            code
+          ) {
 
             const index =
               codeBlocks.length;
 
             codeBlocks.push({
+
               language:
-                language || "code",
+                language ||
+                "code",
+
               code:
                 code.replace(
                   /\n$/,
                   ""
                 )
+
             });
 
             return `@@CODE_BLOCK_${index}@@`;
+
           }
         );
 
+
       let html =
-        escapeHTML(source);
+        escapeHTML(
+          source
+        );
+
 
       html =
         html.replace(
@@ -2153,11 +3430,13 @@
           '<code class="inline-code">$1</code>'
         );
 
+
       html =
         html.replace(
           /\*\*([^*]+)\*\*/g,
           "<strong>$1</strong>"
         );
+
 
       html =
         html.replace(
@@ -2165,11 +3444,13 @@
           "<strong>$1</strong>"
         );
 
+
       html =
         html.replace(
           /^## (.+)$/gm,
           "<strong>$1</strong>"
         );
+
 
       html =
         html.replace(
@@ -2177,11 +3458,13 @@
           "<strong>$1</strong>"
         );
 
+
       html =
         html.replace(
           /^[-•] (.+)$/gm,
           "• $1"
         );
+
 
       html =
         html.replace(
@@ -2189,44 +3472,63 @@
           "<br>"
         );
 
+
       codeBlocks.forEach(
-        (block, index) => {
+        function(
+          block,
+          index
+        ) {
 
           const safeCode =
             escapeHTML(
               block.code
             );
 
+
           const blockHTML = `
+
             <div class="code-wrap">
+
               <div class="code-head">
+
                 <span>
-                  ${escapeHTML(block.language)}
+                  ${escapeHTML(
+                    block.language
+                  )}
                 </span>
 
                 <button
                   class="code-copy"
                   type="button"
-                  data-code="${encodeURIComponent(block.code)}"
+                  data-code="${encodeURIComponent(
+                    block.code
+                  )}"
                 >
                   نسخ
                 </button>
+
               </div>
 
               <pre class="code">${safeCode}</pre>
+
             </div>
+
           `;
+
 
           html =
             html.replace(
               `@@CODE_BLOCK_${index}@@`,
               blockHTML
             );
+
         }
       );
 
+
       return html;
     }
+
 
     /* =========================================================
        ADD MESSAGE
@@ -2244,8 +3546,11 @@
         );
 
       if (currentWelcome) {
+
         currentWelcome.remove();
+
       }
+
 
       const message =
         document.createElement(
@@ -2254,6 +3559,7 @@
 
       message.className =
         `message ${role}`;
+
 
       const avatar =
         document.createElement(
@@ -2268,6 +3574,7 @@
           ? "S"
           : "أ";
 
+
       const body =
         document.createElement(
           "div"
@@ -2275,6 +3582,7 @@
 
       body.className =
         "message-body";
+
 
       const name =
         document.createElement(
@@ -2289,6 +3597,7 @@
           ? "Sultan AI"
           : "أنت";
 
+
       const textBox =
         document.createElement(
           "div"
@@ -2297,7 +3606,10 @@
       textBox.className =
         "message-text";
 
-      if (role === "assistant") {
+
+      if (
+        role === "assistant"
+      ) {
 
         textBox.innerHTML =
           renderAssistantText(
@@ -2308,12 +3620,22 @@
 
         textBox.textContent =
           text;
+
       }
 
-      body.appendChild(name);
-      body.appendChild(textBox);
 
-      if (role === "assistant") {
+      body.appendChild(
+        name
+      );
+
+      body.appendChild(
+        textBox
+      );
+
+
+      if (
+        role === "assistant"
+      ) {
 
         const actions =
           document.createElement(
@@ -2323,6 +3645,7 @@
         actions.className =
           "message-actions";
 
+
         const copy =
           document.createElement(
             "button"
@@ -2331,14 +3654,16 @@
         copy.className =
           "action-btn";
 
-        copy.type = "button";
+        copy.type =
+          "button";
 
         copy.textContent =
           "نسخ";
 
+
         copy.addEventListener(
           "click",
-          async () => {
+          async function() {
 
             try {
 
@@ -2355,9 +3680,12 @@
               showToast(
                 "لم أستطع النسخ تلقائياً."
               );
+
             }
+
           }
         );
+
 
         const regenerate =
           document.createElement(
@@ -2373,19 +3701,32 @@
         regenerate.textContent =
           "إعادة التوليد";
 
+
         regenerate.addEventListener(
           "click",
-          () => {
+          function() {
+
             regenerateLastResponse(
               message
             );
+
           }
         );
 
-        actions.appendChild(copy);
-        actions.appendChild(regenerate);
 
-        body.appendChild(actions);
+        actions.appendChild(
+          copy
+        );
+
+        actions.appendChild(
+          regenerate
+        );
+
+
+        body.appendChild(
+          actions
+        );
+
 
         if (
           Array.isArray(
@@ -2402,8 +3743,9 @@
           badges.className =
             "tool-badges";
 
+
           options.toolsUsed.forEach(
-            tool => {
+            function(tool) {
 
               const badge =
                 document.createElement(
@@ -2413,58 +3755,91 @@
               badge.className =
                 "tool-badge";
 
+
               const labels = {
+
                 web_search:
                   "🌐 بحث ويب",
+
                 visit_website:
                   "🔗 قراءة موقع",
+
                 code_interpreter:
                   "💻 تنفيذ كود",
+
                 wolfram_alpha:
                   "🧮 حساب"
+
               };
+
 
               badge.textContent =
                 labels[tool] ||
                 `⚙ ${tool}`;
 
+
               badges.appendChild(
                 badge
               );
+
             }
           );
+
 
           body.appendChild(
             badges
           );
+
         }
+
       }
 
-      if (role === "user") {
 
-        message.appendChild(body);
-        message.appendChild(avatar);
+      if (
+        role === "user"
+      ) {
+
+        message.appendChild(
+          body
+        );
+
+        message.appendChild(
+          avatar
+        );
 
       } else {
 
-        message.appendChild(avatar);
-        message.appendChild(body);
+        message.appendChild(
+          avatar
+        );
+
+        message.appendChild(
+          body
+        );
+
       }
+
 
       chatInner.appendChild(
         message
       );
 
+
       scrollToBottom();
+
 
       return message;
     }
 
+
     /* =========================================================
-       TYPING INDICATOR
+       TYPING
        ========================================================= */
 
     function showTyping() {
+
+      hideTyping();
+
 
       const typing =
         document.createElement(
@@ -2477,22 +3852,34 @@
       typing.id =
         "typingIndicator";
 
+
       typing.innerHTML = `
-        <div class="avatar">S</div>
+
+        <div class="avatar">
+          S
+        </div>
 
         <div class="typing-box">
+
           <span class="typing-dot"></span>
+
           <span class="typing-dot"></span>
+
           <span class="typing-dot"></span>
+
         </div>
+
       `;
+
 
       chatInner.appendChild(
         typing
       );
 
+
       scrollToBottom();
     }
+
 
     function hideTyping() {
 
@@ -2502,9 +3889,12 @@
         );
 
       if (typing) {
+
         typing.remove();
+
       }
     }
+
 
     /* =========================================================
        SCROLL
@@ -2513,12 +3903,15 @@
     function scrollToBottom() {
 
       requestAnimationFrame(
-        () => {
+        function() {
+
           chat.scrollTop =
             chat.scrollHeight;
+
         }
       );
     }
+
 
     /* =========================================================
        COPY CODE
@@ -2526,14 +3919,17 @@
 
     document.addEventListener(
       "click",
-      async event => {
+      async function(event) {
 
         const button =
           event.target.closest(
             ".code-copy"
           );
 
-        if (!button) return;
+        if (!button) {
+          return;
+        }
+
 
         const code =
           decodeURIComponent(
@@ -2541,48 +3937,73 @@
             ""
           );
 
+
         try {
 
           await navigator.clipboard.writeText(
             code
           );
 
+
           const oldText =
             button.textContent;
+
 
           button.textContent =
             "تم ✓";
 
-          setTimeout(() => {
-            button.textContent =
-              oldText;
-          }, 1200);
+
+          setTimeout(
+            function() {
+
+              button.textContent =
+                oldText;
+
+            },
+            1200
+          );
+
 
         } catch {
 
           showToast(
             "تعذر نسخ الكود."
           );
+
         }
+
       }
     );
 
+
     /* =========================================================
-       BUILD SERVER HISTORY
+       SERVER HISTORY
        ========================================================= */
 
     function getServerConversation() {
 
       return conversation
         .slice(-MAX_HISTORY)
-        .map(item => ({
-          role: item.role,
-          content: item.content
-        }));
+        .map(
+          function(item) {
+
+            return {
+
+              role:
+                item.role,
+
+              content:
+                item.content
+
+            };
+
+          }
+        );
     }
 
+
     /* =========================================================
-       API REQUEST
+       API
        ========================================================= */
 
     async function requestAI(
@@ -2593,22 +4014,34 @@
       abortController =
         new AbortController();
 
+
       const payload = {
-        message: text,
+
+        message:
+          text,
+
         messages:
           getServerConversation(),
-        files
+
+        files:
+          files
+
       };
+
 
       const response =
         await fetch(
           "/api/chat",
           {
-            method: "POST",
+
+            method:
+              "POST",
 
             headers: {
+
               "Content-Type":
                 "application/json"
+
             },
 
             body:
@@ -2618,12 +4051,16 @@
 
             signal:
               abortController.signal
+
           }
         );
 
+
       if (!response.ok) {
 
-        let errorText = "";
+        let errorText =
+          "";
+
 
         try {
 
@@ -2637,14 +4074,18 @@
 
         } catch {}
 
+
         throw new Error(
           errorText ||
           `HTTP ${response.status}`
         );
+
       }
+
 
       return await response.json();
     }
+
 
     /* =========================================================
        SEND MESSAGE
@@ -2655,16 +4096,21 @@
       config = {}
     ) {
 
-      if (sending) return;
+      if (sending) {
+        return;
+      }
+
 
       const text =
         customText !== null
           ? customText.trim()
           : messageInput.value.trim();
 
+
       const filesToSend =
         config.files ||
         [...selectedFiles];
+
 
       if (
         !text &&
@@ -2678,7 +4124,9 @@
         return;
       }
 
+
       sending = true;
+
 
       sendBtn.classList.add(
         "stop"
@@ -2690,8 +4138,10 @@
       sendBtn.title =
         "إيقاف";
 
+
       lastUserText =
         text;
+
 
       if (
         config.addUser !== false
@@ -2703,20 +4153,30 @@
             "أرسلت ملفاً للتحليل."
         );
 
+
         conversation.push({
-          role: "user",
+
+          role:
+            "user",
+
           content:
             text ||
             "أرسلت ملفاً للتحليل."
+
         });
+
       }
+
 
       messageInput.value =
         "";
 
       autoResize();
 
-      let preparedFiles = [];
+
+      let preparedFiles =
+        [];
+
 
       try {
 
@@ -2729,6 +4189,7 @@
               filesToSend
             );
 
+
           if (
             config.clearFiles !==
             false
@@ -2738,10 +4199,14 @@
               [];
 
             renderAttachments();
+
           }
+
         }
 
+
         showTyping();
+
 
         const data =
           await requestAI(
@@ -2749,30 +4214,42 @@
             preparedFiles
           );
 
+
         hideTyping();
+
 
         const reply =
           data.reply ||
           data.message ||
           "لم يصل رد من Sultan AI.";
 
+
         addMessage(
           "assistant",
           reply,
           {
+
             toolsUsed:
               Array.isArray(
                 data.toolsUsed
               )
                 ? data.toolsUsed
                 : []
+
           }
         );
 
+
         conversation.push({
-          role: "assistant",
-          content: reply
+
+          role:
+            "assistant",
+
+          content:
+            reply
+
         });
+
 
         if (
           conversation.length >
@@ -2783,11 +4260,14 @@
             conversation.slice(
               -MAX_HISTORY
             );
+
         }
+
 
       } catch (error) {
 
         hideTyping();
+
 
         if (
           error.name ===
@@ -2805,58 +4285,80 @@
             error
           );
 
+
           addMessage(
             "assistant",
             "تعذر الحصول على رد من Sultan AI حالياً."
           );
+
         }
+
 
       } finally {
 
         sending = false;
 
+
         abortController =
           null;
+
 
         sendBtn.classList.remove(
           "stop"
         );
 
+
         sendBtn.textContent =
           "➤";
+
 
         sendBtn.title =
           "إرسال";
 
+
         messageInput.focus();
 
+
         scrollToBottom();
+
       }
+
     }
 
+
     /* =========================================================
-       STOP REQUEST
+       SEND / STOP BUTTON
        ========================================================= */
 
     sendBtn.addEventListener(
       "click",
-      () => {
+      function(event) {
+
+        event.preventDefault();
 
         if (sending) {
 
-          if (abortController) {
+          if (
+            abortController
+          ) {
+
             abortController.abort();
+
           }
 
           return;
+
         }
 
+
         sendMessage();
+
       }
     );
 
+
     /* =========================================================
-       TRUE REGENERATE
+       REGENERATE
        ========================================================= */
 
     async function regenerateLastResponse(
@@ -2872,6 +4374,7 @@
         return;
       }
 
+
       if (!lastUserText) {
 
         showToast(
@@ -2881,14 +4384,20 @@
         return;
       }
 
+
       if (messageElement) {
+
         messageElement.remove();
+
       }
+
 
       for (
         let i =
           conversation.length - 1;
+
         i >= 0;
+
         i--
       ) {
 
@@ -2903,12 +4412,14 @@
           );
 
           break;
+
         }
+
       }
 
-      showTyping();
 
       sending = true;
+
 
       sendBtn.classList.add(
         "stop"
@@ -2916,6 +4427,13 @@
 
       sendBtn.textContent =
         "■";
+
+      sendBtn.title =
+        "إيقاف";
+
+
+      showTyping();
+
 
       try {
 
@@ -2925,34 +4443,47 @@
             []
           );
 
+
         hideTyping();
+
 
         const reply =
           data.reply ||
           data.message ||
           "لم يصل رد من Sultan AI.";
 
+
         addMessage(
           "assistant",
           reply,
           {
+
             toolsUsed:
               Array.isArray(
                 data.toolsUsed
               )
                 ? data.toolsUsed
                 : []
+
           }
         );
 
+
         conversation.push({
-          role: "assistant",
-          content: reply
+
+          role:
+            "assistant",
+
+          content:
+            reply
+
         });
+
 
       } catch (error) {
 
         hideTyping();
+
 
         if (
           error.name !==
@@ -2964,10 +4495,12 @@
             error
           );
 
+
           addMessage(
             "assistant",
             "تعذر إعادة توليد الرد حالياً."
           );
+
         }
 
       } finally {
@@ -2977,72 +4510,51 @@
         abortController =
           null;
 
+
         sendBtn.classList.remove(
           "stop"
         );
 
+
         sendBtn.textContent =
           "➤";
 
+
+        sendBtn.title =
+          "إرسال";
+
+
         messageInput.focus();
 
+
         scrollToBottom();
+
       }
+
     }
 
+
     /* =========================================================
-       SIDEBAR BUTTONS
+       EXTRA SIDEBAR PROTECTION
        ========================================================= */
 
-    document
-      .getElementById(
-        "filesSideBtn"
-      )
-      .addEventListener(
-        "click",
-        () => {
+    sidebar.addEventListener(
+      "click",
+      function(event) {
 
-          closeSidebar();
+        event.stopPropagation();
 
-          fileInput.click();
-        }
-      );
+      }
+    );
 
-    document
-      .getElementById(
-        "fastSideBtn"
-      )
-      .addEventListener(
-        "click",
-        () => {
-
-          closeSidebar();
-
-          showToast(
-            "⚡ الوضع السريع مفعّل في واجهة Sultan AI."
-          );
-        }
-      );
-
-    document
-      .getElementById(
-        "chatSideBtn"
-      )
-      .addEventListener(
-        "click",
-        () => {
-
-          closeSidebar();
-
-          messageInput.focus();
-        }
-      );
 
     /* =========================================================
-       INITIAL
+       INITIALIZATION
        ========================================================= */
 
     autoResize();
+
+    renderAttachments();
 
     messageInput.focus();
 
