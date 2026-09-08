@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#08090c">
+<meta name="color-scheme" content="dark">
 
 <title>Sultan AI — ذكاء اصطناعي متقدم</title>
 
-<meta name="description" content="Sultan AI — مساعد ذكاء اصطناعي متقدم للمحادثة، البرمجة، تحليل الصور والملفات، البحث على الويب والحسابات.">
-<meta name="theme-color" content="#08090c">
-<meta name="color-scheme" content="dark">
+<meta name="description" content="Sultan AI — مساعد ذكاء اصطناعي متقدم للمحادثة، البرمجة، تحليل الصور والملفات والبحث على الويب.">
 
 <style>
 *{
@@ -17,39 +17,30 @@
   padding:0;
 }
 
-:root{
-  --bg:#08090c;
-  --bg2:#0d0f13;
-  --panel:#111318;
-  --panel2:#151821;
-  --panel3:#1b1f29;
-
-  --border:rgba(255,255,255,.08);
-  --border2:rgba(255,255,255,.13);
-
-  --text:#f5f7fa;
-  --muted:#969daa;
-  --muted2:#686e79;
-
-  --orange:#ff7a18;
-  --orange2:#ff9a3d;
-  --orange3:#ffb15c;
-
-  --success:#38d996;
-  --danger:#ff4d5e;
-
-  --sidebar:285px;
-  --radius:18px;
-}
-
-html,
-body{
+html,body{
   width:100%;
   height:100%;
   overflow:hidden;
+}
+
+:root{
+  --bg:#08090c;
+  --panel:#111318;
+  --panel2:#151821;
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.14);
+  --text:#f5f7fa;
+  --muted:#969daa;
+  --orange:#ff7a18;
+  --orange2:#ff9a3d;
+  --success:#38d996;
+  --danger:#ff4d5e;
+  --sidebar:285px;
+}
+
+body{
   background:var(--bg);
   color:var(--text);
-
   font-family:
     system-ui,
     -apple-system,
@@ -61,22 +52,14 @@ body{
 
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-}
 
-/* =====================================================
-   TOUCH FIX
-===================================================== */
+  -webkit-user-select:none;
+  user-select:none;
+}
 
 button,
 .quick,
 .nav-btn,
-.new-chat,
-.attach,
-.send,
-.mobile-menu,
-.action,
-.copy-code,
-.remove-file,
 .fast-toggle{
   -webkit-tap-highlight-color:transparent !important;
   -webkit-touch-callout:none;
@@ -87,66 +70,37 @@ button,
 
 button{
   border:0;
-  cursor:pointer;
   font:inherit;
+  cursor:pointer;
 }
 
 button:focus,
-button:focus-visible,
-.quick:focus,
-.quick:focus-visible,
-.nav-btn:focus,
-.nav-btn:focus-visible,
-.new-chat:focus,
-.new-chat:focus-visible,
-.attach:focus,
-.attach:focus-visible,
-.send:focus,
-.send:focus-visible,
-.mobile-menu:focus,
-.mobile-menu:focus-visible,
-.action:focus,
-.action:focus-visible,
-.copy-code:focus,
-.copy-code:focus-visible,
-.remove-file:focus,
-.remove-file:focus-visible{
+button:focus-visible{
   outline:none !important;
-  box-shadow:none;
 }
 
-button:disabled{
-  cursor:not-allowed;
-  opacity:.55;
-}
-
-textarea,
-input{
-  font:inherit;
+textarea{
+  -webkit-user-select:text;
+  user-select:text;
 }
 
 ::selection{
-  background:rgba(255,122,24,.30);
+  background:rgba(255,122,24,.3);
 }
 
-/* =====================================================
-   APP
-===================================================== */
+/* APP */
 
 .app{
-  display:flex;
   width:100%;
   height:100dvh;
+  display:flex;
   position:relative;
   overflow:hidden;
 }
 
-/* =====================================================
-   LOGO
-===================================================== */
+/* LOGO */
 
 .sultan-logo{
-  position:relative;
   width:100%;
   height:100%;
   display:grid;
@@ -159,47 +113,30 @@ input{
   display:block;
 }
 
-.logo-glow{
-  filter:drop-shadow(
-    0 0 12px rgba(255,122,24,.28)
-  );
-}
-
 .brand-logo{
   width:46px;
   height:46px;
-  flex-shrink:0;
 }
 
 .welcome-logo{
-  width:84px;
-  height:84px;
+  width:82px;
+  height:82px;
   margin-bottom:20px;
-  filter:drop-shadow(
-    0 18px 45px rgba(255,122,24,.18)
-  );
+  filter:drop-shadow(0 18px 45px rgba(255,122,24,.18));
 }
 
-.avatar-logo{
-  width:100%;
-  height:100%;
-}
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
+/* SIDEBAR */
 
 .sidebar{
   width:var(--sidebar);
   height:100%;
   flex-shrink:0;
 
-  background:
-    linear-gradient(
-      180deg,
-      #0d0f13 0%,
-      #0a0c10 100%
-    );
+  background:linear-gradient(
+    180deg,
+    #0d0f13,
+    #0a0c10
+  );
 
   border-left:1px solid var(--border);
 
@@ -208,11 +145,9 @@ input{
 
   padding:16px;
 
-  z-index:50;
+  z-index:100;
 
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease;
+  transition:transform .25s ease;
 }
 
 .brand{
@@ -225,7 +160,6 @@ input{
 .brand-title{
   font-size:18px;
   font-weight:900;
-  letter-spacing:-.4px;
 }
 
 .brand-sub{
@@ -237,17 +171,15 @@ input{
 .new-chat{
   width:100%;
   padding:13px 14px;
-
   border-radius:14px;
 
   color:white;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ff7117,
-      #ff9135
-    );
+  background:linear-gradient(
+    135deg,
+    #ff7117,
+    #ff9135
+  );
 
   font-weight:800;
 
@@ -256,29 +188,15 @@ input{
   justify-content:center;
   gap:8px;
 
-  box-shadow:
-    0 10px 30px rgba(255,122,24,.13);
-
-  transition:
-    transform .18s,
-    filter .18s,
-    box-shadow .18s;
-}
-
-.new-chat:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.06);
-  box-shadow:
-    0 13px 35px rgba(255,122,24,.19);
+  transition:transform .15s;
 }
 
 .new-chat:active{
-  transform:scale(.98);
+  transform:scale(.97);
 }
 
 .nav{
   margin-top:18px;
-
   display:flex;
   flex-direction:column;
   gap:5px;
@@ -293,30 +211,16 @@ input{
 
 .nav-btn{
   width:100%;
-
   color:#c5c9d1;
   background:transparent;
-
   border-radius:12px;
-
   padding:11px 12px;
 
   display:flex;
   align-items:center;
-
   gap:11px;
 
   text-align:right;
-
-  transition:
-    background .18s,
-    color .18s,
-    transform .18s;
-}
-
-.nav-btn:hover{
-  background:rgba(255,255,255,.045);
-  color:white;
 }
 
 .nav-btn.active{
@@ -327,16 +231,12 @@ input{
 .nav-icon{
   width:27px;
   height:27px;
-
   border-radius:8px;
 
   display:grid;
   place-items:center;
 
   background:rgba(255,255,255,.055);
-
-  font-size:13px;
-
   flex-shrink:0;
 }
 
@@ -351,12 +251,8 @@ input{
 
 .creator{
   padding:13px;
-
   border:1px solid var(--border);
-
-  background:
-    rgba(255,255,255,.025);
-
+  background:rgba(255,255,255,.025);
   border-radius:15px;
 }
 
@@ -377,9 +273,21 @@ input{
   margin-top:3px;
 }
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* OVERLAY */
+
+.overlay{
+  display:none;
+}
+
+.overlay.show{
+  display:block;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:90;
+}
+
+/* MAIN */
 
 .main{
   flex:1;
@@ -400,9 +308,7 @@ input{
     var(--bg);
 }
 
-/* =====================================================
-   TOPBAR
-===================================================== */
+/* TOPBAR */
 
 .topbar{
   height:65px;
@@ -416,8 +322,7 @@ input{
 
   padding:0 20px;
 
-  background:
-    rgba(8,9,12,.82);
+  background:rgba(8,9,12,.82);
 
   backdrop-filter:blur(15px);
   -webkit-backdrop-filter:blur(15px);
@@ -429,7 +334,6 @@ input{
   display:flex;
   align-items:center;
   gap:12px;
-  min-width:0;
 }
 
 .mobile-menu{
@@ -439,9 +343,7 @@ input{
   border-radius:11px;
 
   color:#d7d9de;
-
-  background:
-    rgba(255,255,255,.045);
+  background:rgba(255,255,255,.045);
 
   display:none;
   place-items:center;
@@ -449,42 +351,25 @@ input{
   font-size:18px;
 }
 
-.mobile-menu:hover{
-  background:rgba(255,255,255,.08);
-}
-
 .status-dot{
   width:8px;
   height:8px;
-
   border-radius:50%;
-
   background:var(--success);
-
-  box-shadow:
-    0 0 12px rgba(56,217,150,.6);
-
-  flex-shrink:0;
+  box-shadow:0 0 12px rgba(56,217,150,.6);
 }
 
 .status-dot.offline{
   background:var(--danger);
-
-  box-shadow:
-    0 0 12px rgba(255,77,94,.5);
 }
 
 .status-dot.busy{
   background:var(--orange2);
-
-  box-shadow:
-    0 0 12px rgba(255,154,61,.55);
 }
 
 .top-title{
   font-size:14px;
   font-weight:800;
-  white-space:nowrap;
 }
 
 .top-status{
@@ -496,98 +381,61 @@ input{
 .mode-badge{
   display:flex;
   align-items:center;
-
   gap:7px;
 
   padding:8px 11px;
 
   border:1px solid var(--border);
-
-  background:
-    rgba(255,255,255,.035);
+  background:rgba(255,255,255,.035);
 
   border-radius:10px;
 
   color:#c6cad1;
-
   font-size:11px;
   font-weight:700;
 }
 
 .mode-badge.fast{
-  border-color:
-    rgba(255,122,24,.30);
-
-  background:
-    rgba(255,122,24,.07);
+  border-color:rgba(255,122,24,.3);
+  background:rgba(255,122,24,.07);
 }
 
 .mode-badge span{
   color:var(--orange2);
 }
 
-/* =====================================================
-   CHAT
-===================================================== */
+/* CHAT */
 
 .chat-scroll{
   flex:1;
   min-height:0;
-
   overflow-y:auto;
-
-  scroll-behavior:smooth;
-
   overscroll-behavior:contain;
-}
-
-.chat-scroll::-webkit-scrollbar{
-  width:7px;
-}
-
-.chat-scroll::-webkit-scrollbar-thumb{
-  background:#242832;
-  border-radius:20px;
-}
-
-.chat-scroll::-webkit-scrollbar-track{
-  background:transparent;
 }
 
 .chat-container{
   width:min(980px,100%);
-
   margin:0 auto;
-
-  padding:
-    35px 20px 170px;
+  padding:35px 20px 170px;
 }
 
-/* =====================================================
-   WELCOME
-===================================================== */
+/* WELCOME */
 
 .welcome{
-  min-height:
-    calc(100vh - 240px);
+  min-height:calc(100vh - 240px);
 
   display:flex;
   flex-direction:column;
-
   justify-content:center;
   align-items:center;
 
   text-align:center;
-
   padding:30px 0;
 }
 
 .welcome h1{
-  font-size:
-    clamp(27px,5vw,43px);
-
+  font-size:clamp(27px,5vw,43px);
   font-weight:900;
-
   letter-spacing:-1.6px;
 }
 
@@ -597,37 +445,25 @@ input{
 
 .welcome p{
   color:var(--muted);
-
   max-width:610px;
-
   line-height:1.8;
-
   font-size:13px;
-
   margin-top:10px;
 }
 
 .welcome-badge{
   display:inline-flex;
-
   align-items:center;
-
   gap:6px;
 
   margin-top:15px;
-
   padding:6px 10px;
 
   border-radius:999px;
-
-  border:1px solid
-    rgba(255,122,24,.15);
-
-  background:
-    rgba(255,122,24,.045);
+  border:1px solid rgba(255,122,24,.15);
+  background:rgba(255,122,24,.045);
 
   color:#b7bbc3;
-
   font-size:9px;
   font-weight:700;
 }
@@ -640,12 +476,9 @@ input{
   width:min(760px,100%);
 
   display:grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
+  grid-template-columns:repeat(2,1fr);
 
   gap:10px;
-
   margin-top:30px;
 }
 
@@ -655,32 +488,15 @@ input{
   padding:15px;
 
   border:1px solid var(--border);
-
-  background:
-    rgba(255,255,255,.025);
+  background:rgba(255,255,255,.025);
 
   border-radius:15px;
 
   color:white;
-
-  transition:
-    border-color .2s,
-    background .2s,
-    transform .2s;
-}
-
-.quick:hover{
-  border-color:
-    rgba(255,122,24,.35);
-
-  background:
-    rgba(255,122,24,.045);
-
-  transform:translateY(-2px);
 }
 
 .quick:active{
-  transform:scale(.99);
+  transform:scale(.98);
 }
 
 .quick-icon{
@@ -692,8 +508,7 @@ input{
 
   border-radius:9px;
 
-  background:
-    rgba(255,122,24,.11);
+  background:rgba(255,122,24,.11);
 
   margin-bottom:9px;
 }
@@ -705,15 +520,11 @@ input{
 
 .quick-desc{
   color:#777d88;
-
   font-size:10px;
-
   margin-top:4px;
 }
 
-/* =====================================================
-   MESSAGES
-===================================================== */
+/* MESSAGES */
 
 .messages{
   display:flex;
@@ -723,25 +534,8 @@ input{
 
 .message{
   display:flex;
-
   gap:12px;
-
   align-items:flex-start;
-
-  animation:
-    messageIn .20s ease;
-}
-
-@keyframes messageIn{
-  from{
-    opacity:0;
-    transform:translateY(7px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
 }
 
 .message.user{
@@ -751,7 +545,6 @@ input{
 .avatar{
   width:34px;
   height:34px;
-
   flex-shrink:0;
 
   border-radius:11px;
@@ -763,32 +556,30 @@ input{
   font-weight:900;
 
   background:#1a1d24;
-
   border:1px solid var(--border);
 
   overflow:hidden;
 }
 
 .message.assistant .avatar{
-  color:white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ff6811,
-      #ff9a3d
-    );
+  background:linear-gradient(
+    135deg,
+    #ff6811,
+    #ff9a3d
+  );
 
   border:0;
-
   padding:5px;
+}
+
+.avatar-logo{
+  width:100%;
+  height:100%;
 }
 
 .bubble-wrap{
   min-width:0;
-
-  max-width:
-    min(850px,calc(100% - 48px));
+  max-width:min(850px,calc(100% - 48px));
 }
 
 .message.user .bubble-wrap{
@@ -799,25 +590,15 @@ input{
 
 .bubble{
   line-height:1.75;
-
   font-size:13px;
-
   overflow-wrap:anywhere;
 }
 
 .message.user .bubble{
   background:#181b22;
-
   border:1px solid var(--border);
-
   padding:11px 14px;
-
-  border-radius:
-    17px 5px 17px 17px;
-}
-
-.message.assistant .bubble{
-  color:#e5e7eb;
+  border-radius:17px 5px 17px 17px;
 }
 
 .bubble p{
@@ -833,25 +614,10 @@ input{
 .bubble h3{
   color:white;
   margin:14px 0 8px;
-  line-height:1.35;
 }
 
-.bubble h1{
-  font-size:20px;
-}
-
-.bubble h2{
-  font-size:17px;
-}
-
-.bubble h3{
-  font-size:15px;
-}
-
-.bubble ul,
-.bubble ol{
+.bubble ul{
   padding-right:22px;
-  margin:8px 0;
 }
 
 .bubble li{
@@ -864,26 +630,11 @@ input{
 
 .bubble code:not(pre code){
   direction:ltr;
-  unicode-bidi:plaintext;
-
-  background:
-    rgba(255,255,255,.07);
-
-  border:
-    1px solid rgba(255,255,255,.08);
-
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
   padding:2px 5px;
-
   border-radius:5px;
-
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-
+  font-family:monospace;
   font-size:11px;
 }
 
@@ -891,207 +642,92 @@ input{
   color:var(--orange2);
 }
 
-/* =====================================================
-   CODE
-===================================================== */
+/* CODE */
 
 .code-wrap{
   margin:13px 0;
 
-  border:
-    1px solid var(--border2);
-
+  border:1px solid var(--border2);
   border-radius:13px;
 
   overflow:hidden;
-
   background:#090b0f;
 
   direction:ltr;
   text-align:left;
-
-  box-shadow:
-    0 12px 30px rgba(0,0,0,.16);
 }
 
 .code-head{
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 
   padding:8px 11px;
-
-  border-bottom:
-    1px solid var(--border);
+  border-bottom:1px solid var(--border);
 
   color:#818792;
-
   font-size:10px;
-}
-
-.code-language{
-  color:#aeb3bd;
-  font-weight:700;
 }
 
 .copy-code{
   color:#bbbfc7;
-
-  background:
-    rgba(255,255,255,.05);
-
+  background:rgba(255,255,255,.05);
   border-radius:7px;
-
   padding:5px 8px;
-
   font-size:10px;
-}
-
-.copy-code:hover{
-  color:white;
-
-  background:
-    rgba(255,255,255,.09);
 }
 
 pre{
   padding:14px;
-
   overflow-x:auto;
 
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-
+  font-family:monospace;
   font-size:11px;
-
   line-height:1.7;
 
   white-space:pre-wrap;
-
-  tab-size:2;
 }
 
-/* =====================================================
-   ACTIONS
-===================================================== */
+/* ACTIONS */
 
 .message-actions{
   display:flex;
-
   gap:5px;
-
   margin-top:8px;
-
-  opacity:.75;
 }
 
 .action{
   color:#858b96;
-
   background:transparent;
-
   padding:5px 7px;
-
   border-radius:7px;
-
   font-size:11px;
 }
 
-.action:hover{
-  color:white;
-
-  background:
-    rgba(255,255,255,.05);
-}
-
-/* =====================================================
-   FILES
-===================================================== */
+/* FILES */
 
 .files-in-message{
   display:flex;
-
   flex-wrap:wrap;
-
   gap:7px;
-
   margin-top:8px;
 }
 
 .file-chip{
-  border:
-    1px solid var(--border);
-
-  background:
-    rgba(255,255,255,.035);
-
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.035);
   border-radius:9px;
-
   padding:6px 9px;
-
   color:#aaaeb7;
-
   font-size:10px;
 }
 
-/* =====================================================
-   TOOL STATUS
-===================================================== */
-
-.tool-status{
-  display:inline-flex;
-
-  align-items:center;
-
-  gap:7px;
-
-  margin-top:9px;
-
-  padding:6px 9px;
-
-  border-radius:8px;
-
-  color:#9298a3;
-
-  background:
-    rgba(255,255,255,.035);
-
-  border:
-    1px solid var(--border);
-
-  font-size:9px;
-}
-
-.tool-status-dot{
-  width:5px;
-  height:5px;
-
-  border-radius:50%;
-
-  background:var(--orange2);
-
-  box-shadow:
-    0 0 8px rgba(255,154,61,.45);
-}
-
-/* =====================================================
-   TYPING
-===================================================== */
+/* TYPING */
 
 .typing{
   display:none;
-
   align-items:center;
-
   gap:12px;
-
   margin-top:4px;
 }
 
@@ -1101,57 +737,24 @@ pre{
 
 .typing-bubble{
   display:flex;
-
-  align-items:center;
-
   gap:5px;
 
   padding:12px 15px;
 
-  border:
-    1px solid var(--border);
-
+  border:1px solid var(--border);
   border-radius:15px;
 
-  background:
-    rgba(255,255,255,.025);
+  background:rgba(255,255,255,.025);
 }
 
 .typing-bubble i{
   width:6px;
   height:6px;
-
   background:#818792;
-
   border-radius:50%;
-
-  animation:
-    typing 1s infinite ease-in-out;
 }
 
-.typing-bubble i:nth-child(2){
-  animation-delay:.15s;
-}
-
-.typing-bubble i:nth-child(3){
-  animation-delay:.3s;
-}
-
-@keyframes typing{
-  0%,60%,100%{
-    transform:translateY(0);
-    opacity:.45;
-  }
-
-  30%{
-    transform:translateY(-5px);
-    opacity:1;
-  }
-}
-
-/* =====================================================
-   COMPOSER
-===================================================== */
+/* COMPOSER */
 
 .composer-area{
   position:absolute;
@@ -1160,57 +763,36 @@ pre{
   right:0;
   left:0;
 
-  padding:
-    15px 20px 18px;
+  padding:15px 20px 18px;
 
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(8,9,12,.93) 30%,
-      #08090c 65%
-    );
+  background:linear-gradient(
+    180deg,
+    transparent,
+    rgba(8,9,12,.93) 30%,
+    #08090c 65%
+  );
 
-  z-index:15;
+  z-index:30;
 }
 
 .composer{
   width:min(920px,100%);
-
   margin:0 auto;
 
-  border:
-    1px solid var(--border2);
-
-  background:
-    rgba(17,19,24,.96);
+  border:1px solid var(--border2);
+  background:rgba(17,19,24,.96);
 
   border-radius:19px;
 
-  box-shadow:
-    0 18px 60px rgba(0,0,0,.35);
+  box-shadow:0 18px 60px rgba(0,0,0,.35);
 
   overflow:hidden;
 }
 
-.composer:focus-within{
-  border-color:
-    rgba(255,122,24,.38);
-
-  box-shadow:
-    0 18px 60px rgba(0,0,0,.35),
-    0 0 0 1px
-      rgba(255,122,24,.035);
-}
-
 .selected-files{
   display:none;
-
-  padding:
-    9px 11px 0;
-
+  padding:9px 11px 0;
   gap:7px;
-
   flex-wrap:wrap;
 }
 
@@ -1219,12 +801,8 @@ pre{
 }
 
 .selected-file{
-  position:relative;
-
   display:flex;
-
   align-items:center;
-
   gap:7px;
 
   padding:7px 9px;
@@ -1232,12 +810,9 @@ pre{
   border-radius:10px;
 
   background:#1b1e26;
-
-  border:
-    1px solid var(--border);
+  border:1px solid var(--border);
 
   font-size:10px;
-
   color:#c4c8d0;
 
   max-width:100%;
@@ -1245,76 +820,66 @@ pre{
 
 .selected-file-name{
   max-width:210px;
-
   overflow:hidden;
-
   text-overflow:ellipsis;
-
   white-space:nowrap;
 }
 
 .remove-file{
   color:#858b96;
-
   background:transparent;
-
   font-size:12px;
-
   padding:0 2px;
-}
-
-.remove-file:hover{
-  color:#ff7180;
 }
 
 .input-row{
   display:flex;
-
   align-items:flex-end;
-
   gap:9px;
-
   padding:10px;
 }
 
-.attach{
+.attach,
+.send{
   width:39px;
   height:39px;
-
   flex-shrink:0;
 
   border-radius:11px;
 
-  color:#aeb3bd;
-
-  background:
-    rgba(255,255,255,.045);
-
   display:grid;
   place-items:center;
+}
 
+.attach{
+  color:#aeb3bd;
+  background:rgba(255,255,255,.045);
   font-size:18px;
 }
 
-.attach:hover{
+.send{
   color:white;
 
-  background:
-    rgba(255,255,255,.08);
+  background:linear-gradient(
+    135deg,
+    #ff6811,
+    #ff9136
+  );
+
+  font-size:17px;
 }
 
-.attach:active{
-  transform:scale(.95);
+.send.stop{
+  background:#292d36;
+  color:#ff6573;
 }
 
 .textarea{
   flex:1;
-
   min-width:0;
 
-  max-height:190px;
-
   min-height:39px;
+  max-height:190px;
 
   resize:none;
 
@@ -1322,7 +887,6 @@ pre{
   outline:0;
 
   background:transparent;
-
   color:white;
 
   line-height:1.6;
@@ -1336,48 +900,9 @@ pre{
   color:#666c77;
 }
 
-.send{
-  width:39px;
-  height:39px;
-
-  flex-shrink:0;
-
-  border-radius:11px;
-
-  display:grid;
-  place-items:center;
-
-  color:white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ff6811,
-      #ff9136
-    );
-
-  font-size:17px;
-}
-
-.send:hover{
-  transform:scale(1.03);
-  filter:brightness(1.06);
-}
-
-.send:active{
-  transform:scale(.95);
-}
-
-.send.stop{
-  background:#292d36;
-  color:#ff6573;
-}
-
 .composer-bottom{
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 
   padding:0 12px 10px;
@@ -1390,14 +915,13 @@ pre{
 
 .fast-toggle{
   display:flex;
-
   align-items:center;
-
   gap:7px;
 
   color:#777d88;
-
   font-size:10px;
+
+  cursor:pointer;
 }
 
 .fast-toggle.active{
@@ -1407,7 +931,6 @@ pre{
 .switch{
   width:30px;
   height:17px;
-
   padding:2px;
 
   border-radius:20px;
@@ -1418,65 +941,46 @@ pre{
 .switch-dot{
   width:13px;
   height:13px;
-
   border-radius:50%;
-
   background:#7d838e;
-
-  transition:
-    transform .2s,
-    background .2s;
+  transition:transform .2s,background .2s;
 }
 
 .fast-toggle.active .switch{
-  background:
-    rgba(255,122,24,.35);
+  background:rgba(255,122,24,.35);
 }
 
 .fast-toggle.active .switch-dot{
-  transform:
-    translateX(13px);
-
-  background:
-    var(--orange2);
+  transform:translateX(13px);
+  background:var(--orange2);
 }
 
 .footer-note{
   width:min(920px,100%);
-
   margin:7px auto 0;
-
   text-align:center;
-
   color:#505661;
-
   font-size:9px;
 }
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* TOAST */
 
 .toast{
   position:fixed;
 
   left:50%;
-
   bottom:95px;
 
-  transform:
-    translate(-50%,20px);
+  transform:translate(-50%,20px);
 
   opacity:0;
 
   pointer-events:none;
 
-  z-index:100;
+  z-index:1000;
 
   background:#1b1e25;
-
-  border:
-    1px solid var(--border2);
+  border:1px solid var(--border2);
 
   color:white;
 
@@ -1486,69 +990,33 @@ pre{
 
   font-size:11px;
 
-  transition:
-    opacity .22s,
-    transform .22s;
+  transition:opacity .22s,transform .22s;
 
-  box-shadow:
-    0 12px 40px rgba(0,0,0,.35);
-
-  max-width:
-    min(90vw,450px);
-
+  max-width:90vw;
   text-align:center;
 }
 
 .toast.show{
   opacity:1;
-
-  transform:
-    translate(-50%,0);
+  transform:translate(-50%,0);
 }
 
-/* =====================================================
-   OVERLAY
-===================================================== */
-
-.overlay{
-  display:none;
-}
-
-/* =====================================================
-   MOBILE
-===================================================== */
+/* MOBILE */
 
 @media(max-width:800px){
 
   .sidebar{
     position:fixed;
-
     right:0;
     top:0;
 
-    transform:
-      translateX(100%);
+    transform:translateX(100%);
 
-    box-shadow:
-      -20px 0 60px rgba(0,0,0,.4);
+    box-shadow:-20px 0 60px rgba(0,0,0,.4);
   }
 
   .sidebar.open{
-    transform:
-      translateX(0);
-  }
-
-  .overlay.show{
-    display:block;
-
-    position:fixed;
-
-    inset:0;
-
-    background:
-      rgba(0,0,0,.55);
-
-    z-index:40;
+    transform:translateX(0);
   }
 
   .mobile-menu{
@@ -1560,22 +1028,15 @@ pre{
   }
 
   .chat-container{
-    padding:
-      25px 12px 165px;
+    padding:25px 12px 165px;
   }
 
   .quick-grid{
     grid-template-columns:1fr;
   }
 
-  .welcome{
-    min-height:
-      calc(100vh - 220px);
-  }
-
   .composer-area{
-    padding:
-      10px 9px 12px;
+    padding:10px 9px 12px;
   }
 
   .composer-hint{
@@ -1583,8 +1044,7 @@ pre{
   }
 
   .bubble-wrap{
-    max-width:
-      calc(100% - 45px);
+    max-width:calc(100% - 45px);
   }
 
   .welcome-logo{
@@ -1624,22 +1084,6 @@ pre{
   .bubble{
     font-size:12.5px;
   }
-
-  .quick{
-    padding:13px;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
-    animation-duration:.001ms !important;
-    animation-iteration-count:1 !important;
-    scroll-behavior:auto !important;
-    transition-duration:.001ms !important;
-  }
 }
 </style>
 </head>
@@ -1653,18 +1097,13 @@ pre{
   <div class="brand">
 
     <div class="brand-logo">
-      <div class="sultan-logo logo-glow">
 
-        <svg viewBox="0 0 100 100"
-             xmlns="http://www.w3.org/2000/svg">
+      <div class="sultan-logo">
+
+        <svg viewBox="0 0 100 100">
 
           <defs>
-            <linearGradient
-              id="brandOrange"
-              x1="0"
-              y1="0"
-              x2="1"
-              y2="1">
+            <linearGradient id="logoA" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#ff6811"/>
               <stop offset="100%" stop-color="#ff9f45"/>
             </linearGradient>
@@ -1679,57 +1118,32 @@ pre{
             fill="#090b0f"/>
 
           <path
-            d="
-              M25 16
-              L84 16
-              L84 75
-              L68 91
-              L16 91
-              L16 32
-              Z"
+            d="M25 16L84 16L84 75L68 91L16 91L16 32Z"
             fill="none"
-            stroke="url(#brandOrange)"
+            stroke="url(#logoA)"
             stroke-width="8"
             stroke-linejoin="round"/>
 
           <path
-            d="
-              M37 29
-              L72 29
-              L72 64
-              L60 76
-              L29 76
-              L29 41
-              Z"
-            fill="#08090c"
-            stroke="rgba(255,255,255,.06)"
-            stroke-width="2"
-            stroke-linejoin="round"/>
+            d="M37 29L72 29L72 64L60 76L29 76L29 41Z"
+            fill="#08090c"/>
 
           <path
-            d="
-              M37 29
-              L50 29
-              L29 50"
+            d="M37 29L50 29L29 50"
             fill="none"
             stroke="#ff9a3d"
             stroke-width="4"
-            stroke-linecap="round"
-            stroke-linejoin="round"/>
+            stroke-linecap="round"/>
 
         </svg>
 
       </div>
+
     </div>
 
     <div>
-      <div class="brand-title">
-        Sultan AI
-      </div>
-
-      <div class="brand-sub">
-        ذكاء اصطناعي متقدم
-      </div>
+      <div class="brand-title">Sultan AI</div>
+      <div class="brand-sub">ذكاء اصطناعي متقدم</div>
     </div>
 
   </div>
@@ -1832,10 +1246,7 @@ pre{
 
 </aside>
 
-<div
-  class="overlay"
-  id="overlay">
-</div>
+<div class="overlay" id="overlay"></div>
 
 <main class="main">
 
@@ -1867,7 +1278,9 @@ pre{
       <div
         class="top-status"
         id="topStatus">
+
         جاهز للمساعدة
+
       </div>
 
     </div>
@@ -1881,7 +1294,7 @@ pre{
     <span>⚡</span>
 
     <span id="modeBadgeText">
-      Sultan AI V7.1
+      Sultan AI V7.2
     </span>
 
   </div>
@@ -1900,31 +1313,15 @@ pre{
 
       <div class="welcome-logo">
 
-        <div class="sultan-logo logo-glow">
+        <div class="sultan-logo">
 
-          <svg
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 100">
 
             <defs>
-
-              <linearGradient
-                id="welcomeOrange"
-                x1="0"
-                y1="0"
-                x2="1"
-                y2="1">
-
-                <stop
-                  offset="0%"
-                  stop-color="#ff6811"/>
-
-                <stop
-                  offset="100%"
-                  stop-color="#ffab58"/>
-
+              <linearGradient id="logoB" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff6811"/>
+                <stop offset="100%" stop-color="#ffab58"/>
               </linearGradient>
-
             </defs>
 
             <rect
@@ -1936,42 +1333,22 @@ pre{
               fill="#090b0f"/>
 
             <path
-              d="
-                M24 15
-                L85 15
-                L85 75
-                L68 92
-                L15 92
-                L15 31
-                Z"
+              d="M24 15L85 15L85 75L68 92L15 92L15 31Z"
               fill="none"
-              stroke="url(#welcomeOrange)"
+              stroke="url(#logoB)"
               stroke-width="8"
               stroke-linejoin="round"/>
 
             <path
-              d="
-                M37 29
-                L72 29
-                L72 64
-                L60 76
-                L29 76
-                L29 41
-                Z"
-              fill="#08090c"
-              stroke="rgba(255,255,255,.07)"
-              stroke-width="2"/>
+              d="M37 29L72 29L72 64L60 76L29 76L29 41Z"
+              fill="#08090c"/>
 
             <path
-              d="
-                M37 29
-                L50 29
-                L29 50"
+              d="M37 29L50 29L29 50"
               fill="none"
               stroke="#ff9a3d"
               stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"/>
+              stroke-linecap="round"/>
 
           </svg>
 
@@ -1990,10 +1367,8 @@ pre{
       </p>
 
       <div class="welcome-badge">
-
         <span>✦</span>
-        Sultan AI V7.1 · Advanced AI
-
+        Sultan AI V7.2 · Advanced AI
       </div>
 
       <div class="quick-grid">
@@ -2003,9 +1378,7 @@ pre{
           data-prompt="اشرح لي ما الذي تستطيع مساعدتي به وما هي أدواتك؟"
           type="button">
 
-          <div class="quick-icon">
-            ✦
-          </div>
+          <div class="quick-icon">✦</div>
 
           <div class="quick-title">
             اسأل Sultan AI
@@ -2022,9 +1395,7 @@ pre{
           data-prompt="ابحث على الويب عن أحدث المعلومات المهمة اليوم واذكر المصادر."
           type="button">
 
-          <div class="quick-icon">
-            🌐
-          </div>
+          <div class="quick-icon">🌐</div>
 
           <div class="quick-title">
             بحث الويب
@@ -2041,9 +1412,7 @@ pre{
           data-prompt="ساعدني في كتابة برنامج واشرح لي الكود خطوة بخطوة."
           type="button">
 
-          <div class="quick-icon">
-            ⌘
-          </div>
+          <div class="quick-icon">⌘</div>
 
           <div class="quick-title">
             البرمجة
@@ -2060,9 +1429,7 @@ pre{
           data-prompt="سأرسل لك ملفاً أو صورة. حلل المحتوى وأعطني أهم النتائج."
           type="button">
 
-          <div class="quick-icon">
-            📁
-          </div>
+          <div class="quick-icon">📁</div>
 
           <div class="quick-title">
             الملفات والصور
@@ -2091,9 +1458,7 @@ pre{
 
         <div class="avatar-logo">
 
-          <svg
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 100">
 
             <rect
               x="5"
@@ -2104,29 +1469,11 @@ pre{
               fill="#090b0f"/>
 
             <path
-              d="
-                M25 15
-                L84 15
-                L84 73
-                L68 90
-                L16 90
-                L16 32
-                Z"
+              d="M25 15L84 15L84 73L68 90L16 90L16 32Z"
               fill="none"
               stroke="#ff8b2b"
               stroke-width="9"
               stroke-linejoin="round"/>
-
-            <path
-              d="
-                M38 29
-                L71 29
-                L71 63
-                L59 75
-                L30 75
-                L30 42
-                Z"
-              fill="#08090c"/>
 
           </svg>
 
@@ -2135,11 +1482,9 @@ pre{
       </div>
 
       <div class="typing-bubble">
-
         <i></i>
         <i></i>
         <i></i>
-
       </div>
 
     </div>
@@ -2162,7 +1507,6 @@ pre{
       <button
         class="attach"
         id="attachButton"
-        title="إرفاق ملف"
         type="button"
         aria-label="إرفاق ملف">
 
@@ -2175,40 +1519,7 @@ pre{
         id="fileInput"
         hidden
         multiple
-        accept="
-          image/*,
-          text/*,
-          .txt,
-          .md,
-          .markdown,
-          .csv,
-          .json,
-          .js,
-          .jsx,
-          .ts,
-          .tsx,
-          .html,
-          .htm,
-          .css,
-          .xml,
-          .py,
-          .java,
-          .c,
-          .cpp,
-          .h,
-          .hpp,
-          .sql,
-          .php,
-          .rb,
-          .go,
-          .rs,
-          .sh,
-          .yaml,
-          .yml,
-          .toml,
-          .ini,
-          .conf,
-          .pdf">
+        accept="image/*,text/*,.txt,.md,.csv,.json,.js,.jsx,.ts,.tsx,.html,.htm,.css,.xml,.py,.java,.c,.cpp,.h,.hpp,.sql,.php,.rb,.go,.rs,.sh,.yaml,.yml,.toml,.ini,.conf,.pdf">
 
       <textarea
         class="textarea"
@@ -2217,14 +1528,12 @@ pre{
         maxlength="12000"
         placeholder="اكتب رسالتك إلى Sultan AI..."
         autocomplete="off"
-        spellcheck="true">
-      </textarea>
+        spellcheck="true"></textarea>
 
       <button
         class="send"
         id="sendButton"
         type="button"
-        title="إرسال"
         aria-label="إرسال">
 
         ↑
@@ -2244,12 +1553,9 @@ pre{
         id="fastToggle"
         role="button"
         tabindex="0"
-        aria-label="Fast Mode"
         aria-pressed="false">
 
-        <span>
-          Fast Mode
-        </span>
+        <span>Fast Mode</span>
 
         <div class="switch">
           <div class="switch-dot"></div>
@@ -2281,10 +1587,10 @@ pre{
 <script>
 "use strict";
 
-/* =========================================================
-   SULTAN AI V7.1
-   MOBILE TOUCH SAFE ENGINE
-========================================================= */
+/* =====================================================
+   SULTAN AI V7.2
+   POINTER EVENT ENGINE
+===================================================== */
 
 const API_ENDPOINT="/api/chat";
 
@@ -2293,10 +1599,6 @@ const MAX_FILES=5;
 const MAX_FILE_SIZE=20*1024*1024;
 const MAX_TOTAL_FILE_BYTES=45*1024*1024;
 const REQUEST_TIMEOUT=180000;
-
-/* =========================================================
-   STATE
-========================================================= */
 
 let conversation=[];
 let selectedFiles=[];
@@ -2308,66 +1610,113 @@ let lastUserText="";
 let lastRequestFiles=[];
 
 let toastTimer=null;
-let lastTouchTime=0;
 
-/* =========================================================
+/* =====================================================
    ELEMENTS
-========================================================= */
+===================================================== */
 
-const sidebar=document.getElementById("sidebar");
-const overlay=document.getElementById("overlay");
-const mobileMenu=document.getElementById("mobileMenu");
-const newChatButton=document.getElementById("newChat");
+const $=id=>document.getElementById(id);
 
-const welcome=document.getElementById("welcome");
-const messagesEl=document.getElementById("messages");
-const chatScroll=document.getElementById("chatScroll");
+const sidebar=$("sidebar");
+const overlay=$("overlay");
+const mobileMenu=$("mobileMenu");
+const newChatButton=$("newChat");
 
-const messageInput=document.getElementById("messageInput");
-const sendButton=document.getElementById("sendButton");
-const attachButton=document.getElementById("attachButton");
-const fileInput=document.getElementById("fileInput");
-const selectedFilesEl=document.getElementById("selectedFiles");
+const welcome=$("welcome");
+const messagesEl=$("messages");
+const chatScroll=$("chatScroll");
 
-const fastToggle=document.getElementById("fastToggle");
-const typing=document.getElementById("typing");
+const messageInput=$("messageInput");
+const sendButton=$("sendButton");
+const attachButton=$("attachButton");
+const fileInput=$("fileInput");
+const selectedFilesEl=$("selectedFiles");
 
-const topStatus=document.getElementById("topStatus");
-const statusDot=document.getElementById("statusDot");
+const fastToggle=$("fastToggle");
+const typing=$("typing");
 
-const toast=document.getElementById("toast");
+const topStatus=$("topStatus");
+const statusDot=$("statusDot");
 
-const modeBadge=document.getElementById("modeBadge");
-const modeBadgeText=document.getElementById("modeBadgeText");
+const toast=$("toast");
 
-/* =========================================================
-   ERROR PROTECTION
-========================================================= */
+const modeBadge=$("modeBadge");
+const modeBadgeText=$("modeBadgeText");
+
+/* =====================================================
+   BASIC SAFETY
+===================================================== */
 
 window.addEventListener("error",event=>{
-
   console.error(
-    "[Sultan AI] JavaScript error:",
+    "[Sultan AI] JS ERROR:",
     event.error || event.message
   );
-
 });
 
-window.addEventListener(
-  "unhandledrejection",
-  event=>{
+window.addEventListener("unhandledrejection",event=>{
+  console.error(
+    "[Sultan AI] PROMISE ERROR:",
+    event.reason
+  );
+});
 
-    console.error(
-      "[Sultan AI] Promise error:",
-      event.reason
-    );
+/* =====================================================
+   POINTER ENGINE
+===================================================== */
 
-  }
-);
+function bindPress(element,callback){
 
-/* =========================================================
+  if(!element) return;
+
+  let locked=false;
+
+  element.addEventListener(
+    "pointerup",
+    event=>{
+
+      if(
+        event.pointerType==="mouse" &&
+        event.button!==0
+      ){
+        return;
+      }
+
+      event.preventDefault();
+
+      if(locked){
+        return;
+      }
+
+      locked=true;
+
+      try{
+        callback(event);
+      }catch(error){
+
+        console.error(
+          "[Sultan AI] Button error:",
+          error
+        );
+
+        showToast("حدث خطأ، حاول مرة أخرى.");
+      }
+
+      setTimeout(()=>{
+        locked=false;
+      },220);
+
+    },
+    {
+      passive:false
+    }
+  );
+
+}
+
+/* =====================================================
    UTILITIES
-========================================================= */
+===================================================== */
 
 function escapeHTML(value){
 
@@ -2405,7 +1754,6 @@ function scrollBottom(smooth=true){
 }
 
 function setStatus(text){
-
   topStatus.textContent=String(text||"");
 }
 
@@ -2427,16 +1775,9 @@ function setConnectionState(state){
 
 function fileSize(bytes){
 
-  if(!bytes){
-    return "0 B";
-  }
+  if(!bytes) return "0 B";
 
-  const units=[
-    "B",
-    "KB",
-    "MB",
-    "GB"
-  ];
+  const units=["B","KB","MB","GB"];
 
   let size=Number(bytes);
   let index=0;
@@ -2454,40 +1795,9 @@ function fileSize(bytes){
   return `${size.toFixed(index?1:0)} ${units[index]}`;
 }
 
-/* =========================================================
-   SAFE ACTION
-   يمنع الضغط المكرر السريع
-========================================================= */
-
-function safeAction(callback){
-
-  const now=Date.now();
-
-  if(now-lastTouchTime<250){
-    return;
-  }
-
-  lastTouchTime=now;
-
-  try{
-    callback();
-  }catch(error){
-
-    console.error(
-      "[Sultan AI] Action error:",
-      error
-    );
-
-    showToast(
-      "حدث خطأ بسيط، حاول مرة أخرى."
-    );
-
-  }
-}
-
-/* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 function openSidebar(){
 
@@ -2501,19 +1811,19 @@ function closeSidebar(){
   overlay.classList.remove("show");
 }
 
-mobileMenu.addEventListener(
-  "click",
-  ()=>safeAction(openSidebar)
+bindPress(
+  mobileMenu,
+  openSidebar
 );
 
-overlay.addEventListener(
-  "click",
-  ()=>safeAction(closeSidebar)
+bindPress(
+  overlay,
+  closeSidebar
 );
 
-/* =========================================================
+/* =====================================================
    NEW CHAT
-========================================================= */
+===================================================== */
 
 function newChat(){
 
@@ -2521,9 +1831,7 @@ function newChat(){
     sending &&
     abortController
   ){
-
     abortController.abort();
-
   }
 
   conversation=[];
@@ -2540,39 +1848,41 @@ function newChat(){
 
   renderSelectedFiles();
 
+  messageInput.value="";
+
+  autoResize();
+
   setStatus("جاهز للمساعدة");
 
   setConnectionState("online");
 
   setSendingUI(false);
 
-  messageInput.value="";
-
-  autoResize();
-
   closeSidebar();
 
-  messageInput.focus();
+  setTimeout(()=>{
+    messageInput.focus();
+  },50);
 
   scrollBottom(false);
 }
 
-newChatButton.addEventListener(
-  "click",
-  ()=>safeAction(newChat)
+bindPress(
+  newChatButton,
+  newChat
 );
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+/* =====================================================
+   NAV BUTTONS
+===================================================== */
 
 document
 .querySelectorAll(".nav-btn")
 .forEach(button=>{
 
-  button.addEventListener(
-    "click",
-    ()=>safeAction(()=>{
+  bindPress(
+    button,
+    ()=>{
 
       document
       .querySelectorAll(".nav-btn")
@@ -2589,8 +1899,13 @@ document
         messageInput.placeholder=
           "اكتب رسالتك إلى Sultan AI...";
 
-        messageInput.focus();
+        closeSidebar();
 
+        setTimeout(()=>{
+          messageInput.focus();
+        },30);
+
+        return;
       }
 
       if(mode==="fast"){
@@ -2604,8 +1919,9 @@ document
           "تم تفعيل Fast Mode ⚡"
         );
 
-        messageInput.focus();
+        closeSidebar();
 
+        return;
       }
 
       if(mode==="web"){
@@ -2615,12 +1931,17 @@ document
 
         autoResize();
 
-        messageInput.focus();
+        closeSidebar();
+
+        setTimeout(()=>{
+          messageInput.focus();
+        },30);
 
         showToast(
           "اكتب موضوع البحث ثم أرسل"
         );
 
+        return;
       }
 
       if(mode==="code"){
@@ -2630,12 +1951,17 @@ document
 
         autoResize();
 
-        messageInput.focus();
+        closeSidebar();
+
+        setTimeout(()=>{
+          messageInput.focus();
+        },30);
 
         showToast(
           "جاهز لمساعدتك بالبرمجة"
         );
 
+        return;
       }
 
       if(
@@ -2643,28 +1969,30 @@ document
         mode==="analysis"
       ){
 
-        fileInput.click();
+        closeSidebar();
+
+        setTimeout(()=>{
+          fileInput.click();
+        },50);
 
       }
 
-      closeSidebar();
-
-    })
+    }
   );
 
 });
 
-/* =========================================================
+/* =====================================================
    QUICK PROMPTS
-========================================================= */
+===================================================== */
 
 document
 .querySelectorAll(".quick")
 .forEach(button=>{
 
-  button.addEventListener(
-    "click",
-    ()=>safeAction(()=>{
+  bindPress(
+    button,
+    ()=>{
 
       const prompt=
         button.dataset.prompt||"";
@@ -2673,18 +2001,16 @@ document
 
       autoResize();
 
-      messageInput.focus();
-
       sendMessage();
 
-    })
+    }
   );
 
 });
 
-/* =========================================================
+/* =====================================================
    FAST MODE
-========================================================= */
+===================================================== */
 
 function updateFastToggle(){
 
@@ -2713,7 +2039,7 @@ function updateModeBadge(){
     modeBadge.classList.remove("fast");
 
     modeBadgeText.textContent=
-      "Sultan AI V7.1";
+      "Sultan AI V7.2";
 
   }
 }
@@ -2732,9 +2058,9 @@ function toggleFastMode(){
   );
 }
 
-fastToggle.addEventListener(
-  "click",
-  ()=>safeAction(toggleFastMode)
+bindPress(
+  fastToggle,
+  toggleFastMode
 );
 
 fastToggle.addEventListener(
@@ -2747,17 +2073,16 @@ fastToggle.addEventListener(
     ){
 
       event.preventDefault();
-
-      safeAction(toggleFastMode);
+      toggleFastMode();
 
     }
 
   }
 );
 
-/* =========================================================
+/* =====================================================
    TEXTAREA
-========================================================= */
+===================================================== */
 
 function autoResize(){
 
@@ -2795,15 +2120,15 @@ messageInput.addEventListener(
   }
 );
 
-/* =========================================================
-   FILE INPUT
-========================================================= */
+/* =====================================================
+   FILES
+===================================================== */
 
-attachButton.addEventListener(
-  "click",
-  ()=>safeAction(()=>{
+bindPress(
+  attachButton,
+  ()=>{
     fileInput.click();
-  })
+  }
 );
 
 fileInput.addEventListener(
@@ -2824,9 +2149,7 @@ fileInput.addEventListener(
 
 function addFiles(files){
 
-  if(!files.length){
-    return;
-  }
+  if(!files.length) return;
 
   if(
     selectedFiles.length+
@@ -2842,7 +2165,6 @@ function addFiles(files){
       0,
       MAX_FILES-selectedFiles.length
     );
-
   }
 
   let total=
@@ -2854,10 +2176,7 @@ function addFiles(files){
 
   for(const file of files){
 
-    if(
-      file.size>
-      MAX_FILE_SIZE
-    ){
+    if(file.size>MAX_FILE_SIZE){
 
       showToast(
         `${file.name} أكبر من 20MB`
@@ -2887,17 +2206,14 @@ function addFiles(files){
             file.lastModified
       );
 
-    if(duplicate){
-      continue;
-    }
+    if(duplicate) continue;
 
     selectedFiles.push(file);
 
     total+=file.size;
 
     if(
-      selectedFiles.length>=
-      MAX_FILES
+      selectedFiles.length>=MAX_FILES
     ){
       break;
     }
@@ -2920,9 +2236,7 @@ function renderSelectedFiles(){
 
   if(!selectedFiles.length){
 
-    selectedFilesEl.classList.remove(
-      "show"
-    );
+    selectedFilesEl.classList.remove("show");
 
     return;
   }
@@ -2950,19 +2264,16 @@ function renderSelectedFiles(){
 
         <button
           class="remove-file"
-          type="button"
-          aria-label="حذف الملف">
+          type="button">
           ×
         </button>
       `;
 
-      item
-      .querySelector(".remove-file")
-      .addEventListener(
-        "click",
-        ()=>safeAction(()=>{
+      bindPress(
+        item.querySelector(".remove-file"),
+        ()=>{
           removeFile(index);
-        })
+        }
       );
 
       selectedFilesEl.appendChild(item);
@@ -2971,9 +2282,9 @@ function renderSelectedFiles(){
   );
 }
 
-/* =========================================================
+/* =====================================================
    FILE READER
-========================================================= */
+===================================================== */
 
 function readFileAsDataURL(file){
 
@@ -3036,9 +2347,9 @@ async function prepareFiles(files){
   return result;
 }
 
-/* =========================================================
+/* =====================================================
    MARKDOWN
-========================================================= */
+===================================================== */
 
 function renderMarkdown(text){
 
@@ -3057,10 +2368,8 @@ function renderMarkdown(text){
         const id=codeBlocks.length;
 
         codeBlocks.push({
-          language:
-            language||"code",
-          code:
-            code.replace(/\n$/,"")
+          language:language||"code",
+          code:code.replace(/\n$/,"")
         });
 
         return `@@CODE_BLOCK_${id}@@`;
@@ -3129,15 +2438,12 @@ function renderMarkdown(text){
       const block=
         codeBlocks[Number(index)];
 
-      const safeCode=
-        escapeHTML(block.code);
-
       return `
         <div class="code-wrap">
 
           <div class="code-head">
 
-            <span class="code-language">
+            <span>
               ${escapeHTML(block.language)}
             </span>
 
@@ -3145,12 +2451,14 @@ function renderMarkdown(text){
               class="copy-code"
               type="button"
               data-code="${encodeURIComponent(block.code)}">
+
               نسخ
+
             </button>
 
           </div>
 
-          <pre><code>${safeCode}</code></pre>
+          <pre><code>${escapeHTML(block.code)}</code></pre>
 
         </div>
       `;
@@ -3161,18 +2469,16 @@ function renderMarkdown(text){
   return html;
 }
 
-/* =========================================================
+/* =====================================================
    ASSISTANT LOGO
-========================================================= */
+===================================================== */
 
 function assistantLogoHTML(){
 
   return `
     <div class="avatar-logo">
 
-      <svg
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 100 100">
 
         <rect
           x="5"
@@ -3183,29 +2489,11 @@ function assistantLogoHTML(){
           fill="#090b0f"/>
 
         <path
-          d="
-            M25 15
-            L84 15
-            L84 73
-            L68 90
-            L16 90
-            L16 32
-            Z"
+          d="M25 15L84 15L84 73L68 90L16 90L16 32Z"
           fill="none"
           stroke="#ff8b2b"
           stroke-width="9"
           stroke-linejoin="round"/>
-
-        <path
-          d="
-            M38 29
-            L71 29
-            L71 63
-            L59 75
-            L30 75
-            L30 42
-            Z"
-          fill="#08090c"/>
 
       </svg>
 
@@ -3213,9 +2501,9 @@ function assistantLogoHTML(){
   `;
 }
 
-/* =========================================================
-   MESSAGE RENDERING
-========================================================= */
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 function createMessageElement(
   role,
@@ -3248,8 +2536,7 @@ function createMessageElement(
         ${files.map(
           file=>`
             <div class="file-chip">
-              📎
-              ${escapeHTML(file.name)}
+              📎 ${escapeHTML(file.name)}
             </div>
           `
         ).join("")}
@@ -3274,18 +2561,14 @@ function createMessageElement(
       wolfram_alpha:"Wolfram Alpha"
     };
 
-    const readable=
-      toolNames
-      .map(
-        tool=>labels[tool]||tool
-      )
-      .join(" · ");
-
     toolsHTML=`
       <div class="tool-status">
-        <span class="tool-status-dot"></span>
         تم استخدام:
-        ${escapeHTML(readable)}
+        ${escapeHTML(
+          toolNames
+          .map(x=>labels[x]||x)
+          .join(" · ")
+        )}
       </div>
     `;
 
@@ -3313,7 +2596,6 @@ function createMessageElement(
         }
 
         ${fileHTML}
-
         ${toolsHTML}
 
       </div>
@@ -3346,48 +2628,40 @@ function createMessageElement(
   if(role==="assistant"){
 
     const copy=
-      message.querySelector(
-        ".copy-answer"
-      );
+      message.querySelector(".copy-answer");
 
     if(copy){
 
-      copy.addEventListener(
-        "click",
-        ()=>safeAction(async()=>{
+      bindPress(
+        copy,
+        async()=>{
 
           try{
 
             await navigator.clipboard
               .writeText(content);
 
-            showToast(
-              "تم نسخ الرد ✓"
-            );
+            showToast("تم نسخ الرد ✓");
 
           }catch{
 
-            showToast(
-              "تعذر نسخ الرد"
-            );
+            showToast("تعذر نسخ الرد");
 
           }
 
-        })
+        }
       );
 
     }
 
     const regenerate=
-      message.querySelector(
-        ".regenerate"
-      );
+      message.querySelector(".regenerate");
 
     if(regenerate){
 
-      regenerate.addEventListener(
-        "click",
-        ()=>safeAction(()=>{
+      bindPress(
+        regenerate,
+        ()=>{
 
           if(
             !sending &&
@@ -3401,7 +2675,7 @@ function createMessageElement(
 
           }
 
-        })
+        }
       );
 
     }
@@ -3410,9 +2684,9 @@ function createMessageElement(
     .querySelectorAll(".copy-code")
     .forEach(button=>{
 
-      button.addEventListener(
-        "click",
-        ()=>safeAction(async()=>{
+      bindPress(
+        button,
+        async()=>{
 
           try{
 
@@ -3424,8 +2698,7 @@ function createMessageElement(
             await navigator.clipboard
               .writeText(code);
 
-            button.textContent=
-              "تم النسخ";
+            button.textContent="تم النسخ";
 
             setTimeout(()=>{
               button.textContent="نسخ";
@@ -3433,13 +2706,11 @@ function createMessageElement(
 
           }catch{
 
-            showToast(
-              "تعذر نسخ الكود"
-            );
+            showToast("تعذر نسخ الكود");
 
           }
 
-        })
+        }
       );
 
     });
@@ -3473,9 +2744,9 @@ function addMessage(
   return element;
 }
 
-/* =========================================================
-   SERVER CONVERSATION
-========================================================= */
+/* =====================================================
+   SERVER HISTORY
+===================================================== */
 
 function getServerConversation(){
 
@@ -3487,9 +2758,9 @@ function getServerConversation(){
     }));
 }
 
-/* =========================================================
-   SENDING UI
-========================================================= */
+/* =====================================================
+   UI
+===================================================== */
 
 function setSendingUI(value){
 
@@ -3503,10 +2774,7 @@ function setSendingUI(value){
   if(sending){
 
     sendButton.classList.add("stop");
-
     sendButton.textContent="■";
-
-    sendButton.title="إيقاف الطلب";
 
     setConnectionState("busy");
 
@@ -3519,10 +2787,7 @@ function setSendingUI(value){
   }else{
 
     sendButton.classList.remove("stop");
-
     sendButton.textContent="↑";
-
-    sendButton.title="إرسال";
 
     setConnectionState("online");
 
@@ -3531,9 +2796,9 @@ function setSendingUI(value){
   }
 }
 
-/* =========================================================
+/* =====================================================
    STOP
-========================================================= */
+===================================================== */
 
 function stopRequest(){
 
@@ -3548,43 +2813,34 @@ function stopRequest(){
 
     setSendingUI(false);
 
-    showToast(
-      "تم إيقاف الطلب"
-    );
-
+    showToast("تم إيقاف الطلب");
   }
 }
 
-/* =========================================================
-   SEND BUTTON
-========================================================= */
+/* =====================================================
+   SEND
+===================================================== */
 
-sendButton.addEventListener(
-  "click",
-  ()=>safeAction(()=>{
+bindPress(
+  sendButton,
+  ()=>{
 
     if(sending){
 
       stopRequest();
 
-      return;
+    }else{
+
+      sendMessage();
 
     }
 
-    sendMessage();
-
-  })
+  }
 );
-
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
 
 async function sendMessage(){
 
-  if(sending){
-    return;
-  }
+  if(sending) return;
 
   const text=
     messageInput.value.trim();
@@ -3607,7 +2863,7 @@ async function sendMessage(){
     [...selectedFiles];
 
   const requestText=
-    text||
+    text ||
     "حلل الملفات المرفقة وأعطني النتائج المهمة.";
 
   lastUserText=requestText;
@@ -3650,18 +2906,16 @@ async function sendMessage(){
   );
 }
 
-/* =========================================================
-   API REQUEST
-========================================================= */
+/* =====================================================
+   API
+===================================================== */
 
 async function requestAI(
   text,
   files=[]
 ){
 
-  if(sending){
-    return;
-  }
+  if(sending) return;
 
   setSendingUI(true);
 
@@ -3672,27 +2926,19 @@ async function requestAI(
     abortController;
 
   const timeout=
-    setTimeout(()=>{
-
-      if(controller){
+    setTimeout(
+      ()=>{
         controller.abort();
-      }
-
-    },REQUEST_TIMEOUT);
+      },
+      REQUEST_TIMEOUT
+    );
 
   try{
-
-    setStatus(
-      fastMode
-        ? "Fast Mode يعمل..."
-        : "Sultan AI يعالج طلبك..."
-    );
 
     const encodedFiles=
       await prepareFiles(files);
 
     const payload={
-
       message:text,
 
       messages:
@@ -3703,7 +2949,6 @@ async function requestAI(
 
       fastMode:
         Boolean(fastMode)
-
     };
 
     const response=
@@ -3728,33 +2973,25 @@ async function requestAI(
     let data=null;
 
     try{
-
-      data=
-        await response.json();
-
+      data=await response.json();
     }catch{
-
       data=null;
-
     }
 
     if(!response.ok){
 
-      const errorMessage=
-        data?.error||
-        data?.message||
-        `HTTP ${response.status}`;
-
       throw new Error(
-        errorMessage
+        data?.error ||
+        data?.message ||
+        `HTTP ${response.status}`
       );
 
     }
 
     const reply=
       String(
-        data?.reply||
-        data?.message||
+        data?.reply ||
+        data?.message ||
         ""
       ).trim();
 
@@ -3772,9 +3009,7 @@ async function requestAI(
     });
 
     conversation=
-      conversation.slice(
-        -MAX_HISTORY
-      );
+      conversation.slice(-MAX_HISTORY);
 
     const toolsUsed=
       Array.isArray(data?.toolsUsed)
@@ -3788,57 +3023,6 @@ async function requestAI(
       toolsUsed
     );
 
-    if(toolsUsed.length){
-
-      const labels={
-        web_search:"بحث الويب",
-        visit_website:"قراءة موقع",
-        code_interpreter:"تنفيذ كود",
-        wolfram_alpha:"Wolfram Alpha"
-      };
-
-      const names=
-        toolsUsed.map(
-          tool=>labels[tool]||tool
-        );
-
-      setStatus(
-        `تم استخدام: ${names.join(" · ")}`
-      );
-
-      setTimeout(()=>{
-
-        if(!sending){
-
-          setStatus(
-            "جاهز للمساعدة"
-          );
-
-        }
-
-      },2800);
-
-    }
-
-    if(data?.meta?.model){
-
-      console.log(
-        "[Sultan AI] Model:",
-        data.meta.model
-      );
-
-    }
-
-    if(data?.meta?.latencyMs){
-
-      console.log(
-        "[Sultan AI] Latency:",
-        data.meta.latencyMs,
-        "ms"
-      );
-
-    }
-
   }catch(error){
 
     if(
@@ -3846,20 +3030,17 @@ async function requestAI(
     ){
 
       return;
+
     }
 
     console.error(
-      "Sultan AI request error:",
+      "[Sultan AI] API ERROR:",
       error
     );
 
-    const errorText=
-      error?.message||
-      "حدث خطأ أثناء الاتصال بالخادم.";
-
     addMessage(
       "assistant",
-      `تعذر إكمال الطلب حالياً.\n\n${errorText}`
+      `تعذر إكمال الطلب حالياً.\n\n${error?.message||"حدث خطأ غير معروف."}`
     );
 
     setConnectionState("offline");
@@ -3876,22 +3057,26 @@ async function requestAI(
 
     clearTimeout(timeout);
 
-    if(abortController===controller){
+    if(
+      abortController===controller
+    ){
 
       abortController=null;
 
       setSendingUI(false);
 
-      messageInput.focus();
+      setTimeout(()=>{
+        messageInput.focus();
+      },30);
 
     }
 
   }
 }
 
-/* =========================================================
-   HEALTH CHECK
-========================================================= */
+/* =====================================================
+   HEALTH
+===================================================== */
 
 async function checkServer(){
 
@@ -3907,11 +3092,7 @@ async function checkServer(){
       );
 
     if(!response.ok){
-
-      throw new Error(
-        "Health check failed"
-      );
-
+      throw new Error("Health check failed");
     }
 
     const data=
@@ -3928,39 +3109,22 @@ async function checkServer(){
       setTimeout(()=>{
 
         if(!sending){
-
-          setStatus(
-            "جاهز للمساعدة"
-          );
-
+          setStatus("جاهز للمساعدة");
         }
 
       },2500);
 
-      if(data?.version){
-
-        console.log(
-          "[Sultan AI] Server version:",
-          data.version
-        );
-
-      }
-
-      if(data?.tools){
-
-        console.log(
-          "[Sultan AI] Available tools:",
-          data.tools
-        );
-
-      }
+      console.log(
+        "[Sultan AI] Server:",
+        data
+      );
 
     }
 
   }catch(error){
 
     console.error(
-      "[Sultan AI] Health check failed:",
+      "[Sultan AI] Health error:",
       error
     );
 
@@ -3973,133 +3137,59 @@ async function checkServer(){
   }
 }
 
-/* =========================================================
+/* =====================================================
    NETWORK
-========================================================= */
+===================================================== */
 
 window.addEventListener(
   "online",
   ()=>{
-
     setConnectionState("online");
-
-    setStatus(
-      "تم استعادة الاتصال"
-    );
-
+    setStatus("تم استعادة الاتصال");
     checkServer();
-
   }
 );
 
 window.addEventListener(
   "offline",
   ()=>{
-
     setConnectionState("offline");
-
-    setStatus(
-      "لا يوجد اتصال بالإنترنت"
-    );
-
-    showToast(
-      "تحقق من اتصال الإنترنت"
-    );
-
+    setStatus("لا يوجد اتصال بالإنترنت");
+    showToast("تحقق من اتصال الإنترنت");
   }
 );
 
-/* =========================================================
-   ANDROID TOUCH SAFETY
-========================================================= */
-
-document.addEventListener(
-  "touchstart",
-  event=>{
-
-    const target=
-      event.target.closest(
-        "button,.quick,.nav-btn,.fast-toggle"
-      );
-
-    if(target){
-
-      target.style.webkitTapHighlightColor=
-        "transparent";
-    }
-
-  },
-  {
-    passive:true
-  }
-);
-
-/* =========================================================
-   ESC CLOSE SIDEBAR
-========================================================= */
+/* =====================================================
+   ESC
+===================================================== */
 
 document.addEventListener(
   "keydown",
   event=>{
 
     if(event.key==="Escape"){
-
       closeSidebar();
-
     }
 
   }
 );
 
-/* =========================================================
-   INITIALIZATION
-========================================================= */
+/* =====================================================
+   INIT
+===================================================== */
 
 updateFastToggle();
-
 updateModeBadge();
-
 autoResize();
-
 checkServer();
 
-window.addEventListener(
-  "load",
-  ()=>{
-
-    messageInput.focus();
-
-    scrollBottom(false);
-
-  }
-);
-
-window.addEventListener(
-  "beforeunload",
-  event=>{
-
-    if(!sending){
-      return;
-    }
-
-    event.preventDefault();
-
-    event.returnValue="";
-
-  }
-);
-
-/* =========================================================
-   DEBUG
-========================================================= */
-
 console.log(
-  "%c Sultan AI V7.1 ",
+  "%c Sultan AI V7.2 ",
   "background:#ff7a18;color:white;font-weight:900;padding:5px 10px;border-radius:5px;"
 );
 
 console.log(
-  "Sultan AI frontend initialized successfully."
+  "Pointer Event Engine: READY"
 );
 
 </script>
