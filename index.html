@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
 <meta name="theme-color" content="#08090b">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,16 +11,17 @@
 <title>Sultan AI</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent!important;
 }
 
-html,body{
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
-  min-height:100%;
   background:#08090b;
   color:#f5f5f5;
   font-family:Arial,"Segoe UI",sans-serif;
@@ -37,24 +39,23 @@ input{
 
 button{
   border:0;
-  outline:0;
+  outline:none!important;
   cursor:pointer;
-  -webkit-appearance:none;
-  appearance:none;
+  -webkit-appearance:none!important;
+  appearance:none!important;
   -webkit-tap-highlight-color:transparent!important;
   -webkit-touch-callout:none;
+  -webkit-user-select:none;
   user-select:none;
   touch-action:manipulation;
 }
 
 button:focus,
-button:focus-visible{
-  outline:none!important;
-  box-shadow:none!important;
-}
-
+button:focus-visible,
 button:active{
   outline:none!important;
+  box-shadow:none!important;
+  -webkit-tap-highlight-color:transparent!important;
 }
 
 .app{
@@ -64,7 +65,9 @@ button:active{
   overflow:hidden;
 }
 
-/* ================= SIDEBAR ================= */
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar{
   width:270px;
@@ -75,7 +78,7 @@ button:active{
   display:flex;
   flex-direction:column;
   padding:16px;
-  z-index:50;
+  z-index:100;
 }
 
 .logo{
@@ -104,7 +107,6 @@ button:active{
 .logo-text{
   font-size:21px;
   font-weight:800;
-  letter-spacing:-.5px;
 }
 
 .logo-text span{
@@ -119,7 +121,6 @@ button:active{
   color:#fff;
   font-weight:800;
   margin-bottom:18px;
-  transition:.15s;
 }
 
 .new-chat:active{
@@ -143,17 +144,15 @@ button:active{
   display:flex;
   align-items:center;
   gap:12px;
-  transition:background .15s,color .15s;
-}
-
-.nav-btn:hover{
-  background:#171a1f;
-  color:#fff;
 }
 
 .nav-btn.active{
   background:#1b1d21;
   color:#fff;
+}
+
+.nav-btn:active{
+  background:#20242a;
 }
 
 .nav-icon{
@@ -170,7 +169,9 @@ button:active{
   padding-top:15px;
 }
 
-/* ================= MAIN ================= */
+/* =====================================================
+   MAIN
+===================================================== */
 
 .main{
   flex:1;
@@ -188,9 +189,10 @@ button:active{
   display:flex;
   align-items:center;
   padding:0 18px;
-  background:rgba(8,9,11,.94);
+  background:rgba(8,9,11,.96);
   backdrop-filter:blur(15px);
-  z-index:20;
+  position:relative;
+  z-index:80;
 }
 
 .mobile-menu{
@@ -226,6 +228,10 @@ button:active{
   box-shadow:0 0 10px rgba(41,209,125,.5);
 }
 
+/* =====================================================
+   CONTENT
+===================================================== */
+
 .content{
   flex:1;
   min-height:0;
@@ -234,6 +240,7 @@ button:active{
 }
 
 .chat{
+  width:100%;
   height:100%;
   overflow-y:auto;
   padding:28px max(18px,calc((100% - 920px)/2));
@@ -250,7 +257,9 @@ button:active{
   border-radius:10px;
 }
 
-/* ================= WELCOME ================= */
+/* =====================================================
+   WELCOME
+===================================================== */
 
 .welcome{
   min-height:100%;
@@ -286,7 +295,6 @@ button:active{
 .welcome h1{
   margin:0;
   font-size:34px;
-  letter-spacing:-1px;
 }
 
 .welcome h1 span{
@@ -314,30 +322,16 @@ button:active{
   background:#111317;
   color:#fff;
   text-align:right;
-  transition:background .15s,border-color .15s,transform .15s;
-}
-
-.quick:hover{
-  background:#17191e;
-  border-color:#383c44;
 }
 
 .quick:active{
   transform:scale(.98);
+  background:#17191e;
 }
 
-.quick strong{
-  display:block;
-  font-size:14px;
-  margin-bottom:7px;
-}
-
-.quick span{
-  color:#747b85;
-  font-size:12px;
-}
-
-/* ================= MESSAGES ================= */
+/* =====================================================
+   MESSAGES
+===================================================== */
 
 .message{
   width:100%;
@@ -430,12 +424,6 @@ button:active{
   border-radius:6px;
   padding:2px 5px;
   direction:ltr;
-  unicode-bidi:embed;
-}
-
-.assistant-text a{
-  color:#ff9300;
-  text-decoration:none;
 }
 
 .code-wrap{
@@ -487,11 +475,6 @@ button:active{
   border-radius:9px;
   background:#15181d;
   color:#9298a1;
-  font-size:14px;
-}
-
-.action-btn:active{
-  transform:scale(.94);
 }
 
 .typing{
@@ -522,13 +505,16 @@ button:active{
     opacity:.25;
     transform:translateY(0);
   }
+
   30%{
     opacity:1;
     transform:translateY(-3px);
   }
 }
 
-/* ================= COMPOSER ================= */
+/* =====================================================
+   COMPOSER
+===================================================== */
 
 .composer-area{
   position:absolute;
@@ -537,10 +523,13 @@ button:active{
   bottom:0;
   padding:15px max(18px,calc((100% - 920px)/2)) 18px;
   background:linear-gradient(transparent,#08090b 25%);
-  pointer-events:none;
+  pointer-events:auto;
+  z-index:70;
 }
 
 .composer{
+  position:relative;
+  z-index:71;
   pointer-events:auto;
   border:1px solid #292d34;
   background:#111317;
@@ -582,6 +571,8 @@ button:active{
   display:flex;
   align-items:center;
   justify-content:center;
+  position:relative;
+  z-index:75;
 }
 
 .attach-btn{
@@ -600,11 +591,6 @@ button:active{
   background:#d74a32;
 }
 
-.attach-btn:active,
-.send-btn:active{
-  transform:scale(.94);
-}
-
 .composer-bottom{
   display:flex;
   align-items:center;
@@ -619,6 +605,8 @@ button:active{
   background:#171a1f;
   color:#858b94;
   font-size:11px;
+  position:relative;
+  z-index:75;
 }
 
 .fast-toggle.active{
@@ -654,7 +642,25 @@ button:active{
   color:#aaa;
 }
 
-/* ================= TOAST ================= */
+/* =====================================================
+   OVERLAY
+===================================================== */
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  z-index:90;
+}
+
+.overlay.show{
+  display:block;
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
 
 .toast{
   position:fixed;
@@ -663,7 +669,7 @@ button:active{
   transform:translate(-50%,20px);
   opacity:0;
   pointer-events:none;
-  z-index:100;
+  z-index:999;
   background:#20242a;
   color:#fff;
   border:1px solid #353a42;
@@ -680,21 +686,9 @@ button:active{
   transform:translate(-50%,0);
 }
 
-/* ================= OVERLAY ================= */
-
-.overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  z-index:40;
-}
-
-.overlay.show{
-  display:block;
-}
-
-/* ================= MOBILE ================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:760px){
 
@@ -705,7 +699,7 @@ button:active{
     bottom:0;
     transform:translateX(105%);
     transition:transform .22s ease;
-    z-index:60;
+    z-index:200;
     box-shadow:-15px 0 45px rgba(0,0,0,.45);
   }
 
@@ -715,6 +709,8 @@ button:active{
 
   .mobile-menu{
     display:block;
+    position:relative;
+    z-index:210;
   }
 
   .topbar{
@@ -747,10 +743,11 @@ button:active{
 
   .composer-area{
     padding:10px 9px 10px;
+    z-index:150;
   }
 
   .composer{
-    border-radius:16px;
+    z-index:151;
   }
 }
 
@@ -772,6 +769,7 @@ button:active{
     font-size:14px;
   }
 }
+
 </style>
 </head>
 
@@ -779,83 +777,113 @@ button:active{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
 
     <div class="logo">
+
       <div class="logo-icon">
+
         <svg viewBox="0 0 100 100" fill="none">
-          <path d="M24 24h52v38H24z"
-                stroke="white"
-                stroke-width="8"
-                rx="10"/>
-          <path d="M36 76h28M50 62v14"
-                stroke="white"
-                stroke-width="8"
-                stroke-linecap="round"/>
-          <path d="M38 40h24M38 50h15"
-                stroke="white"
-                stroke-width="6"
-                stroke-linecap="round"/>
+
+          <path
+            d="M24 24h52v38H24z"
+            stroke="white"
+            stroke-width="8"
+            rx="10"
+          />
+
+          <path
+            d="M36 76h28M50 62v14"
+            stroke="white"
+            stroke-width="8"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M38 40h24M38 50h15"
+            stroke="white"
+            stroke-width="6"
+            stroke-linecap="round"
+          />
+
         </svg>
+
       </div>
 
       <div class="logo-text">
         Sultan <span>AI</span>
       </div>
+
     </div>
 
-    <button type="button"
-            class="new-chat"
-            id="newChat">
+
+    <button
+      type="button"
+      class="new-chat"
+      id="newChat"
+    >
       + محادثة جديدة
     </button>
 
+
     <nav class="nav">
 
-      <button type="button"
-              class="nav-btn active"
-              data-mode="chat">
+      <button
+        type="button"
+        class="nav-btn active"
+        data-mode="chat"
+      >
         <span class="nav-icon">💬</span>
         <span>المحادثة</span>
       </button>
 
-      <button type="button"
-              class="nav-btn"
-              data-mode="files">
+      <button
+        type="button"
+        class="nav-btn"
+        data-mode="files"
+      >
         <span class="nav-icon">📁</span>
         <span>الملفات</span>
       </button>
 
-      <button type="button"
-              class="nav-btn"
-              data-mode="fast">
+      <button
+        type="button"
+        class="nav-btn"
+        data-mode="fast"
+      >
         <span class="nav-icon">⚡</span>
         <span>الوضع السريع</span>
       </button>
 
-      <button type="button"
-              class="nav-btn"
-              data-mode="web">
+      <button
+        type="button"
+        class="nav-btn"
+        data-mode="web"
+      >
         <span class="nav-icon">🌐</span>
         <span>البحث والويب</span>
       </button>
 
-      <button type="button"
-              class="nav-btn"
-              data-mode="code">
+      <button
+        type="button"
+        class="nav-btn"
+        data-mode="code"
+      >
         <span class="nav-icon">💻</span>
         <span>البرمجة</span>
       </button>
 
-      <button type="button"
-              class="nav-btn"
-              data-mode="analysis">
+      <button
+        type="button"
+        class="nav-btn"
+        data-mode="analysis"
+      >
         <span class="nav-icon">🧠</span>
         <span>التحليل</span>
       </button>
 
     </nav>
+
 
     <div class="sidebar-bottom">
       Sultan AI V7.2
@@ -863,9 +891,13 @@ button:active{
 
   </aside>
 
-  <div class="overlay" id="overlay"></div>
 
-  <!-- MAIN -->
+  <div
+    class="overlay"
+    id="overlay"
+  ></div>
+
+
   <main class="main">
 
     <header class="topbar">
@@ -876,7 +908,9 @@ button:active{
         id="mobileMenu"
         aria-label="فتح القائمة"
         aria-expanded="false"
-      >☰</button>
+      >
+        ☰
+      </button>
 
       <div class="top-title">
         Sultan AI
@@ -889,11 +923,18 @@ button:active{
 
     </header>
 
+
     <div class="content">
 
-      <section class="chat" id="chat">
+      <section
+        class="chat"
+        id="chat"
+      >
 
-        <div class="welcome" id="welcome">
+        <div
+          class="welcome"
+          id="welcome"
+        >
 
           <div class="welcome-inner">
 
@@ -901,32 +942,41 @@ button:active{
 
               <svg viewBox="0 0 100 100" fill="none">
 
-                <path d="M24 24h52v38H24z"
-                      stroke="white"
-                      stroke-width="8"
-                      rx="10"/>
+                <path
+                  d="M24 24h52v38H24z"
+                  stroke="white"
+                  stroke-width="8"
+                  rx="10"
+                />
 
-                <path d="M36 76h28M50 62v14"
-                      stroke="white"
-                      stroke-width="8"
-                      stroke-linecap="round"/>
+                <path
+                  d="M36 76h28M50 62v14"
+                  stroke="white"
+                  stroke-width="8"
+                  stroke-linecap="round"
+                />
 
-                <path d="M38 40h24M38 50h15"
-                      stroke="white"
-                      stroke-width="6"
-                      stroke-linecap="round"/>
+                <path
+                  d="M38 40h24M38 50h15"
+                  stroke="white"
+                  stroke-width="6"
+                  stroke-linecap="round"
+                />
 
               </svg>
 
             </div>
 
+
             <h1>
               أهلاً بك في <span>Sultan AI</span>
             </h1>
 
+
             <p>
               مساعدك الذكي للمحادثة، البرمجة، تحليل الملفات والبحث.
             </p>
+
 
             <div class="quick-grid">
 
@@ -939,6 +989,7 @@ button:active{
                 <span>شرح مبسط لأي موضوع</span>
               </button>
 
+
               <button
                 type="button"
                 class="quick"
@@ -948,6 +999,7 @@ button:active{
                 <span>اكتب وفسّر الكود</span>
               </button>
 
+
               <button
                 type="button"
                 class="quick"
@@ -956,6 +1008,7 @@ button:active{
                 <strong>🔎 حلّل فكرة</strong>
                 <span>تحليل واقتراحات عملية</span>
               </button>
+
 
               <button
                 type="button"
@@ -974,13 +1027,16 @@ button:active{
 
       </section>
 
-      <!-- COMPOSER -->
+
       <div class="composer-area">
 
         <div class="composer">
 
-          <div class="file-list"
-               id="fileList"></div>
+          <div
+            class="file-list"
+            id="fileList"
+          ></div>
+
 
           <div class="composer-row">
 
@@ -990,7 +1046,10 @@ button:active{
               id="attachButton"
               aria-label="إرفاق ملف"
               title="إرفاق ملف"
-            >📎</button>
+            >
+              📎
+            </button>
+
 
             <textarea
               id="messageInput"
@@ -1001,15 +1060,19 @@ button:active{
               spellcheck="true"
             ></textarea>
 
+
             <button
               type="button"
               class="send-btn"
               id="sendButton"
               aria-label="إرسال"
               title="إرسال"
-            >➤</button>
+            >
+              ➤
+            </button>
 
           </div>
+
 
           <div class="composer-bottom">
 
@@ -1021,6 +1084,7 @@ button:active{
             >
               ⚡ الوضع السريع
             </button>
+
 
             <input
               type="file"
@@ -1042,193 +1106,331 @@ button:active{
 
 </div>
 
-<div class="toast" id="toast"></div>
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
 
 <script>
+
 "use strict";
 
-/* =========================================================
+
+/* =====================================================
    CONFIG
-========================================================= */
+===================================================== */
 
 const API_ENDPOINT = "/api/chat";
 
 const MAX_HISTORY = 24;
+
 const MAX_FILES = 5;
-const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const MAX_TOTAL_FILE_BYTES = 45 * 1024 * 1024;
-const REQUEST_TIMEOUT = 180000;
+
+const MAX_FILE_SIZE =
+  20 * 1024 * 1024;
+
+const MAX_TOTAL_FILE_BYTES =
+  45 * 1024 * 1024;
+
+const REQUEST_TIMEOUT =
+  180000;
 
 
-/* =========================================================
+/* =====================================================
    STATE
-========================================================= */
+===================================================== */
 
 let conversation = [];
+
 let selectedFiles = [];
+
 let sending = false;
+
 let abortController = null;
+
 let fastMode = false;
 
 let lastUserText = "";
+
 let lastRequestFiles = [];
 
 let toastTimer = null;
 
 
-/* =========================================================
+/* =====================================================
    ELEMENTS
-========================================================= */
+===================================================== */
 
-const chat = document.getElementById("chat");
-const welcome = document.getElementById("welcome");
+const $ = id =>
+  document.getElementById(id);
 
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-const mobileMenu = document.getElementById("mobileMenu");
+const chat =
+  $("chat");
 
-const newChatButton = document.getElementById("newChat");
+const welcome =
+  $("welcome");
 
-const messageInput = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
+const sidebar =
+  $("sidebar");
 
-const attachButton = document.getElementById("attachButton");
-const fileInput = document.getElementById("fileInput");
-const fileList = document.getElementById("fileList");
+const overlay =
+  $("overlay");
 
-const fastToggle = document.getElementById("fastToggle");
-const toast = document.getElementById("toast");
+const mobileMenu =
+  $("mobileMenu");
+
+const newChatButton =
+  $("newChat");
+
+const messageInput =
+  $("messageInput");
+
+const sendButton =
+  $("sendButton");
+
+const attachButton =
+  $("attachButton");
+
+const fileInput =
+  $("fileInput");
+
+const fileList =
+  $("fileList");
+
+const fastToggle =
+  $("fastToggle");
+
+const toast =
+  $("toast");
 
 
-/* =========================================================
+/* =====================================================
    ERROR HANDLING
-========================================================= */
+===================================================== */
 
-window.addEventListener("error", function(event){
+window.addEventListener(
+  "error",
+  event => {
 
-  console.error(
-    "Sultan AI error:",
-    event.error || event.message
+    console.error(
+      "Sultan AI error:",
+      event.error || event.message
+    );
+
+  }
+);
+
+
+window.addEventListener(
+  "unhandledrejection",
+  event => {
+
+    console.error(
+      "Sultan AI promise error:",
+      event.reason
+    );
+
+  }
+);
+
+
+/* =====================================================
+   BUTTON SYSTEM
+   Android + Chrome + Desktop
+===================================================== */
+
+function bindPress(
+  element,
+  callback
+){
+
+  if(!element){
+    return;
+  }
+
+  let used = false;
+
+  const run = event => {
+
+    if(used){
+      return;
+    }
+
+    used = true;
+
+    if(event){
+
+      event.preventDefault();
+
+    }
+
+    try{
+
+      callback(event);
+
+    }catch(error){
+
+      console.error(
+        "Button error:",
+        error
+      );
+
+      showToast(
+        "حدث خطأ، حاول مرة أخرى."
+      );
+
+    }
+
+    setTimeout(
+      () => {
+        used = false;
+      },
+      350
+    );
+
+  };
+
+
+  element.addEventListener(
+    "pointerup",
+    run,
+    {
+      passive:false
+    }
   );
 
-});
 
-window.addEventListener("unhandledrejection", function(event){
+  element.addEventListener(
+    "click",
+    event => {
 
-  console.error(
-    "Sultan AI promise error:",
-    event.reason
+      /*
+        إذا كان pointerup اشتغل،
+        click يتم تجاهله.
+      */
+
+      if(used){
+        return;
+      }
+
+      run(event);
+
+    },
+    false
   );
-
-});
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(message){
-
-  if(!toast) return;
-
-  clearTimeout(toastTimer);
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  toastTimer = setTimeout(function(){
-
-    toast.classList.remove("show");
-
-  },2600);
 
 }
 
 
-/* =========================================================
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message){
+
+  if(!toast){
+    return;
+  }
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toast.textContent =
+    message;
+
+  toast.classList.add(
+    "show"
+  );
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2600
+    );
+
+}
+
+
+/* =====================================================
    SIDEBAR
-========================================================= */
+===================================================== */
 
 function openSidebar(){
 
-  if(!sidebar || !overlay) return;
+  sidebar.classList.add(
+    "open"
+  );
 
-  sidebar.classList.add("open");
-  overlay.classList.add("show");
+  overlay.classList.add(
+    "show"
+  );
 
-  if(mobileMenu){
-
-    mobileMenu.setAttribute(
-      "aria-expanded",
-      "true"
-    );
-
-  }
+  mobileMenu.setAttribute(
+    "aria-expanded",
+    "true"
+  );
 
 }
 
 
 function closeSidebar(){
 
-  if(!sidebar || !overlay) return;
+  sidebar.classList.remove(
+    "open"
+  );
 
-  sidebar.classList.remove("open");
-  overlay.classList.remove("show");
+  overlay.classList.remove(
+    "show"
+  );
 
-  if(mobileMenu){
-
-    mobileMenu.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-  }
-
-}
-
-
-if(mobileMenu){
-
-  mobileMenu.addEventListener(
-    "click",
-    function(){
-
-      if(sidebar.classList.contains("open")){
-
-        closeSidebar();
-
-      }else{
-
-        openSidebar();
-
-      }
-
-    },
-    false
+  mobileMenu.setAttribute(
+    "aria-expanded",
+    "false"
   );
 
 }
 
 
-if(overlay){
+bindPress(
+  mobileMenu,
+  () => {
 
-  overlay.addEventListener(
-    "click",
-    function(){
+    if(
+      sidebar.classList.contains(
+        "open"
+      )
+    ){
 
       closeSidebar();
 
-    },
-    false
-  );
+    }else{
 
-}
+      openSidebar();
+
+    }
+
+  }
+);
 
 
-/* =========================================================
+bindPress(
+  overlay,
+  closeSidebar
+);
+
+
+/* =====================================================
    NEW CHAT
-========================================================= */
+===================================================== */
 
 function newChat(){
 
@@ -1250,213 +1452,228 @@ function newChat(){
 
   chat.innerHTML = "";
 
-  chat.appendChild(welcome);
+  chat.appendChild(
+    welcome
+  );
 
-  welcome.style.display = "";
+  welcome.style.display =
+    "";
 
-  messageInput.value = "";
+  messageInput.value =
+    "";
 
   autoResize();
 
-  sendButton.classList.remove("stop");
-
-  sendButton.textContent = "➤";
-
-  sendButton.title = "إرسال";
-
-  sendButton.setAttribute(
-    "aria-label",
-    "إرسال"
+  sendButton.classList.remove(
+    "stop"
   );
+
+  sendButton.textContent =
+    "➤";
+
+  sendButton.title =
+    "إرسال";
 
   closeSidebar();
 
   messageInput.focus();
 
-  showToast("تم إنشاء محادثة جديدة.");
-
-}
-
-
-if(newChatButton){
-
-  newChatButton.addEventListener(
-    "click",
-    newChat,
-    false
+  showToast(
+    "تم إنشاء محادثة جديدة."
   );
 
 }
 
 
-/* =========================================================
+bindPress(
+  newChatButton,
+  newChat
+);
+
+
+/* =====================================================
    NAVIGATION
-========================================================= */
+===================================================== */
 
-document.querySelectorAll(".nav-btn").forEach(function(button){
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
 
-  button.addEventListener(
-    "click",
-    function(){
+    bindPress(
+      button,
+      () => {
 
-      document.querySelectorAll(".nav-btn")
-        .forEach(function(item){
+        document
+          .querySelectorAll(
+            ".nav-btn"
+          )
+          .forEach(item => {
 
-          item.classList.remove("active");
+            item.classList.remove(
+              "active"
+            );
 
-        });
+          });
 
-      button.classList.add("active");
 
-      const mode = button.dataset.mode;
-
-      if(mode === "chat"){
-
-        showToast("وضع المحادثة مفعل.");
-
-      }
-
-      if(mode === "files"){
-
-        showToast(
-          "أرفق ملفاً من زر 📎"
+        button.classList.add(
+          "active"
         );
 
-        if(!sending){
 
-          fileInput.click();
+        const mode =
+          button.dataset.mode;
+
+
+        if(mode === "chat"){
+
+          showToast(
+            "وضع المحادثة مفعّل."
+          );
 
         }
 
+
+        if(mode === "files"){
+
+          showToast(
+            "أرفق ملفاً من زر 📎"
+          );
+
+        }
+
+
+        if(mode === "fast"){
+
+          setFastMode(true);
+
+          showToast(
+            "تم تفعيل الوضع السريع."
+          );
+
+        }
+
+
+        if(mode === "web"){
+
+          showToast(
+            "أدوات الويب متاحة من الخادم عند دعمها."
+          );
+
+        }
+
+
+        if(mode === "code"){
+
+          showToast(
+            "اكتب طلبك البرمجي في مربع الرسالة."
+          );
+
+        }
+
+
+        if(mode === "analysis"){
+
+          showToast(
+            "أرسل النص أو الملف الذي تريد تحليله."
+          );
+
+        }
+
+
+        closeSidebar();
+
       }
+    );
 
-      if(mode === "fast"){
-
-        setFastMode(true);
-
-        showToast(
-          "تم تفعيل الوضع السريع."
-        );
-
-      }
-
-      if(mode === "web"){
-
-        showToast(
-          "Sultan AI يستطيع استخدام أدوات الويب عند دعمها من الخادم."
-        );
-
-      }
-
-      if(mode === "code"){
-
-        showToast(
-          "اكتب طلبك البرمجي في مربع الرسالة."
-        );
-
-      }
-
-      if(mode === "analysis"){
-
-        showToast(
-          "أرسل النص أو الملف الذي تريد تحليله."
-        );
-
-      }
-
-      closeSidebar();
-
-    },
-    false
-  );
-
-});
+  });
 
 
-/* =========================================================
+/* =====================================================
    QUICK PROMPTS
-========================================================= */
+===================================================== */
 
-document.querySelectorAll(".quick").forEach(function(button){
+document
+  .querySelectorAll(".quick")
+  .forEach(button => {
 
-  button.addEventListener(
-    "click",
-    function(){
+    bindPress(
+      button,
+      () => {
 
-      const prompt =
-        button.dataset.prompt || "";
+        const prompt =
+          button.dataset.prompt ||
+          "";
 
-      if(!prompt) return;
+        if(!prompt){
+          return;
+        }
 
-      messageInput.value = prompt;
+        messageInput.value =
+          prompt;
 
-      autoResize();
+        autoResize();
 
-      messageInput.focus();
+        messageInput.focus();
 
-      sendMessage();
+        sendMessage();
 
-    },
-    false
-  );
+      }
+    );
 
-});
+  });
 
 
-/* =========================================================
+/* =====================================================
    FAST MODE
-========================================================= */
+===================================================== */
 
 function setFastMode(value){
 
-  fastMode = Boolean(value);
+  fastMode =
+    Boolean(value);
 
-  if(fastToggle){
+  fastToggle.classList.toggle(
+    "active",
+    fastMode
+  );
 
-    fastToggle.classList.toggle(
-      "active",
-      fastMode
-    );
+  fastToggle.setAttribute(
+    "aria-pressed",
+    fastMode
+      ? "true"
+      : "false"
+  );
 
-    fastToggle.setAttribute(
-      "aria-pressed",
-      fastMode ? "true" : "false"
+}
+
+
+bindPress(
+  fastToggle,
+  () => {
+
+    setFastMode(
+      !fastMode
     );
 
   }
-
-}
-
-
-if(fastToggle){
-
-  fastToggle.addEventListener(
-    "click",
-    function(){
-
-      setFastMode(!fastMode);
-
-    },
-    false
-  );
-
-}
+);
 
 
-/* =========================================================
+/* =====================================================
    TEXTAREA
-========================================================= */
+===================================================== */
 
 function autoResize(){
 
-  if(!messageInput) return;
+  messageInput.style.height =
+    "auto";
 
-  messageInput.style.height = "auto";
-
-  const height = Math.min(
-    messageInput.scrollHeight,
-    150
-  );
+  const height =
+    Math.min(
+      messageInput.scrollHeight,
+      150
+    );
 
   messageInput.style.height =
     height + "px";
@@ -1466,16 +1683,17 @@ function autoResize(){
 
 messageInput.addEventListener(
   "input",
-  autoResize,
-  false
+  autoResize
 );
 
 
 messageInput.addEventListener(
   "keydown",
-  function(event){
+  event => {
 
-    if(event.isComposing) return;
+    if(event.isComposing){
+      return;
+    }
 
     if(
       event.key === "Enter" &&
@@ -1492,43 +1710,37 @@ messageInput.addEventListener(
 
     }
 
-  },
-  false
+  }
 );
 
 
-/* =========================================================
+/* =====================================================
    FILE UPLOAD
-========================================================= */
+===================================================== */
 
-if(attachButton){
+bindPress(
+  attachButton,
+  () => {
 
-  attachButton.addEventListener(
-    "click",
-    function(){
+    if(sending){
 
-      if(sending){
+      showToast(
+        "انتظر حتى انتهاء الطلب الحالي."
+      );
 
-        showToast(
-          "انتظر حتى انتهاء الطلب الحالي."
-        );
+      return;
 
-        return;
+    }
 
-      }
+    fileInput.click();
 
-      fileInput.click();
-
-    },
-    false
-  );
-
-}
+  }
+);
 
 
 fileInput.addEventListener(
   "change",
-  function(event){
+  event => {
 
     const files =
       Array.from(
@@ -1537,20 +1749,27 @@ fileInput.addEventListener(
 
     addFiles(files);
 
-    fileInput.value = "";
+    fileInput.value =
+      "";
 
-  },
-  false
+  }
 );
 
 
 function addFiles(files){
 
-  if(!files.length) return;
+  if(!files.length){
+    return;
+  }
 
-  for(const file of files){
+  for(
+    const file of files
+  ){
 
-    if(selectedFiles.length >= MAX_FILES){
+    if(
+      selectedFiles.length >=
+      MAX_FILES
+    ){
 
       showToast(
         `الحد الأقصى ${MAX_FILES} ملفات.`
@@ -1560,7 +1779,11 @@ function addFiles(files){
 
     }
 
-    if(file.size > MAX_FILE_SIZE){
+
+    if(
+      file.size >
+      MAX_FILE_SIZE
+    ){
 
       showToast(
         `الملف ${file.name} أكبر من 20MB.`
@@ -1570,17 +1793,19 @@ function addFiles(files){
 
     }
 
+
     const total =
       selectedFiles.reduce(
-        function(sum,item){
-
-          return sum + item.size;
-
-        },
+        (sum,item) =>
+          sum + item.size,
         0
       ) + file.size;
 
-    if(total > MAX_TOTAL_FILE_BYTES){
+
+    if(
+      total >
+      MAX_TOTAL_FILE_BYTES
+    ){
 
       showToast(
         "تجاوز الحجم الإجمالي المسموح للملفات."
@@ -1590,24 +1815,28 @@ function addFiles(files){
 
     }
 
+
     const duplicate =
       selectedFiles.some(
-        function(item){
-
-          return (
-            item.name === file.name &&
-            item.size === file.size &&
-            item.lastModified === file.lastModified
-          );
-
-        }
+        item =>
+          item.name === file.name &&
+          item.size === file.size &&
+          item.lastModified ===
+            file.lastModified
       );
 
-    if(duplicate) continue;
 
-    selectedFiles.push(file);
+    if(duplicate){
+      continue;
+    }
+
+
+    selectedFiles.push(
+      file
+    );
 
   }
+
 
   renderSelectedFiles();
 
@@ -1616,38 +1845,53 @@ function addFiles(files){
 
 function renderSelectedFiles(){
 
-  fileList.innerHTML = "";
+  fileList.innerHTML =
+    "";
 
   selectedFiles.forEach(
-    function(file,index){
+    (file,index) => {
 
       const chip =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
-      chip.className = "file-chip";
+      chip.className =
+        "file-chip";
+
 
       const name =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
-      name.textContent = file.name;
+      name.textContent =
+        file.name;
+
 
       const remove =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      remove.type = "button";
+      remove.type =
+        "button";
 
-      remove.className = "file-remove";
+      remove.className =
+        "file-remove";
 
-      remove.textContent = "×";
+      remove.textContent =
+        "×";
 
       remove.setAttribute(
         "aria-label",
         "حذف الملف"
       );
 
-      remove.addEventListener(
-        "click",
-        function(){
+
+      bindPress(
+        remove,
+        () => {
 
           selectedFiles.splice(
             index,
@@ -1656,15 +1900,21 @@ function renderSelectedFiles(){
 
           renderSelectedFiles();
 
-        },
-        false
+        }
       );
 
-      chip.appendChild(name);
 
-      chip.appendChild(remove);
+      chip.appendChild(
+        name
+      );
 
-      fileList.appendChild(chip);
+      chip.appendChild(
+        remove
+      );
+
+      fileList.appendChild(
+        chip
+      );
 
     }
   );
@@ -1672,47 +1922,55 @@ function renderSelectedFiles(){
 }
 
 
-/* =========================================================
+/* =====================================================
    FILE READER
-========================================================= */
+===================================================== */
 
 function readFile(file){
 
   return new Promise(
-    function(resolve,reject){
+    (resolve,reject) => {
 
       const reader =
         new FileReader();
 
-      reader.onload = function(){
 
-        resolve({
+      reader.onload =
+        () => {
 
-          name:file.name,
+          resolve({
 
-          type:
-            file.type ||
-            "application/octet-stream",
+            name:file.name,
 
-          size:file.size,
+            type:
+              file.type ||
+              "application/octet-stream",
 
-          data:reader.result
+            size:file.size,
 
-        });
+            data:
+              reader.result
 
-      };
+          });
 
-      reader.onerror = function(){
+        };
 
-        reject(
-          new Error(
-            "تعذر قراءة الملف."
-          )
-        );
 
-      };
+      reader.onerror =
+        () => {
 
-      reader.readAsDataURL(file);
+          reject(
+            new Error(
+              "تعذر قراءة الملف."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(
+        file
+      );
 
     }
   );
@@ -1724,7 +1982,9 @@ async function prepareFiles(files){
 
   const output = [];
 
-  for(const file of files){
+  for(
+    const file of files
+  ){
 
     try{
 
@@ -1734,7 +1994,9 @@ async function prepareFiles(files){
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       showToast(
         `تعذر قراءة ${file.name}`
@@ -1749,23 +2011,33 @@ async function prepareFiles(files){
 }
 
 
-/* =========================================================
+/* =====================================================
    MARKDOWN
-========================================================= */
+===================================================== */
 
 function escapeHTML(text){
 
   return String(text)
-
-    .replace(/&/g,"&amp;")
-
-    .replace(/</g,"&lt;")
-
-    .replace(/>/g,"&gt;")
-
-    .replace(/"/g,"&quot;")
-
-    .replace(/'/g,"&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
@@ -1775,11 +2047,13 @@ function inlineMarkdown(text){
   let result =
     escapeHTML(text);
 
+
   result =
     result.replace(
       /\*\*(.+?)\*\*/g,
       "<strong>$1</strong>"
     );
+
 
   result =
     result.replace(
@@ -1787,11 +2061,13 @@ function inlineMarkdown(text){
       "<code>$1</code>"
     );
 
+
   result =
     result.replace(
       /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,
       '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
     );
+
 
   return result;
 
@@ -1800,11 +2076,16 @@ function inlineMarkdown(text){
 
 function renderMarkdown(text){
 
-  if(!text) return "";
+  if(!text){
+    return "";
+  }
+
 
   const blocks = [];
 
-  let source = String(text);
+  let source =
+    String(text);
+
 
   source =
     source.replace(
@@ -1817,33 +2098,45 @@ function renderMarkdown(text){
             .toString(36)
             .slice(2);
 
+
         blocks.push({
 
           id,
 
           language:
-            language || "code",
+            language ||
+            "code",
 
           code
 
         });
 
-        return `___CODE_BLOCK_${blocks.length - 1}___`;
+
+        return (
+          `___CODE_BLOCK_${blocks.length-1}___`
+        );
 
       }
     );
 
+
   const lines =
     source.split("\n");
 
-  let html = "";
 
-  let paragraph = [];
+  let html =
+    "";
+
+  let paragraph =
+    [];
 
 
   function flushParagraph(){
 
-    if(!paragraph.length) return;
+    if(!paragraph.length){
+      return;
+    }
+
 
     html +=
       "<p>" +
@@ -1852,15 +2145,20 @@ function renderMarkdown(text){
         .join("<br>") +
       "</p>";
 
-    paragraph = [];
+
+    paragraph =
+      [];
 
   }
 
 
-  for(const line of lines){
+  for(
+    const line of lines
+  ){
 
     const trimmed =
       line.trim();
+
 
     if(!trimmed){
 
@@ -1871,29 +2169,42 @@ function renderMarkdown(text){
     }
 
 
-    if(/^#{1,3}\s/.test(trimmed)){
+    if(
+      /^#{1,3}\s/.test(
+        trimmed
+      )
+    ){
 
       flushParagraph();
+
 
       const match =
         trimmed.match(
           /^(#{1,3})\s+(.*)$/
         );
 
+
       const level =
         match[1].length;
 
+
       html +=
-        `<h${level + 2}>${inlineMarkdown(match[2])}</h${level + 2}>`;
+        `<h${level+2}>${inlineMarkdown(match[2])}</h${level+2}>`;
+
 
       continue;
 
     }
 
 
-    if(/^[*-]\s+/.test(trimmed)){
+    if(
+      /^[*-]\s+/.test(
+        trimmed
+      )
+    ){
 
       flushParagraph();
+
 
       html +=
         `<div>• ${inlineMarkdown(
@@ -1903,11 +2214,15 @@ function renderMarkdown(text){
           )
         )}</div>`;
 
+
       continue;
 
     }
 
-    paragraph.push(line);
+
+    paragraph.push(
+      line
+    );
 
   }
 
@@ -1916,18 +2231,24 @@ function renderMarkdown(text){
 
 
   blocks.forEach(
-    function(block,index){
+    (block,index) => {
 
       const codeHTML =
-        escapeHTML(block.code);
+        escapeHTML(
+          block.code
+        );
+
 
       const blockHTML = `
+
         <div class="code-wrap">
 
           <div class="code-head">
 
             <span>
-              ${escapeHTML(block.language)}
+              ${escapeHTML(
+                block.language
+              )}
             </span>
 
             <button
@@ -1946,7 +2267,9 @@ function renderMarkdown(text){
           >${codeHTML}</pre>
 
         </div>
+
       `;
+
 
       html =
         html.replace(
@@ -1963,9 +2286,9 @@ function renderMarkdown(text){
 }
 
 
-/* =========================================================
-   MESSAGE RENDERING
-========================================================= */
+/* =====================================================
+   WELCOME
+===================================================== */
 
 function hideWelcome(){
 
@@ -1981,10 +2304,14 @@ function hideWelcome(){
 }
 
 
+/* =====================================================
+   SCROLL
+===================================================== */
+
 function scrollBottom(){
 
   requestAnimationFrame(
-    function(){
+    () => {
 
       chat.scrollTop =
         chat.scrollHeight;
@@ -1995,18 +2322,28 @@ function scrollBottom(){
 }
 
 
+/* =====================================================
+   USER MESSAGE
+===================================================== */
+
 function addUserMessage(text){
 
   hideWelcome();
 
+
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   message.className =
     "message user";
 
+
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   bubble.className =
     "bubble";
@@ -2014,21 +2351,35 @@ function addUserMessage(text){
   bubble.textContent =
     text;
 
-  message.appendChild(bubble);
 
-  chat.appendChild(message);
+  message.appendChild(
+    bubble
+  );
+
+
+  chat.appendChild(
+    message
+  );
+
 
   scrollBottom();
 
 }
 
 
+/* =====================================================
+   TYPING
+===================================================== */
+
 function addTypingMessage(){
 
   hideWelcome();
 
+
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   message.className =
     "message assistant";
@@ -2036,13 +2387,17 @@ function addTypingMessage(){
   message.id =
     "typingMessage";
 
+
   message.innerHTML = `
 
     <div class="assistant-wrap">
 
       <div class="avatar">
 
-        <svg viewBox="0 0 100 100" fill="none">
+        <svg
+          viewBox="0 0 100 100"
+          fill="none"
+        >
 
           <path
             d="M24 24h52v38H24z"
@@ -2062,11 +2417,13 @@ function addTypingMessage(){
 
       </div>
 
+
       <div class="assistant-content">
 
         <div class="assistant-name">
           Sultan AI
         </div>
+
 
         <div class="typing">
 
@@ -2079,11 +2436,17 @@ function addTypingMessage(){
       </div>
 
     </div>
+
   `;
 
-  chat.appendChild(message);
+
+  chat.appendChild(
+    message
+  );
+
 
   scrollBottom();
+
 
   return message;
 
@@ -2093,9 +2456,8 @@ function addTypingMessage(){
 function removeTyping(){
 
   const typing =
-    document.getElementById(
-      "typingMessage"
-    );
+    $("typingMessage");
+
 
   if(typing){
 
@@ -2106,15 +2468,23 @@ function removeTyping(){
 }
 
 
+/* =====================================================
+   ASSISTANT MESSAGE
+===================================================== */
+
 function addAssistantMessage(text){
 
   removeTyping();
 
+
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   message.className =
     "message assistant";
+
 
   message.innerHTML = `
 
@@ -2122,7 +2492,10 @@ function addAssistantMessage(text){
 
       <div class="avatar">
 
-        <svg viewBox="0 0 100 100" fill="none">
+        <svg
+          viewBox="0 0 100 100"
+          fill="none"
+        >
 
           <path
             d="M24 24h52v38H24z"
@@ -2134,20 +2507,21 @@ function addAssistantMessage(text){
           <path
             d="M36 76h28M50 62v14"
             stroke="white"
-            stroke-linecap="round"
             stroke-width="8"
+            stroke-linecap="round"
           />
 
           <path
             d="M38 40h24M38 50h15"
             stroke="white"
-            stroke-linecap="round"
             stroke-width="6"
+            stroke-linecap="round"
           />
 
         </svg>
 
       </div>
+
 
       <div class="assistant-content">
 
@@ -2155,9 +2529,11 @@ function addAssistantMessage(text){
           Sultan AI
         </div>
 
+
         <div class="assistant-text">
           ${renderMarkdown(text)}
         </div>
+
 
         <div class="message-actions">
 
@@ -2166,34 +2542,47 @@ function addAssistantMessage(text){
             class="action-btn"
             data-action="copy"
             title="نسخ"
-          >📋</button>
+          >
+            📋
+          </button>
+
 
           <button
             type="button"
             class="action-btn"
             data-action="regenerate"
             title="إعادة التوليد"
-          >↻</button>
+          >
+            ↻
+          </button>
 
         </div>
 
       </div>
 
     </div>
+
   `;
 
-  chat.appendChild(message);
 
-  bindMessageActions(message);
+  chat.appendChild(
+    message
+  );
+
+
+  bindMessageActions(
+    message
+  );
+
 
   scrollBottom();
 
 }
 
 
-/* =========================================================
-   DYNAMIC MESSAGE BUTTONS
-========================================================= */
+/* =====================================================
+   MESSAGE ACTIONS
+===================================================== */
 
 function bindMessageActions(message){
 
@@ -2202,10 +2591,12 @@ function bindMessageActions(message){
       '[data-action="copy"]'
     );
 
+
   const regenerateButton =
     message.querySelector(
       '[data-action="regenerate"]'
     );
+
 
   const copyCodeButtons =
     message.querySelectorAll(
@@ -2213,99 +2604,102 @@ function bindMessageActions(message){
     );
 
 
-  if(copyButton){
+  bindPress(
+    copyButton,
+    async () => {
 
-    copyButton.addEventListener(
-      "click",
-      async function(){
-
-        const textElement =
-          message.querySelector(
-            ".assistant-text"
-          );
-
-        const text =
-          textElement
-            ? textElement.innerText
-            : "";
-
-        try{
-
-          await copyText(text);
-
-          showToast(
-            "تم نسخ الرد."
-          );
-
-        }catch(error){
-
-          console.error(error);
-
-          showToast(
-            "تعذر النسخ."
-          );
-
-        }
-
-      },
-      false
-    );
-
-  }
-
-
-  if(regenerateButton){
-
-    regenerateButton.addEventListener(
-      "click",
-      function(){
-
-        if(!lastUserText){
-
-          showToast(
-            "لا يوجد طلب سابق."
-          );
-
-          return;
-
-        }
-
-        if(sending){
-
-          showToast(
-            "يوجد طلب قيد التنفيذ."
-          );
-
-          return;
-
-        }
-
-        sendMessage(
-          lastUserText,
-          true
+      const textElement =
+        message.querySelector(
+          ".assistant-text"
         );
 
-      },
-      false
-    );
 
-  }
+      const text =
+        textElement
+          ? textElement.innerText
+          : "";
+
+
+      try{
+
+        await copyText(
+          text
+        );
+
+        showToast(
+          "تم نسخ الرد."
+        );
+
+      }catch(error){
+
+        console.error(
+          error
+        );
+
+        showToast(
+          "تعذر النسخ."
+        );
+
+      }
+
+    }
+  );
+
+
+  bindPress(
+    regenerateButton,
+    () => {
+
+      if(!lastUserText){
+
+        showToast(
+          "لا يوجد طلب سابق."
+        );
+
+        return;
+
+      }
+
+
+      if(sending){
+
+        showToast(
+          "يوجد طلب قيد التنفيذ."
+        );
+
+        return;
+
+      }
+
+
+      sendMessage(
+        lastUserText,
+        true
+      );
+
+    }
+  );
 
 
   copyCodeButtons.forEach(
-    function(button){
+    button => {
 
-      button.addEventListener(
-        "click",
-        async function(){
+      bindPress(
+        button,
+        async () => {
 
           const id =
             button.dataset.copyCode;
 
-          const codeElement =
-            document.getElementById(id);
 
-          if(!codeElement) return;
+          const codeElement =
+            $(id);
+
+
+          if(!codeElement){
+            return;
+          }
+
 
           try{
 
@@ -2313,11 +2707,13 @@ function bindMessageActions(message){
               codeElement.textContent
             );
 
+
             button.textContent =
               "تم النسخ";
 
+
             setTimeout(
-              function(){
+              () => {
 
                 button.textContent =
                   "نسخ";
@@ -2326,9 +2722,8 @@ function bindMessageActions(message){
               1200
             );
 
-          }catch(error){
 
-            console.error(error);
+          }catch(error){
 
             showToast(
               "تعذر نسخ الكود."
@@ -2336,8 +2731,7 @@ function bindMessageActions(message){
 
           }
 
-        },
-        false
+        }
       );
 
     }
@@ -2346,9 +2740,9 @@ function bindMessageActions(message){
 }
 
 
-/* =========================================================
+/* =====================================================
    COPY
-========================================================= */
+===================================================== */
 
 async function copyText(text){
 
@@ -2371,26 +2765,36 @@ async function copyText(text){
       "textarea"
     );
 
-  textarea.value = text;
+
+  textarea.value =
+    text;
+
 
   textarea.style.position =
     "fixed";
 
-  textarea.style.opacity =
-    "0";
+  textarea.style.left =
+    "-9999px";
+
 
   document.body.appendChild(
     textarea
   );
 
+
   textarea.focus();
 
   textarea.select();
 
+
   const success =
-    document.execCommand("copy");
+    document.execCommand(
+      "copy"
+    );
+
 
   textarea.remove();
+
 
   if(!success){
 
@@ -2403,43 +2807,40 @@ async function copyText(text){
 }
 
 
-/* =========================================================
+/* =====================================================
    SEND BUTTON
-========================================================= */
+===================================================== */
 
-if(sendButton){
+bindPress(
+  sendButton,
+  () => {
 
-  sendButton.addEventListener(
-    "click",
-    function(){
+    if(sending){
 
-      if(sending){
+      stopRequest();
 
-        stopRequest();
+    }else{
 
-      }else{
+      sendMessage();
 
-        sendMessage();
+    }
 
-      }
-
-    },
-    false
-  );
-
-}
+  }
+);
 
 
-/* =========================================================
+/* =====================================================
    SEND MESSAGE
-========================================================= */
+===================================================== */
 
 async function sendMessage(
   customText = null,
   isRegenerate = false
 ){
 
-  if(sending) return;
+  if(sending){
+    return;
+  }
 
 
   const text =
@@ -2461,16 +2862,19 @@ async function sendMessage(
   }
 
 
-  lastUserText = text;
+  lastUserText =
+    text;
 
 
-  let filesForRequest = [];
+  let filesForRequest =
+    [];
 
 
   if(!isRegenerate){
 
     filesForRequest =
       [...selectedFiles];
+
 
     lastRequestFiles =
       [...selectedFiles];
@@ -2485,7 +2889,10 @@ async function sendMessage(
 
   if(!isRegenerate){
 
-    addUserMessage(text);
+    addUserMessage(
+      text
+    );
+
 
     conversation.push({
 
@@ -2509,24 +2916,32 @@ async function sendMessage(
     }
 
 
-    messageInput.value = "";
+    messageInput.value =
+      "";
 
     autoResize();
 
-    selectedFiles = [];
+
+    selectedFiles =
+      [];
 
     renderSelectedFiles();
 
   }else{
 
-    addUserMessage(text);
+    addUserMessage(
+      text
+    );
 
   }
 
 
   addTypingMessage();
 
-  setSendingState(true);
+
+  setSendingState(
+    true
+  );
 
 
   try{
@@ -2579,9 +2994,13 @@ async function sendMessage(
 
     }
 
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     removeTyping();
 
@@ -2609,7 +3028,9 @@ async function sendMessage(
       errorMessage =
         "تعذر الاتصال بالخادم. تأكد أن السيرفر يعمل.";
 
-    }else if(error.message){
+    }else if(
+      error.message
+    ){
 
       errorMessage =
         error.message;
@@ -2618,25 +3039,30 @@ async function sendMessage(
 
 
     addAssistantMessage(
-      "⚠️ " + errorMessage
+      "⚠️ " +
+      errorMessage
     );
+
 
     showToast(
       errorMessage
     );
 
+
   }finally{
 
-    setSendingState(false);
+    setSendingState(
+      false
+    );
 
   }
 
 }
 
 
-/* =========================================================
-   API REQUEST
-========================================================= */
+/* =====================================================
+   API
+===================================================== */
 
 async function requestAI(
   text,
@@ -2649,9 +3075,11 @@ async function requestAI(
 
   const timeout =
     setTimeout(
-      function(){
+      () => {
 
-        if(abortController){
+        if(
+          abortController
+        ){
 
           abortController.abort();
 
@@ -2684,6 +3112,7 @@ async function requestAI(
       await fetch(
         API_ENDPOINT,
         {
+
           method:"POST",
 
           headers:{
@@ -2700,11 +3129,13 @@ async function requestAI(
             abortController.signal,
 
           cache:"no-store"
+
         }
       );
 
 
-    let data = null;
+    let data =
+      null;
 
 
     try{
@@ -2726,9 +3157,7 @@ async function requestAI(
       throw new Error(
 
         data?.error ||
-
         data?.message ||
-
         `خطأ من الخادم (${response.status})`
 
       );
@@ -2736,7 +3165,13 @@ async function requestAI(
     }
 
 
+    /*
+      مهم جداً:
+      server.js يرجع reply
+    */
+
     const answer =
+      data?.reply ??
       data?.answer ??
       data?.response ??
       data?.message ??
@@ -2776,20 +3211,25 @@ async function requestAI(
 
   }finally{
 
-    clearTimeout(timeout);
+    clearTimeout(
+      timeout
+    );
 
-    abortController = null;
+    abortController =
+      null;
 
   }
 
 }
 
 
-/* =========================================================
+/* =====================================================
    SEND STATE
-========================================================= */
+===================================================== */
 
-function setSendingState(value){
+function setSendingState(
+  value
+){
 
   sending =
     Boolean(value);
@@ -2834,21 +3274,28 @@ function setSendingState(value){
 }
 
 
-/* =========================================================
-   STOP REQUEST
-========================================================= */
+/* =====================================================
+   STOP
+===================================================== */
 
 function stopRequest(){
 
-  if(abortController){
+  if(
+    abortController
+  ){
 
     abortController.abort();
 
   }
 
-  setSendingState(false);
+
+  setSendingState(
+    false
+  );
+
 
   removeTyping();
+
 
   showToast(
     "تم إيقاف الطلب."
@@ -2857,9 +3304,9 @@ function stopRequest(){
 }
 
 
-/* =========================================================
-   HEALTH CHECK
-========================================================= */
+/* =====================================================
+   HEALTH
+===================================================== */
 
 async function checkHealth(){
 
@@ -2894,12 +3341,12 @@ async function checkHealth(){
       status.innerHTML = `
 
         <span class="status-dot"></span>
-
         متصل
 
       `;
 
     }
+
 
   }catch(error){
 
@@ -2921,10 +3368,7 @@ async function checkHealth(){
 
         <span
           class="status-dot"
-          style="
-            background:#ff5b45;
-            box-shadow:none
-          "
+          style="background:#ff5b45;box-shadow:none"
         ></span>
 
         غير متاح
@@ -2938,48 +3382,49 @@ async function checkHealth(){
 }
 
 
-/* =========================================================
-   NETWORK STATUS
-========================================================= */
+/* =====================================================
+   NETWORK
+===================================================== */
 
 window.addEventListener(
   "online",
-  function(){
+  () => {
 
     const status =
       document.querySelector(
         ".status"
       );
+
 
     if(status){
 
       status.innerHTML = `
 
         <span class="status-dot"></span>
-
         متصل
 
       `;
 
     }
 
+
     showToast(
       "عاد الاتصال بالإنترنت."
     );
 
-  },
-  false
+  }
 );
 
 
 window.addEventListener(
   "offline",
-  function(){
+  () => {
 
     const status =
       document.querySelector(
         ".status"
       );
+
 
     if(status){
 
@@ -2987,10 +3432,7 @@ window.addEventListener(
 
         <span
           class="status-dot"
-          style="
-            background:#ff5b45;
-            box-shadow:none
-          "
+          style="background:#ff5b45;box-shadow:none"
         ></span>
 
         غير متصل
@@ -2999,48 +3441,52 @@ window.addEventListener(
 
     }
 
+
     showToast(
       "لا يوجد اتصال بالإنترنت."
     );
 
-  },
-  false
+  }
 );
 
 
-/* =========================================================
+/* =====================================================
    ESC
-========================================================= */
+===================================================== */
 
 document.addEventListener(
   "keydown",
-  function(event){
+  event => {
 
-    if(event.key === "Escape"){
+    if(
+      event.key ===
+      "Escape"
+    ){
 
       closeSidebar();
 
     }
 
-  },
-  false
+  }
 );
 
 
-/* =========================================================
-   INITIALIZATION
-========================================================= */
+/* =====================================================
+   INIT
+===================================================== */
 
 function init(){
 
   autoResize();
 
-  setFastMode(false);
+  setFastMode(
+    false
+  );
 
   checkHealth();
 
   console.log(
-    "Sultan AI V7.2 - Button System OK"
+    "Sultan AI V7.2 frontend loaded."
   );
 
 }
