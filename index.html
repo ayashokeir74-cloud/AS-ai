@@ -2,500 +2,551 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07070a">
 <title>Sultan AI</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-:root{
-  --bg:#07080c;
-  --panel:#0e1017;
-  --panel2:#151824;
-  --line:rgba(255,255,255,.08);
-  --text:#f7f7fb;
-  --muted:#9297a7;
-  --purple:#7657ff;
-  --purple2:#9a82ff;
-  --user:#1a1e29;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-  min-height:100vh;
+:root {
+  --bg: #07070a;
+  --panel: rgba(17,17,22,.82);
+  --panel2: rgba(24,24,31,.72);
+  --text: #f7f7fa;
+  --muted: #9696a3;
+  --line: rgba(255,255,255,.08);
+  --fire: #ff5a1f;
+  --fire2: #ffb000;
+  --danger: #ff2d00;
+}
+
+body {
+  min-height: 100vh;
   background:
-    radial-gradient(circle at 50% -15%,rgba(118,87,255,.24),transparent 38%),
+    radial-gradient(circle at 50% 20%, rgba(255,80,20,.10), transparent 30%),
+    radial-gradient(circle at 10% 90%, rgba(255,150,0,.06), transparent 25%),
     var(--bg);
-  color:var(--text);
-  font-family:Inter,Arial,sans-serif;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
 }
 
-.app{
-  min-height:100vh;
-  display:flex;
+/* Background particles */
+#particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* SIDEBAR */
-
-.sidebar{
-  width:270px;
-  min-height:100vh;
-  background:rgba(9,10,15,.96);
-  border-right:1px solid var(--line);
-  padding:18px;
-  display:flex;
-  flex-direction:column;
+/* App */
+.app {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
 }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  margin-bottom:22px;
+/* Sidebar */
+.sidebar {
+  width: 265px;
+  height: 100%;
+  padding: 20px 15px;
+  border-right: 1px solid var(--line);
+  background: rgba(8,8,11,.82);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  transition: .25s ease;
 }
 
-.logo{
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--purple),#4327d0);
-  box-shadow:0 10px 35px rgba(118,87,255,.3);
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 5px 8px 25px;
 }
 
-.brand span{
-  font-size:19px;
-  font-weight:850;
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 19px;
+  background: linear-gradient(145deg, #ff8a00, #ff2800);
+  box-shadow:
+    0 0 22px rgba(255,75,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.25);
 }
 
-.new-chat{
-  width:100%;
-  padding:13px;
-  border-radius:13px;
-  border:1px solid rgba(118,87,255,.4);
-  background:rgba(118,87,255,.1);
-  color:white;
-  font-weight:750;
-  cursor:pointer;
-  margin-bottom:25px;
+.brand-text {
+  font-size: 20px;
+  font-weight: 850;
+  letter-spacing: -.5px;
 }
 
-.new-chat:hover{
-  background:rgba(118,87,255,.2);
+.brand-text span {
+  color: #ff7228;
 }
 
-.label{
-  color:#73798a;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  margin:0 7px 9px;
+.new-chat {
+  border: 1px solid rgba(255,100,30,.25);
+  background: linear-gradient(135deg, rgba(255,80,20,.16), rgba(255,160,0,.07));
+  color: white;
+  border-radius: 13px;
+  padding: 13px 15px;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: .2s;
 }
 
-.history{
-  flex:1;
-  overflow:auto;
+.new-chat:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,120,30,.55);
+  box-shadow: 0 0 22px rgba(255,70,10,.15);
 }
 
-.history-item{
-  padding:11px;
-  border-radius:10px;
-  color:#c8ccd6;
-  font-size:13px;
-  cursor:pointer;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+.nav {
+  margin-top: 22px;
 }
 
-.history-item:hover{
-  background:rgba(255,255,255,.05);
+.nav-title {
+  color: #666672;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  padding: 0 10px 8px;
 }
 
-.sidebar-footer{
-  border-top:1px solid var(--line);
-  padding-top:14px;
-  text-align:center;
-  color:#686e7e;
-  font-size:10px;
-  line-height:1.7;
+.nav-item {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 10px;
+  color: #c8c8d0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 4px;
 }
 
-/* MAIN */
-
-.main{
-  flex:1;
-  min-width:0;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+.nav-item:hover {
+  background: rgba(255,255,255,.05);
 }
 
-.topbar{
-  height:65px;
-  padding:0 24px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:rgba(7,8,12,.72);
-  backdrop-filter:blur(16px);
+.sidebar-bottom {
+  margin-top: auto;
 }
 
-.mobile-brand{
-  display:none;
-  align-items:center;
-  gap:8px;
-  font-weight:800;
+.creator {
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(255,255,255,.025);
 }
 
-.mobile-brand .logo{
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  font-size:16px;
+.creator small {
+  color: var(--muted);
+  font-size: 10px;
 }
 
-.status{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
-  font-size:12px;
+.creator strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
 }
 
-.dot{
-  width:8px;
-  height:8px;
-  background:#45e58b;
-  border-radius:50%;
-  box-shadow:0 0 12px rgba(69,229,139,.7);
+/* Main */
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-/* CHAT */
-
-.chat{
-  flex:1;
-  overflow-y:auto;
-  padding:30px 16px 190px;
+.topbar {
+  height: 64px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: rgba(7,7,10,.5);
+  backdrop-filter: blur(16px);
 }
 
-.chat-inner{
-  width:100%;
-  max-width:900px;
-  margin:auto;
+.mobile-menu {
+  display: none;
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 23px;
+  cursor: pointer;
 }
 
-.welcome{
-  min-height:58vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  text-align:center;
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #aaaab4;
+  font-size: 12px;
 }
 
-.big-logo{
-  width:86px;
-  height:86px;
-  border-radius:28px;
-  display:grid;
-  place-items:center;
-  font-size:34px;
-  font-weight:950;
-  background:linear-gradient(135deg,var(--purple),#4327d0);
-  box-shadow:0 0 65px rgba(118,87,255,.27);
-  margin-bottom:25px;
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background: #42e87a;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #42e87a;
 }
 
-.welcome h1{
-  font-size:clamp(34px,5vw,52px);
-  letter-spacing:-2.5px;
-  margin-bottom:12px;
+.speed {
+  border: 1px solid rgba(255,100,30,.18);
+  background: rgba(255,70,10,.06);
+  color: #ff9a64;
+  padding: 7px 10px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.gradient{
-  background:linear-gradient(90deg,#fff,#aa98ff);
-  color:transparent;
-  -webkit-background-clip:text;
-  background-clip:text;
+/* Chat */
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 45px 18px 170px;
+  scroll-behavior: smooth;
 }
 
-.welcome p{
-  max-width:570px;
-  color:var(--muted);
-  line-height:1.7;
-  font-size:14px;
+.chat-inner {
+  width: min(850px, 100%);
+  margin: auto;
 }
 
-/* QUICK ACTIONS */
-
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:9px;
-  margin-top:25px;
+/* Welcome */
+.welcome {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.action{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.035);
-  color:#d8dbe4;
-  border-radius:12px;
-  padding:10px 13px;
-  cursor:pointer;
-  font-size:12px;
+.welcome-content {
+  max-width: 650px;
 }
 
-.action:hover{
-  background:rgba(118,87,255,.12);
-  border-color:rgba(118,87,255,.35);
+.fire-logo {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 20px;
+  border-radius: 25px;
+  display: grid;
+  place-items: center;
+  font-size: 29px;
+  font-weight: 950;
+  background: linear-gradient(145deg, #ff9a00, #ff2600);
+  box-shadow:
+    0 0 30px rgba(255,70,0,.3),
+    0 0 90px rgba(255,70,0,.12);
+  animation: firePulse 1.7s infinite alternate;
 }
 
-/* MESSAGES */
-
-.message{
-  display:flex;
-  gap:12px;
-  margin:22px 0;
-  animation:show .2s ease;
+@keyframes firePulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
 }
 
-@keyframes show{
-  from{opacity:0;transform:translateY(7px)}
-  to{opacity:1;transform:translateY(0)}
+.welcome h1 {
+  font-size: clamp(38px, 6vw, 66px);
+  line-height: 1;
+  letter-spacing: -3px;
 }
 
-.avatar{
-  width:35px;
-  height:35px;
-  flex:0 0 35px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  background:var(--panel2);
-  border:1px solid var(--line);
-  font-size:11px;
-  font-weight:800;
+.gradient {
+  background: linear-gradient(90deg, #fff, #ffb066, #ff4b17);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.user .avatar{
-  background:var(--purple);
-  border:0;
+.welcome p {
+  color: #9d9da8;
+  margin-top: 18px;
+  font-size: 15px;
 }
 
-.message-content{
-  max-width:760px;
-  padding:9px 13px;
-  border-radius:13px;
-  line-height:1.75;
-  font-size:14px;
-  white-space:pre-wrap;
+.quick {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 28px;
 }
 
-.user .message-content{
-  background:var(--user);
-  border:1px solid var(--line);
+.quick button {
+  padding: 14px;
+  border-radius: 13px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.025);
+  color: #d4d4dc;
+  cursor: pointer;
+  text-align: left;
+  transition: .2s;
 }
 
-.image-preview{
-  max-width:280px;
-  max-height:280px;
-  border-radius:14px;
-  margin-top:7px;
-  display:block;
+.quick button:hover {
+  border-color: rgba(255,100,30,.35);
+  background: rgba(255,70,10,.06);
+  transform: translateY(-1px);
 }
 
-/* COMPOSER */
-
-.composer-area{
-  position:fixed;
-  bottom:0;
-  left:270px;
-  right:0;
-  padding:18px 16px;
-  background:linear-gradient(transparent,var(--bg) 32%);
+/* Messages */
+.message {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  animation: appear .22s ease;
 }
 
-.composer{
-  max-width:900px;
-  margin:auto;
-  background:rgba(17,19,27,.96);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:20px;
-  padding:10px;
-  box-shadow:0 -10px 45px rgba(0,0,0,.25);
-  backdrop-filter:blur(20px);
+@keyframes appear {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.selected-image{
-  display:none;
-  align-items:center;
-  gap:10px;
-  padding:6px 8px 10px;
+.avatar {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 850;
+  background: #1c1c23;
+  border: 1px solid var(--line);
 }
 
-.selected-image img{
-  width:55px;
-  height:55px;
-  object-fit:cover;
-  border-radius:10px;
+.ai .avatar {
+  background: linear-gradient(145deg,#ff7b00,#ff2d00);
+  border: 0;
+  box-shadow: 0 0 15px rgba(255,70,0,.18);
 }
 
-.remove-image{
-  border:0;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  width:28px;
-  height:28px;
-  border-radius:8px;
-  cursor:pointer;
+.msg-body {
+  min-width: 0;
+  max-width: calc(100% - 50px);
 }
 
-.input-row{
-  display:flex;
-  gap:8px;
-  align-items:flex-end;
+.msg-name {
+  color: #858590;
+  font-size: 11px;
+  margin-bottom: 5px;
 }
 
-textarea{
-  flex:1;
-  resize:none;
-  min-height:44px;
-  max-height:150px;
-  padding:11px 8px;
-  outline:0;
-  border:0;
-  background:transparent;
-  color:white;
-  font:14px Inter,Arial,sans-serif;
+.msg-text {
+  color: #eeeeF3;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-textarea::placeholder{
-  color:#73798a;
+.user .msg-text {
+  background: rgba(255,255,255,.055);
+  border: 1px solid var(--line);
+  padding: 10px 13px;
+  border-radius: 13px;
 }
 
-.icon-btn,.send{
-  width:43px;
-  height:43px;
-  border-radius:12px;
-  border:0;
-  cursor:pointer;
-  display:grid;
-  place-items:center;
+/* Typing */
+.typing {
+  display: inline-flex;
+  gap: 4px;
+  padding: 9px 0;
 }
 
-.icon-btn{
-  background:rgba(255,255,255,.06);
-  color:#d5d8e0;
-  font-size:20px;
+.typing i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ff7130;
+  animation: blink .8s infinite alternate;
 }
 
-.send{
-  background:var(--purple);
-  color:white;
-  font-size:17px;
+.typing i:nth-child(2) { animation-delay: .15s; }
+.typing i:nth-child(3) { animation-delay: .3s; }
+
+@keyframes blink {
+  from { opacity: .25; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(-3px); }
 }
 
-.send:hover{
-  background:var(--purple2);
+/* Composer */
+.composer-wrap {
+  position: fixed;
+  left: 265px;
+  right: 0;
+  bottom: 0;
+  padding: 15px 18px 18px;
+  background: linear-gradient(transparent, rgba(7,7,10,.96) 30%);
 }
 
-.hint{
-  text-align:center;
-  color:#626879;
-  font-size:10px;
-  padding-top:8px;
+.composer {
+  width: min(850px, 100%);
+  margin: auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  padding: 9px;
+  border-radius: 17px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(18,18,23,.92);
+  box-shadow: 0 12px 50px rgba(0,0,0,.35);
+  backdrop-filter: blur(20px);
 }
 
-input[type=file]{
-  display:none;
+.attach {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,.05);
+  color: #aaaab4;
+  font-size: 19px;
+  cursor: pointer;
 }
 
-/* MODE MENU */
-
-.mode-menu{
-  display:none;
-  position:absolute;
-  bottom:72px;
-  left:0;
-  background:#131620;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:7px;
-  width:210px;
-  box-shadow:0 15px 40px rgba(0,0,0,.35);
+#prompt {
+  flex: 1;
+  resize: none;
+  max-height: 150px;
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  font: inherit;
+  padding: 11px 4px;
 }
 
-.mode-menu.show{
-  display:block;
+#prompt::placeholder {
+  color: #666672;
 }
 
-.mode{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#e2e4eb;
-  padding:12px;
-  border-radius:10px;
-  text-align:left;
-  cursor:pointer;
+.send {
+  width: 43px;
+  height: 43px;
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  background: linear-gradient(145deg,#ff7b00,#ff3000);
+  box-shadow: 0 0 18px rgba(255,70,0,.23);
+  transition: .18s;
 }
 
-.mode:hover{
-  background:rgba(255,255,255,.06);
+.send:hover {
+  transform: scale(1.04);
 }
 
-.plus-wrap{
-  position:relative;
+.send:active {
+  transform: scale(.95);
 }
 
-/* MOBILE */
+.footer {
+  text-align: center;
+  color: #55555f;
+  font-size: 9px;
+  margin-top: 8px;
+}
 
-@media(max-width:750px){
+/* Fire sparks */
+.spark {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ff8a3d;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 0;
+  animation: sparkFly linear forwards;
+}
 
-  .sidebar{
-    display:none;
+@keyframes sparkFly {
+  0% {
+    opacity: 0;
+    transform: translate(0,0) scale(.4);
+  }
+  15% {
+    opacity: .9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0);
+  }
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+
+  body {
+    overflow: hidden;
   }
 
-  .mobile-brand{
-    display:flex;
+  .sidebar {
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    transform: translateX(-105%);
+    width: 275px;
+    box-shadow: 20px 0 50px rgba(0,0,0,.5);
   }
 
-  .topbar{
-    padding:0 14px;
+  .sidebar.open {
+    transform: translateX(0);
   }
 
-  .composer-area{
-    left:0;
-    padding:11px;
+  .mobile-menu {
+    display: block;
   }
 
-  .chat{
-    padding:25px 12px 180px;
+  .topbar {
+    padding: 0 14px;
   }
 
-  .welcome{
-    min-height:55vh;
+  .composer-wrap {
+    left: 0;
+    padding: 12px 10px 13px;
   }
 
-  .welcome h1{
-    font-size:35px;
+  .chat {
+    padding: 30px 12px 150px;
   }
 
-  .big-logo{
-    width:72px;
-    height:72px;
-    border-radius:23px;
-    font-size:28px;
+  .welcome {
+    min-height: 60vh;
   }
 
-  .actions{
-    max-width:330px;
+  .welcome h1 {
+    font-size: 43px;
+  }
+
+  .quick {
+    grid-template-columns: 1fr;
+  }
+
+  .speed {
+    display: none;
   }
 }
 </style>
@@ -503,502 +554,392 @@ input[type=file]{
 
 <body>
 
+<canvas id="particles"></canvas>
+
 <div class="app">
 
-<aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
 
-  <div class="brand">
-    <div class="logo">S</div>
-    <span>Sultan AI</span>
-  </div>
-
-  <button class="new-chat" onclick="newChat()">
-    ＋ New Chat
-  </button>
-
-  <div class="label">Recent chats</div>
-
-  <div class="history" id="history"></div>
-
-  <div class="sidebar-footer">
-    Sultan AI<br>
-    Intelligent • Fast • Creative<br>
-    © 2026 Ali Sultan
-  </div>
-
-</aside>
-
-<main class="main">
-
-<header class="topbar">
-
-  <div class="mobile-brand">
-    <div class="logo">S</div>
-    Sultan AI
-  </div>
-
-  <div></div>
-
-  <div class="status">
-    <span class="dot"></span>
-    Sultan AI Online
-  </div>
-
-</header>
-
-<section class="chat" id="chat">
-
-<div class="chat-inner">
-
-<div class="welcome" id="welcome">
-
-  <div class="big-logo">S</div>
-
-  <h1>
-    Welcome to <span class="gradient">Sultan AI</span>
-  </h1>
-
-  <p>
-    Your intelligent AI assistant for conversations,
-    image analysis and creative image generation.
-  </p>
-
-  <div class="actions">
-
-    <button class="action" onclick="setMode('chat')">
-      💬 Chat
-    </button>
-
-    <button class="action" onclick="setMode('analyze')">
-      🔍 Analyze Image
-    </button>
-
-    <button class="action" onclick="setMode('create')">
-      🎨 Create Image
-    </button>
-
-    <button class="action" onclick="openImagePicker()">
-      🖼️ Upload Image
-    </button>
-
-  </div>
-
-</div>
-
-</div>
-</section>
-
-<div class="composer-area">
-
-  <div class="composer">
-
-    <div class="selected-image" id="selectedImage">
-      <img id="preview">
-      <span style="color:#aaa;font-size:12px;">Image selected</span>
-      <button class="remove-image" onclick="removeImage()">×</button>
+    <div class="brand">
+      <div class="logo">S</div>
+      <div class="brand-text">Sultan <span>AI</span></div>
     </div>
 
-    <div class="input-row">
+    <button class="new-chat" onclick="newChat()">
+      ＋ New Chat
+    </button>
 
-      <div class="plus-wrap">
+    <div class="nav">
+      <div class="nav-title">Workspace</div>
 
-        <button class="icon-btn" onclick="toggleMenu()">+</button>
+      <button class="nav-item" onclick="newChat()">
+        💬 New conversation
+      </button>
 
-        <div class="mode-menu" id="modeMenu">
+      <button class="nav-item">
+        🕘 Recent chats
+      </button>
 
-          <button class="mode" onclick="setMode('chat')">
-            💬 Normal Chat
-          </button>
+      <button class="nav-item">
+        ⚙️ Settings
+      </button>
+    </div>
 
-          <button class="mode" onclick="openImagePicker();setMode('analyze')">
-            🔍 Analyze Image
-          </button>
+    <div class="sidebar-bottom">
+      <div class="creator">
+        <small>CREATED BY</small>
+        <strong>Ali Sultan ⚡</strong>
+      </div>
+    </div>
 
-          <button class="mode" onclick="setMode('create')">
-            🎨 Create Image
-          </button>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <button class="mobile-menu" onclick="toggleSidebar()">
+        ☰
+      </button>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        Sultan AI Online
+      </div>
+
+      <div class="speed">
+        ⚡ LIGHTNING MODE
+      </div>
+
+    </header>
+
+    <section class="chat" id="chat">
+
+      <div class="chat-inner" id="chatInner">
+
+        <div class="welcome" id="welcome">
+
+          <div class="welcome-content">
+
+            <div class="fire-logo">S</div>
+
+            <h1>
+              Meet <span class="gradient">Sultan AI</span>
+            </h1>
+
+            <p>
+              Fast. Smart. Powerful. Your next-generation AI assistant.
+            </p>
+
+            <div class="quick">
+              <button onclick="quickAsk('Explain something to me simply')">
+                🧠 Explain something
+              </button>
+
+              <button onclick="quickAsk('Help me write something')">
+                ✍️ Help me write
+              </button>
+
+              <button onclick="quickAsk('Give me a creative idea')">
+                💡 Give me an idea
+              </button>
+
+              <button onclick="quickAsk('Help me with coding')">
+                💻 Help me code
+              </button>
+            </div>
+
+          </div>
 
         </div>
 
       </div>
 
-      <input
-        type="file"
-        id="imageInput"
-        accept="image/*"
-        onchange="selectImage(event)"
-      >
+    </section>
 
-      <textarea
-        id="prompt"
-        rows="1"
-        placeholder="Message Sultan AI..."
-        onkeydown="handleKey(event)"
-      ></textarea>
+    <div class="composer-wrap">
 
-      <button class="send" onclick="sendMessage()">➤</button>
+      <div class="composer">
+
+        <button class="attach" title="Attach">
+          ＋
+        </button>
+
+        <textarea
+          id="prompt"
+          rows="1"
+          placeholder="Message Sultan AI..."
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+
+        <button class="send" onclick="sendMessage()" title="Send">
+          ➤
+        </button>
+
+      </div>
+
+      <div class="footer">
+        Sultan AI • Built for speed ⚡
+      </div>
 
     </div>
 
-    <div class="hint">
-      Sultan AI may make mistakes. Check important information.
-    </div>
+  </main>
 
-  </div>
-
-</div>
-
-</main>
 </div>
 
 <script>
 
-let messages=[];
-let currentMode="chat";
-let selectedFile=null;
+/* ==============================
+   Sultan AI Frontend
+   Ready for backend connection
+================================ */
 
-const chat=document.getElementById("chat");
-const promptInput=document.getElementById("prompt");
-const history=document.getElementById("history");
-const imageInput=document.getElementById("imageInput");
-const selectedImage=document.getElementById("selectedImage");
-const preview=document.getElementById("preview");
-const modeMenu=document.getElementById("modeMenu");
+const promptBox = document.getElementById("prompt");
+const chatInner = document.getElementById("chatInner");
+const welcome = document.getElementById("welcome");
 
-function toggleMenu(){
-  modeMenu.classList.toggle("show");
+/* Mobile sidebar */
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
 }
 
-function setMode(mode){
+/* New chat */
+function newChat() {
+  chatInner.innerHTML = "";
+  chatInner.appendChild(welcome);
+  welcome.style.display = "flex";
+  promptBox.focus();
 
-  currentMode=mode;
-  modeMenu.classList.remove("show");
-
-  if(mode==="chat"){
-    promptInput.placeholder="Message Sultan AI...";
-  }
-
-  if(mode==="analyze"){
-    promptInput.placeholder="Ask Sultan AI about the image...";
-    openImagePicker();
-  }
-
-  if(mode==="create"){
-    promptInput.placeholder="Describe the image you want to create...";
-  }
-
-  promptInput.focus();
+  document.getElementById("sidebar").classList.remove("open");
 }
 
-function openImagePicker(){
-  imageInput.click();
+/* Quick buttons */
+function quickAsk(text) {
+  promptBox.value = text;
+  autoResize(promptBox);
+  sendMessage();
 }
 
-function selectImage(event){
-
-  const file=event.target.files[0];
-
-  if(!file)return;
-
-  selectedFile=file;
-
-  const reader=new FileReader();
-
-  reader.onload=function(e){
-    preview.src=e.target.result;
-    selectedImage.style.display="flex";
-  };
-
-  reader.readAsDataURL(file);
-
-  currentMode="analyze";
-  promptInput.placeholder="What would you like me to analyze?";
-}
-
-function removeImage(){
-
-  selectedFile=null;
-  imageInput.value="";
-  selectedImage.style.display="none";
-  preview.src="";
-}
-
-function handleKey(e){
-
-  if(e.key==="Enter"&&!e.shiftKey){
+/* Enter to send */
+function handleKey(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
   }
 }
 
-function addMessage(role,text,image=null){
+/* Resize textarea */
+function autoResize(el) {
+  el.style.height = "42px";
+  el.style.height = Math.min(el.scrollHeight, 150) + "px";
+}
 
-  const inner=document.querySelector(".chat-inner");
+/* Add message */
+function addMessage(type, text) {
 
-  const message=document.createElement("div");
-  message.className="message "+role;
-
-  const avatar=document.createElement("div");
-  avatar.className="avatar";
-  avatar.textContent=role==="user"?"You":"S";
-
-  const content=document.createElement("div");
-  content.className="message-content";
-
-  if(text){
-    content.textContent=text;
+  if (welcome) {
+    welcome.style.display = "none";
   }
 
-  if(image){
+  const message = document.createElement("div");
+  message.className = `message ${type}`;
 
-    const img=document.createElement("img");
-    img.src=image;
-    img.className="image-preview";
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = type === "ai" ? "S" : "YOU";
 
-    content.appendChild(img);
-  }
+  const body = document.createElement("div");
+  body.className = "msg-body";
+
+  const name = document.createElement("div");
+  name.className = "msg-name";
+  name.textContent = type === "ai" ? "Sultan AI" : "You";
+
+  const content = document.createElement("div");
+  content.className = "msg-text";
+  content.textContent = text;
+
+  body.appendChild(name);
+  body.appendChild(content);
 
   message.appendChild(avatar);
-  message.appendChild(content);
+  message.appendChild(body);
 
-  inner.appendChild(message);
+  chatInner.appendChild(message);
 
-  chat.scrollTop=chat.scrollHeight;
+  scrollBottom();
 
   return content;
 }
 
-async function sendMessage(){
+/* Typing indicator */
+function addTyping() {
 
-  const text=promptInput.value.trim();
-
-  if(!text && !selectedFile){
-    return;
+  if (welcome) {
+    welcome.style.display = "none";
   }
 
-  const welcome=document.getElementById("welcome");
+  const message = document.createElement("div");
+  message.className = "message ai";
+  message.id = "typingMessage";
 
-  if(welcome){
-    welcome.remove();
-  }
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = "S";
 
-  let imageData=null;
+  const body = document.createElement("div");
+  body.className = "msg-body";
 
-  if(selectedFile){
+  const name = document.createElement("div");
+  name.className = "msg-name";
+  name.textContent = "Sultan AI";
 
-    imageData=await fileToBase64(selectedFile);
+  const typing = document.createElement("div");
+  typing.className = "typing";
 
-    addMessage(
-      "user",
-      text || "Analyze this image",
-      imageData
-    );
+  typing.innerHTML = "<i></i><i></i><i></i>";
 
-  }else{
+  body.appendChild(name);
+  body.appendChild(typing);
 
-    addMessage(
-      "user",
-      text
-    );
+  message.appendChild(avatar);
+  message.appendChild(body);
 
-  }
+  chatInner.appendChild(message);
 
-  const request={
-    mode:currentMode,
-    message:text,
-    messages:messages,
-    image:imageData
-  };
+  scrollBottom();
 
-  messages.push({
-    role:"user",
-    content:text,
-    mode:currentMode
-  });
+  return message;
+}
 
-  promptInput.value="";
-  promptInput.style.height="44px";
+/* Send message */
+async function sendMessage() {
 
-  const aiContent=addMessage(
-    "assistant",
-    currentMode==="create"
-      ? "Creating your image..."
-      : "Thinking..."
-  );
+  const text = promptBox.value.trim();
 
-  try{
+  if (!text) return;
 
-    const response=await fetch("/api/chat",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
+  promptBox.value = "";
+  autoResize(promptBox);
+
+  addMessage("user", text);
+
+  const typing = addTyping();
+
+  /*
+    BACKEND CONNECTION
+
+    Later the server will receive:
+
+    POST /api/chat
+
+    {
+      message: "..."
+    }
+
+    and return the AI response.
+
+    For now we keep the frontend independent.
+  */
+
+  try {
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-      body:JSON.stringify(request)
+      body: JSON.stringify({
+        message: text
+      })
     });
 
-    if(!response.ok){
-      throw new Error("Server error");
+    if (!response.ok) {
+      throw new Error("Backend not connected");
     }
 
-    const data=await response.json();
+    const data = await response.json();
 
-    if(data.image){
+    typing.remove();
 
-      aiContent.textContent="";
+    addMessage(
+      "ai",
+      data.reply || "Sultan AI didn't receive a response."
+    );
 
-      const img=document.createElement("img");
-      img.src=data.image;
-      img.className="image-preview";
+  } catch (error) {
 
-      aiContent.appendChild(img);
+    typing.remove();
 
-    }else{
+    /*
+      Temporary frontend response.
+      This will disappear once the real server is connected.
+    */
 
-      const answer=
-        data.reply ||
-        data.message ||
-        data.content ||
-        "No response received.";
-
-      aiContent.textContent=answer;
-
-      messages.push({
-        role:"assistant",
-        content:answer
-      });
-
-    }
-
-    saveHistory(text || "Image request");
-
-  }catch(error){
-
-    console.error(error);
-
-    aiContent.textContent=
-      "Sultan AI is currently unavailable. Please try again.";
-
+    addMessage(
+      "ai",
+      "⚡ Sultan AI is ready. Connect the server to activate the real AI."
+    );
   }
-
-  removeImage();
 }
 
-function fileToBase64(file){
-
-  return new Promise((resolve,reject)=>{
-
-    const reader=new FileReader();
-
-    reader.onload=()=>{
-      resolve(reader.result);
-    };
-
-    reader.onerror=reject;
-
-    reader.readAsDataURL(file);
+/* Scroll */
+function scrollBottom() {
+  requestAnimationFrame(() => {
+    const chat = document.getElementById("chat");
+    chat.scrollTop = chat.scrollHeight;
   });
 }
 
-function newChat(){
+/* ==============================
+   Fire particle engine
+================================ */
 
-  messages=[];
-  currentMode="chat";
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
 
-  document.querySelector(".chat-inner").innerHTML=`
+let W, H;
 
-    <div class="welcome" id="welcome">
-
-      <div class="big-logo">S</div>
-
-      <h1>
-        Welcome to <span class="gradient">Sultan AI</span>
-      </h1>
-
-      <p>
-        Your intelligent AI assistant for conversations,
-        image analysis and creative image generation.
-      </p>
-
-      <div class="actions">
-
-        <button class="action" onclick="setMode('chat')">
-          💬 Chat
-        </button>
-
-        <button class="action" onclick="setMode('analyze')">
-          🔍 Analyze Image
-        </button>
-
-        <button class="action" onclick="setMode('create')">
-          🎨 Create Image
-        </button>
-
-        <button class="action" onclick="openImagePicker()">
-          🖼️ Upload Image
-        </button>
-
-      </div>
-
-    </div>
-  `;
-
-  promptInput.focus();
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
 }
 
-function saveHistory(text){
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-  if(!text)return;
+function fireSpark() {
 
-  let data=JSON.parse(
-    localStorage.getItem("sultan_history")||"[]"
+  const spark = document.createElement("div");
+  spark.className = "spark";
+
+  spark.style.left =
+    (window.innerWidth * .5 + (Math.random() - .5) * 120) + "px";
+
+  spark.style.top =
+    (window.innerHeight * .22 + Math.random() * 100) + "px";
+
+  spark.style.setProperty(
+    "--x",
+    ((Math.random() - .5) * 180) + "px"
   );
 
-  data.unshift(text);
-  data=data.slice(0,15);
-
-  localStorage.setItem(
-    "sultan_history",
-    JSON.stringify(data)
+  spark.style.setProperty(
+    "--y",
+    (-40 - Math.random() * 150) + "px"
   );
 
-  renderHistory();
+  spark.style.animationDuration =
+    (.8 + Math.random() * 1.5) + "s";
+
+  document.body.appendChild(spark);
+
+  setTimeout(() => spark.remove(), 2500);
 }
 
-function renderHistory(){
-
-  const data=JSON.parse(
-    localStorage.getItem("sultan_history")||"[]"
-  );
-
-  history.innerHTML="";
-
-  data.forEach(item=>{
-
-    const el=document.createElement("div");
-
-    el.className="history-item";
-    el.textContent=item;
-
-    el.onclick=()=>{
-      promptInput.value=item;
-      promptInput.focus();
-    };
-
-    history.appendChild(el);
-
-  });
-}
-
-promptInput.addEventListener("input",()=>{
-
-  promptInput.style.height="44px";
-
-  promptInput.style.height=
-    Math.min(promptInput.scrollHeight,150)+"px";
-
-});
-
-renderHistory();
+setInterval(fireSpark, 180);
 
 </script>
 
