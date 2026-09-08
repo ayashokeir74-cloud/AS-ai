@@ -1,7 +1,7 @@
 {
   "name": "sultan-ai",
-  "version": "4.0.0",
-  "description": "Sultan AI V4 - Fast AI Assistant with Web Search, Website Reading, Code Execution, File and Image Analysis",
+  "version": "5.0.0",
+  "description": "Sultan AI V5 - Advanced AI Assistant with Groq Compound, Web Search, Website Reading, Code Execution, Wolfram Alpha, File and Image Analysis",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "groq-sdk": "^0.33.0",
+    "groq-sdk": "^1.6.0",
     "helmet": "^8.1.0"
   }
 }
