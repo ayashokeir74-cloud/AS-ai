@@ -1,20 +1,20 @@
 {
-  "name": "sultan-ai",
-  "version": "7.2.0",
-  "description": "Sultan AI V7.2 - Advanced AI Assistant powered by Groq Compound with web search, website reading, code execution, vision and file analysis",
-  "type": "module",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "engines": {
-    "node": ">=20"
-  },
-  "dependencies": {
-    "compression": "^1.8.1",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "groq-sdk": "^1.6.0",
-    "helmet": "^8.1.0"
-  }
+"name": "sultan-ai",
+"version": "8.2.0",
+"description": "Sultan AI V8.2 - Advanced AI Assistant powered by Groq Compound with streaming, AI modes, web search, website reading, code execution, vision and file analysis",
+"type": "module",
+"main": "server.js",
+"scripts": {
+"start": "node server.js"
+},
+"engines": {
+"node": ">=20"
+},
+"dependencies": {
+"compression": "^1.8.1",
+"cors": "^2.8.5",
+"express": "^5.1.0",
+"groq-sdk": "^1.6.0",
+"helmet": "^8.1.0"
+}
 }
