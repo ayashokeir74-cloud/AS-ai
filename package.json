@@ -1,14 +1,15 @@
 {
-  "name": "as-ai-1",
-  "version": "3.0.0",
-  "description": "A S AI - Rocket AI Assistant",
+  "name": "sultan-ai",
+  "version": "1.0.0",
+  "description": "Sultan AI - Fast AI Assistant",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
-    "@google/genai": "latest",
-    "compression": "^1.8.1",
-    "express": "^4.21.2"
+    "express": "^5.1.0"
   }
 }
