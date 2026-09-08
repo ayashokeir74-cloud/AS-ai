@@ -7,7 +7,6 @@
 <title>Sultan AI</title>
 
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -24,44 +23,21 @@
   --fire2:#ffb000;
 }
 
-html,
-body{
+html,body{
   width:100%;
   height:100%;
 }
 
 body{
   min-height:100vh;
-
   background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(255,80,20,.10),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 10% 90%,
-      rgba(255,150,0,.06),
-      transparent 25%
-    ),
+    radial-gradient(circle at 50% 20%,rgba(255,80,20,.10),transparent 30%),
+    radial-gradient(circle at 10% 90%,rgba(255,150,0,.06),transparent 25%),
     var(--bg);
-
   color:var(--text);
-
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   overflow:hidden;
 }
-
-/* =========================
-   PARTICLES
-========================= */
 
 #particles{
   position:fixed;
@@ -70,85 +46,49 @@ body{
   z-index:0;
 }
 
-/* =========================
-   APP
-========================= */
-
 .app{
   position:relative;
   z-index:1;
-
   height:100vh;
-
   display:flex;
 }
-
-/* =========================
-   SIDEBAR
-========================= */
 
 .sidebar{
   width:265px;
   height:100%;
-
   padding:20px 15px;
-
-  border-right:
-    1px solid var(--line);
-
-  background:
-    rgba(8,8,11,.82);
-
-  backdrop-filter:
-    blur(20px);
-
+  border-right:1px solid var(--line);
+  background:rgba(8,8,11,.82);
+  backdrop-filter:blur(20px);
   display:flex;
   flex-direction:column;
-
   transition:.25s ease;
 }
 
 .brand{
   display:flex;
   align-items:center;
-
   gap:11px;
-
-  padding:
-    5px 8px 25px;
+  padding:5px 8px 25px;
 }
 
 .logo{
   width:42px;
   height:42px;
-
   border-radius:13px;
-
   display:grid;
   place-items:center;
-
   font-weight:900;
   font-size:19px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ff8a00,
-      #ff2800
-    );
-
+  background:linear-gradient(145deg,#ff8a00,#ff2800);
   box-shadow:
-    0 0 22px
-      rgba(255,75,0,.38),
-
-    inset 0 1px 0
-      rgba(255,255,255,.25);
+    0 0 22px rgba(255,75,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.25);
 }
 
 .brand-text{
   font-size:20px;
   font-weight:850;
-
   letter-spacing:-.5px;
 }
 
@@ -156,50 +96,23 @@ body{
   color:#ff7228;
 }
 
-/* =========================
-   NEW CHAT
-========================= */
-
 .new-chat{
-  border:
-    1px solid
-    rgba(255,100,30,.25);
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255,80,20,.16),
-      rgba(255,160,0,.07)
-    );
-
+  border:1px solid rgba(255,100,30,.25);
+  background:linear-gradient(135deg,rgba(255,80,20,.16),rgba(255,160,0,.07));
   color:white;
-
   border-radius:13px;
-
   padding:13px 15px;
-
   font-size:14px;
   font-weight:750;
-
   cursor:pointer;
-
   transition:.2s;
 }
 
 .new-chat:hover{
   transform:translateY(-1px);
-
-  border-color:
-    rgba(255,120,30,.55);
-
-  box-shadow:
-    0 0 22px
-    rgba(255,70,10,.15);
+  border-color:rgba(255,120,30,.55);
+  box-shadow:0 0 22px rgba(255,70,10,.15);
 }
-
-/* =========================
-   NAV
-========================= */
 
 .nav{
   margin-top:22px;
@@ -207,233 +120,131 @@ body{
 
 .nav-title{
   color:#666672;
-
   font-size:11px;
-
   text-transform:uppercase;
-
   letter-spacing:1.3px;
-
-  padding:
-    0 10px 8px;
+  padding:0 10px 8px;
 }
 
 .nav-item{
   width:100%;
-
   padding:11px 12px;
-
   border-radius:10px;
-
   color:#c8c8d0;
-
   background:transparent;
-
   border:0;
-
   text-align:left;
-
   cursor:pointer;
-
   margin-bottom:4px;
-
   transition:.2s;
 }
 
 .nav-item:hover{
-  background:
-    rgba(255,255,255,.05);
+  background:rgba(255,255,255,.05);
 }
-
-/* =========================
-   SIDEBAR BOTTOM
-========================= */
 
 .sidebar-bottom{
   margin-top:auto;
 }
 
-/* =========================
-   CREATOR
-========================= */
-
 .creator{
   padding:14px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.08);
-
+  border:1px solid rgba(255,255,255,.08);
   border-radius:14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255,80,20,.07),
-      rgba(255,255,255,.025)
-    );
-
-  box-shadow:
-    0 8px 30px
-    rgba(0,0,0,.18);
+  background:linear-gradient(135deg,rgba(255,80,20,.07),rgba(255,255,255,.025));
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
 }
 
 .creator-label{
   color:#666672;
-
   font-size:9px;
-
   letter-spacing:1.5px;
-
   text-transform:uppercase;
 }
 
 .creator-names{
   display:flex;
-
   align-items:center;
-
   gap:8px;
-
   white-space:nowrap;
-
   margin-top:7px;
 }
 
 .creator-main{
   color:#ffffff;
-
   font-size:13px;
-
   font-weight:850;
 }
 
 .creator-separator{
   color:#ff6d2d;
-
   font-size:13px;
-
   font-weight:700;
 }
 
 .creator-assist{
   color:#ff965f;
-
   font-size:13px;
-
   font-weight:700;
 }
 
-/* =========================
-   MAIN
-========================= */
-
 .main{
   flex:1;
-
   min-width:0;
-
   display:flex;
-
   flex-direction:column;
 }
 
-/* =========================
-   TOPBAR
-========================= */
-
 .topbar{
   height:64px;
-
-  padding:
-    0 22px;
-
+  padding:0 22px;
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
-
-  border-bottom:
-    1px solid var(--line);
-
-  background:
-    rgba(7,7,10,.5);
-
-  backdrop-filter:
-    blur(16px);
+  border-bottom:1px solid var(--line);
+  background:rgba(7,7,10,.5);
+  backdrop-filter:blur(16px);
 }
 
 .mobile-menu{
   display:none;
-
   border:0;
-
   background:transparent;
-
   color:white;
-
   font-size:23px;
-
   cursor:pointer;
 }
 
 .status{
   display:flex;
-
   align-items:center;
-
   gap:8px;
-
   color:#aaaab4;
-
   font-size:12px;
 }
 
 .status-dot{
   width:7px;
   height:7px;
-
   background:#42e87a;
-
   border-radius:50%;
-
-  box-shadow:
-    0 0 10px
-    #42e87a;
+  box-shadow:0 0 10px #42e87a;
 }
 
 .speed{
-  border:
-    1px solid
-    rgba(255,100,30,.18);
-
-  background:
-    rgba(255,70,10,.06);
-
+  border:1px solid rgba(255,100,30,.18);
+  background:rgba(255,70,10,.06);
   color:#ff9a64;
-
   padding:7px 10px;
-
   border-radius:9px;
-
   font-size:11px;
-
   font-weight:700;
 }
 
-/* =========================
-   CHAT
-========================= */
-
 .chat{
   flex:1;
-
   overflow-y:auto;
-
-  padding:
-    45px 18px 170px;
-
+  padding:45px 18px 170px;
   scroll-behavior:smooth;
 }
 
@@ -446,31 +257,20 @@ body{
 }
 
 .chat::-webkit-scrollbar-thumb{
-  background:
-    rgba(255,255,255,.10);
-
+  background:rgba(255,255,255,.10);
   border-radius:20px;
 }
 
 .chat-inner{
   width:min(850px,100%);
-
   margin:auto;
 }
 
-/* =========================
-   WELCOME
-========================= */
-
 .welcome{
   min-height:55vh;
-
   display:flex;
-
   align-items:center;
-
   justify-content:center;
-
   text-align:center;
 }
 
@@ -481,314 +281,210 @@ body{
 .fire-logo{
   width:76px;
   height:76px;
-
-  margin:
-    0 auto 20px;
-
+  margin:0 auto 20px;
   border-radius:25px;
-
   display:grid;
-
   place-items:center;
-
   font-size:29px;
-
   font-weight:950;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ff9a00,
-      #ff2600
-    );
-
+  background:linear-gradient(145deg,#ff9a00,#ff2600);
   box-shadow:
-    0 0 30px
-      rgba(255,70,0,.3),
-
-    0 0 90px
-      rgba(255,70,0,.12);
-
-  animation:
-    firePulse
-    1.7s
-    infinite
-    alternate;
+    0 0 30px rgba(255,70,0,.3),
+    0 0 90px rgba(255,70,0,.12);
+  animation:firePulse 1.7s infinite alternate;
 }
 
 @keyframes firePulse{
-
-  from{
-    transform:scale(1);
-  }
-
-  to{
-    transform:scale(1.045);
-  }
-
+  from{transform:scale(1);}
+  to{transform:scale(1.045);}
 }
 
 .welcome h1{
-  font-size:
-    clamp(
-      38px,
-      6vw,
-      66px
-    );
-
+  font-size:clamp(38px,6vw,66px);
   line-height:1;
-
   letter-spacing:-3px;
 }
 
 .gradient{
-  background:
-    linear-gradient(
-      90deg,
-      #fff,
-      #ffb066,
-      #ff4b17
-    );
-
+  background:linear-gradient(90deg,#fff,#ffb066,#ff4b17);
   -webkit-background-clip:text;
-
   background-clip:text;
-
   color:transparent;
 }
 
 .welcome p{
   color:#9d9da8;
-
   margin-top:18px;
-
   font-size:15px;
 }
 
-/* =========================
-   QUICK BUTTONS
-========================= */
-
 .quick{
   display:grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
-
+  grid-template-columns:repeat(2,1fr);
   gap:10px;
-
   margin-top:28px;
 }
 
 .quick button{
   padding:14px;
-
   border-radius:13px;
-
-  border:
-    1px solid var(--line);
-
-  background:
-    rgba(255,255,255,.025);
-
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.025);
   color:#d4d4dc;
-
   cursor:pointer;
-
   text-align:left;
-
   transition:.2s;
 }
 
 .quick button:hover{
-  border-color:
-    rgba(255,100,30,.35);
-
-  background:
-    rgba(255,70,10,.06);
-
-  transform:
-    translateY(-1px);
+  border-color:rgba(255,100,30,.35);
+  background:rgba(255,70,10,.06);
+  transform:translateY(-1px);
 }
-
-/* =========================
-   MESSAGES
-========================= */
 
 .message{
   display:flex;
-
   gap:12px;
-
   margin:20px 0;
-
-  animation:
-    appear
-    .22s
-    ease;
+  animation:appear .22s ease;
 }
 
 @keyframes appear{
-
   from{
     opacity:0;
-
-    transform:
-      translateY(7px);
+    transform:translateY(7px);
   }
-
   to{
     opacity:1;
-
-    transform:
-      translateY(0);
+    transform:translateY(0);
   }
-
 }
 
 .avatar{
-  flex:
-    0 0 34px;
-
+  flex:0 0 34px;
   width:34px;
   height:34px;
-
   border-radius:11px;
-
   display:grid;
-
   place-items:center;
-
   font-size:12px;
-
   font-weight:850;
-
   background:#1c1c23;
-
-  border:
-    1px solid var(--line);
+  border:1px solid var(--line);
 }
 
 .ai .avatar{
-  background:
-    linear-gradient(
-      145deg,
-      #ff7b00,
-      #ff2d00
-    );
-
+  background:linear-gradient(145deg,#ff7b00,#ff2d00);
   border:0;
-
-  box-shadow:
-    0 0 15px
-    rgba(255,70,0,.18);
+  box-shadow:0 0 15px rgba(255,70,0,.18);
 }
 
 .msg-body{
   min-width:0;
-
-  max-width:
-    calc(100% - 50px);
+  max-width:calc(100% - 50px);
 }
 
 .msg-name{
   color:#858590;
-
   font-size:11px;
-
   margin-bottom:5px;
 }
 
 .msg-text{
   color:#eeeeF3;
-
   font-size:14px;
-
   line-height:1.7;
-
   white-space:pre-wrap;
-
   overflow-wrap:anywhere;
 }
 
 .user .msg-text{
-  background:
-    rgba(255,255,255,.055);
-
-  border:
-    1px solid var(--line);
-
-  padding:
-    10px 13px;
-
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--line);
+  padding:10px 13px;
   border-radius:13px;
 }
 
-/* =========================
-   TOOL INFO
-========================= */
-
 .tool-info{
   width:max-content;
-
   max-width:100%;
-
-  margin:
-    -8px 0 18px 46px;
-
-  padding:
-    6px 10px;
-
+  margin:-8px 0 18px 46px;
+  padding:6px 10px;
   border-radius:9px;
-
-  border:
-    1px solid
-    rgba(255,100,30,.16);
-
-  background:
-    rgba(255,70,10,.045);
-
+  border:1px solid rgba(255,100,30,.16);
+  background:rgba(255,70,10,.045);
   color:#ff9a64;
-
   font-size:10px;
-
   font-weight:700;
-
   letter-spacing:.2px;
-
-  animation:
-    appear
-    .25s
-    ease;
-
+  animation:appear .25s ease;
   overflow-wrap:anywhere;
 }
 
-/* =========================
-   TYPING
-========================= */
+.file-card{
+  margin-top:10px;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,100,30,.18);
+  background:rgba(255,70,10,.055);
+  color:#dddde5;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  max-width:430px;
+}
+
+.file-icon{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.07);
+  font-size:16px;
+  flex-shrink:0;
+}
+
+.file-info{
+  min-width:0;
+}
+
+.file-name{
+  font-size:12px;
+  font-weight:750;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.file-size{
+  color:#858590;
+  font-size:10px;
+  margin-top:3px;
+}
+
+.image-preview{
+  display:block;
+  max-width:280px;
+  max-height:230px;
+  margin-top:10px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.09);
+  object-fit:cover;
+}
 
 .typing{
   display:inline-flex;
-
   gap:4px;
-
   padding:9px 0;
 }
 
 .typing i{
   width:5px;
   height:5px;
-
   border-radius:50%;
-
   background:#ff7130;
-
-  animation:
-    blink
-    .8s
-    infinite
-    alternate;
+  animation:blink .8s infinite alternate;
 }
 
 .typing i:nth-child(2){
@@ -800,280 +496,157 @@ body{
 }
 
 @keyframes blink{
-
   from{
     opacity:.25;
-
-    transform:
-      translateY(0);
+    transform:translateY(0);
   }
-
   to{
     opacity:1;
-
-    transform:
-      translateY(-3px);
+    transform:translateY(-3px);
   }
-
 }
-
-/* =========================
-   COMPOSER
-========================= */
 
 .composer-wrap{
   position:fixed;
-
   left:265px;
   right:0;
   bottom:0;
-
-  padding:
-    15px 18px 18px;
-
-  background:
-    linear-gradient(
-      transparent,
-      rgba(7,7,10,.96) 30%
-    );
+  padding:15px 18px 18px;
+  background:linear-gradient(transparent,rgba(7,7,10,.96) 30%);
 }
 
 .composer{
   width:min(850px,100%);
-
   margin:auto;
-
   display:flex;
-
   align-items:flex-end;
-
   gap:9px;
-
   padding:9px;
-
   border-radius:17px;
-
-  border:
-    1px solid
-    rgba(255,255,255,.10);
-
-  background:
-    rgba(18,18,23,.92);
-
-  box-shadow:
-    0 12px 50px
-    rgba(0,0,0,.35);
-
-  backdrop-filter:
-    blur(20px);
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(18,18,23,.92);
+  box-shadow:0 12px 50px rgba(0,0,0,.35);
+  backdrop-filter:blur(20px);
 }
-
-/* =========================
-   ATTACH BUTTON
-========================= */
 
 .attach{
   width:42px;
   height:42px;
-
   border:0;
-
   border-radius:12px;
-
-  background:
-    rgba(255,255,255,.05);
-
+  background:rgba(255,255,255,.05);
   color:#aaaab4;
-
   font-size:19px;
-
   cursor:pointer;
-
   transition:.2s;
+  flex-shrink:0;
 }
 
 .attach:hover{
-  background:
-    rgba(255,255,255,.09);
-
+  background:rgba(255,255,255,.09);
   color:white;
 }
 
-/* =========================
-   TEXTAREA
-========================= */
+.attach:active{
+  transform:scale(.94);
+}
+
+#fileInput{
+  display:none;
+}
 
 #prompt{
   flex:1;
-
   resize:none;
-
   max-height:150px;
-
   min-height:42px;
-
   border:0;
-
   outline:0;
-
   background:transparent;
-
   color:white;
-
   font:inherit;
-
-  padding:
-    11px 4px;
+  padding:11px 4px;
 }
 
 #prompt::placeholder{
   color:#666672;
 }
 
-/* =========================
-   SEND
-========================= */
-
 .send{
   width:43px;
   height:43px;
-
   border:0;
-
   border-radius:12px;
-
   color:white;
-
   font-size:18px;
-
   cursor:pointer;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ff7b00,
-      #ff3000
-    );
-
-  box-shadow:
-    0 0 18px
-    rgba(255,70,0,.23);
-
+  background:linear-gradient(145deg,#ff7b00,#ff3000);
+  box-shadow:0 0 18px rgba(255,70,0,.23);
   transition:.18s;
+  flex-shrink:0;
 }
 
 .send:hover{
-  transform:
-    scale(1.04);
+  transform:scale(1.04);
 }
 
 .send:active{
-  transform:
-    scale(.95);
+  transform:scale(.95);
 }
 
 .send:disabled{
   opacity:.5;
-
   cursor:not-allowed;
-
   transform:none;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
 .footer{
   text-align:center;
-
   color:#55555f;
-
   font-size:9px;
-
   margin-top:8px;
 }
 
-/* =========================
-   SPARKS
-========================= */
-
 .spark{
   position:fixed;
-
   width:3px;
   height:3px;
-
   border-radius:50%;
-
   background:#ff8a3d;
-
   pointer-events:none;
-
   opacity:0;
-
   z-index:0;
-
-  animation:
-    sparkFly
-    linear
-    forwards;
+  animation:sparkFly linear forwards;
 }
 
 @keyframes sparkFly{
-
   0%{
     opacity:0;
-
-    transform:
-      translate(0,0)
-      scale(.4);
+    transform:translate(0,0) scale(.4);
   }
-
   15%{
     opacity:.9;
   }
-
   100%{
     opacity:0;
-
-    transform:
-      translate(
-        var(--x),
-        var(--y)
-      )
-      scale(0);
+    transform:translate(var(--x),var(--y)) scale(0);
   }
-
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 @media(max-width:720px){
 
   .sidebar{
     position:fixed;
-
     z-index:20;
-
     left:0;
     top:0;
-
-    transform:
-      translateX(-105%);
-
+    transform:translateX(-105%);
     width:275px;
-
-    box-shadow:
-      20px 0 50px
-      rgba(0,0,0,.5);
+    box-shadow:20px 0 50px rgba(0,0,0,.5);
   }
 
   .sidebar.open{
-    transform:
-      translateX(0);
+    transform:translateX(0);
   }
 
   .mobile-menu{
@@ -1081,20 +654,16 @@ body{
   }
 
   .topbar{
-    padding:
-      0 14px;
+    padding:0 14px;
   }
 
   .composer-wrap{
     left:0;
-
-    padding:
-      12px 10px 13px;
+    padding:12px 10px 13px;
   }
 
   .chat{
-    padding:
-      30px 12px 150px;
+    padding:30px 12px 150px;
   }
 
   .welcome{
@@ -1115,16 +684,9 @@ body{
 
   .tool-info{
     margin-left:0;
-
-    max-width:
-      calc(100% - 5px);
+    max-width:calc(100% - 5px);
   }
-
 }
-
-/* =========================
-   VERY SMALL PHONES
-========================= */
 
 @media(max-width:380px){
 
@@ -1155,9 +717,7 @@ body{
     width:40px;
     height:40px;
   }
-
 }
-
 </style>
 </head>
 
@@ -1167,31 +727,17 @@ body{
 
 <div class="app">
 
-  <!-- =========================
-       SIDEBAR
-  ========================== -->
-
-  <aside
-    class="sidebar"
-    id="sidebar"
-  >
+  <aside class="sidebar" id="sidebar">
 
     <div class="brand">
-
-      <div class="logo">
-        S
-      </div>
+      <div class="logo">S</div>
 
       <div class="brand-text">
         Sultan <span>AI</span>
       </div>
-
     </div>
 
-    <button
-      class="new-chat"
-      onclick="newChat()"
-    >
+    <button class="new-chat" onclick="newChat()">
       ＋ New Chat
     </button>
 
@@ -1201,24 +747,15 @@ body{
         Workspace
       </div>
 
-      <button
-        class="nav-item"
-        onclick="newChat()"
-      >
+      <button class="nav-item" onclick="newChat()">
         💬 New conversation
       </button>
 
-      <button
-        class="nav-item"
-        onclick="focusPrompt()"
-      >
+      <button class="nav-item" onclick="focusPrompt()">
         🕘 Recent chats
       </button>
 
-      <button
-        class="nav-item"
-        onclick="showSettings()"
-      >
+      <button class="nav-item" onclick="showSettings()">
         ⚙️ Settings
       </button>
 
@@ -1254,11 +791,6 @@ body{
 
   </aside>
 
-
-  <!-- =========================
-       MAIN
-  ========================== -->
-
   <main class="main">
 
     <header class="topbar">
@@ -1272,11 +804,8 @@ body{
       </button>
 
       <div class="status">
-
         <span class="status-dot"></span>
-
         Sultan AI Online
-
       </div>
 
       <div class="speed">
@@ -1285,25 +814,11 @@ body{
 
     </header>
 
+    <section class="chat" id="chat">
 
-    <!-- =========================
-         CHAT
-    ========================== -->
+      <div class="chat-inner" id="chatInner">
 
-    <section
-      class="chat"
-      id="chat"
-    >
-
-      <div
-        class="chat-inner"
-        id="chatInner"
-      >
-
-        <div
-          class="welcome"
-          id="welcome"
-        >
+        <div class="welcome" id="welcome">
 
           <div class="welcome-content">
 
@@ -1312,13 +827,10 @@ body{
             </div>
 
             <h1>
-
               Meet
-
               <span class="gradient">
                 Sultan AI
               </span>
-
             </h1>
 
             <p>
@@ -1326,30 +838,21 @@ body{
               Your next-generation AI assistant.
             </p>
 
-
             <div class="quick">
 
-              <button
-                onclick="quickAsk('Explain something to me simply')"
-              >
+              <button onclick="quickAsk('Explain something to me simply')">
                 🧠 Explain something
               </button>
 
-              <button
-                onclick="quickAsk('Help me write something')"
-              >
+              <button onclick="quickAsk('Help me write something')">
                 ✍️ Help me write
               </button>
 
-              <button
-                onclick="quickAsk('Give me a creative idea')"
-              >
+              <button onclick="quickAsk('Give me a creative idea')">
                 💡 Give me an idea
               </button>
 
-              <button
-                onclick="quickAsk('Help me with coding')"
-              >
+              <button onclick="quickAsk('Help me with coding')">
                 💻 Help me code
               </button>
 
@@ -1363,23 +866,27 @@ body{
 
     </section>
 
-
-    <!-- =========================
-         COMPOSER
-    ========================== -->
-
     <div class="composer-wrap">
 
       <div class="composer">
 
         <button
           class="attach"
-          onclick="attachmentComingSoon()"
-          aria-label="Attachments"
-          title="Attachments"
+          type="button"
+          onclick="openFilePicker()"
+          aria-label="Add image or file"
+          title="Add image or file"
         >
           ＋
         </button>
+
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*,.pdf,.txt,.csv,.json,.js,.html,.css,.md,.doc,.docx"
+          multiple
+          onchange="handleFiles(this.files)"
+        >
 
         <textarea
           id="prompt"
@@ -1410,15 +917,13 @@ body{
 
 </div>
 
-
 <script>
-
-/* =====================================================
-   VARIABLES
-===================================================== */
 
 const promptBox =
   document.getElementById("prompt");
+
+const chat =
+  document.getElementById("chat");
 
 const chatInner =
   document.getElementById("chatInner");
@@ -1429,14 +934,19 @@ const welcome =
 const sendButton =
   document.getElementById("sendButton");
 
+const fileInput =
+  document.getElementById("fileInput");
+
 let conversation = [];
 
 let isSending = false;
 
+let selectedFiles = [];
 
-/* =====================================================
+
+/* =========================
    SIDEBAR
-===================================================== */
+========================= */
 
 function toggleSidebar(){
 
@@ -1448,13 +958,15 @@ function toggleSidebar(){
 }
 
 
-/* =====================================================
+/* =========================
    NEW CHAT
-===================================================== */
+========================= */
 
 function newChat(){
 
   conversation = [];
+
+  selectedFiles = [];
 
   chatInner.innerHTML = "";
 
@@ -1463,6 +975,8 @@ function newChat(){
   welcome.style.display = "flex";
 
   promptBox.value = "";
+
+  fileInput.value = "";
 
   autoResize(promptBox);
 
@@ -1476,9 +990,9 @@ function newChat(){
 }
 
 
-/* =====================================================
-   FOCUS PROMPT
-===================================================== */
+/* =========================
+   FOCUS
+========================= */
 
 function focusPrompt(){
 
@@ -1492,9 +1006,9 @@ function focusPrompt(){
 }
 
 
-/* =====================================================
+/* =========================
    SETTINGS
-===================================================== */
+========================= */
 
 function showSettings(){
 
@@ -1511,23 +1025,237 @@ function showSettings(){
 }
 
 
-/* =====================================================
-   ATTACHMENT
-===================================================== */
+/* =========================
+   FILE PICKER
+========================= */
 
-function attachmentComingSoon(){
+function openFilePicker(){
 
-  addMessage(
-    "ai",
-    "📎 رفع الملفات وتحليل الصور رح يكون ضمن التطوير القادم."
-  );
+  fileInput.click();
 
 }
 
 
-/* =====================================================
-   QUICK QUESTIONS
-===================================================== */
+/* =========================
+   FILE SIZE
+========================= */
+
+function formatFileSize(bytes){
+
+  if(bytes < 1024){
+    return bytes + " B";
+  }
+
+  if(bytes < 1024 * 1024){
+    return (bytes / 1024).toFixed(1) + " KB";
+  }
+
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+
+}
+
+
+/* =========================
+   FILE ICON
+========================= */
+
+function getFileIcon(file){
+
+  const type =
+    file.type || "";
+
+  if(type.startsWith("image/")){
+    return "🖼️";
+  }
+
+  if(type === "application/pdf"){
+    return "📕";
+  }
+
+  if(
+    type.includes("text") ||
+    file.name.endsWith(".txt") ||
+    file.name.endsWith(".md")
+  ){
+    return "📄";
+  }
+
+  if(
+    file.name.endsWith(".js") ||
+    file.name.endsWith(".html") ||
+    file.name.endsWith(".css") ||
+    file.name.endsWith(".json")
+  ){
+    return "💻";
+  }
+
+  return "📎";
+
+}
+
+
+/* =========================
+   HANDLE FILES
+========================= */
+
+function handleFiles(files){
+
+  if(!files || !files.length){
+    return;
+  }
+
+  selectedFiles =
+    Array.from(files);
+
+  for(const file of selectedFiles){
+
+    addFileMessage(file);
+
+  }
+
+  promptBox.focus();
+
+}
+
+
+/* =========================
+   SHOW FILE
+========================= */
+
+function addFileMessage(file){
+
+  welcome.style.display = "none";
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message user";
+
+  const avatar =
+    document.createElement("div");
+
+  avatar.className =
+    "avatar";
+
+  avatar.textContent =
+    "You";
+
+  const body =
+    document.createElement("div");
+
+  body.className =
+    "msg-body";
+
+  const name =
+    document.createElement("div");
+
+  name.className =
+    "msg-name";
+
+  name.textContent =
+    "You";
+
+  const text =
+    document.createElement("div");
+
+  text.className =
+    "msg-text";
+
+  text.textContent =
+    "📎 File attached";
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "file-card";
+
+  const icon =
+    document.createElement("div");
+
+  icon.className =
+    "file-icon";
+
+  icon.textContent =
+    getFileIcon(file);
+
+  const info =
+    document.createElement("div");
+
+  info.className =
+    "file-info";
+
+  const fileName =
+    document.createElement("div");
+
+  fileName.className =
+    "file-name";
+
+  fileName.textContent =
+    file.name;
+
+  const fileSize =
+    document.createElement("div");
+
+  fileSize.className =
+    "file-size";
+
+  fileSize.textContent =
+    formatFileSize(file.size);
+
+  info.appendChild(fileName);
+  info.appendChild(fileSize);
+
+  card.appendChild(icon);
+  card.appendChild(info);
+
+  body.appendChild(name);
+  body.appendChild(text);
+  body.appendChild(card);
+
+  if(file.type.startsWith("image/")){
+
+    const reader =
+      new FileReader();
+
+    reader.onload = function(e){
+
+      const img =
+        document.createElement("img");
+
+      img.className =
+        "image-preview";
+
+      img.src =
+        e.target.result;
+
+      img.alt =
+        file.name;
+
+      card.appendChild(img);
+
+      scrollChat();
+
+    };
+
+    reader.readAsDataURL(file);
+
+  }
+
+  message.appendChild(avatar);
+  message.appendChild(body);
+
+  chatInner.appendChild(message);
+
+  scrollChat();
+
+}
+
+
+/* =========================
+   QUICK ASK
+========================= */
 
 function quickAsk(text){
 
@@ -1540,9 +1268,9 @@ function quickAsk(text){
 }
 
 
-/* =====================================================
-   ENTER KEY
-===================================================== */
+/* =========================
+   ENTER
+========================= */
 
 function handleKey(e){
 
@@ -1560,9 +1288,9 @@ function handleKey(e){
 }
 
 
-/* =====================================================
-   TEXTAREA
-===================================================== */
+/* =========================
+   RESIZE
+========================= */
 
 function autoResize(el){
 
@@ -1577,14 +1305,11 @@ function autoResize(el){
 }
 
 
-/* =====================================================
+/* =========================
    ADD MESSAGE
-===================================================== */
+========================= */
 
-function addMessage(
-  type,
-  text
-){
+function addMessage(type,text){
 
   welcome.style.display = "none";
 
@@ -1593,7 +1318,6 @@ function addMessage(
 
   message.className =
     `message ${type}`;
-
 
   const avatar =
     document.createElement("div");
@@ -1604,15 +1328,13 @@ function addMessage(
   avatar.textContent =
     type === "ai"
       ? "S"
-      : "YOU";
-
+      : "You";
 
   const body =
     document.createElement("div");
 
   body.className =
     "msg-body";
-
 
   const name =
     document.createElement("div");
@@ -1625,123 +1347,33 @@ function addMessage(
       ? "Sultan AI"
       : "You";
 
-
-  const content =
+  const textElement =
     document.createElement("div");
 
-  content.className =
+  textElement.className =
     "msg-text";
 
-  content.textContent =
+  textElement.textContent =
     text;
 
-
   body.appendChild(name);
-
-  body.appendChild(content);
+  body.appendChild(textElement);
 
   message.appendChild(avatar);
-
   message.appendChild(body);
 
   chatInner.appendChild(message);
 
-  scrollBottom();
+  scrollChat();
 
-  return content;
-
-}
-
-
-/* =====================================================
-   TOOL INFORMATION
-===================================================== */
-
-function showToolsUsed(data){
-
-  const tools = [];
-
-
-  if(
-    data &&
-    data.searched
-  ){
-
-    tools.push(
-      "🌐 Web Search"
-    );
-
-  }
-
-
-  if(
-    data &&
-    data.websiteVisited
-  ){
-
-    tools.push(
-      "🔗 Website"
-    );
-
-  }
-
-
-  if(
-    data &&
-    data.codeExecuted
-  ){
-
-    tools.push(
-      "💻 Code"
-    );
-
-  }
-
-
-  if(
-    data &&
-    data.calculated
-  ){
-
-    tools.push(
-      "🧮 Calculator"
-    );
-
-  }
-
-
-  if(!tools.length){
-
-    return;
-
-  }
-
-
-  const toolInfo =
-    document.createElement("div");
-
-  toolInfo.className =
-    "tool-info";
-
-  toolInfo.textContent =
-    "⚡ " +
-    tools.join(
-      "  •  "
-    );
-
-
-  chatInner.appendChild(
-    toolInfo
-  );
-
-  scrollBottom();
+  return message;
 
 }
 
 
-/* =====================================================
+/* =========================
    TYPING
-===================================================== */
+========================= */
 
 function addTyping(){
 
@@ -1756,7 +1388,6 @@ function addTyping(){
   message.id =
     "typingMessage";
 
-
   const avatar =
     document.createElement("div");
 
@@ -1766,13 +1397,11 @@ function addTyping(){
   avatar.textContent =
     "S";
 
-
   const body =
     document.createElement("div");
 
   body.className =
     "msg-body";
-
 
   const name =
     document.createElement("div");
@@ -1783,7 +1412,6 @@ function addTyping(){
   name.textContent =
     "Sultan AI";
 
-
   const typing =
     document.createElement("div");
 
@@ -1793,76 +1421,152 @@ function addTyping(){
   typing.innerHTML =
     "<i></i><i></i><i></i>";
 
-
   body.appendChild(name);
-
   body.appendChild(typing);
 
   message.appendChild(avatar);
-
   message.appendChild(body);
 
   chatInner.appendChild(message);
 
-  scrollBottom();
-
-  return message;
+  scrollChat();
 
 }
 
 
-/* =====================================================
-   REAL AI CHAT
-===================================================== */
+/* =========================
+   REMOVE TYPING
+========================= */
+
+function removeTyping(){
+
+  const typing =
+    document.getElementById(
+      "typingMessage"
+    );
+
+  if(typing){
+    typing.remove();
+  }
+
+}
+
+
+/* =========================
+   TOOLS
+========================= */
+
+function showToolsUsed(data){
+
+  if(!data){
+    return;
+  }
+
+  const tools = [];
+
+  if(data.searched){
+    tools.push("🌐 Web Search");
+  }
+
+  if(data.websiteVisited){
+    tools.push("🔗 Website");
+  }
+
+  if(data.codeExecuted){
+    tools.push("💻 Code");
+  }
+
+  if(data.calculated){
+    tools.push("🧮 Calculator");
+  }
+
+  if(!tools.length){
+    return;
+  }
+
+  const info =
+    document.createElement("div");
+
+  info.className =
+    "tool-info";
+
+  info.textContent =
+    "Used: " + tools.join(" • ");
+
+  chatInner.appendChild(info);
+
+}
+
+
+/* =========================
+   SEND MESSAGE
+========================= */
 
 async function sendMessage(){
 
   if(isSending){
-
     return;
-
   }
-
 
   const text =
     promptBox.value.trim();
 
-
-  if(!text){
-
+  if(
+    !text &&
+    selectedFiles.length === 0
+  ){
     return;
-
   }
-
 
   isSending = true;
 
   sendButton.disabled = true;
 
+  let userText =
+    text;
+
+  if(selectedFiles.length){
+
+    const names =
+      selectedFiles
+        .map(file => file.name)
+        .join(", ");
+
+    if(userText){
+
+      userText +=
+        "\n\n📎 Attached: " +
+        names;
+
+    }else{
+
+      userText =
+        "📎 Attached: " +
+        names;
+
+    }
+
+  }
+
+  if(text){
+
+    addMessage(
+      "user",
+      text
+    );
+
+  }
+
+  conversation.push({
+    role:"user",
+    content:userText
+  });
 
   promptBox.value = "";
 
   autoResize(promptBox);
 
-
-  addMessage(
-    "user",
-    text
-  );
-
-
-  conversation.push({
-
-    role:"user",
-
-    content:text
-
-  });
-
-
-  const typing =
-    addTyping();
-
+  addTyping();
 
   try{
 
@@ -1884,130 +1588,86 @@ async function sendMessage(){
         }
       );
 
+    const data =
+      await response.json();
+
+    removeTyping();
 
     if(!response.ok){
 
-      let errorText =
-        "Server error: " +
-        response.status;
-
-      try{
-
-        const errorData =
-          await response.json();
-
-        if(
-          errorData &&
-          errorData.reply
-        ){
-
-          errorText =
-            errorData.reply;
-
-        }
-
-      }catch(_){
-
-      }
-
       throw new Error(
-        errorText
+        data.reply ||
+        "Request failed"
       );
 
     }
 
-
-    const data =
-      await response.json();
-
-
-    typing.remove();
-
-
     const reply =
       data.reply ||
-      "ما قدرت آخد جواب من Sultan AI.";
-
+      "ما قدرت آخد جواب من الذكاء الاصطناعي.";
 
     addMessage(
       "ai",
       reply
     );
 
-
-    /*
-      Display tools that were
-      actually used by Compound.
-    */
-
-    showToolsUsed(
-      data
-    );
-
+    showToolsUsed(data);
 
     conversation.push({
-
       role:"assistant",
-
       content:reply
-
     });
 
+    selectedFiles = [];
+
+    fileInput.value = "";
 
   }catch(error){
 
+    removeTyping();
+
     console.error(
-      "Sultan AI Error:",
+      "SULTAN AI:",
       error
     );
 
-
-    typing.remove();
-
-
     addMessage(
       "ai",
-      "⚠️ " +
-      (
-        error.message ||
-        "صار خطأ بالاتصال مع Sultan AI."
-      )
+      "⚠️ صار خطأ بالاتصال مع Sultan AI. جرّب مرة تانية."
     );
 
+  }finally{
+
+    isSending = false;
+
+    sendButton.disabled = false;
+
+    promptBox.focus();
+
   }
-
-
-  isSending = false;
-
-  sendButton.disabled = false;
-
-  promptBox.focus();
 
 }
 
 
-/* =====================================================
+/* =========================
    SCROLL
-===================================================== */
+========================= */
 
-function scrollBottom(){
+function scrollChat(){
 
-  requestAnimationFrame(()=>{
-
-    const chat =
-      document.getElementById("chat");
+  setTimeout(() => {
 
     chat.scrollTop =
       chat.scrollHeight;
 
-  });
+  },30);
 
 }
 
 
-/* =====================================================
-   FIRE PARTICLES
-===================================================== */
+/* =========================
+   PARTICLES
+========================= */
 
 const canvas =
   document.getElementById(
@@ -2017,120 +1677,73 @@ const canvas =
 const ctx =
   canvas.getContext("2d");
 
-let W;
-let H;
-
-
 function resizeCanvas(){
 
-  W =
-    canvas.width =
-      window.innerWidth;
+  canvas.width =
+    window.innerWidth;
 
-  H =
-    canvas.height =
-      window.innerHeight;
+  canvas.height =
+    window.innerHeight;
 
 }
 
-
 resizeCanvas();
-
 
 window.addEventListener(
   "resize",
   resizeCanvas
 );
 
-
-/* =====================================================
-   FIRE SPARKS
-===================================================== */
-
-function fireSpark(){
+function createSpark(){
 
   const spark =
     document.createElement(
       "div"
     );
 
-
   spark.className =
     "spark";
 
-
   spark.style.left =
-    (
-      window.innerWidth * .5 +
-      (
-        Math.random() - .5
-      ) * 120
-    ) + "px";
-
+    Math.random() *
+    window.innerWidth +
+    "px";
 
   spark.style.top =
-    (
-      window.innerHeight * .22 +
-      Math.random() * 100
-    ) + "px";
-
+    Math.random() *
+    window.innerHeight +
+    "px";
 
   spark.style.setProperty(
     "--x",
-    (
-      (
-        Math.random() - .5
-      ) * 180
-    ) + "px"
+    (Math.random() * 120 - 60) +
+    "px"
   );
-
 
   spark.style.setProperty(
     "--y",
-    (
-      -40 -
-      Math.random() * 150
-    ) + "px"
+    (-Math.random() * 160 - 20) +
+    "px"
   );
 
-
   spark.style.animationDuration =
-    (
-      .8 +
-      Math.random() * 1.5
-    ) + "s";
-
+    (2 + Math.random() * 3) +
+    "s";
 
   document.body.appendChild(
     spark
   );
 
-
   setTimeout(
     () => spark.remove(),
-    2500
+    5000
   );
 
 }
 
-
 setInterval(
-  fireSpark,
-  180
-);
-
-
-/* =====================================================
-   INITIAL FOCUS
-===================================================== */
-
-window.addEventListener(
-  "load",
-  () => {
-
-    promptBox.focus();
-
-  }
+  createSpark,
+  850
 );
 
 </script>
