@@ -2,29 +2,31 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-
-<meta name="theme-color" content="#08090b">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<title>Sultan AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b12">
+<meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي متقدم">
+<title>Sultan AI V8</title>
 
 <style>
-
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent !important;
+  -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body{
+html,body{
   margin:0;
+  padding:0;
   width:100%;
-  height:100%;
-  background:#08090b;
-  color:#f5f5f5;
-  font-family:Arial,"Segoe UI",sans-serif;
+  min-height:100%;
+  background:#080b12;
+  color:#f5f7fb;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
 }
 
 body{
@@ -32,34 +34,25 @@ body{
 }
 
 button,
-textarea,
-input{
+input,
+textarea{
   font:inherit;
 }
 
 button{
   border:0;
-  outline:0 !important;
+  outline:none;
   cursor:pointer;
-  -webkit-appearance:none !important;
-  appearance:none !important;
-  -webkit-tap-highlight-color:transparent !important;
-  -webkit-touch-callout:none;
-  -webkit-user-select:none;
-  user-select:none;
+  appearance:none;
+  -webkit-appearance:none;
   touch-action:manipulation;
-  -webkit-focus-ring-color:transparent !important;
+  user-select:none;
 }
 
 button:focus,
 button:focus-visible{
-  outline:0 !important;
-  box-shadow:none !important;
-  -webkit-tap-highlight-color:transparent !important;
-}
-
-button:active{
-  -webkit-tap-highlight-color:transparent !important;
+  outline:none;
+  box-shadow:none;
 }
 
 .app{
@@ -67,299 +60,393 @@ button:active{
   height:100dvh;
   display:flex;
   overflow:hidden;
+  background:
+    radial-gradient(
+      circle at 80% -10%,
+      rgba(126,87,255,.16),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 100%,
+      rgba(0,212,255,.08),
+      transparent 30%
+    ),
+    #080b12;
 }
 
-/* =====================================================
+/* =========================
    SIDEBAR
-===================================================== */
+========================= */
 
 .sidebar{
-  width:270px;
-  height:100dvh;
-  flex-shrink:0;
-  background:#0d0f12;
-  border-left:1px solid #202329;
+  width:280px;
+  height:100%;
+  flex:none;
+  border-left:1px solid rgba(255,255,255,.07);
+  background:rgba(12,16,25,.92);
+  backdrop-filter:blur(24px);
   display:flex;
   flex-direction:column;
-  padding:16px;
-  z-index:100;
+  padding:18px;
+  transition:.25s ease;
+  z-index:20;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:24px;
 }
 
 .logo{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:6px 4px 18px;
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  flex:none;
+  display:grid;
+  place-items:center;
+  background:
+    linear-gradient(
+      145deg,
+      #8b5cf6,
+      #4f46e5
+    );
+  box-shadow:
+    0 10px 35px rgba(99,102,241,.28);
 }
 
-.logo-icon{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:linear-gradient(135deg,#ff9d00,#ff5a00);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 0 25px rgba(255,115,0,.18);
+.logo svg{
+  width:31px;
+  height:31px;
 }
 
-.logo-icon svg{
-  width:27px;
-  height:27px;
+.brand-text strong{
+  display:block;
+  font-size:17px;
+  letter-spacing:.2px;
 }
 
-.logo-text{
-  font-size:21px;
-  font-weight:800;
-}
-
-.logo-text span{
-  color:#ff8a00;
+.brand-text span{
+  display:block;
+  margin-top:2px;
+  color:#8992a6;
+  font-size:11px;
 }
 
 .new-chat{
   width:100%;
   min-height:48px;
-  border-radius:13px;
-  background:#ff7900;
-  color:#fff;
-  font-weight:800;
+  border-radius:15px;
+  color:white;
+  background:
+    linear-gradient(
+      135deg,
+      #7655f5,
+      #4d43d9
+    );
+  box-shadow:
+    0 10px 25px rgba(91,74,220,.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  font-weight:700;
   margin-bottom:18px;
-  transition:transform .12s ease,background .12s ease;
 }
 
 .new-chat:active{
-  transform:scale(.97);
+  transform:scale(.98);
 }
 
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+.side-title{
+  color:#727c91;
+  font-size:11px;
+  font-weight:700;
+  margin:8px 5px;
 }
 
-.nav-btn{
-  width:100%;
-  min-height:46px;
-  padding:0 14px;
-  border-radius:11px;
-  background:transparent;
-  color:#aeb3bb;
-  text-align:right;
-  display:flex;
-  align-items:center;
-  gap:12px;
+.chat-list{
+  flex:1;
+  overflow:auto;
 }
 
-.nav-btn.active{
-  background:#1b1d21;
-  color:#fff;
-}
-
-.nav-btn:active{
-  background:#20242a;
-}
-
-.nav-icon{
-  width:22px;
-  text-align:center;
-  font-size:18px;
-}
-
-.sidebar-bottom{
-  margin-top:auto;
-  color:#666c75;
+.empty-history{
+  padding:16px 8px;
+  color:#697386;
   font-size:12px;
-  text-align:center;
+  line-height:1.7;
+}
+
+.side-bottom{
+  border-top:1px solid rgba(255,255,255,.06);
   padding-top:15px;
 }
 
-/* =====================================================
+.status-card{
+  padding:13px;
+  border-radius:15px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.status-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:#aab2c1;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#40e6a5;
+  box-shadow:0 0 12px rgba(64,230,165,.7);
+}
+
+/* =========================
    MAIN
-===================================================== */
+========================= */
 
 .main{
-  flex:1;
   min-width:0;
-  height:100dvh;
+  flex:1;
+  height:100%;
   display:flex;
   flex-direction:column;
   position:relative;
 }
 
 .topbar{
-  height:62px;
-  min-height:62px;
-  border-bottom:1px solid #202329;
+  height:70px;
+  flex:none;
   display:flex;
   align-items:center;
-  padding:0 18px;
-  background:rgba(8,9,11,.96);
-  backdrop-filter:blur(15px);
-  position:relative;
-  z-index:80;
+  justify-content:space-between;
+  padding:0 22px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:rgba(8,11,18,.72);
+  backdrop-filter:blur(22px);
+  z-index:10;
+}
+
+.top-left,
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .mobile-menu{
   display:none;
-  width:42px;
-  height:42px;
-  border-radius:11px;
-  background:#15171b;
-  color:#fff;
-  font-size:22px;
-  margin-left:10px;
 }
 
-.top-title{
-  font-weight:800;
-  font-size:15px;
-}
-
-.status{
-  margin-right:auto;
+.model-pill{
   display:flex;
   align-items:center;
-  gap:7px;
-  color:#747a83;
+  gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:rgba(255,255,255,.035);
+  color:#aeb7c8;
   font-size:12px;
 }
 
-.status-dot{
+.model-dot{
   width:7px;
   height:7px;
   border-radius:50%;
-  background:#29d17d;
-  box-shadow:0 0 10px rgba(41,209,125,.5);
+  background:#8b5cf6;
+  box-shadow:0 0 10px rgba(139,92,246,.8);
 }
 
-/* =====================================================
-   CONTENT
-===================================================== */
-
-.content{
-  flex:1;
-  min-height:0;
-  position:relative;
-  overflow:hidden;
+.icon-btn{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:rgba(255,255,255,.045);
+  color:#aeb7c8;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.055);
 }
+
+.icon-btn:active{
+  transform:scale(.95);
+}
+
+.icon-btn svg{
+  width:19px;
+  height:19px;
+}
+
+/* =========================
+   CHAT
+========================= */
 
 .chat{
-  width:100%;
-  height:100%;
+  flex:1;
   overflow-y:auto;
-  padding:28px max(18px,calc((100% - 920px)/2));
+  overflow-x:hidden;
   scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;
+  padding:30px 18px 160px;
 }
 
-.chat::-webkit-scrollbar{
-  width:6px;
+.chat-inner{
+  width:min(900px,100%);
+  margin:auto;
 }
 
-.chat::-webkit-scrollbar-thumb{
-  background:#292d34;
-  border-radius:10px;
-}
-
-/* =====================================================
+/* =========================
    WELCOME
-===================================================== */
+========================= */
 
 .welcome{
-  min-height:100%;
+  min-height:calc(100dvh - 250px);
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:25px 0 150px;
+  text-align:center;
+  padding:25px 10px;
 }
 
-.welcome-inner{
-  width:100%;
-  max-width:760px;
-  text-align:center;
+.welcome-box{
+  max-width:680px;
+  animation:welcomeIn .5s ease;
+}
+
+@keyframes welcomeIn{
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
 
 .hero-logo{
-  width:74px;
-  height:74px;
-  border-radius:22px;
+  width:82px;
+  height:82px;
   margin:0 auto 20px;
-  background:linear-gradient(135deg,#ffae00,#ff5b00);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 0 45px rgba(255,105,0,.2);
+  border-radius:26px;
+  display:grid;
+  place-items:center;
+  background:
+    linear-gradient(
+      145deg,
+      #8b5cf6,
+      #4338ca
+    );
+  box-shadow:
+    0 25px 65px rgba(91,74,220,.35);
 }
 
 .hero-logo svg{
-  width:48px;
-  height:48px;
+  width:56px;
+  height:56px;
 }
 
 .welcome h1{
   margin:0;
-  font-size:34px;
+  font-size:clamp(30px,6vw,52px);
+  line-height:1.1;
+  letter-spacing:-1.5px;
 }
 
 .welcome h1 span{
-  color:#ff8500;
+  background:
+    linear-gradient(
+      90deg,
+      #b39aff,
+      #6ee7ff
+    );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 .welcome p{
-  margin:12px 0 30px;
-  color:#858b94;
+  margin:15px auto 0;
+  max-width:560px;
+  color:#8d96a9;
   font-size:15px;
+  line-height:1.8;
 }
 
 .quick-grid{
+  margin-top:30px;
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:10px;
-  text-align:right;
 }
 
 .quick{
-  min-height:76px;
-  padding:14px;
-  border:1px solid #252930;
-  border-radius:15px;
-  background:#111317;
-  color:#fff;
+  min-height:82px;
+  padding:13px;
   text-align:right;
-  transition:transform .12s ease,background .12s ease;
+  border-radius:17px;
+  border:1px solid rgba(255,255,255,.065);
+  background:rgba(255,255,255,.035);
+  color:#dce2ed;
+  transition:.2s;
 }
 
-.quick strong,
-.quick span{
-  display:block;
-}
-
-.quick span{
-  margin-top:6px;
-  color:#777e88;
-  font-size:12px;
+.quick:hover{
+  border-color:rgba(139,92,246,.4);
+  background:rgba(139,92,246,.07);
 }
 
 .quick:active{
   transform:scale(.98);
-  background:#17191e;
 }
 
-/* =====================================================
+.quick-icon{
+  width:31px;
+  height:31px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:rgba(139,92,246,.13);
+  margin-bottom:8px;
+}
+
+.quick-icon svg{
+  width:17px;
+  height:17px;
+}
+
+.quick strong{
+  display:block;
+  font-size:12px;
+}
+
+.quick span{
+  display:block;
+  margin-top:3px;
+  color:#717b90;
+  font-size:10px;
+}
+
+/* =========================
    MESSAGES
-===================================================== */
+========================= */
 
 .message{
-  width:100%;
-  margin:0 auto 24px;
-  animation:messageIn .18s ease;
+  display:flex;
+  gap:12px;
+  margin:0 0 25px;
+  animation:messageIn .25s ease;
 }
 
 @keyframes messageIn{
   from{
     opacity:0;
-    transform:translateY(7px);
+    transform:translateY(8px);
   }
   to{
     opacity:1;
@@ -368,353 +455,437 @@ button:active{
 }
 
 .message.user{
-  display:flex;
-  justify-content:flex-start;
-}
-
-.message.user .bubble{
-  max-width:min(80%,700px);
-  background:#ff7900;
-  color:#fff;
-  padding:12px 15px;
-  border-radius:17px 17px 4px 17px;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-
-.message.assistant{
-  display:block;
-}
-
-.assistant-wrap{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
+  flex-direction:row-reverse;
 }
 
 .avatar{
-  width:34px;
-  height:34px;
-  min-width:34px;
+  width:35px;
+  height:35px;
+  flex:none;
   border-radius:11px;
-  background:linear-gradient(135deg,#ff9f00,#ff5b00);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.avatar svg{
-  width:22px;
-  height:22px;
-}
-
-.assistant-content{
-  min-width:0;
-  flex:1;
-}
-
-.assistant-name{
+  display:grid;
+  place-items:center;
+  background:#171d2a;
+  border:1px solid rgba(255,255,255,.07);
+  color:#aeb8ca;
   font-size:12px;
-  color:#ff8b00;
   font-weight:800;
-  margin:3px 0 7px;
 }
 
-.assistant-text{
-  color:#e9eaec;
-  line-height:1.75;
-  font-size:15px;
-  overflow-wrap:anywhere;
-}
-
-.assistant-text p{
-  margin:0 0 12px;
-}
-
-.assistant-text p:last-child{
-  margin-bottom:0;
-}
-
-.assistant-text h3,
-.assistant-text h4,
-.assistant-text h5{
-  margin:15px 0 8px;
-}
-
-.assistant-text strong{
+.message.assistant .avatar{
+  background:
+    linear-gradient(
+      145deg,
+      #7052e8,
+      #4434bb
+    );
   color:#fff;
 }
 
-.assistant-text a{
-  color:#ff9a22;
-  text-decoration:none;
+.bubble{
+  max-width:min(760px,calc(100% - 50px));
+  padding:14px 16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.06);
+  color:#e6eaf2;
+  font-size:14px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
 }
 
-.assistant-text code{
-  background:#171a1f;
-  border:1px solid #292d34;
-  border-radius:6px;
-  padding:2px 5px;
+.message.user .bubble{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(108,83,230,.2),
+      rgba(74,58,171,.14)
+    );
+  border-color:rgba(125,98,245,.2);
+}
+
+.bubble p{
+  margin:0 0 10px;
+}
+
+.bubble p:last-child{
+  margin-bottom:0;
+}
+
+.bubble h1,
+.bubble h2,
+.bubble h3{
+  margin:12px 0 7px;
+}
+
+.bubble ul,
+.bubble ol{
+  margin:8px 0;
+  padding-right:22px;
+}
+
+.bubble code{
   direction:ltr;
+  unicode-bidi:embed;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+}
+
+.inline-code{
+  padding:2px 6px;
+  border-radius:6px;
+  background:rgba(255,255,255,.08);
+  color:#d9cfff;
 }
 
 .code-wrap{
-  margin:14px 0;
-  border:1px solid #292d34;
-  border-radius:12px;
+  margin:13px 0;
   overflow:hidden;
-  background:#0a0c0f;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#06080d;
   direction:ltr;
+  text-align:left;
 }
 
 .code-head{
   height:38px;
   padding:0 10px;
-  background:#12151a;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  color:#777e88;
-  font-size:11px;
+  background:rgba(255,255,255,.035);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  color:#7d879b;
+  font-size:10px;
 }
 
 .copy-code{
-  background:#20242a;
-  color:#ddd;
-  padding:6px 10px;
-  border-radius:7px;
+  background:transparent;
+  color:#929caf;
   font-size:11px;
+  padding:5px 8px;
+  border-radius:7px;
 }
 
-.code-content{
-  padding:13px;
+.code-wrap pre{
+  margin:0;
+  padding:14px;
   overflow:auto;
-  white-space:pre;
-  font-family:monospace;
+  color:#dce4f4;
   font-size:12px;
-  line-height:1.6;
+  line-height:1.65;
+  white-space:pre;
 }
+
+/* =========================
+   MESSAGE ACTIONS
+========================= */
 
 .message-actions{
   display:flex;
-  gap:6px;
-  margin-top:10px;
+  gap:5px;
+  margin-top:8px;
+  opacity:.7;
 }
 
-.action-btn{
-  width:34px;
-  height:32px;
+.message.user .message-actions{
+  justify-content:flex-end;
+}
+
+.action{
+  width:30px;
+  height:30px;
   border-radius:9px;
-  background:#15181d;
-  color:#9298a1;
+  color:#758095;
+  background:transparent;
+  display:grid;
+  place-items:center;
 }
 
-.action-btn:active{
-  background:#22262c;
-  transform:scale(.95);
+.action:hover{
+  background:rgba(255,255,255,.05);
+  color:#c4cbd8;
 }
+
+.action svg{
+  width:15px;
+  height:15px;
+}
+
+/* =========================
+   TYPING
+========================= */
 
 .typing{
   display:flex;
   align-items:center;
-  gap:5px;
-  padding:7px 0;
+  gap:10px;
 }
 
-.typing i{
-  width:7px;
-  height:7px;
+.typing-dots{
+  display:flex;
+  gap:4px;
+}
+
+.typing-dots i{
+  width:6px;
+  height:6px;
   border-radius:50%;
-  background:#ff8100;
-  animation:typing 1s infinite;
+  background:#8b5cf6;
+  animation:dot 1s infinite ease-in-out;
 }
 
-.typing i:nth-child(2){
+.typing-dots i:nth-child(2){
   animation-delay:.15s;
 }
 
-.typing i:nth-child(3){
+.typing-dots i:nth-child(3){
   animation-delay:.3s;
 }
 
-@keyframes typing{
-  0%,60%,100%{
+@keyframes dot{
+  0%,80%,100%{
     opacity:.25;
     transform:translateY(0);
   }
-  30%{
+  40%{
     opacity:1;
     transform:translateY(-3px);
   }
 }
 
-/* =====================================================
+/* =========================
    COMPOSER
-===================================================== */
+========================= */
 
-.composer-area{
+.composer-zone{
   position:absolute;
   left:0;
   right:0;
   bottom:0;
-  padding:15px max(18px,calc((100% - 920px)/2)) 18px;
-  background:linear-gradient(transparent,#08090b 25%);
+  padding:18px 18px max(18px,env(safe-area-inset-bottom));
+  background:
+    linear-gradient(
+      to top,
+      #080b12 65%,
+      rgba(8,11,18,.92) 80%,
+      transparent
+    );
+  pointer-events:none;
+}
+
+.composer-inner{
+  width:min(900px,100%);
+  margin:auto;
   pointer-events:auto;
-  z-index:70;
 }
 
-.composer{
-  position:relative;
-  z-index:71;
-  pointer-events:auto;
-  border:1px solid #292d34;
-  background:#111317;
-  border-radius:18px;
-  padding:10px;
-  box-shadow:0 10px 40px rgba(0,0,0,.35);
-}
-
-.composer-row{
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-}
-
-.message-input{
-  flex:1;
-  min-width:0;
-  min-height:44px;
-  max-height:150px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:#fff;
-  padding:12px 9px;
-  line-height:1.5;
-}
-
-.message-input::placeholder{
-  color:#686e77;
-}
-
-.attach-btn,
-.send-btn{
-  width:44px;
-  height:44px;
-  min-width:44px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  z-index:75;
-}
-
-.attach-btn{
-  background:#1b1e23;
-  color:#b9bec6;
-  font-size:20px;
-}
-
-.send-btn{
-  background:#ff7900;
-  color:#fff;
-  font-size:19px;
-}
-
-.send-btn.stop{
-  background:#d74a32;
-}
-
-.composer-bottom{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:5px 5px 1px;
-}
-
-.fast-toggle{
-  min-height:30px;
-  padding:0 11px;
-  border-radius:9px;
-  background:#171a1f;
-  color:#858b94;
-  font-size:11px;
-  position:relative;
-  z-index:75;
-}
-
-.fast-toggle.active{
-  background:rgba(255,121,0,.14);
-  color:#ff9300;
-}
-
-.file-list{
-  display:flex;
+.file-preview{
+  display:none;
   gap:7px;
-  overflow-x:auto;
-  margin-bottom:7px;
+  flex-wrap:wrap;
+  margin-bottom:8px;
+}
+
+.file-preview.show{
+  display:flex;
 }
 
 .file-chip{
   display:flex;
   align-items:center;
-  gap:6px;
-  background:#1a1d22;
-  border:1px solid #292d34;
-  border-radius:9px;
+  gap:7px;
+  max-width:220px;
   padding:7px 9px;
+  border-radius:10px;
+  background:#151b27;
+  border:1px solid rgba(255,255,255,.07);
+  color:#aab3c3;
   font-size:11px;
-  color:#c6cad0;
+}
+
+.file-chip span{
+  overflow:hidden;
+  text-overflow:ellipsis;
   white-space:nowrap;
 }
 
-.file-remove{
+.remove-file{
   width:20px;
   height:20px;
   border-radius:6px;
-  background:#2b2f36;
-  color:#aaa;
+  background:rgba(255,255,255,.06);
+  color:#8993a5;
 }
 
-/* =====================================================
-   OVERLAY
-===================================================== */
-
-.overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  z-index:90;
+.composer{
+  min-height:64px;
+  border-radius:21px;
+  border:1px solid rgba(255,255,255,.09);
+  background:
+    rgba(17,22,33,.95);
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.45);
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:10px;
 }
 
-.overlay.show{
+.attach{
+  width:43px;
+  height:43px;
+  flex:none;
+  border-radius:13px;
+  color:#8994a8;
+  background:rgba(255,255,255,.045);
+  display:grid;
+  place-items:center;
+}
+
+.attach svg{
+  width:19px;
+  height:19px;
+}
+
+.input{
+  flex:1;
+  min-width:0;
+}
+
+textarea{
   display:block;
+  width:100%;
+  min-height:43px;
+  max-height:150px;
+  resize:none;
+  border:0;
+  outline:none;
+  background:transparent;
+  color:#edf1f8;
+  padding:10px 5px;
+  line-height:1.5;
 }
 
-/* =====================================================
+textarea::placeholder{
+  color:#626c7e;
+}
+
+.composer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:2px 3px 0;
+}
+
+.fast-toggle{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 9px;
+  border-radius:9px;
+  color:#707b8f;
+  background:transparent;
+  font-size:10px;
+}
+
+.fast-toggle.active{
+  color:#d2c9ff;
+  background:rgba(139,92,246,.1);
+}
+
+.fast-toggle .switch{
+  width:24px;
+  height:14px;
+  border-radius:20px;
+  background:#303746;
+  position:relative;
+}
+
+.fast-toggle .switch i{
+  position:absolute;
+  width:10px;
+  height:10px;
+  top:2px;
+  right:2px;
+  border-radius:50%;
+  background:#8b94a6;
+  transition:.2s;
+}
+
+.fast-toggle.active .switch{
+  background:#6650d7;
+}
+
+.fast-toggle.active .switch i{
+  right:12px;
+  background:#fff;
+}
+
+.send{
+  width:43px;
+  height:43px;
+  flex:none;
+  border-radius:13px;
+  background:#7354ed;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  transition:.2s;
+}
+
+.send:hover{
+  background:#8266f4;
+}
+
+.send:active{
+  transform:scale(.94);
+}
+
+.send:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+}
+
+.send svg{
+  width:19px;
+  height:19px;
+}
+
+.disclaimer{
+  text-align:center;
+  margin-top:7px;
+  color:#4f596b;
+  font-size:9px;
+}
+
+/* =========================
    TOAST
-===================================================== */
+========================= */
 
 .toast{
   position:fixed;
   left:50%;
-  bottom:25px;
-  transform:translate(-50%,20px);
+  bottom:95px;
+  transform:translate(-50%,15px);
   opacity:0;
   pointer-events:none;
-  z-index:999;
-  background:#20242a;
-  color:#fff;
-  border:1px solid #353a42;
-  border-radius:11px;
-  padding:10px 15px;
+  z-index:100;
+  padding:10px 14px;
+  border-radius:12px;
+  background:#171d29;
+  border:1px solid rgba(255,255,255,.08);
+  color:#d9deea;
   font-size:12px;
-  transition:.2s;
-  max-width:90%;
-  text-align:center;
+  box-shadow:0 15px 45px rgba(0,0,0,.4);
+  transition:.22s;
+  white-space:nowrap;
 }
 
 .toast.show{
@@ -722,9 +893,13 @@ button:active{
   transform:translate(-50%,0);
 }
 
-/* =====================================================
+/* =========================
    MOBILE
-===================================================== */
+========================= */
+
+.overlay{
+  display:none;
+}
 
 @media(max-width:760px){
 
@@ -733,84 +908,132 @@ button:active{
     right:0;
     top:0;
     bottom:0;
+    width:min(310px,88vw);
     transform:translateX(105%);
-    transition:transform .22s ease;
-    z-index:200;
-    box-shadow:-15px 0 45px rgba(0,0,0,.45);
+    box-shadow:-25px 0 70px rgba(0,0,0,.5);
   }
 
   .sidebar.open{
     transform:translateX(0);
   }
 
-  .mobile-menu{
+  .overlay{
+    position:fixed;
+    inset:0;
+    z-index:19;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(3px);
+  }
+
+  .overlay.show{
     display:block;
-    position:relative;
-    z-index:210;
+  }
+
+  .mobile-menu{
+    display:grid;
   }
 
   .topbar{
-    padding:0 10px;
+    height:62px;
+    padding:0 12px;
   }
 
-  .status{
-    display:none;
+  .top-left{
+    gap:7px;
+  }
+
+  .model-pill{
+    padding:7px 9px;
+    font-size:10px;
   }
 
   .chat{
-    padding:20px 13px 150px;
-  }
-
-  .welcome{
-    padding:15px 0 100px;
-  }
-
-  .welcome h1{
-    font-size:28px;
+    padding:20px 10px 150px;
   }
 
   .quick-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .message.user .bubble{
-    max-width:90%;
-  }
-
-  .composer-area{
-    padding:10px 9px 10px;
-    z-index:150;
-  }
-
-  .composer{
-    z-index:151;
-  }
-}
-
-@media(max-width:420px){
-
-  .logo-text{
-    font-size:19px;
+  .welcome{
+    min-height:calc(100dvh - 210px);
   }
 
   .welcome h1{
-    font-size:25px;
+    font-size:35px;
   }
 
   .welcome p{
     font-size:13px;
   }
 
-  .assistant-text{
-    font-size:14px;
+  .hero-logo{
+    width:70px;
+    height:70px;
+    border-radius:22px;
   }
 
-  .message.user .bubble{
-    max-width:94%;
+  .hero-logo svg{
+    width:47px;
+    height:47px;
+  }
+
+  .bubble{
+    max-width:calc(100% - 42px);
+    font-size:13px;
+    padding:12px 13px;
+  }
+
+  .avatar{
+    width:31px;
+    height:31px;
+    border-radius:10px;
+    font-size:10px;
+  }
+
+  .message{
+    gap:8px;
+    margin-bottom:20px;
+  }
+
+  .composer-zone{
+    padding:12px 9px max(10px,env(safe-area-inset-bottom));
+  }
+
+  .composer{
+    min-height:58px;
+    border-radius:18px;
+    padding:7px;
+  }
+
+  .attach,
+  .send{
+    width:39px;
+    height:39px;
+    border-radius:12px;
+  }
+
+  textarea{
+    min-height:39px;
+    font-size:13px;
+  }
+
+  .disclaimer{
+    font-size:8px;
+  }
+}
+
+@media(max-width:380px){
+
+  .model-pill span{
+    display:none;
+  }
+
+  .quick{
+    min-height:75px;
   }
 
 }
-
 </style>
 </head>
 
@@ -818,184 +1041,171 @@ button:active{
 
 <div class="app">
 
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
   <aside class="sidebar" id="sidebar">
 
-    <div class="logo">
+    <div class="brand">
 
-      <div class="logo-icon">
-
-        <svg viewBox="0 0 100 100" fill="none">
-
-          <path
-            d="M24 24h52v38H24z"
-            stroke="white"
-            stroke-width="8"
-            rx="10"
-          />
+      <div class="logo">
+        <!-- Sultan AI original SVG logo -->
+        <svg viewBox="0 0 64 64" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
 
           <path
-            d="M36 76h28M50 62v14"
-            stroke="white"
-            stroke-width="8"
-            stroke-linecap="round"
-          />
-
-          <path
-            d="M38 40h24M38 50h15"
+            d="M45 14C40 10 34 8 27 9C18 10 12 16 12 23C12 31 18 35 27 37L35 39C40 40 42 42 42 46C42 51 37 55 30 55C23 55 17 52 13 48"
             stroke="white"
             stroke-width="6"
             stroke-linecap="round"
           />
 
-        </svg>
+          <path
+            d="M42 10L45 5L48 10L54 11L49.5 15L50.5 21L45 18L39.5 21L40.5 15L36 11L42 10Z"
+            fill="white"
+          />
 
+          <circle
+            cx="50"
+            cy="47"
+            r="4"
+            fill="#B8AAFF"
+          />
+
+        </svg>
       </div>
 
-      <div class="logo-text">
-        Sultan <span>AI</span>
+      <div class="brand-text">
+        <strong>Sultan AI</strong>
+        <span>Advanced AI Assistant</span>
       </div>
 
     </div>
 
-    <button
-      type="button"
-      class="new-chat"
-      id="newChat"
-    >
-      + محادثة جديدة
+    <button class="new-chat" id="newChat">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+        <path d="M12 5V19M5 12H19"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"/>
+      </svg>
+      محادثة جديدة
     </button>
 
-    <nav class="nav">
+    <div class="side-title">المحادثة الحالية</div>
 
-      <button
-        type="button"
-        class="nav-btn active"
-        data-mode="chat"
-      >
-        <span class="nav-icon">💬</span>
-        <span>المحادثة</span>
-      </button>
+    <div class="chat-list">
+      <div class="empty-history" id="historyText">
+        ابدأ محادثة جديدة مع Sultan AI.
+      </div>
+    </div>
 
-      <button
-        type="button"
-        class="nav-btn"
-        data-mode="files"
-      >
-        <span class="nav-icon">📁</span>
-        <span>الملفات</span>
-      </button>
+    <div class="side-bottom">
 
-      <button
-        type="button"
-        class="nav-btn"
-        data-mode="fast"
-      >
-        <span class="nav-icon">⚡</span>
-        <span>الوضع السريع</span>
-      </button>
+      <div class="status-card">
 
-      <button
-        type="button"
-        class="nav-btn"
-        data-mode="web"
-      >
-        <span class="nav-icon">🌐</span>
-        <span>البحث والويب</span>
-      </button>
+        <div class="status-row">
+          <i class="status-dot"></i>
+          <span id="serverStatus">جاري التحقق من الخادم...</span>
+        </div>
 
-      <button
-        type="button"
-        class="nav-btn"
-        data-mode="code"
-      >
-        <span class="nav-icon">💻</span>
-        <span>البرمجة</span>
-      </button>
+      </div>
 
-      <button
-        type="button"
-        class="nav-btn"
-        data-mode="analysis"
-      >
-        <span class="nav-icon">🧠</span>
-        <span>التحليل</span>
-      </button>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-      Sultan AI V7.2
     </div>
 
   </aside>
 
-  <div
-    class="overlay"
-    id="overlay"
-  ></div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
 
   <main class="main">
 
     <header class="topbar">
 
-      <button
-        type="button"
-        class="mobile-menu"
-        id="mobileMenu"
-        aria-label="فتح القائمة"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
+      <div class="top-left">
 
-      <div class="top-title">
-        Sultan AI
+        <button
+          class="icon-btn mobile-menu"
+          id="menuBtn"
+          aria-label="القائمة">
+
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M4 7H20M4 12H20M4 17H20"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"/>
+          </svg>
+
+        </button>
+
+        <div class="model-pill">
+          <i class="model-dot"></i>
+          <span>Sultan AI • Compound</span>
+        </div>
+
       </div>
 
-      <div class="status">
-        <span class="status-dot"></span>
-        متصل
+      <div class="top-right">
+
+        <button
+          class="icon-btn"
+          id="clearBtn"
+          aria-label="محادثة جديدة">
+
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M4 6H20M9 6V4H15V6M7 6L8 20H16L17 6M10 10V17M14 10V17"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+          </svg>
+
+        </button>
+
       </div>
 
     </header>
 
-    <div class="content">
+    <!-- =========================
+         CHAT
+    ========================== -->
 
-      <section
-        class="chat"
-        id="chat"
-      >
+    <section class="chat" id="chat">
 
-        <div
-          class="welcome"
-          id="welcome"
-        >
+      <div class="chat-inner" id="chatInner">
 
-          <div class="welcome-inner">
+        <div class="welcome" id="welcome">
+
+          <div class="welcome-box">
 
             <div class="hero-logo">
 
-              <svg viewBox="0 0 100 100" fill="none">
+              <svg viewBox="0 0 64 64" fill="none"
+                   xmlns="http://www.w3.org/2000/svg">
 
                 <path
-                  d="M24 24h52v38H24z"
-                  stroke="white"
-                  stroke-width="8"
-                  rx="10"
-                />
-
-                <path
-                  d="M36 76h28M50 62v14"
-                  stroke="white"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                />
-
-                <path
-                  d="M38 40h24M38 50h15"
+                  d="M45 14C40 10 34 8 27 9C18 10 12 16 12 23C12 31 18 35 27 37L35 39C40 40 42 42 42 46C42 51 37 55 30 55C23 55 17 52 13 48"
                   stroke="white"
                   stroke-width="6"
                   stroke-linecap="round"
+                />
+
+                <path
+                  d="M42 10L45 5L48 10L54 11L49.5 15L50.5 21L45 18L39.5 21L40.5 15L36 11L42 10Z"
+                  fill="white"
+                />
+
+                <circle
+                  cx="50"
+                  cy="47"
+                  r="4"
+                  fill="#B8AAFF"
                 />
 
               </svg>
@@ -1003,49 +1213,74 @@ button:active{
             </div>
 
             <h1>
-              أهلاً بك في <span>Sultan AI</span>
+              أهلاً بك في
+              <span>Sultan AI</span>
             </h1>
 
             <p>
-              مساعدك الذكي للمحادثة، البرمجة، تحليل الملفات والبحث.
+              مساعدك الذكي المتقدم للمحادثة، البرمجة،
+              البحث على الويب، تحليل الملفات والصور.
             </p>
 
             <div class="quick-grid">
 
-              <button
-                type="button"
-                class="quick"
-                data-prompt="اشرح لي كيف يعمل الذكاء الاصطناعي بطريقة سهلة ومفهومة"
-              >
-                <strong>🧠 تعلّم شيئاً جديداً</strong>
-                <span>شرح مبسط لأي موضوع</span>
+              <button class="quick" data-prompt="اشرح لي هذا الموضوع بطريقة بسيطة ومفصلة.">
+                <div class="quick-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3L14.5 9.5L21 12L14.5 14.5L12 21L9.5 14.5L3 12L9.5 9.5L12 3Z"
+                          stroke="currentColor" stroke-width="1.8"
+                          stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <strong>شرح ذكي</strong>
+                <span>افهم أي موضوع</span>
               </button>
 
-              <button
-                type="button"
-                class="quick"
-                data-prompt="اكتب لي مثالاً برمجياً واشرح لي كيف يعمل خطوة بخطوة"
-              >
-                <strong>💻 ساعدني بالبرمجة</strong>
-                <span>اكتب وفسّر الكود</span>
+              <button class="quick" data-prompt="اكتب لي كوداً احترافياً واشرح لي كيف يعمل خطوة بخطوة.">
+                <div class="quick-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M8 9L4 12L8 15M16 9L20 12L16 15M14 5L10 19"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <strong>برمجة</strong>
+                <span>كود وحلول</span>
               </button>
 
-              <button
-                type="button"
-                class="quick"
-                data-prompt="حلل هذه الفكرة واقترح أفضل طريقة لتنفيذها"
-              >
-                <strong>🔎 حلّل فكرة</strong>
-                <span>تحليل واقتراحات عملية</span>
+              <button class="quick" data-prompt="ابحث على الويب عن أحدث المعلومات المتعلقة بهذا الموضوع، ثم أعطني خلاصة واضحة مع المصادر المتاحة.">
+                <div class="quick-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="7"
+                            stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M16.5 16.5L21 21"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <strong>بحث ويب</strong>
+                <span>معلومات حديثة</span>
               </button>
 
-              <button
-                type="button"
-                class="quick"
-                data-prompt="ما هي أهم التقنيات الجديدة في الذكاء الاصطناعي حالياً؟"
-              >
-                <strong>🌐 ابحث عن المعلومات</strong>
-                <span>معلومات حديثة عند الحاجة</span>
+              <button class="quick" data-prompt="حلل هذا الطلب بالتفصيل، وقسمه إلى خطوات واضحة، ثم أعطني أفضل حل ممكن.">
+                <div class="quick-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 19V5M4 19H20"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"/>
+                    <path d="M8 16L11 12L14 14L19 8"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <strong>تحليل</strong>
+                <span>حلل أي مشكلة</span>
               </button>
 
             </div>
@@ -1054,71 +1289,100 @@ button:active{
 
         </div>
 
-      </section>
+      </div>
 
-      <div class="composer-area">
+    </section>
+
+    <!-- =========================
+         COMPOSER
+    ========================== -->
+
+    <div class="composer-zone">
+
+      <div class="composer-inner">
+
+        <div class="file-preview" id="filePreview"></div>
 
         <div class="composer">
 
-          <div
-            class="file-list"
-            id="fileList"
-          ></div>
+          <button
+            class="attach"
+            id="attachBtn"
+            aria-label="إرفاق ملف">
 
-          <div class="composer-row">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M20.5 11.5L12 20C8.7 23.3 3 21 3 16.5C3 15 3.6 13.6 4.7 12.5L13 4.2C15.1 2.1 18.5 2.1 20.6 4.2C22.7 6.3 22.7 9.7 20.6 11.8L11.8 20.6"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+              <path
+                d="M16.5 7.5L8.5 15.5C7.7 16.3 7.7 17.5 8.5 18.3C9.3 19.1 10.5 19.1 11.3 18.3L18 11.6"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"/>
+            </svg>
 
-            <button
-              type="button"
-              class="attach-btn"
-              id="attachButton"
-              aria-label="إرفاق ملف"
-              title="إرفاق ملف"
-            >
-              📎
-            </button>
+          </button>
+
+          <input
+            type="file"
+            id="fileInput"
+            hidden
+            multiple
+            accept="image/*,.txt,.json,.js,.ts,.html,.css,.xml,.md,.csv,.pdf">
+
+          <div class="input">
 
             <textarea
               id="messageInput"
-              class="message-input"
               rows="1"
-              placeholder="اكتب رسالتك هنا..."
+              maxlength="12000"
+              placeholder="اكتب رسالتك إلى Sultan AI..."
               autocomplete="off"
-              spellcheck="true"
-            ></textarea>
+              spellcheck="true"></textarea>
 
-            <button
-              type="button"
-              class="send-btn"
-              id="sendButton"
-              aria-label="إرسال"
-              title="إرسال"
-            >
-              ➤
-            </button>
+            <div class="composer-bottom">
 
-          </div>
+              <button
+                class="fast-toggle"
+                id="fastToggle"
+                type="button">
 
-          <div class="composer-bottom">
+                <span class="switch"><i></i></span>
+                <span>الوضع السريع</span>
 
-            <button
-              type="button"
-              class="fast-toggle"
-              id="fastToggle"
-              aria-pressed="false"
-            >
-              ⚡ الوضع السريع
-            </button>
+              </button>
 
-            <input
-              type="file"
-              id="fileInput"
-              hidden
-              multiple
-              accept="*/*"
-            >
+            </div>
 
           </div>
 
+          <button
+            class="send"
+            id="sendBtn"
+            aria-label="إرسال">
+
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M21 3L10.5 13.5"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"/>
+              <path
+                d="M21 3L14.5 21L10.5 13.5L3 9.5L21 3Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"/>
+            </svg>
+
+          </button>
+
+        </div>
+
+        <div class="disclaimer">
+          Sultan AI قد يخطئ أحياناً، تحقق من المعلومات المهمة.
         </div>
 
       </div>
@@ -1129,215 +1393,1037 @@ button:active{
 
 </div>
 
-<div
-  class="toast"
-  id="toast"
-></div>
+<div class="toast" id="toast"></div>
 
 <script>
-
 "use strict";
 
-/* =====================================================
-   CONFIG
-===================================================== */
+/* =========================================================
+   SULTAN AI V8 FRONTEND
+   Compatible with server.js V7.2
+========================================================= */
 
-const API_ENDPOINT = "/api/chat";
-
+const API_URL = "/api/chat";
 const MAX_HISTORY = 24;
-
-const MAX_FILES = 5;
-
-const MAX_FILE_SIZE =
-  20 * 1024 * 1024;
-
-const MAX_TOTAL_FILE_BYTES =
-  45 * 1024 * 1024;
-
-const REQUEST_TIMEOUT =
-  180000;
-
-
-/* =====================================================
-   STATE
-===================================================== */
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const MAX_TOTAL_FILE_SIZE = 45 * 1024 * 1024;
 
 let conversation = [];
-
 let selectedFiles = [];
-
-let sending = false;
-
-let abortController = null;
-
 let fastMode = false;
+let busy = false;
 
-let lastUserText = "";
-
-let lastRequestFiles = [];
-
-let toastTimer = null;
-
-
-/* =====================================================
+/* =========================================================
    ELEMENTS
-===================================================== */
+========================================================= */
 
-const $ = id =>
-  document.getElementById(id);
-
-const chat =
-  $("chat");
-
-const welcome =
-  $("welcome");
-
-const sidebar =
-  $("sidebar");
-
-const overlay =
-  $("overlay");
-
-const mobileMenu =
-  $("mobileMenu");
-
-const newChatButton =
-  $("newChat");
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chatInner");
+const welcome = document.getElementById("welcome");
 
 const messageInput =
-  $("messageInput");
+  document.getElementById("messageInput");
 
-const sendButton =
-  $("sendButton");
+const sendBtn =
+  document.getElementById("sendBtn");
 
-const attachButton =
-  $("attachButton");
+const attachBtn =
+  document.getElementById("attachBtn");
 
 const fileInput =
-  $("fileInput");
+  document.getElementById("fileInput");
 
-const fileList =
-  $("fileList");
+const filePreview =
+  document.getElementById("filePreview");
 
 const fastToggle =
-  $("fastToggle");
+  document.getElementById("fastToggle");
+
+const newChat =
+  document.getElementById("newChat");
+
+const clearBtn =
+  document.getElementById("clearBtn");
+
+const menuBtn =
+  document.getElementById("menuBtn");
+
+const sidebar =
+  document.getElementById("sidebar");
+
+const overlay =
+  document.getElementById("overlay");
 
 const toast =
-  $("toast");
+  document.getElementById("toast");
 
+const serverStatus =
+  document.getElementById("serverStatus");
 
-/* =====================================================
-   ERROR HANDLING
-===================================================== */
+/* =========================================================
+   UTILITIES
+========================================================= */
 
-window.addEventListener(
-  "error",
-  event => {
+function escapeHTML(value){
 
-    console.error(
-      "Sultan AI error:",
-      event.error || event.message
-    );
-
-  }
-);
-
-window.addEventListener(
-  "unhandledrejection",
-  event => {
-
-    console.error(
-      "Sultan AI promise error:",
-      event.reason
-    );
-
-  }
-);
-
-
-/* =====================================================
-   BUTTON SYSTEM
-   FIXED FOR ANDROID
-   NO pointerup
-   NO preventDefault
-===================================================== */
-
-function bindPress(
-  element,
-  callback
-){
-
-  if(!element){
-    return;
-  }
-
-  element.addEventListener(
-    "click",
-    function(event){
-
-      try{
-
-        callback(event);
-
-      }catch(error){
-
-        console.error(
-          "Sultan AI button error:",
-          error
-        );
-
-        showToast(
-          "حدث خطأ، حاول مرة أخرى."
-        );
-
-      }
-
-    },
-    false
-  );
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-/* =====================================================
-   TOAST
-===================================================== */
-
 function showToast(message){
-
-  if(!toast){
-    return;
-  }
-
-  clearTimeout(
-    toastTimer
-  );
 
   toast.textContent =
     message;
 
-  toast.classList.add(
-    "show"
+  toast.classList.add("show");
+
+  clearTimeout(
+    showToast.timer
   );
 
-  toastTimer =
+  showToast.timer =
     setTimeout(
       () => {
-
-        toast.classList.remove(
-          "show"
-        );
-
+        toast.classList.remove("show");
       },
-      2600
+      2400
     );
 
 }
 
 
-/* =====================================================
+function scrollBottom(){
+
+  requestAnimationFrame(() => {
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  });
+
+}
+
+
+function setBusy(value){
+
+  busy = value;
+
+  sendBtn.disabled =
+    value;
+
+  if(value){
+
+    sendBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle
+          cx="12"
+          cy="12"
+          r="8"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-dasharray="20 30"/>
+      </svg>
+    `;
+
+  }else{
+
+    sendBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none">
+        <path
+          d="M21 3L10.5 13.5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"/>
+        <path
+          d="M21 3L14.5 21L10.5 13.5L3 9.5L21 3Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"/>
+      </svg>
+    `;
+
+  }
+
+}
+
+
+function autoResize(){
+
+  messageInput.style.height =
+    "auto";
+
+  messageInput.style.height =
+    Math.min(
+      messageInput.scrollHeight,
+      150
+    ) + "px";
+
+}
+
+
+/* =========================================================
+   MARKDOWN RENDERER
+========================================================= */
+
+function renderMarkdown(text){
+
+  let source =
+    escapeHTML(text);
+
+  const codeBlocks = [];
+
+  source =
+    source.replace(
+      /```([\w+-]*)\n?([\s\S]*?)```/g,
+      function(_,language,code){
+
+        const id =
+          "code_" +
+          Math.random()
+            .toString(36)
+            .slice(2);
+
+        codeBlocks.push({
+          id,
+          code
+        });
+
+        return `
+          <div class="code-wrap">
+            <div class="code-head">
+              <span>${escapeHTML(language || "code")}</span>
+              <button
+                class="copy-code"
+                data-copy-code="${id}">
+                نسخ
+              </button>
+            </div>
+            <pre><code>${code}</code></pre>
+          </div>
+        `;
+
+      }
+    );
+
+  source =
+    source.replace(
+      /`([^`]+)`/g,
+      '<code class="inline-code">$1</code>'
+    );
+
+  source =
+    source.replace(
+      /^### (.*)$/gm,
+      "<h3>$1</h3>"
+    );
+
+  source =
+    source.replace(
+      /^## (.*)$/gm,
+      "<h2>$1</h2>"
+    );
+
+  source =
+    source.replace(
+      /^# (.*)$/gm,
+      "<h1>$1</h1>"
+    );
+
+  source =
+    source.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+  source =
+    source.replace(
+      /\*(.*?)\*/g,
+      "<em>$1</em>"
+    );
+
+  source =
+    source.replace(
+      /^\s*[-•] (.*)$/gm,
+      "<li>$1</li>"
+    );
+
+  source =
+    source.replace(
+      /(<li>.*<\/li>)/gs,
+      "<ul>$1</ul>"
+    );
+
+  source =
+    source.replace(
+      /\n{2,}/g,
+      "</p><p>"
+    );
+
+  source =
+    source.replace(
+      /\n/g,
+      "<br>"
+    );
+
+  return "<p>" + source + "</p>";
+
+}
+
+
+/* =========================================================
+   MESSAGE UI
+========================================================= */
+
+function addMessage(
+  role,
+  content
+){
+
+  if(welcome){
+
+    welcome.style.display =
+      "none";
+
+  }
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message " +
+    role;
+
+  const avatar =
+    role === "assistant"
+      ? `
+        <div class="avatar">
+          S
+        </div>
+      `
+      : `
+        <div class="avatar">
+          أنت
+        </div>
+      `;
+
+  const rendered =
+    role === "assistant"
+      ? renderMarkdown(content)
+      : escapeHTML(content)
+          .replace(/\n/g,"<br>");
+
+  message.innerHTML = `
+
+    ${avatar}
+
+    <div>
+
+      <div class="bubble">
+        ${rendered}
+      </div>
+
+      <div class="message-actions">
+
+        <button
+          class="action copy-message"
+          title="نسخ"
+          data-copy-message="">
+
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect
+              x="8"
+              y="8"
+              width="11"
+              height="11"
+              rx="2"
+              stroke="currentColor"
+              stroke-width="1.7"/>
+            <path
+              d="M16 8V6C16 4.9 15.1 4 14 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8"
+              stroke="currentColor"
+              stroke-width="1.7"/>
+          </svg>
+
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+  chatInner.appendChild(
+    message
+  );
+
+  const copyButton =
+    message.querySelector(
+      ".copy-message"
+    );
+
+  copyButton.addEventListener(
+    "click",
+    async () => {
+
+      await copyText(
+        content
+      );
+
+      showToast(
+        "تم نسخ الرسالة"
+      );
+
+    }
+  );
+
+  message
+    .querySelectorAll(
+      "[data-copy-code]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        async () => {
+
+          const code =
+            button
+              .closest(".code-wrap")
+              ?.querySelector("code")
+              ?.textContent || "";
+
+          await copyText(
+            code
+          );
+
+          button.textContent =
+            "تم النسخ";
+
+          setTimeout(
+            () => {
+              button.textContent =
+                "نسخ";
+            },
+            1200
+          );
+
+        }
+      );
+
+    });
+
+  scrollBottom();
+
+  return message;
+
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+async function copyText(text){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+  }catch{
+
+    const area =
+      document.createElement("textarea");
+
+    area.value =
+      text;
+
+    area.style.position =
+      "fixed";
+
+    area.style.opacity =
+      "0";
+
+    document.body.appendChild(
+      area
+    );
+
+    area.focus();
+    area.select();
+
+    document.execCommand(
+      "copy"
+    );
+
+    area.remove();
+
+  }
+
+}
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+function addTyping(){
+
+  const element =
+    document.createElement("div");
+
+  element.className =
+    "message assistant";
+
+  element.id =
+    "typingMessage";
+
+  element.innerHTML = `
+
+    <div class="avatar">S</div>
+
+    <div class="bubble">
+
+      <div class="typing">
+
+        <span>يفكر</span>
+
+        <div class="typing-dots">
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+  chatInner.appendChild(
+    element
+  );
+
+  scrollBottom();
+
+}
+
+
+function removeTyping(){
+
+  document
+    .getElementById(
+      "typingMessage"
+    )
+    ?.remove();
+
+}
+
+
+/* =========================================================
+   FILES
+========================================================= */
+
+function updateFilePreview(){
+
+  filePreview.innerHTML =
+    "";
+
+  if(
+    !selectedFiles.length
+  ){
+
+    filePreview.classList.remove(
+      "show"
+    );
+
+    return;
+
+  }
+
+  filePreview.classList.add(
+    "show"
+  );
+
+  selectedFiles.forEach(
+    (file,index) => {
+
+      const chip =
+        document.createElement(
+          "div"
+        );
+
+      chip.className =
+        "file-chip";
+
+      chip.innerHTML = `
+
+        <span>
+          ${escapeHTML(file.name)}
+        </span>
+
+        <button
+          class="remove-file"
+          data-index="${index}">
+          ×
+        </button>
+      `;
+
+      chip
+        .querySelector(
+          ".remove-file"
+        )
+        .addEventListener(
+          "click",
+          () => {
+
+            selectedFiles.splice(
+              index,
+              1
+            );
+
+            updateFilePreview();
+
+          }
+        );
+
+      filePreview.appendChild(
+        chip
+      );
+
+    }
+  );
+
+}
+
+
+function fileToBase64(file){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        () => resolve(
+          reader.result
+        );
+
+      reader.onerror =
+        reject;
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
+
+
+async function processFiles(
+  files
+){
+
+  const incoming =
+    Array.from(files);
+
+  if(
+    selectedFiles.length +
+    incoming.length > 5
+  ){
+
+    showToast(
+      "الحد الأقصى 5 ملفات."
+    );
+
+    return;
+
+  }
+
+  let total =
+    selectedFiles.reduce(
+      (sum,file) =>
+        sum + file.size,
+      0
+    );
+
+  for(
+    const file of incoming
+  ){
+
+    if(
+      file.size >
+      MAX_FILE_SIZE
+    ){
+
+      showToast(
+        `الملف ${file.name} أكبر من 20MB.`
+      );
+
+      continue;
+
+    }
+
+    if(
+      total + file.size >
+      MAX_TOTAL_FILE_SIZE
+    ){
+
+      showToast(
+        "تجاوز الحجم الإجمالي للملفات."
+      );
+
+      break;
+
+    }
+
+    try{
+
+      const data =
+        await fileToBase64(
+          file
+        );
+
+      selectedFiles.push({
+        name:file.name,
+        type:file.type ||
+          "application/octet-stream",
+        size:file.size,
+        data
+      });
+
+      total +=
+        file.size;
+
+    }catch{
+
+      showToast(
+        `تعذر قراءة ${file.name}`
+      );
+
+    }
+
+  }
+
+  updateFilePreview();
+
+}
+
+
+/* =========================================================
+   SEND TO SERVER
+========================================================= */
+
+async function requestAI(
+  text,
+  files,
+  history
+){
+
+  const payload = {
+
+    message:
+      text,
+
+    messages:
+      history.slice(
+        -MAX_HISTORY
+      ),
+
+    files:
+      files,
+
+    fastMode:
+      fastMode
+
+  };
+
+  const response =
+    await fetch(
+      API_URL,
+      {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(
+            payload
+          )
+
+      }
+    );
+
+  let data;
+
+  try{
+
+    data =
+      await response.json();
+
+  }catch{
+
+    throw new Error(
+      "الخادم أرسل استجابة غير صالحة."
+    );
+
+  }
+
+  if(
+    !response.ok ||
+    !data.success
+  ){
+
+    throw new Error(
+      data?.error ||
+      "حدث خطأ في الخادم."
+    );
+
+  }
+
+  return data;
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage(
+  forcedText = null
+){
+
+  if(busy){
+    return;
+  }
+
+  const text =
+    (
+      forcedText !== null
+        ? forcedText
+        : messageInput.value
+    ).trim();
+
+  if(
+    !text &&
+    !selectedFiles.length
+  ){
+
+    return;
+
+  }
+
+  const filesForRequest =
+    selectedFiles.map(
+      file => ({
+        ...file
+      })
+    );
+
+  /*
+    مهم:
+    نأخذ التاريخ القديم قبل إضافة
+    رسالة المستخدم الحالية، حتى لا
+    يتم إرسال الرسالة مرتين.
+  */
+
+  const historyForRequest =
+    conversation
+      .slice(
+        -MAX_HISTORY
+      )
+      .map(item => ({
+        role:item.role,
+        content:item.content
+      }));
+
+  if(text){
+
+    addMessage(
+      "user",
+      text
+    );
+
+    conversation.push({
+      role:"user",
+      content:text
+    });
+
+  }else{
+
+    addMessage(
+      "user",
+      "تم إرفاق ملفات للتحليل."
+    );
+
+  }
+
+  messageInput.value =
+    "";
+
+  autoResize();
+
+  selectedFiles =
+    [];
+
+  updateFilePreview();
+
+  closeSidebar();
+
+  addTyping();
+
+  setBusy(true);
+
+  try{
+
+    const data =
+      await requestAI(
+        text ||
+        "حلل الملفات المرفقة.",
+        filesForRequest,
+        historyForRequest
+      );
+
+    removeTyping();
+
+    addMessage(
+      "assistant",
+      data.reply
+    );
+
+    conversation.push({
+      role:"assistant",
+      content:data.reply
+    });
+
+    if(
+      conversation.length >
+      MAX_HISTORY
+    ){
+
+      conversation =
+        conversation.slice(
+          -MAX_HISTORY
+        );
+
+    }
+
+    updateHistoryStatus();
+
+  }catch(error){
+
+    removeTyping();
+
+    addMessage(
+      "assistant",
+      "⚠️ " +
+      (
+        error?.message ||
+        "حدث خطأ أثناء الاتصال بالخادم."
+      )
+    );
+
+    showToast(
+      error?.message ||
+      "تعذر الاتصال بالخادم."
+    );
+
+  }finally{
+
+    setBusy(false);
+
+  }
+
+}
+
+
+/* =========================================================
+   NEW CHAT
+========================================================= */
+
+function resetChat(){
+
+  conversation =
+    [];
+
+  selectedFiles =
+    [];
+
+  updateFilePreview();
+
+  chatInner.innerHTML =
+    "";
+
+  chatInner.appendChild(
+    welcome
+  );
+
+  welcome.style.display =
+    "flex";
+
+  updateHistoryStatus();
+
+  messageInput.value =
+    "";
+
+  autoResize();
+
+  closeSidebar();
+
+}
+
+
+/* =========================================================
+   HISTORY STATUS
+========================================================= */
+
+function updateHistoryStatus(){
+
+  if(
+    conversation.length
+  ){
+
+    const lastUser =
+      [...conversation]
+        .reverse()
+        .find(
+          item =>
+            item.role === "user"
+        );
+
+    document.getElementById(
+      "historyText"
+    ).textContent =
+      lastUser?.content ||
+      "المحادثة نشطة.";
+
+  }else{
+
+    document.getElementById(
+      "historyText"
+    ).textContent =
+      "ابدأ محادثة جديدة مع Sultan AI.";
+
+  }
+
+}
+
+
+/* =========================================================
    SIDEBAR
-===================================================== */
+========================================================= */
 
 function openSidebar(){
 
@@ -1347,11 +2433,6 @@ function openSidebar(){
 
   overlay.classList.add(
     "show"
-  );
-
-  mobileMenu.setAttribute(
-    "aria-expanded",
-    "true"
   );
 
 }
@@ -1367,287 +2448,84 @@ function closeSidebar(){
     "show"
   );
 
-  mobileMenu.setAttribute(
-    "aria-expanded",
-    "false"
-  );
-
 }
 
 
-bindPress(
-  mobileMenu,
-  () => {
+/* =========================================================
+   SERVER STATUS
+========================================================= */
+
+async function checkServer(){
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/health",
+        {
+          cache:"no-store"
+        }
+      );
+
+    const data =
+      await response.json();
 
     if(
-      sidebar.classList.contains(
-        "open"
-      )
+      response.ok &&
+      data.success
     ){
 
-      closeSidebar();
+      serverStatus.textContent =
+        data.configured
+          ? "الخادم متصل • AI جاهز"
+          : "الخادم متصل • API غير مضبوط";
 
     }else{
 
-      openSidebar();
+      serverStatus.textContent =
+        "الخادم غير جاهز";
 
     }
 
-  }
-);
+  }catch{
 
-
-bindPress(
-  overlay,
-  closeSidebar
-);
-
-
-/* =====================================================
-   NEW CHAT
-===================================================== */
-
-function newChat(){
-
-  if(sending){
-
-    stopRequest();
+    serverStatus.textContent =
+      "تعذر الاتصال بالخادم";
 
   }
-
-  conversation = [];
-
-  selectedFiles = [];
-
-  lastUserText = "";
-
-  lastRequestFiles = [];
-
-  renderSelectedFiles();
-
-  chat.innerHTML = "";
-
-  chat.appendChild(
-    welcome
-  );
-
-  welcome.style.display =
-    "";
-
-  messageInput.value =
-    "";
-
-  autoResize();
-
-  sendButton.classList.remove(
-    "stop"
-  );
-
-  sendButton.textContent =
-    "➤";
-
-  sendButton.title =
-    "إرسال";
-
-  sendButton.setAttribute(
-    "aria-label",
-    "إرسال"
-  );
-
-  closeSidebar();
-
-  messageInput.focus();
-
-  showToast(
-    "تم إنشاء محادثة جديدة."
-  );
 
 }
 
 
-bindPress(
-  newChatButton,
-  newChat
+/* =========================================================
+   EVENTS
+========================================================= */
+
+sendBtn.addEventListener(
+  "click",
+  () => sendMessage()
 );
 
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+attachBtn.addEventListener(
+  "click",
+  () => fileInput.click()
+);
 
-document
-  .querySelectorAll(".nav-btn")
-  .forEach(button => {
 
-    bindPress(
-      button,
-      () => {
+fileInput.addEventListener(
+  "change",
+  async event => {
 
-        document
-          .querySelectorAll(
-            ".nav-btn"
-          )
-          .forEach(item => {
-
-            item.classList.remove(
-              "active"
-            );
-
-          });
-
-        button.classList.add(
-          "active"
-        );
-
-        const mode =
-          button.dataset.mode;
-
-        if(mode === "chat"){
-
-          showToast(
-            "وضع المحادثة مفعّل."
-          );
-
-        }
-
-        if(mode === "files"){
-
-          showToast(
-            "أرفق ملفاً من زر 📎"
-          );
-
-        }
-
-        if(mode === "fast"){
-
-          setFastMode(true);
-
-          showToast(
-            "تم تفعيل الوضع السريع."
-          );
-
-        }
-
-        if(mode === "web"){
-
-          showToast(
-            "أدوات الويب متاحة من الخادم عند دعمها."
-          );
-
-        }
-
-        if(mode === "code"){
-
-          showToast(
-            "اكتب طلبك البرمجي في مربع الرسالة."
-          );
-
-        }
-
-        if(mode === "analysis"){
-
-          showToast(
-            "أرسل النص أو الملف الذي تريد تحليله."
-          );
-
-        }
-
-        closeSidebar();
-
-      }
+    await processFiles(
+      event.target.files
     );
 
-  });
-
-
-/* =====================================================
-   QUICK PROMPTS
-===================================================== */
-
-document
-  .querySelectorAll(".quick")
-  .forEach(button => {
-
-    bindPress(
-      button,
-      () => {
-
-        const prompt =
-          button.dataset.prompt ||
-          "";
-
-        if(!prompt){
-          return;
-        }
-
-        messageInput.value =
-          prompt;
-
-        autoResize();
-
-        sendMessage();
-
-      }
-    );
-
-  });
-
-
-/* =====================================================
-   FAST MODE
-===================================================== */
-
-function setFastMode(value){
-
-  fastMode =
-    Boolean(value);
-
-  fastToggle.classList.toggle(
-    "active",
-    fastMode
-  );
-
-  fastToggle.setAttribute(
-    "aria-pressed",
-    fastMode
-      ? "true"
-      : "false"
-  );
-
-}
-
-
-bindPress(
-  fastToggle,
-  () => {
-
-    setFastMode(
-      !fastMode
-    );
+    fileInput.value =
+      "";
 
   }
 );
-
-
-/* =====================================================
-   TEXTAREA
-===================================================== */
-
-function autoResize(){
-
-  messageInput.style.height =
-    "auto";
-
-  const height =
-    Math.min(
-      messageInput.scrollHeight,
-      150
-    );
-
-  messageInput.style.height =
-    height + "px";
-
-}
 
 
 messageInput.addEventListener(
@@ -1660,1053 +2538,12 @@ messageInput.addEventListener(
   "keydown",
   event => {
 
-    if(event.isComposing){
-      return;
-    }
-
     if(
       event.key === "Enter" &&
       !event.shiftKey
     ){
 
       event.preventDefault();
-
-      if(!sending){
-
-        sendMessage();
-
-      }
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   FILE UPLOAD
-===================================================== */
-
-bindPress(
-  attachButton,
-  () => {
-
-    if(sending){
-
-      showToast(
-        "انتظر حتى انتهاء الطلب الحالي."
-      );
-
-      return;
-
-    }
-
-    fileInput.click();
-
-  }
-);
-
-
-fileInput.addEventListener(
-  "change",
-  event => {
-
-    const files =
-      Array.from(
-        event.target.files || []
-      );
-
-    addFiles(files);
-
-    fileInput.value =
-      "";
-
-  }
-);
-
-
-function addFiles(files){
-
-  if(!files.length){
-    return;
-  }
-
-  for(
-    const file of files
-  ){
-
-    if(
-      selectedFiles.length >=
-      MAX_FILES
-    ){
-
-      showToast(
-        `الحد الأقصى ${MAX_FILES} ملفات.`
-      );
-
-      break;
-
-    }
-
-    if(
-      file.size >
-      MAX_FILE_SIZE
-    ){
-
-      showToast(
-        `الملف ${file.name} أكبر من 20MB.`
-      );
-
-      continue;
-
-    }
-
-    const total =
-      selectedFiles.reduce(
-        (sum,item) =>
-          sum + item.size,
-        0
-      ) + file.size;
-
-    if(
-      total >
-      MAX_TOTAL_FILE_BYTES
-    ){
-
-      showToast(
-        "تجاوز الحجم الإجمالي المسموح للملفات."
-      );
-
-      continue;
-
-    }
-
-    const duplicate =
-      selectedFiles.some(
-        item =>
-          item.name === file.name &&
-          item.size === file.size &&
-          item.lastModified ===
-            file.lastModified
-      );
-
-    if(duplicate){
-      continue;
-    }
-
-    selectedFiles.push(
-      file
-    );
-
-  }
-
-  renderSelectedFiles();
-
-}
-
-
-function renderSelectedFiles(){
-
-  fileList.innerHTML =
-    "";
-
-  selectedFiles.forEach(
-    (file,index) => {
-
-      const chip =
-        document.createElement(
-          "div"
-        );
-
-      chip.className =
-        "file-chip";
-
-      const name =
-        document.createElement(
-          "span"
-        );
-
-      name.textContent =
-        file.name;
-
-      const remove =
-        document.createElement(
-          "button"
-        );
-
-      remove.type =
-        "button";
-
-      remove.className =
-        "file-remove";
-
-      remove.textContent =
-        "×";
-
-      remove.setAttribute(
-        "aria-label",
-        "حذف الملف"
-      );
-
-      bindPress(
-        remove,
-        () => {
-
-          selectedFiles.splice(
-            index,
-            1
-          );
-
-          renderSelectedFiles();
-
-        }
-      );
-
-      chip.appendChild(
-        name
-      );
-
-      chip.appendChild(
-        remove
-      );
-
-      fileList.appendChild(
-        chip
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   FILE READER
-===================================================== */
-
-function readFile(file){
-
-  return new Promise(
-    (resolve,reject) => {
-
-      const reader =
-        new FileReader();
-
-      reader.onload =
-        () => {
-
-          resolve({
-
-            name:file.name,
-
-            type:
-              file.type ||
-              "application/octet-stream",
-
-            size:file.size,
-
-            data:
-              reader.result
-
-          });
-
-        };
-
-      reader.onerror =
-        () => {
-
-          reject(
-            new Error(
-              "تعذر قراءة الملف."
-            )
-          );
-
-        };
-
-      reader.readAsDataURL(
-        file
-      );
-
-    }
-  );
-
-}
-
-
-async function prepareFiles(files){
-
-  const output = [];
-
-  for(
-    const file of files
-  ){
-
-    try{
-
-      output.push(
-        await readFile(file)
-      );
-
-    }catch(error){
-
-      console.error(
-        error
-      );
-
-      showToast(
-        `تعذر قراءة ${file.name}`
-      );
-
-    }
-
-  }
-
-  return output;
-
-}
-
-
-/* =====================================================
-   MARKDOWN
-===================================================== */
-
-function escapeHTML(text){
-
-  return String(text)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-function inlineMarkdown(text){
-
-  let result =
-    escapeHTML(text);
-
-  result =
-    result.replace(
-      /\*\*(.+?)\*\*/g,
-      "<strong>$1</strong>"
-    );
-
-  result =
-    result.replace(
-      /`([^`]+)`/g,
-      "<code>$1</code>"
-    );
-
-  result =
-    result.replace(
-      /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-    );
-
-  return result;
-
-}
-
-
-function renderMarkdown(text){
-
-  if(!text){
-    return "";
-  }
-
-  const blocks = [];
-
-  let source =
-    String(text);
-
-  source =
-    source.replace(
-      /```([\w-]*)\n?([\s\S]*?)```/g,
-      function(_,language,code){
-
-        const id =
-          "code_" +
-          Math.random()
-            .toString(36)
-            .slice(2);
-
-        blocks.push({
-
-          id,
-
-          language:
-            language ||
-            "code",
-
-          code
-
-        });
-
-        return (
-          `___CODE_BLOCK_${blocks.length-1}___`
-        );
-
-      }
-    );
-
-  const lines =
-    source.split("\n");
-
-  let html =
-    "";
-
-  let paragraph =
-    [];
-
-  function flushParagraph(){
-
-    if(!paragraph.length){
-      return;
-    }
-
-    html +=
-      "<p>" +
-      paragraph
-        .map(inlineMarkdown)
-        .join("<br>") +
-      "</p>";
-
-    paragraph =
-      [];
-
-  }
-
-  for(
-    const line of lines
-  ){
-
-    const trimmed =
-      line.trim();
-
-    if(!trimmed){
-
-      flushParagraph();
-
-      continue;
-
-    }
-
-    if(
-      /^#{1,3}\s/.test(
-        trimmed
-      )
-    ){
-
-      flushParagraph();
-
-      const match =
-        trimmed.match(
-          /^(#{1,3})\s+(.*)$/
-        );
-
-      const level =
-        match[1].length;
-
-      html +=
-        `<h${level+2}>${inlineMarkdown(match[2])}</h${level+2}>`;
-
-      continue;
-
-    }
-
-    if(
-      /^[*-]\s+/.test(
-        trimmed
-      )
-    ){
-
-      flushParagraph();
-
-      html +=
-        `<div>• ${inlineMarkdown(
-          trimmed.replace(
-            /^[*-]\s+/,
-            ""
-          )
-        )}</div>`;
-
-      continue;
-
-    }
-
-    paragraph.push(
-      line
-    );
-
-  }
-
-  flushParagraph();
-
-  blocks.forEach(
-    (block,index) => {
-
-      const codeHTML =
-        escapeHTML(
-          block.code
-        );
-
-      const blockHTML = `
-
-        <div class="code-wrap">
-
-          <div class="code-head">
-
-            <span>
-              ${escapeHTML(
-                block.language
-              )}
-            </span>
-
-            <button
-              type="button"
-              class="copy-code"
-              data-copy-code="${block.id}"
-            >
-              نسخ
-            </button>
-
-          </div>
-
-          <pre
-            class="code-content"
-            id="${block.id}"
-          >${codeHTML}</pre>
-
-        </div>
-
-      `;
-
-      html =
-        html.replace(
-          `___CODE_BLOCK_${index}___`,
-          blockHTML
-        );
-
-    }
-  );
-
-  return html;
-
-}
-
-
-/* =====================================================
-   WELCOME
-===================================================== */
-
-function hideWelcome(){
-
-  if(
-    welcome &&
-    welcome.parentNode
-  ){
-
-    welcome.remove();
-
-  }
-
-}
-
-
-/* =====================================================
-   SCROLL
-===================================================== */
-
-function scrollBottom(){
-
-  requestAnimationFrame(
-    () => {
-
-      chat.scrollTop =
-        chat.scrollHeight;
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   USER MESSAGE
-===================================================== */
-
-function addUserMessage(text){
-
-  hideWelcome();
-
-  const message =
-    document.createElement(
-      "div"
-    );
-
-  message.className =
-    "message user";
-
-  const bubble =
-    document.createElement(
-      "div"
-    );
-
-  bubble.className =
-    "bubble";
-
-  bubble.textContent =
-    text;
-
-  message.appendChild(
-    bubble
-  );
-
-  chat.appendChild(
-    message
-  );
-
-  scrollBottom();
-
-}
-
-
-/* =====================================================
-   TYPING
-===================================================== */
-
-function addTypingMessage(){
-
-  hideWelcome();
-
-  const message =
-    document.createElement(
-      "div"
-    );
-
-  message.className =
-    "message assistant";
-
-  message.id =
-    "typingMessage";
-
-  message.innerHTML = `
-
-    <div class="assistant-wrap">
-
-      <div class="avatar">
-
-        <svg
-          viewBox="0 0 100 100"
-          fill="none"
-        >
-
-          <path
-            d="M24 24h52v38H24z"
-            stroke="white"
-            stroke-width="8"
-            rx="10"
-          />
-
-          <path
-            d="M36 76h28M50 62v14"
-            stroke="white"
-            stroke-width="8"
-            stroke-linecap="round"
-          />
-
-        </svg>
-
-      </div>
-
-      <div class="assistant-content">
-
-        <div class="assistant-name">
-          Sultan AI
-        </div>
-
-        <div class="typing">
-
-          <i></i>
-          <i></i>
-          <i></i>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-  chat.appendChild(
-    message
-  );
-
-  scrollBottom();
-
-  return message;
-
-}
-
-
-function removeTyping(){
-
-  const typing =
-    $("typingMessage");
-
-  if(typing){
-
-    typing.remove();
-
-  }
-
-}
-
-
-/* =====================================================
-   ASSISTANT MESSAGE
-===================================================== */
-
-function addAssistantMessage(text){
-
-  removeTyping();
-
-  const message =
-    document.createElement(
-      "div"
-    );
-
-  message.className =
-    "message assistant";
-
-  message.innerHTML = `
-
-    <div class="assistant-wrap">
-
-      <div class="avatar">
-
-        <svg
-          viewBox="0 0 100 100"
-          fill="none"
-        >
-
-          <path
-            d="M24 24h52v38H24z"
-            stroke="white"
-            stroke-width="8"
-            rx="10"
-          />
-
-          <path
-            d="M36 76h28M50 62v14"
-            stroke="white"
-            stroke-width="8"
-            stroke-linecap="round"
-          />
-
-          <path
-            d="M38 40h24M38 50h15"
-            stroke="white"
-            stroke-width="6"
-            stroke-linecap="round"
-          />
-
-        </svg>
-
-      </div>
-
-      <div class="assistant-content">
-
-        <div class="assistant-name">
-          Sultan AI
-        </div>
-
-        <div class="assistant-text">
-          ${renderMarkdown(text)}
-        </div>
-
-        <div class="message-actions">
-
-          <button
-            type="button"
-            class="action-btn"
-            data-action="copy"
-            title="نسخ"
-          >
-            📋
-          </button>
-
-          <button
-            type="button"
-            class="action-btn"
-            data-action="regenerate"
-            title="إعادة التوليد"
-          >
-            ↻
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-  chat.appendChild(
-    message
-  );
-
-  bindMessageActions(
-    message
-  );
-
-  scrollBottom();
-
-}
-
-
-/* =====================================================
-   MESSAGE ACTIONS
-===================================================== */
-
-function bindMessageActions(message){
-
-  const copyButton =
-    message.querySelector(
-      '[data-action="copy"]'
-    );
-
-  const regenerateButton =
-    message.querySelector(
-      '[data-action="regenerate"]'
-    );
-
-  const copyCodeButtons =
-    message.querySelectorAll(
-      "[data-copy-code]"
-    );
-
-  bindPress(
-    copyButton,
-    async () => {
-
-      const textElement =
-        message.querySelector(
-          ".assistant-text"
-        );
-
-      const text =
-        textElement
-          ? textElement.innerText
-          : "";
-
-      try{
-
-        await copyText(
-          text
-        );
-
-        showToast(
-          "تم نسخ الرد."
-        );
-
-      }catch(error){
-
-        console.error(
-          error
-        );
-
-        showToast(
-          "تعذر النسخ."
-        );
-
-      }
-
-    }
-  );
-
-  bindPress(
-    regenerateButton,
-    () => {
-
-      if(!lastUserText){
-
-        showToast(
-          "لا يوجد طلب سابق."
-        );
-
-        return;
-
-      }
-
-      if(sending){
-
-        showToast(
-          "يوجد طلب قيد التنفيذ."
-        );
-
-        return;
-
-      }
-
-      sendMessage(
-        lastUserText,
-        true
-      );
-
-    }
-  );
-
-  copyCodeButtons.forEach(
-    button => {
-
-      bindPress(
-        button,
-        async () => {
-
-          const id =
-            button.dataset.copyCode;
-
-          const codeElement =
-            $(id);
-
-          if(!codeElement){
-            return;
-          }
-
-          try{
-
-            await copyText(
-              codeElement.textContent
-            );
-
-            button.textContent =
-              "تم النسخ";
-
-            setTimeout(
-              () => {
-
-                button.textContent =
-                  "نسخ";
-
-              },
-              1200
-            );
-
-          }catch(error){
-
-            showToast(
-              "تعذر نسخ الكود."
-            );
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   COPY
-===================================================== */
-
-async function copyText(text){
-
-  if(
-    navigator.clipboard &&
-    window.isSecureContext
-  ){
-
-    await navigator.clipboard.writeText(
-      text
-    );
-
-    return;
-
-  }
-
-  const textarea =
-    document.createElement(
-      "textarea"
-    );
-
-  textarea.value =
-    text;
-
-  textarea.style.position =
-    "fixed";
-
-  textarea.style.left =
-    "-9999px";
-
-  textarea.style.top =
-    "0";
-
-  textarea.style.opacity =
-    "0";
-
-  document.body.appendChild(
-    textarea
-  );
-
-  textarea.focus();
-
-  textarea.select();
-
-  const success =
-    document.execCommand(
-      "copy"
-    );
-
-  textarea.remove();
-
-  if(!success){
-
-    throw new Error(
-      "Copy failed"
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   SEND BUTTON
-===================================================== */
-
-bindPress(
-  sendButton,
-  () => {
-
-    if(sending){
-
-      stopRequest();
-
-    }else{
 
       sendMessage();
 
@@ -2716,639 +2553,89 @@ bindPress(
 );
 
 
-/* =====================================================
-   SEND MESSAGE
-===================================================== */
+fastToggle.addEventListener(
+  "click",
+  () => {
 
-async function sendMessage(
-  customText = null,
-  isRegenerate = false
-){
+    fastMode =
+      !fastMode;
 
-  if(sending){
-    return;
-  }
-
-  const text =
-    customText !== null
-      ? String(customText).trim()
-      : messageInput.value.trim();
-
-  if(!text){
-
-    showToast(
-      "اكتب رسالة أولاً."
-    );
-
-    messageInput.focus();
-
-    return;
-
-  }
-
-  lastUserText =
-    text;
-
-  let filesForRequest =
-    [];
-
-  let historyForRequest =
-    [];
-
-  if(!isRegenerate){
-
-    filesForRequest =
-      [...selectedFiles];
-
-    lastRequestFiles =
-      [...selectedFiles];
-
-    /*
-      نحفظ التاريخ قبل إضافة
-      السؤال الحالي حتى لا يتكرر
-      السؤال مرتين في الـAPI.
-    */
-
-    historyForRequest =
-      conversation.slice(
-        -MAX_HISTORY
-      );
-
-    addUserMessage(
-      text
-    );
-
-    conversation.push({
-
-      role:"user",
-
-      content:text
-
-    });
-
-    if(
-      conversation.length >
-      MAX_HISTORY
-    ){
-
-      conversation =
-        conversation.slice(
-          -MAX_HISTORY
-        );
-
-    }
-
-    messageInput.value =
-      "";
-
-    autoResize();
-
-    selectedFiles =
-      [];
-
-    renderSelectedFiles();
-
-  }else{
-
-    filesForRequest =
-      [...lastRequestFiles];
-
-    /*
-      في إعادة التوليد نرسل
-      المحادثة الحالية كما هي،
-      ثم نضيف الطلب الحالي من السيرفر.
-    */
-
-    historyForRequest =
-      conversation.slice(
-        -MAX_HISTORY
-      );
-
-    addUserMessage(
-      text
-    );
-
-  }
-
-  addTypingMessage();
-
-  setSendingState(
-    true
-  );
-
-  try{
-
-    const preparedFiles =
-      await prepareFiles(
-        filesForRequest
-      );
-
-    const answer =
-      await requestAI(
-        text,
-        preparedFiles,
-        historyForRequest
-      );
-
-    if(!answer){
-
-      throw new Error(
-        "لم يصل رد من الخادم."
-      );
-
-    }
-
-    addAssistantMessage(
-      answer
-    );
-
-    conversation.push({
-
-      role:"assistant",
-
-      content:answer
-
-    });
-
-    if(
-      conversation.length >
-      MAX_HISTORY
-    ){
-
-      conversation =
-        conversation.slice(
-          -MAX_HISTORY
-        );
-
-    }
-
-  }catch(error){
-
-    console.error(
-      error
-    );
-
-    removeTyping();
-
-    let errorMessage =
-      "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي.";
-
-    if(
-      error.name ===
-      "AbortError"
-    ){
-
-      errorMessage =
-        "تم إيقاف الطلب.";
-
-    }else if(
-      String(
-        error.message || ""
-      ).includes(
-        "Failed to fetch"
-      )
-    ){
-
-      errorMessage =
-        "تعذر الاتصال بالخادم. تأكد أن السيرفر يعمل.";
-
-    }else if(
-      error.message
-    ){
-
-      errorMessage =
-        error.message;
-
-    }
-
-    addAssistantMessage(
-      "⚠️ " +
-      errorMessage
+    fastToggle.classList.toggle(
+      "active",
+      fastMode
     );
 
     showToast(
-      errorMessage
-    );
-
-  }finally{
-
-    setSendingState(
-      false
+      fastMode
+        ? "تم تشغيل الوضع السريع"
+        : "تم إيقاف الوضع السريع"
     );
 
   }
+);
 
-}
+
+newChat.addEventListener(
+  "click",
+  resetChat
+);
 
 
-/* =====================================================
-   API
-===================================================== */
+clearBtn.addEventListener(
+  "click",
+  resetChat
+);
 
-async function requestAI(
-  text,
-  files,
-  history = []
-){
 
-  abortController =
-    new AbortController();
+menuBtn.addEventListener(
+  "click",
+  openSidebar
+);
 
-  const controller =
-    abortController;
 
-  const timeout =
-    setTimeout(
-      () => {
+overlay.addEventListener(
+  "click",
+  closeSidebar
+);
 
-        controller.abort();
 
-      },
-      REQUEST_TIMEOUT
-    );
+/* =========================================================
+   QUICK PROMPTS
+========================================================= */
 
-  const payload = {
+document
+  .querySelectorAll(
+    ".quick"
+  )
+  .forEach(
+    button => {
 
-    message:text,
+      button.addEventListener(
+        "click",
+        () => {
 
-    messages:
-      history.slice(
-        -MAX_HISTORY
-      ),
+          messageInput.value =
+            button.dataset.prompt ||
+            "";
 
-    files:files,
+          autoResize();
 
-    fastMode:fastMode
-
-  };
-
-  try{
-
-    const response =
-      await fetch(
-        API_ENDPOINT,
-        {
-
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(
-              payload
-            ),
-
-          signal:
-            controller.signal,
-
-          cache:"no-store"
+          messageInput.focus();
 
         }
       );
 
-    let data =
-      null;
-
-    try{
-
-      data =
-        await response.json();
-
-    }catch(error){
-
-      throw new Error(
-        "الخادم أرسل استجابة غير صالحة."
-      );
-
     }
-
-    if(!response.ok){
-
-      throw new Error(
-
-        data?.error ||
-        data?.message ||
-        `خطأ من الخادم (${response.status})`
-
-      );
-
-    }
-
-    const answer =
-      data?.reply ??
-      data?.answer ??
-      data?.response ??
-      data?.message ??
-      data?.content ??
-      data?.text;
-
-    if(
-      typeof answer ===
-      "string"
-    ){
-
-      return answer;
-
-    }
-
-    if(
-      answer &&
-      typeof answer ===
-      "object"
-    ){
-
-      return JSON.stringify(
-        answer,
-        null,
-        2
-      );
-
-    }
-
-    throw new Error(
-      "لم يتم العثور على نص الرد من الخادم."
-    );
-
-  }finally{
-
-    clearTimeout(
-      timeout
-    );
-
-    if(
-      abortController ===
-      controller
-    ){
-
-      abortController =
-        null;
-
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   SEND STATE
-===================================================== */
-
-function setSendingState(
-  value
-){
-
-  sending =
-    Boolean(value);
-
-  if(sending){
-
-    sendButton.classList.add(
-      "stop"
-    );
-
-    sendButton.textContent =
-      "■";
-
-    sendButton.title =
-      "إيقاف الطلب";
-
-    sendButton.setAttribute(
-      "aria-label",
-      "إيقاف الطلب"
-    );
-
-  }else{
-
-    sendButton.classList.remove(
-      "stop"
-    );
-
-    sendButton.textContent =
-      "➤";
-
-    sendButton.title =
-      "إرسال";
-
-    sendButton.setAttribute(
-      "aria-label",
-      "إرسال"
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   STOP
-===================================================== */
-
-function stopRequest(){
-
-  if(
-    abortController
-  ){
-
-    abortController.abort();
-
-  }
-
-  setSendingState(
-    false
   );
 
-  removeTyping();
 
-  showToast(
-    "تم إيقاف الطلب."
-  );
-
-}
-
-
-/* =====================================================
-   HEALTH
-===================================================== */
-
-async function checkHealth(){
-
-  try{
-
-    const response =
-      await fetch(
-        "/api/health",
-        {
-          cache:"no-store"
-        }
-      );
-
-    if(!response.ok){
-
-      throw new Error(
-        "Health check failed"
-      );
-
-    }
-
-    const status =
-      document.querySelector(
-        ".status"
-      );
-
-    if(status){
-
-      status.innerHTML = `
-
-        <span class="status-dot"></span>
-        متصل
-
-      `;
-
-    }
-
-  }catch(error){
-
-    console.warn(
-      "Health check:",
-      error
-    );
-
-    const status =
-      document.querySelector(
-        ".status"
-      );
-
-    if(status){
-
-      status.innerHTML = `
-
-        <span
-          class="status-dot"
-          style="background:#ff5b45;box-shadow:none"
-        ></span>
-
-        غير متاح
-
-      `;
-
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   NETWORK
-===================================================== */
-
-window.addEventListener(
-  "online",
-  () => {
-
-    const status =
-      document.querySelector(
-        ".status"
-      );
-
-    if(status){
-
-      status.innerHTML = `
-
-        <span class="status-dot"></span>
-        متصل
-
-      `;
-
-    }
-
-    showToast(
-      "عاد الاتصال بالإنترنت."
-    );
-
-  }
-);
-
-
-window.addEventListener(
-  "offline",
-  () => {
-
-    const status =
-      document.querySelector(
-        ".status"
-      );
-
-    if(status){
-
-      status.innerHTML = `
-
-        <span
-          class="status-dot"
-          style="background:#ff5b45;box-shadow:none"
-        ></span>
-
-        غير متصل
-
-      `;
-
-    }
-
-    showToast(
-      "لا يوجد اتصال بالإنترنت."
-    );
-
-  }
-);
-
-
-/* =====================================================
-   ESC
-===================================================== */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key ===
-      "Escape"
-    ){
-
-      closeSidebar();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
+/* =========================================================
    INIT
-===================================================== */
+========================================================= */
 
-function init(){
-
-  autoResize();
-
-  setFastMode(
-    false
-  );
-
-  checkHealth();
-
-  console.log(
-    "Sultan AI V7.2 frontend loaded - CLICK BUTTON SYSTEM ACTIVE."
-  );
-
-}
-
-
-init();
+updateHistoryStatus();
+autoResize();
+checkServer();
 
 </script>
 
