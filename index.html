@@ -169,29 +169,32 @@ body{
   text-transform:uppercase;
 }
 
+/* الاسمَين جنب بعض */
+
 .creator-names{
   display:flex;
   align-items:center;
-  gap:7px;
-  flex-wrap:wrap;
+  gap:8px;
+  white-space:nowrap;
   margin-top:7px;
 }
 
 .creator-main{
+  color:#ffffff;
   font-size:13px;
   font-weight:850;
-  color:#fff;
 }
 
 .creator-separator{
   color:#ff6d2d;
-  font-size:12px;
+  font-size:13px;
+  font-weight:700;
 }
 
 .creator-assist{
   color:#ff965f;
-  font-size:11px;
-  font-weight:650;
+  font-size:13px;
+  font-weight:700;
 }
 
 /* MAIN */
@@ -1045,17 +1048,14 @@ async function sendMessage(){
   if(!text)
     return;
 
-
   promptBox.value = "";
 
   autoResize(promptBox);
-
 
   addMessage(
     "user",
     text
   );
-
 
   conversation.push({
 
@@ -1065,10 +1065,8 @@ async function sendMessage(){
 
   });
 
-
   const typing =
     addTyping();
-
 
   try{
 
@@ -1089,7 +1087,6 @@ async function sendMessage(){
         }
       );
 
-
     if(!response.ok){
 
       throw new Error(
@@ -1099,24 +1096,19 @@ async function sendMessage(){
 
     }
 
-
     const data =
       await response.json();
 
-
     typing.remove();
-
 
     const reply =
       data.reply ||
       "ما قدرت آخد جواب من سلطان AI.";
 
-
     addMessage(
       "ai",
       reply
     );
-
 
     conversation.push({
 
@@ -1126,7 +1118,6 @@ async function sendMessage(){
 
     });
 
-
   }catch(error){
 
     console.error(
@@ -1134,9 +1125,7 @@ async function sendMessage(){
       error
     );
 
-
     typing.remove();
-
 
     addMessage(
       "ai",
@@ -1179,7 +1168,6 @@ const ctx =
 
 let W,H;
 
-
 function resizeCanvas(){
 
   W =
@@ -1192,14 +1180,12 @@ function resizeCanvas(){
 
 }
 
-
 resizeCanvas();
 
 window.addEventListener(
   "resize",
   resizeCanvas
 );
-
 
 function fireSpark(){
 
@@ -1209,13 +1195,11 @@ function fireSpark(){
   spark.className =
     "spark";
 
-
   spark.style.left =
     (
       window.innerWidth * .5 +
       (Math.random()-.5)*120
     ) + "px";
-
 
   spark.style.top =
     (
@@ -1223,27 +1207,22 @@ function fireSpark(){
       Math.random()*100
     ) + "px";
 
-
   spark.style.setProperty(
     "--x",
     ((Math.random()-.5)*180)+"px"
   );
-
 
   spark.style.setProperty(
     "--y",
     (-40-Math.random()*150)+"px"
   );
 
-
   spark.style.animationDuration =
     (.8+Math.random()*1.5)+"s";
-
 
   document.body.appendChild(
     spark
   );
-
 
   setTimeout(
     ()=>spark.remove(),
@@ -1251,7 +1230,6 @@ function fireSpark(){
   );
 
 }
-
 
 setInterval(
   fireSpark,
