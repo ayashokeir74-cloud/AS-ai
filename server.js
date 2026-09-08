@@ -8,24 +8,7 @@ import { fileURLToPath } from "url";
 
 /*
 =========================================================
- SULTAN AI V5 SERVER
-=========================================================
- Features:
- - Groq Compound
- - Web Search
- - Visit Website
- - Code Execution
- - Wolfram Alpha
- - Image Analysis
- - Text / Code File Analysis
- - Conversation Context
- - Fast Mode
- - Request Validation
- - Rate Limiting
- - Security Headers
- - Compression
- - Health API
- - Render compatible
+ SULTAN AI V6 SERVER
 =========================================================
 */
 
@@ -59,9 +42,7 @@ const MODEL_VERSION =
   "latest";
 
 const MAX_MESSAGE_CHARS = 12000;
-
 const MAX_HISTORY_MESSAGES = 24;
-
 const MAX_FILES = 5;
 
 const MAX_FILE_SIZE =
@@ -73,11 +54,14 @@ const MAX_TOTAL_FILE_SIZE =
 const REQUEST_TIMEOUT_MS =
   180000;
 
-if (!API_KEY) {
-  console.error(
-    "❌ GROQ_API_KEY is missing."
-  );
+const RATE_WINDOW_MS =
+  60 * 1000;
 
+const RATE_LIMIT =
+  Number(process.env.RATE_LIMIT || 20);
+
+if (!API_KEY) {
+  console.error("❌ [Sultan AI] GROQ_API_KEY is missing.");
   process.exit(1);
 }
 
@@ -87,12 +71,37 @@ if (!API_KEY) {
 
 const groq = new Groq({
   apiKey: API_KEY,
-
   defaultHeaders: {
-    "Groq-Model-Version":
-      MODEL_VERSION
+    "Groq-Model-Version": MODEL_VERSION
   }
 });
+
+/* =======================================================
+   STARTUP LOG
+======================================================= */
+
+console.log("");
+console.log("========================================");
+console.log("          SULTAN AI V6 STARTING");
+console.log("========================================");
+console.log(`Node: ${process.version}`);
+console.log(`Port: ${PORT}`);
+console.log(`Normal Model: ${MODEL}`);
+console.log(`Fast Model: ${FAST_MODEL}`);
+console.log(`Vision Model: ${VISION_MODEL}`);
+console.log(`Compound Version: ${MODEL_VERSION}`);
+console.log("Tools: Web Search + Visit Website + Code");
+console.log(
+  `Wolfram: ${
+    process.env.WOLFRAM_ALPHA_API_KEY
+      ? "enabled"
+      : "not configured"
+  }`
+);
+console.log(`Rate Limit: ${RATE_LIMIT}/minute`);
+console.log("Citations: automatic");
+console.log("========================================");
+console.log("");
 
 /* =======================================================
    SECURITY
@@ -100,10 +109,7 @@ const groq = new Groq({
 
 app.disable("x-powered-by");
 
-app.set(
-  "trust proxy",
-  1
-);
+app.set("trust proxy", 1);
 
 app.use(
   helmet({
@@ -121,13 +127,7 @@ app.use(
 app.use(
   cors({
     origin: true,
-
-    methods: [
-      "GET",
-      "POST",
-      "OPTIONS"
-    ],
-
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
       "Authorization"
@@ -135,10 +135,6 @@ app.use(
   })
 );
 
-/*
- * Large enough for the current frontend
- * because files are transferred as Data URLs.
- */
 app.use(
   express.json({
     limit: "50mb"
@@ -153,85 +149,52 @@ app.use(
 );
 
 /* =======================================================
-   SIMPLE RATE LIMITER
+   RATE LIMIT
 ======================================================= */
 
 const rateStore = new Map();
 
-const RATE_WINDOW_MS =
-  60 * 1000;
-
-const RATE_LIMIT =
-  Number(
-    process.env.RATE_LIMIT ||
-    20
-  );
-
 function getClientKey(req) {
-
   const forwarded =
     req.headers["x-forwarded-for"];
 
   if (typeof forwarded === "string") {
-
     return forwarded
       .split(",")[0]
       .trim();
   }
 
-  return (
-    req.ip ||
-    "unknown"
-  );
+  return req.ip || "unknown";
 }
 
 function rateLimit(req, res, next) {
+  const key = getClientKey(req);
+  const now = Date.now();
 
-  const key =
-    getClientKey(req);
-
-  const now =
-    Date.now();
-
-  let record =
-    rateStore.get(key);
+  let record = rateStore.get(key);
 
   if (!record) {
-
     record = {
       count: 0,
       resetAt:
         now + RATE_WINDOW_MS
     };
 
-    rateStore.set(
-      key,
-      record
-    );
+    rateStore.set(key, record);
   }
 
-  if (
-    now >=
-    record.resetAt
-  ) {
-
+  if (now >= record.resetAt) {
     record.count = 0;
-
     record.resetAt =
       now + RATE_WINDOW_MS;
   }
 
   record.count++;
 
-  if (
-    record.count >
-    RATE_LIMIT
-  ) {
-
+  if (record.count > RATE_LIMIT) {
     const retryAfter =
       Math.ceil(
-        (record.resetAt - now) /
-        1000
+        (record.resetAt - now) / 1000
       );
 
     res.setHeader(
@@ -239,7 +202,12 @@ function rateLimit(req, res, next) {
       String(retryAfter)
     );
 
+    console.warn(
+      `[Sultan AI] RATE LIMIT | ip=${key}`
+    );
+
     return res.status(429).json({
+      ok: false,
       error:
         "طلبات كثيرة جداً. حاول بعد قليل."
     });
@@ -248,27 +216,17 @@ function rateLimit(req, res, next) {
   next();
 }
 
-/*
- * Cleanup old entries.
- */
 setInterval(() => {
-
-  const now =
-    Date.now();
+  const now = Date.now();
 
   for (
     const [key, record]
     of rateStore
   ) {
-
-    if (
-      now >=
-      record.resetAt
-    ) {
+    if (now >= record.resetAt) {
       rateStore.delete(key);
     }
   }
-
 }, 5 * 60 * 1000).unref();
 
 /* =======================================================
@@ -276,13 +234,10 @@ setInterval(() => {
 ======================================================= */
 
 app.use(
-  express.static(
-    __dirname,
-    {
-      etag: true,
-      maxAge: "5m"
-    }
-  )
+  express.static(__dirname, {
+    etag: true,
+    maxAge: "5m"
+  })
 );
 
 /* =======================================================
@@ -317,68 +272,55 @@ INTELLIGENCE:
 - If information is uncertain, say so.
 
 CURRENT INFORMATION:
-- When current information matters, use the available
-  Compound tools.
+- Use Compound tools when current information is needed.
 - Use web_search for current information, news,
-  prices, software updates, public facts, and recent events.
-- Use visit_website when the user provides a URL or asks
-  you to inspect a specific public webpage.
-- Use code_interpreter for calculations, programming,
-  data analysis, simulations, and tasks where execution
-  improves accuracy.
+  prices, software updates, and recent events.
+- Use visit_website when the user provides a URL or
+  asks you to inspect a specific public webpage.
+- Use code_interpreter for calculations,
+  programming, data analysis, and simulations.
 - Use Wolfram Alpha when available and useful.
 
 WEB:
-- Do not claim that you searched the web unless a web
-  tool was actually executed.
-- When web information is used, synthesize the useful
-  information instead of dumping raw tool output.
+- Do not claim to have searched the web unless the
+  web tool was actually executed.
+- When web information is used, summarize useful findings.
 - Prefer reliable sources.
 
 PROGRAMMING:
 - Support HTML, CSS, JavaScript, Python, Node.js,
   APIs, databases, JSON, SQL, and general programming.
-- When code is requested, provide complete usable code
-  when appropriate.
+- When code is requested, provide complete usable code.
 - Inspect supplied code carefully.
-- Never claim code was executed unless an execution tool
-  actually executed it.
+- Never claim code was executed unless the execution
+  tool actually executed it.
 
 FILES:
-- Use the actual supplied file contents.
-- Never pretend to have read a file whose contents were
-  not supplied.
+- Use actual supplied file contents.
+- Never pretend to have read unavailable file contents.
 - Analyze source code carefully.
-- Identify concrete errors and practical fixes.
 
 IMAGES:
-- Use actual image analysis.
+- Analyze only visible information.
 - Never invent visual details.
-- If text is visible, extract it carefully.
 
 CONVERSATION:
-- Maintain useful conversation context.
+- Maintain useful context.
 - Prefer recent instructions when they conflict with old ones.
-- Do not unnecessarily ask questions already answered.
 
 FAST MODE:
-- Fast Mode prioritizes lower latency for straightforward
-  questions.
-- It may use a faster Compound system.
-- For complex research, calculations, or multi-step tasks,
-  normal Compound is preferred.
+- Fast Mode prioritizes lower latency.
+- Normal Compound is preferred for complex multi-step work.
 
 STYLE:
-- Be helpful and confident without pretending to know everything.
-- Simple questions should receive concise answers.
-- Difficult technical questions can receive detailed answers.
-- Use headings, lists, tables, and code blocks when useful.
+- Be helpful and confident.
+- Simple questions should be concise.
+- Technical questions can be detailed.
+- Use headings, lists, tables, and code when useful.
 - Never expose private chain-of-thought.
-- Give conclusions and useful explanations instead.
 
 SAFETY:
 - Follow applicable safety requirements.
-- Do not provide instructions that enable harmful or dangerous activity.
 - Be maximally helpful for benign programming,
   educational, mathematical, and technical requests.
 `;
@@ -388,11 +330,7 @@ SAFETY:
 ======================================================= */
 
 function cleanText(value) {
-
-  if (
-    typeof value !==
-    "string"
-  ) {
+  if (typeof value !== "string") {
     return "";
   }
 
@@ -400,10 +338,8 @@ function cleanText(value) {
 }
 
 function isImageFile(file) {
-
   return (
-    typeof file?.type ===
-      "string" &&
+    typeof file?.type === "string" &&
     file.type
       .toLowerCase()
       .startsWith("image/")
@@ -411,16 +347,11 @@ function isImageFile(file) {
 }
 
 function isTextLikeFile(file) {
-
   const type =
-    String(
-      file?.type || ""
-    ).toLowerCase();
+    String(file?.type || "").toLowerCase();
 
   const name =
-    String(
-      file?.name || ""
-    ).toLowerCase();
+    String(file?.name || "").toLowerCase();
 
   if (
     type.startsWith("text/") ||
@@ -439,26 +370,17 @@ function isTextLikeFile(file) {
 }
 
 function isPdfFile(file) {
-
   return (
-    String(
-      file?.type || ""
-    ).toLowerCase() ===
+    String(file?.type || "").toLowerCase() ===
       "application/pdf" ||
     /\.pdf$/i.test(
-      String(
-        file?.name || ""
-      )
+      String(file?.name || "")
     )
   );
 }
 
 function extractBase64(data) {
-
-  if (
-    typeof data !==
-    "string"
-  ) {
+  if (typeof data !== "string") {
     return null;
   }
 
@@ -477,29 +399,10 @@ function extractBase64(data) {
   };
 }
 
-function byteLength(value) {
-
-  return Buffer.byteLength(
-    String(value || ""),
-    "utf8"
-  );
-}
-
-/* =======================================================
-   DATA URL VALIDATION
-======================================================= */
-
 function isValidDataUrl(data) {
-
-  if (
-    typeof data !==
-    "string"
-  ) {
-    return false;
-  }
-
-  return /^data:[^;]+;base64,/i.test(
-    data
+  return (
+    typeof data === "string" &&
+    /^data:[^;]+;base64,/i.test(data)
   );
 }
 
@@ -508,73 +411,50 @@ function isValidDataUrl(data) {
 ======================================================= */
 
 function normalizeFiles(files) {
-
-  if (
-    !Array.isArray(files)
-  ) {
+  if (!Array.isArray(files)) {
     return [];
   }
 
   const normalized = [];
-
   let totalSize = 0;
 
   for (
     const file
-    of files.slice(
-      0,
-      MAX_FILES
-    )
+    of files.slice(0, MAX_FILES)
   ) {
-
     if (!file) continue;
 
     const name =
       String(
-        file.name ||
-        "unknown"
-      ).slice(
-        0,
-        200
-      );
+        file.name || "unknown"
+      ).slice(0, 200);
 
     const type =
       String(
-        file.type ||
-        ""
-      ).slice(
-        0,
-        150
-      );
+        file.type || ""
+      ).slice(0, 150);
 
     const size =
-      Number(
-        file.size || 0
-      );
+      Number(file.size || 0);
 
     const data =
-      typeof file.data ===
-      "string"
+      typeof file.data === "string"
         ? file.data
         : "";
 
-    if (!data) {
-      continue;
-    }
+    if (!data) continue;
 
     if (!isValidDataUrl(data)) {
+      console.warn(
+        `[Sultan AI] File rejected | ${name} | invalid data URL`
+      );
       continue;
     }
 
-    if (
-      size >
-      MAX_FILE_SIZE
-    ) {
-
+    if (size > MAX_FILE_SIZE) {
       console.warn(
-        `File rejected: ${name} is too large.`
+        `[Sultan AI] File rejected | ${name} | too large`
       );
-
       continue;
     }
 
@@ -584,32 +464,24 @@ function normalizeFiles(files) {
         "utf8"
       );
 
-    /*
-     * Browser size metadata can be incorrect.
-     * We also protect against huge Data URLs.
-     */
     if (
       actualDataBytes >
       MAX_FILE_SIZE * 1.5
     ) {
-
       console.warn(
-        `File rejected: ${name} Data URL too large.`
+        `[Sultan AI] File rejected | ${name} | data URL too large`
       );
-
       continue;
     }
 
     if (
       totalSize +
-      actualDataBytes >
+        actualDataBytes >
       MAX_TOTAL_FILE_SIZE
     ) {
-
       console.warn(
-        "Total uploaded file size limit reached."
+        "[Sultan AI] Total file limit reached."
       );
-
       break;
     }
 
@@ -628,13 +500,11 @@ function normalizeFiles(files) {
 }
 
 /* =======================================================
-   TEXT EXTRACTION
+   TEXT FILES
 ======================================================= */
 
 function decodeBase64ToText(data) {
-
   try {
-
     const parsed =
       extractBase64(data);
 
@@ -648,15 +518,12 @@ function decodeBase64ToText(data) {
         "base64"
       )
       .toString("utf8");
-
   } catch {
-
     return "";
   }
 }
 
 function buildTextFileContext(files) {
-
   const parts = [];
 
   let totalChars = 0;
@@ -671,10 +538,7 @@ function buildTextFileContext(files) {
     const file
     of files
   ) {
-
-    if (
-      !isTextLikeFile(file)
-    ) {
+    if (!isTextLikeFile(file)) {
       continue;
     }
 
@@ -694,7 +558,6 @@ function buildTextFileContext(files) {
       clipped.length >
       MAX_PER_FILE
     ) {
-
       clipped =
         clipped.slice(
           0,
@@ -705,7 +568,7 @@ function buildTextFileContext(files) {
 
     if (
       totalChars +
-      clipped.length >
+        clipped.length >
       MAX_TOTAL
     ) {
       break;
@@ -723,9 +586,7 @@ function buildTextFileContext(files) {
     );
   }
 
-  return parts.join(
-    "\n\n"
-  );
+  return parts.join("\n\n");
 }
 
 /* =======================================================
@@ -734,24 +595,15 @@ function buildTextFileContext(files) {
 
 async function analyzeImages(
   images,
-  extraContext = "",
+  extraContext,
   signal
 ) {
-
-  if (
-    !images.length
-  ) {
+  if (!images.length) {
     return "";
   }
 
-  /*
-   * Groq Llama 4 Scout supports up to 5 images.
-   */
   const limited =
-    images.slice(
-      0,
-      5
-    );
+    images.slice(0, 5);
 
   const content = [
     {
@@ -764,7 +616,7 @@ Tasks:
 2. Read visible text when possible.
 3. Identify relevant objects, diagrams, UI,
    code, charts, or documents.
-4. Do not invent details that are not visible.
+4. Do not invent details.
 5. If something cannot be determined, say so.
 
 Additional text-file context:
@@ -777,7 +629,6 @@ ${extraContext || "None"}
     const image
     of limited
   ) {
-
     const parsed =
       extractBase64(
         image.data
@@ -787,27 +638,24 @@ ${extraContext || "None"}
       continue;
     }
 
-    /*
-     * Protect the current Groq base64 image limit.
-     */
-    if (
+    const rawBytes =
       Buffer.byteLength(
         parsed.base64,
         "base64"
-      ) >
-      4 * 1024 * 1024
-    ) {
-
-      console.warn(
-        `Skipping oversized base64 image: ${image.name}`
       );
 
+    if (
+      rawBytes >
+      4 * 1024 * 1024
+    ) {
+      console.warn(
+        `[Sultan AI] Image skipped | ${image.name} | over 4MB`
+      );
       continue;
     }
 
     content.push({
       type: "image_url",
-
       image_url: {
         url:
           `data:${parsed.mime};base64,${parsed.base64}`
@@ -815,14 +663,14 @@ ${extraContext || "None"}
     });
   }
 
-  if (
-    content.length <=
-    1
-  ) {
+  if (content.length <= 1) {
     return "";
   }
 
   try {
+    console.log(
+      `[Sultan AI] Vision | images=${content.length - 1}`
+    );
 
     const response =
       await groq.chat.completions.create(
@@ -836,7 +684,6 @@ ${extraContext || "None"}
               content:
                 "You are Sultan AI's vision module. Analyze only what is actually visible."
             },
-
             {
               role: "user",
               content
@@ -862,13 +709,11 @@ ${extraContext || "None"}
         ?.content ||
       ""
     );
-
   } catch (error) {
-
     console.error(
-      "Vision error:",
+      "[Sultan AI] Vision error:",
       error?.message ||
-      error
+        error
     );
 
     return "";
@@ -876,28 +721,18 @@ ${extraContext || "None"}
 }
 
 /* =======================================================
-   CONVERSATION OPTIMIZATION
+   CONVERSATION
 ======================================================= */
 
-function optimizeConversation(
-  messages
-) {
-
-  if (
-    !Array.isArray(
-      messages
-    )
-  ) {
+function optimizeConversation(messages) {
+  if (!Array.isArray(messages)) {
     return [];
   }
 
   const cleaned =
     messages
       .filter(item => {
-
-        if (!item) {
-          return false;
-        }
+        if (!item) return false;
 
         const role =
           String(
@@ -909,26 +744,15 @@ function optimizeConversation(
           role === "assistant"
         );
       })
-      .map(item => {
-
-        const content =
+      .map(item => ({
+        role: item.role,
+        content:
           cleanText(
             item.content
-          );
-
-        return {
-          role:
-            item.role,
-          content:
-            content.slice(
-              0,
-              20000
-            )
-        };
-      })
+          ).slice(0, 20000)
+      }))
       .filter(
-        item =>
-          item.content
+        item => item.content
       );
 
   const recent =
@@ -946,47 +770,35 @@ function optimizeConversation(
     i >= 0;
     i--
   ) {
-
     const item =
       recent[i];
 
-    const size =
-      item.content.length;
-
     if (
       totalChars +
-      size >
+        item.content.length >
       70_000
     ) {
       break;
     }
 
-    result.unshift(
-      item
-    );
+    result.unshift(item);
 
     totalChars +=
-      size;
+      item.content.length;
   }
 
   return result;
 }
 
 /* =======================================================
-   TOOL EXTRACTION
+   TOOLS
 ======================================================= */
 
-function normalizeToolName(
-  value
-) {
-
-  if (!value) {
-    return null;
-  }
+function normalizeToolName(value) {
+  if (!value) return null;
 
   const raw =
-    typeof value ===
-    "string"
+    typeof value === "string"
       ? value
       : value.type ||
         value.name ||
@@ -994,45 +806,32 @@ function normalizeToolName(
         "";
 
   const text =
-    String(
-      raw
-    ).toLowerCase();
+    String(raw).toLowerCase();
 
   if (
-    text.includes(
-      "web_search"
-    ) ||
+    text.includes("web_search") ||
+    text === "search" ||
     text === "search"
   ) {
     return "web_search";
   }
 
   if (
-    text.includes(
-      "visit_website"
-    ) ||
-    text.includes(
-      "website"
-    )
+    text.includes("visit_website") ||
+    text.includes("website")
   ) {
     return "visit_website";
   }
 
   if (
-    text.includes(
-      "code_interpreter"
-    ) ||
-    text.includes(
-      "code"
-    )
+    text.includes("code_interpreter") ||
+    text.includes("code")
   ) {
     return "code_interpreter";
   }
 
   if (
-    text.includes(
-      "wolfram"
-    )
+    text.includes("wolfram")
   ) {
     return "wolfram_alpha";
   }
@@ -1040,18 +839,11 @@ function normalizeToolName(
   return null;
 }
 
-function extractExecutedTools(
-  message
-) {
-
+function extractExecutedTools(message) {
   const executed =
     message?.executed_tools;
 
-  if (
-    !Array.isArray(
-      executed
-    )
-  ) {
+  if (!Array.isArray(executed)) {
     return [];
   }
 
@@ -1061,36 +853,46 @@ function extractExecutedTools(
     const tool
     of executed
   ) {
-
     const name =
-      normalizeToolName(
-        tool
-      );
+      normalizeToolName(tool);
 
     if (
       name &&
-      !names.includes(
-        name
-      )
+      !names.includes(name)
     ) {
-
-      names.push(
-        name
-      );
+      names.push(name);
     }
   }
 
   return names;
 }
 
+function getEnabledTools() {
+  const tools = [
+    "web_search",
+    "visit_website",
+    "code_interpreter"
+  ];
+
+  if (
+    process.env
+      .WOLFRAM_ALPHA_API_KEY
+  ) {
+    tools.push(
+      "wolfram_alpha"
+    );
+  }
+
+  return tools;
+}
+
 /* =======================================================
-   REQUEST TIMEOUT
+   TIMEOUT
 ======================================================= */
 
 function createTimeoutSignal(
   milliseconds
 ) {
-
   const controller =
     new AbortController();
 
@@ -1107,46 +909,19 @@ function createTimeoutSignal(
       controller.signal,
 
     clear:
-      () => clearTimeout(
-        timer
-      )
+      () =>
+        clearTimeout(timer)
   };
 }
 
 /* =======================================================
-   BUILD COMPOUND TOOLS
-======================================================= */
-
-function getEnabledTools() {
-
-  const tools = [
-    "web_search",
-    "visit_website",
-    "code_interpreter"
-  ];
-
-  if (
-    process.env
-      .WOLFRAM_ALPHA_API_KEY
-  ) {
-
-    tools.push(
-      "wolfram_alpha"
-    );
-  }
-
-  return tools;
-}
-
-/* =======================================================
-   MAIN CHAT API
+   CHAT API
 ======================================================= */
 
 app.post(
   "/api/chat",
   rateLimit,
   async (req, res) => {
-
     const startedAt =
       Date.now();
 
@@ -1156,7 +931,6 @@ app.post(
       );
 
     try {
-
       const body =
         req.body || {};
 
@@ -1178,28 +952,48 @@ app.post(
           body.files
         );
 
-      const requestedFastMode =
+      const fastMode =
         Boolean(
           body.fastMode
         );
+
+      const clientIp =
+        getClientKey(req);
+
+      console.log("");
+      console.log(
+        "----------------------------------------"
+      );
+      console.log(
+        `[Sultan AI] REQUEST | ip=${clientIp}`
+      );
+      console.log(
+        `[Sultan AI] Message chars: ${message.length}`
+      );
+      console.log(
+        `[Sultan AI] History: ${incomingMessages.length}`
+      );
+      console.log(
+        `[Sultan AI] Files: ${files.length}`
+      );
+      console.log(
+        `[Sultan AI] Fast Mode: ${fastMode}`
+      );
 
       if (
         !message &&
         !files.length
       ) {
+        console.warn(
+          "[Sultan AI] Empty request"
+        );
 
-        return res.status(
-          400
-        ).json({
+        return res.status(400).json({
           ok: false,
           error:
             "أرسل رسالة أو ملفاً أولاً."
         });
       }
-
-      /* =================================================
-         FILE GROUPS
-      ================================================= */
 
       const images =
         files.filter(
@@ -1216,32 +1010,18 @@ app.post(
           isPdfFile
         );
 
-      /* =================================================
-         TEXT FILES
-      ================================================= */
-
       let fileContext = "";
 
-      if (
-        textFiles.length
-      ) {
-
+      if (textFiles.length) {
         fileContext =
           buildTextFileContext(
             textFiles
           );
       }
 
-      /* =================================================
-         IMAGES
-      ================================================= */
-
       let imageContext = "";
 
-      if (
-        images.length
-      ) {
-
+      if (images.length) {
         imageContext =
           await analyzeImages(
             images,
@@ -1250,37 +1030,27 @@ app.post(
           );
       }
 
-      /* =================================================
-         FILE CONTEXT
-      ================================================= */
-
       const contextParts = [];
 
       if (message) {
-
         contextParts.push(
           `USER REQUEST:\n${message}`
         );
       }
 
       if (fileContext) {
-
         contextParts.push(
           `TEXT / CODE FILE CONTENT:\n${fileContext}`
         );
       }
 
       if (imageContext) {
-
         contextParts.push(
           `IMAGE ANALYSIS:\n${imageContext}`
         );
       }
 
-      if (
-        pdfFiles.length
-      ) {
-
+      if (pdfFiles.length) {
         contextParts.push(
           `PDF FILES ATTACHED:\n${
             pdfFiles
@@ -1289,7 +1059,7 @@ app.post(
                   `- ${file.name}`
               )
               .join("\n")
-          }\n\nThe current server has not extracted PDF binary text. Do not pretend to have read PDF contents unless actual text was supplied.`
+          }\n\nPDF binary extraction is not enabled in this server. Do not pretend to have read PDF contents unless text was supplied.`
         );
       }
 
@@ -1298,14 +1068,9 @@ app.post(
           "\n\n"
         );
 
-      /* =================================================
-         MESSAGES
-      ================================================= */
-
       const messages = [
         {
-          role:
-            "system",
+          role: "system",
           content:
             SYSTEM_PROMPT
         },
@@ -1313,40 +1078,40 @@ app.post(
         ...incomingMessages,
 
         {
-          role:
-            "user",
+          role: "user",
           content:
             userContent ||
             "Analyze the supplied files."
         }
       ];
 
-      /* =================================================
-         MODEL
-      ================================================= */
-
-      /*
-       * Fast Mode uses Compound Mini.
-       * Normal Mode uses full Compound.
-       */
       const selectedModel =
-        requestedFastMode
+        fastMode
           ? FAST_MODEL
           : MODEL;
 
-      /*
-       * Compound Mini is designed for lower latency
-       * and a single tool call.
-       */
       const enabledTools =
         getEnabledTools();
 
-      /* =================================================
-         REQUEST
-      ================================================= */
+      console.log(
+        `[Sultan AI] MODEL | ${selectedModel}`
+      );
+
+      console.log(
+        `[Sultan AI] TOOLS | ${enabledTools.join(", ")}`
+      );
+
+      /*
+       * IMPORTANT:
+       * Do NOT send citation_options here.
+       *
+       * Compound/Web Search handles citations
+       * automatically. Your previous 400 error was:
+       *
+       * model groq/compound does not support citations
+       */
 
       const request = {
-
         model:
           selectedModel,
 
@@ -1359,38 +1124,22 @@ app.post(
           }
         },
 
-        /*
-         * Current Groq API supports citation_options.
-         * Enable citations so web-search answers can include
-         * source references when provided by Compound.
-         */
-        citation_options:
-          "enabled",
-
         temperature:
-          requestedFastMode
+          fastMode
             ? 0.25
             : 0.35,
 
         max_completion_tokens:
           8192,
 
-        stream:
-          false
+        stream: false
       };
-
-      /* =================================================
-         WOLFRAM
-      ================================================= */
 
       const wolframKey =
         process.env
           .WOLFRAM_ALPHA_API_KEY;
 
-      if (
-        wolframKey
-      ) {
-
+      if (wolframKey) {
         request
           .compound_custom
           .tools
@@ -1400,12 +1149,8 @@ app.post(
           };
       }
 
-      /* =================================================
-         GROQ REQUEST
-      ================================================= */
-
       console.log(
-        `[Sultan AI] request | model=${selectedModel} | fast=${requestedFastMode} | files=${files.length}`
+        "[Sultan AI] Calling Groq..."
       );
 
       const completion =
@@ -1416,6 +1161,10 @@ app.post(
               timeout.signal
           }
         );
+
+      console.log(
+        "[Sultan AI] Groq response received."
+      );
 
       const responseMessage =
         completion
@@ -1428,24 +1177,15 @@ app.post(
         );
 
       if (!reply) {
-
         throw new Error(
           "Groq returned an empty response."
         );
       }
 
-      /* =================================================
-         TOOLS
-      ================================================= */
-
       const toolsUsed =
         extractExecutedTools(
           responseMessage
         );
-
-      /* =================================================
-         USAGE
-      ================================================= */
 
       const usage =
         completion?.usage || {};
@@ -1455,19 +1195,32 @@ app.post(
         startedAt;
 
       console.log(
-        `[Sultan AI] ${elapsed}ms | model=${selectedModel} | tools=${
+        `[Sultan AI] SUCCESS | ${elapsed}ms`
+      );
+
+      console.log(
+        `[Sultan AI] Tools Used | ${
           toolsUsed.length
-            ? toolsUsed.join(",")
+            ? toolsUsed.join(", ")
             : "none"
         }`
       );
 
-      /* =================================================
-         RESPONSE
-      ================================================= */
+      console.log(
+        `[Sultan AI] Tokens | prompt=${
+          usage.prompt_tokens ?? "?"
+        } completion=${
+          usage.completion_tokens ?? "?"
+        } total=${
+          usage.total_tokens ?? "?"
+        }`
+      );
+
+      console.log(
+        "----------------------------------------"
+      );
 
       return res.json({
-
         ok: true,
 
         reply,
@@ -1487,32 +1240,24 @@ app.post(
                 file.size,
 
               image:
-                isImageFile(
-                  file
-                ),
+                isImageFile(file),
 
               text:
-                isTextLikeFile(
-                  file
-                ),
+                isTextLikeFile(file),
 
               pdf:
-                isPdfFile(
-                  file
-                )
+                isPdfFile(file)
             })
           ),
 
         meta: {
-
           version:
-            "5.0.0",
+            "6.0.0",
 
           model:
             selectedModel,
 
-          fastMode:
-            requestedFastMode,
+          fastMode,
 
           latencyMs:
             elapsed,
@@ -1534,11 +1279,9 @@ app.post(
               null
           }
         }
-
       });
 
     } catch (error) {
-
       const elapsed =
         Date.now() -
         startedAt;
@@ -1547,23 +1290,47 @@ app.post(
         error?.name ===
         "AbortError";
 
+      console.error("");
       console.error(
-        "[Sultan AI] API error:",
-        error?.message ||
-        error
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      );
+      console.error(
+        `[Sultan AI] ERROR after ${elapsed}ms`
+      );
+      console.error(
+        `[Sultan AI] Error name: ${
+          error?.name || "unknown"
+        }`
+      );
+      console.error(
+        `[Sultan AI] Error message: ${
+          error?.message || "unknown"
+        }`
+      );
+      console.error(
+        `[Sultan AI] HTTP status: ${
+          error?.status ||
+          error?.statusCode ||
+          "unknown"
+        }`
       );
 
+      if (error?.error) {
+        console.error(
+          "[Sultan AI] Provider error:",
+          JSON.stringify(
+            error.error
+          )
+        );
+      }
+
       console.error(
-        `[Sultan AI] failed after ${elapsed}ms`
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       );
+      console.error("");
 
-      if (
-        isAbort
-      ) {
-
-        return res.status(
-          504
-        ).json({
+      if (isAbort) {
+        return res.status(504).json({
           ok: false,
           error:
             "انتهت مهلة معالجة الطلب. حاول مرة ثانية."
@@ -1577,59 +1344,37 @@ app.post(
           500
         );
 
-      /*
-       * Never expose API keys,
-       * stack traces, or internal secrets.
-       */
-      if (
-        status === 400
-      ) {
-
-        return res.status(
-          400
-        ).json({
+      if (status === 400) {
+        return res.status(400).json({
           ok: false,
           error:
             "الطلب غير صالح أو أن إعدادات النموذج/الأداة غير متوافقة."
         });
       }
 
-      if (
-        status === 401
-      ) {
-
-        return res.status(
-          500
-        ).json({
+      if (status === 401) {
+        return res.status(500).json({
           ok: false,
           error:
             "مفتاح Groq غير صالح أو غير مضبوط على الخادم."
         });
       }
 
-      if (
-        status === 429
-      ) {
-
-        return res.status(
-          429
-        ).json({
+      if (status === 429) {
+        return res.status(429).json({
           ok: false,
           error:
             "تم الوصول إلى حد الطلبات مؤقتاً. حاول بعد قليل."
         });
       }
 
-      return res.status(
-        500
-      ).json({
+      return res.status(500).json({
         ok: false,
         error:
           "حدث خطأ أثناء معالجة الطلب."
       });
 
     } finally {
-
       timeout.clear();
     }
   }
@@ -1642,7 +1387,6 @@ app.post(
 app.get(
   "/api/health",
   (req, res) => {
-
     const wolframEnabled =
       Boolean(
         process.env
@@ -1650,17 +1394,15 @@ app.get(
       );
 
     res.json({
-
       ok: true,
 
       service:
         "Sultan AI",
 
       version:
-        "5.0.0",
+        "6.0.0",
 
       models: {
-
         normal:
           MODEL,
 
@@ -1677,15 +1419,12 @@ app.get(
         "code_interpreter",
 
         ...(wolframEnabled
-          ? [
-              "wolfram_alpha"
-            ]
+          ? ["wolfram_alpha"]
           : [])
       ],
 
       time:
-        new Date()
-          .toISOString()
+        new Date().toISOString()
     });
   }
 );
@@ -1697,13 +1436,12 @@ app.get(
 app.get(
   "/api",
   (req, res) => {
-
     res.json({
       ok: true,
       service:
         "Sultan AI API",
       version:
-        "5.0.0",
+        "6.0.0",
       endpoint:
         "/api/chat"
     });
@@ -1717,10 +1455,7 @@ app.get(
 app.use(
   "/api",
   (req, res) => {
-
-    res.status(
-      404
-    ).json({
+    res.status(404).json({
       ok: false,
       error:
         "API endpoint not found."
@@ -1735,7 +1470,6 @@ app.use(
 app.get(
   "*splat",
   (req, res) => {
-
     res.sendFile(
       path.join(
         __dirname,
@@ -1753,38 +1487,31 @@ app.listen(
   PORT,
   "0.0.0.0",
   () => {
-
     console.log("");
     console.log(
       "========================================"
     );
     console.log(
-      "          SULTAN AI V5 ONLINE"
+      "          SULTAN AI V6 ONLINE"
     );
     console.log(
       "========================================"
     );
-
     console.log(
       `Port: ${PORT}`
     );
-
     console.log(
       `Normal Model: ${MODEL}`
     );
-
     console.log(
       `Fast Model: ${FAST_MODEL}`
     );
-
     console.log(
       `Vision Model: ${VISION_MODEL}`
     );
-
     console.log(
       "Tools: Web Search + Visit Website + Code"
     );
-
     console.log(
       `Wolfram: ${
         process.env.WOLFRAM_ALPHA_API_KEY
@@ -1792,15 +1519,15 @@ app.listen(
           : "not configured"
       }`
     );
-
     console.log(
       `Rate Limit: ${RATE_LIMIT}/minute`
     );
-
+    console.log(
+      "Citations: automatic"
+    );
     console.log(
       "========================================"
     );
-
     console.log("");
   }
 );
