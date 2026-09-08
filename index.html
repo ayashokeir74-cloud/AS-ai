@@ -2983,3 +2983,1325 @@ function renderSelectedFiles() {
 
   if (
     !selectedFiles.length
+  ) {
+
+    selectedFilesEl.classList.remove(
+      "show"
+    );
+
+    return;
+  }
+
+  selectedFilesEl.classList.add(
+    "show"
+  );
+
+  selectedFiles.forEach(
+    (file, index) => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "selected-file";
+
+      item.innerHTML = `
+        <span>📎</span>
+
+        <span class="selected-file-name">
+          ${escapeHTML(file.name)}
+        </span>
+
+        <span>
+          ${fileSize(file.size)}
+        </span>
+
+        <button
+          class="remove-file"
+          type="button"
+          aria-label="حذف الملف"
+        >×</button>
+      `;
+
+      item
+        .querySelector(
+          ".remove-file"
+        )
+        .addEventListener(
+          "click",
+          () =>
+            removeFile(index)
+        );
+
+      selectedFilesEl.appendChild(
+        item
+      );
+    }
+  );
+}
+
+/* =========================================================
+   FILE → DATA URL
+========================================================= */
+
+function readFileAsDataURL(file) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const reader =
+        new FileReader();
+
+      reader.onload = () =>
+        resolve(
+          reader.result
+        );
+
+      reader.onerror = () =>
+        reject(
+          new Error(
+            `تعذر قراءة ${file.name}`
+          )
+        );
+
+      reader.readAsDataURL(
+        file
+      );
+    }
+  );
+}
+
+async function prepareFiles(
+  files
+) {
+
+  const result = [];
+
+  for (
+    const file of files
+  ) {
+
+    try {
+
+      const data =
+        await readFileAsDataURL(
+          file
+        );
+
+      result.push({
+        name:
+          file.name,
+
+        type:
+          file.type ||
+          "application/octet-stream",
+
+        size:
+          file.size,
+
+        data
+      });
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+      showToast(
+        `تعذر قراءة الملف: ${file.name}`
+      );
+    }
+  }
+
+  return result;
+}
+
+/* =========================================================
+   MARKDOWN
+========================================================= */
+
+function renderMarkdown(text) {
+
+  let source =
+    String(text || "")
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n");
+
+  const codeBlocks = [];
+
+  source =
+    source.replace(
+      /```([\w#+.-]*)\n?([\s\S]*?)```/g,
+      (_, language, code) => {
+
+        const id =
+          codeBlocks.length;
+
+        codeBlocks.push({
+          language:
+            language ||
+            "code",
+
+          code:
+            code.replace(
+              /\n$/,
+              ""
+            )
+        });
+
+        return `@@CODE_BLOCK_${id}@@`;
+      }
+    );
+
+  let html =
+    escapeHTML(source);
+
+  html =
+    html.replace(
+      /^### (.+)$/gm,
+      "<h3>$1</h3>"
+    );
+
+  html =
+    html.replace(
+      /^## (.+)$/gm,
+      "<h2>$1</h2>"
+    );
+
+  html =
+    html.replace(
+      /^# (.+)$/gm,
+      "<h1>$1</h1>"
+    );
+
+  html =
+    html.replace(
+      /\*\*(.+?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+  html =
+    html.replace(
+      /\*([^*\n]+)\*/g,
+      "<em>$1</em>"
+    );
+
+  html =
+    html.replace(
+      /`([^`\n]+)`/g,
+      "<code>$1</code>"
+    );
+
+  html =
+    html.replace(
+      /^[-•] (.+)$/gm,
+      "<li>$1</li>"
+    );
+
+  html =
+    html.replace(
+      /(<li>.*<\/li>)/gs,
+      "<ul>$1</ul>"
+    );
+
+  html =
+    html.replace(
+      /\n{2,}/g,
+      "</p><p>"
+    );
+
+  html =
+    html.replace(
+      /\n/g,
+      "<br>"
+    );
+
+  html =
+    "<p>" +
+    html +
+    "</p>";
+
+  html =
+    html.replace(
+      /@@CODE_BLOCK_(\d+)@@/g,
+      (_, index) => {
+
+        const block =
+          codeBlocks[
+            Number(index)
+          ];
+
+        const safeCode =
+          escapeHTML(
+            block.code
+          );
+
+        return `
+          <div class="code-wrap">
+
+            <div class="code-head">
+
+              <span class="code-language">
+                ${escapeHTML(
+                  block.language
+                )}
+              </span>
+
+              <button
+                class="copy-code"
+                type="button"
+                data-code="${encodeURIComponent(
+                  block.code
+                )}"
+              >
+                نسخ
+              </button>
+
+            </div>
+
+            <pre><code>${safeCode}</code></pre>
+
+          </div>
+        `;
+      }
+    );
+
+  return html;
+}
+
+/* =========================================================
+   ASSISTANT LOGO
+========================================================= */
+
+function assistantLogoHTML() {
+
+  return `
+    <div class="avatar-logo">
+
+      <svg
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+
+        <rect
+          x="5"
+          y="5"
+          width="90"
+          height="90"
+          rx="20"
+          fill="#090b0f"
+        />
+
+        <path
+          d="
+            M25 15
+            L84 15
+            L84 73
+            L68 90
+            L16 90
+            L16 32
+            Z
+          "
+          fill="none"
+          stroke="#ff8b2b"
+          stroke-width="9"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="
+            M38 29
+            L71 29
+            L71 63
+            L59 75
+            L30 75
+            L30 42
+            Z
+          "
+          fill="#08090c"
+        />
+
+      </svg>
+
+    </div>
+  `;
+}
+
+/* =========================================================
+   MESSAGE RENDERING
+========================================================= */
+
+function createMessageElement(
+  role,
+  content,
+  files = [],
+  toolNames = []
+) {
+
+  const message =
+    document.createElement(
+      "div"
+    );
+
+  message.className =
+    `message ${role}`;
+
+  const avatar =
+    role === "assistant"
+      ? assistantLogoHTML()
+      : "أنت";
+
+  let fileHTML = "";
+
+  if (
+    Array.isArray(files) &&
+    files.length
+  ) {
+
+    fileHTML = `
+      <div class="files-in-message">
+
+        ${files
+          .map(
+            file => `
+              <div class="file-chip">
+                📎
+                ${escapeHTML(
+                  file.name
+                )}
+              </div>
+            `
+          )
+          .join("")}
+
+      </div>
+    `;
+  }
+
+  let toolsHTML = "";
+
+  if (
+    role === "assistant" &&
+    Array.isArray(toolNames) &&
+    toolNames.length
+  ) {
+
+    const labels = {
+      web_search:
+        "بحث الويب",
+
+      visit_website:
+        "قراءة موقع",
+
+      code_interpreter:
+        "تنفيذ كود",
+
+      wolfram_alpha:
+        "Wolfram Alpha"
+    };
+
+    const readable =
+      toolNames
+        .map(
+          tool =>
+            labels[tool] ||
+            tool
+        )
+        .join(" · ");
+
+    toolsHTML = `
+      <div class="tool-status">
+        <span class="tool-status-dot"></span>
+        تم استخدام: ${escapeHTML(
+          readable
+        )}
+      </div>
+    `;
+  }
+
+  message.innerHTML = `
+
+    <div class="avatar">
+      ${avatar}
+    </div>
+
+    <div class="bubble-wrap">
+
+      <div class="bubble">
+
+        ${
+          role === "assistant"
+            ? renderMarkdown(
+                content
+              )
+            : `
+              <p>
+                ${escapeHTML(
+                  content
+                ).replace(
+                  /\n/g,
+                  "<br>"
+                )}
+              </p>
+            `
+        }
+
+        ${fileHTML}
+
+        ${toolsHTML}
+
+      </div>
+
+      ${
+        role === "assistant"
+          ? `
+            <div class="message-actions">
+
+              <button
+                class="action copy-answer"
+                type="button"
+              >
+                نسخ
+              </button>
+
+              <button
+                class="action regenerate"
+                type="button"
+              >
+                إعادة التوليد
+              </button>
+
+            </div>
+          `
+          : ""
+      }
+
+    </div>
+  `;
+
+  if (
+    role === "assistant"
+  ) {
+
+    const copy =
+      message.querySelector(
+        ".copy-answer"
+      );
+
+    if (copy) {
+
+      copy.addEventListener(
+        "click",
+        async () => {
+
+          try {
+
+            await navigator
+              .clipboard
+              .writeText(
+                content
+              );
+
+            showToast(
+              "تم نسخ الرد ✓"
+            );
+
+          } catch {
+
+            showToast(
+              "تعذر نسخ الرد"
+            );
+          }
+        }
+      );
+    }
+
+    const regenerate =
+      message.querySelector(
+        ".regenerate"
+      );
+
+    if (regenerate) {
+
+      regenerate.addEventListener(
+        "click",
+        () => {
+
+          if (
+            !sending &&
+            lastUserText
+          ) {
+
+            requestAI(
+              lastUserText,
+              lastRequestFiles
+            );
+          }
+        }
+      );
+    }
+
+    message
+      .querySelectorAll(
+        ".copy-code"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              try {
+
+                const code =
+                  decodeURIComponent(
+                    button.dataset
+                      .code || ""
+                  );
+
+                await navigator
+                  .clipboard
+                  .writeText(
+                    code
+                  );
+
+                button.textContent =
+                  "تم النسخ";
+
+                setTimeout(
+                  () => {
+                    button.textContent =
+                      "نسخ";
+                  },
+                  1300
+                );
+
+              } catch {
+
+                showToast(
+                  "تعذر نسخ الكود"
+                );
+              }
+            }
+          );
+
+        }
+      );
+  }
+
+  return message;
+}
+
+function addMessage(
+  role,
+  content,
+  files = [],
+  toolNames = []
+) {
+
+  const element =
+    createMessageElement(
+      role,
+      content,
+      files,
+      toolNames
+    );
+
+  messagesEl.appendChild(
+    element
+  );
+
+  welcome.style.display =
+    "none";
+
+  scrollBottom();
+
+  return element;
+}
+
+/* =========================================================
+   SERVER CONVERSATION
+========================================================= */
+
+function getServerConversation() {
+
+  return conversation
+    .slice(-MAX_HISTORY)
+    .map(item => ({
+      role:
+        item.role,
+
+      content:
+        item.content
+    }));
+}
+
+/* =========================================================
+   SENDING UI
+========================================================= */
+
+function setSendingUI(
+  value
+) {
+
+  sending =
+    Boolean(value);
+
+  typing.classList.toggle(
+    "show",
+    sending
+  );
+
+  if (sending) {
+
+    sendButton.classList.add(
+      "stop"
+    );
+
+    sendButton.textContent =
+      "■";
+
+    sendButton.title =
+      "إيقاف الطلب";
+
+    setConnectionState(
+      "busy"
+    );
+
+    setStatus(
+      fastMode
+        ? "Fast Mode يعمل..."
+        : "Sultan AI يفكر..."
+    );
+
+  } else {
+
+    sendButton.classList.remove(
+      "stop"
+    );
+
+    sendButton.textContent =
+      "↑";
+
+    sendButton.title =
+      "إرسال";
+
+    setConnectionState(
+      "online"
+    );
+
+    setStatus(
+      "جاهز للمساعدة"
+    );
+  }
+}
+
+/* =========================================================
+   STOP
+========================================================= */
+
+function stopRequest() {
+
+  if (
+    abortController &&
+    sending
+  ) {
+
+    abortController.abort();
+
+    abortController = null;
+
+    setSendingUI(false);
+
+    showToast(
+      "تم إيقاف الطلب"
+    );
+  }
+}
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+sendButton.addEventListener(
+  "click",
+  () => {
+
+    if (sending) {
+
+      stopRequest();
+
+      return;
+    }
+
+    sendMessage();
+  }
+);
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage() {
+
+  if (sending) {
+    return;
+  }
+
+  const text =
+    messageInput.value.trim();
+
+  if (
+    !text &&
+    !selectedFiles.length
+  ) {
+
+    showToast(
+      "اكتب رسالة أو أرفق ملفاً أولاً"
+    );
+
+    messageInput.focus();
+
+    return;
+  }
+
+  const filesForRequest =
+    [...selectedFiles];
+
+  const requestText =
+    text ||
+    "حلل الملفات المرفقة وأعطني النتائج المهمة.";
+
+  lastUserText =
+    requestText;
+
+  lastRequestFiles =
+    filesForRequest;
+
+  const fileLabels =
+    filesForRequest.map(
+      file => ({
+        name:
+          file.name,
+
+        size:
+          file.size,
+
+        type:
+          file.type
+      })
+    );
+
+  addMessage(
+    "user",
+    requestText,
+    fileLabels
+  );
+
+  conversation.push({
+    role:
+      "user",
+
+    content:
+      requestText
+  });
+
+  conversation =
+    conversation.slice(
+      -MAX_HISTORY
+    );
+
+  messageInput.value =
+    "";
+
+  autoResize();
+
+  selectedFiles = [];
+
+  renderSelectedFiles();
+
+  await requestAI(
+    requestText,
+    filesForRequest
+  );
+}
+
+/* =========================================================
+   API REQUEST
+========================================================= */
+
+async function requestAI(
+  text,
+  files = []
+) {
+
+  if (sending) {
+    return;
+  }
+
+  setSendingUI(true);
+
+  abortController =
+    new AbortController();
+
+  const timeout =
+    setTimeout(
+      () => {
+
+        if (
+          abortController
+        ) {
+          abortController.abort();
+        }
+
+      },
+      REQUEST_TIMEOUT
+    );
+
+  try {
+
+    setStatus(
+      fastMode
+        ? "Fast Mode يعمل..."
+        : "Sultan AI يعالج طلبك..."
+    );
+
+    const encodedFiles =
+      await prepareFiles(
+        files
+      );
+
+    const payload = {
+
+      message:
+        text,
+
+      messages:
+        getServerConversation(),
+
+      files:
+        encodedFiles,
+
+      /*
+       * مهم جداً:
+       * هيدا بيربط Fast Mode
+       * بالـserver فعلياً.
+       */
+
+      fastMode:
+        Boolean(
+          fastMode
+        )
+    };
+
+    const response =
+      await fetch(
+        API_ENDPOINT,
+        {
+          method:
+            "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(
+              payload
+            ),
+
+          signal:
+            abortController.signal
+        }
+      );
+
+    let data = null;
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      data = null;
+    }
+
+    if (
+      !response.ok
+    ) {
+
+      const errorMessage =
+        data?.error ||
+        data?.message ||
+        `HTTP ${response.status}`;
+
+      throw new Error(
+        errorMessage
+      );
+    }
+
+    const reply =
+      String(
+        data?.reply ||
+        data?.message ||
+        ""
+      ).trim();
+
+    if (!reply) {
+
+      throw new Error(
+        "وصل رد فارغ من الخادم."
+      );
+    }
+
+    conversation.push({
+      role:
+        "assistant",
+
+      content:
+        reply
+    });
+
+    conversation =
+      conversation.slice(
+        -MAX_HISTORY
+      );
+
+    const toolsUsed =
+      Array.isArray(
+        data?.toolsUsed
+      )
+        ? data.toolsUsed
+        : [];
+
+    addMessage(
+      "assistant",
+      reply,
+      [],
+      toolsUsed
+    );
+
+    /* ===================================================
+       TOOL STATUS
+    ================================================== */
+
+    if (
+      toolsUsed.length
+    ) {
+
+      const labels = {
+        web_search:
+          "بحث الويب",
+
+        visit_website:
+          "قراءة موقع",
+
+        code_interpreter:
+          "تنفيذ كود",
+
+        wolfram_alpha:
+          "Wolfram Alpha"
+      };
+
+      const names =
+        toolsUsed
+          .map(
+            tool =>
+              labels[tool] ||
+              tool
+          );
+
+      setStatus(
+        `تم استخدام: ${names.join(
+          " · "
+        )}`
+      );
+
+      setTimeout(
+        () => {
+
+          if (!sending) {
+            setStatus(
+              "جاهز للمساعدة"
+            );
+          }
+
+        },
+        2800
+      );
+    }
+
+    /* ===================================================
+       META
+    ================================================== */
+
+    if (
+      data?.meta?.model
+    ) {
+
+      console.log(
+        "[Sultan AI] Model:",
+        data.meta.model
+      );
+    }
+
+    if (
+      data?.meta?.latencyMs
+    ) {
+
+      console.log(
+        "[Sultan AI] Latency:",
+        data.meta.latencyMs,
+        "ms"
+      );
+    }
+
+  } catch (error) {
+
+    if (
+      error?.name ===
+      "AbortError"
+    ) {
+
+      return;
+    }
+
+    console.error(
+      "Sultan AI request error:",
+      error
+    );
+
+    const errorText =
+      error?.message ||
+      "حدث خطأ أثناء الاتصال بالخادم.";
+
+    addMessage(
+      "assistant",
+      `تعذر إكمال الطلب حالياً.\n\n${errorText}`
+    );
+
+    setConnectionState(
+      "offline"
+    );
+
+    setStatus(
+      "حدث خطأ في الاتصال"
+    );
+
+    showToast(
+      "حدث خطأ في الاتصال بـ Sultan AI"
+    );
+
+  } finally {
+
+    clearTimeout(
+      timeout
+    );
+
+    abortController =
+      null;
+
+    setSendingUI(false);
+
+    messageInput.focus();
+  }
+}
+
+/* =========================================================
+   HEALTH CHECK
+========================================================= */
+
+async function checkServer() {
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/health",
+        {
+          method:
+            "GET",
+
+          cache:
+            "no-store"
+        }
+      );
+
+    if (
+      !response.ok
+    ) {
+      throw new Error(
+        "Health check failed"
+      );
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      data?.ok
+    ) {
+
+      setConnectionState(
+        "online"
+      );
+
+      setStatus(
+        "متصل · Sultan AI جاهز"
+      );
+
+      setTimeout(
+        () => {
+
+          if (!sending) {
+
+            setStatus(
+              "جاهز للمساعدة"
+            );
+          }
+
+        },
+        2500
+      );
+
+      if (
+        data?.version
+      ) {
+
+        console.log(
+          "[Sultan AI] Server version:",
+          data.version
+        );
+      }
+
+      if (
+        data?.tools
+      ) {
+
+        console.log(
+          "[Sultan AI] Available tools:",
+          data.tools
+        );
+      }
+    }
+
+  } catch (error) {
+
+    console.error(
+      "[Sultan AI] Health check failed:",
+      error
+    );
+
+    setConnectionState(
+      "offline"
+    );
+
+    setStatus(
+      "تعذر التحقق من الخادم"
+    );
+  }
+}
+
+/* =========================================================
+   NETWORK STATUS
+========================================================= */
+
+window.addEventListener(
+  "online",
+  () => {
+
+    setConnectionState(
+      "online"
+    );
+
+    setStatus(
+      "تم استعادة الاتصال"
+    );
+
+    checkServer();
+  }
+);
+
+window.addEventListener(
+  "offline",
+  () => {
+
+    setConnectionState(
+      "offline"
+    );
+
+    setStatus(
+      "لا يوجد اتصال بالإنترنت"
+    );
+
+    showToast(
+      "تحقق من اتصال الإنترنت"
+    );
+  }
+);
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+updateFastToggle();
+
+updateModeBadge();
+
+autoResize();
+
+checkServer();
+
+window.addEventListener(
+  "load",
+  () => {
+
+    messageInput.focus();
+
+    scrollBottom(false);
+  }
+);
+
+/* =========================================================
+   PREVENT ACCIDENTAL PAGE LEAVE
+========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  event => {
+
+    if (!sending) {
+      return;
+    }
+
+    event.preventDefault();
+
+    event.returnValue =
+      "";
+  }
+);
+
+/* =========================================================
+   DEBUG INFO
+========================================================= */
+
+console.log(
+  "%c Sultan AI V7 ",
+  "background:#ff7a18;color:white;font-weight:900;padding:5px 10px;border-radius:5px;"
+);
+
+console.log(
+  "Sultan AI frontend initialized."
+);
+
+</script>
+
+</body>
+</html>
