@@ -12,11 +12,6 @@
   <meta name="theme-color" content="#090909" />
 
   <style>
-    /* =========================================================
-       SULTAN AI V4
-       Premium Dark Orange UI
-       ========================================================= */
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -47,8 +42,7 @@
       --topbar: 72px;
 
       --radius: 18px;
-      --shadow:
-        0 20px 70px rgba(0, 0, 0, 0.48);
+      --shadow: 0 20px 70px rgba(0, 0, 0, 0.48);
 
       font-family:
         Inter,
@@ -73,6 +67,10 @@
       position: relative;
     }
 
+    body.sidebar-open {
+      overflow: hidden;
+    }
+
     button,
     textarea,
     input {
@@ -82,6 +80,7 @@
     button {
       border: 0;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* =========================================================
@@ -149,6 +148,7 @@
       0%, 100% {
         transform: translate3d(0, 0, 0);
       }
+
       50% {
         transform: translate3d(-25px, 22px, 0);
       }
@@ -206,8 +206,7 @@
       place-items: center;
       flex-shrink: 0;
       border-radius: 14px;
-      background:
-        linear-gradient(145deg, #ff9c30, #ff6500);
+      background: linear-gradient(145deg, #ff9c30, #ff6500);
       color: #111;
       font-size: 21px;
       font-weight: 1000;
@@ -230,6 +229,7 @@
       0%, 100% {
         box-shadow: 0 0 22px rgba(255,121,0,.18);
       }
+
       50% {
         box-shadow: 0 0 34px rgba(255,121,0,.32);
       }
@@ -240,6 +240,7 @@
         transform: scale(1);
         opacity: .6;
       }
+
       50% {
         transform: scale(1.08);
         opacity: .15;
@@ -393,6 +394,8 @@
        ========================================================= */
 
     .topbar {
+      position: relative;
+      z-index: 60;
       height: var(--topbar);
       flex-shrink: 0;
       display: flex;
@@ -413,12 +416,24 @@
 
     .mobile-menu {
       display: none;
+      position: relative;
+      z-index: 100;
       width: 39px;
       height: 39px;
       border-radius: 11px;
       background: rgba(255,255,255,.05);
       color: #fff;
       font-size: 19px;
+      pointer-events: auto;
+      touch-action: manipulation;
+    }
+
+    .mobile-menu:hover {
+      background: rgba(255,121,0,.12);
+    }
+
+    .mobile-menu:active {
+      transform: scale(.94);
     }
 
     .status {
@@ -440,8 +455,13 @@
     }
 
     @keyframes statusBlink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: .5; }
+      0%, 100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .5;
+      }
     }
 
     .top-actions {
@@ -549,6 +569,7 @@
       0%, 100% {
         transform: translateY(0) rotate(0deg);
       }
+
       50% {
         transform: translateY(-7px) rotate(1deg);
       }
@@ -665,6 +686,7 @@
         opacity: 0;
         transform: translateY(8px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -879,6 +901,7 @@
         transform: translateY(0);
         opacity: .4;
       }
+
       30% {
         transform: translateY(-4px);
         opacity: 1;
@@ -1093,6 +1116,7 @@
       0%, 65% {
         left: -40%;
       }
+
       85%, 100% {
         left: 140%;
       }
@@ -1156,15 +1180,19 @@
     .overlay {
       position: fixed;
       inset: 0;
-      z-index: 30;
+      z-index: 45;
       background: rgba(0,0,0,.62);
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
-      transition: .25s ease;
+      transition:
+        opacity .25s ease,
+        visibility .25s ease;
     }
 
     .overlay.show {
       opacity: 1;
+      visibility: visible;
       pointer-events: auto;
     }
 
@@ -1173,6 +1201,7 @@
        ========================================================= */
 
     @media (max-width: 850px) {
+
       :root {
         --sidebar: 270px;
       }
@@ -1181,13 +1210,19 @@
         position: fixed;
         top: 0;
         right: 0;
-        z-index: 40;
-        transform: translateX(105%);
+        bottom: 0;
+        z-index: 50;
+        width: min(var(--sidebar), 88vw);
+        transform: translate3d(105%, 0, 0);
         box-shadow: -20px 0 70px rgba(0,0,0,.5);
+        pointer-events: none;
+        visibility: hidden;
       }
 
       .sidebar.open {
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
+        pointer-events: auto;
+        visibility: visible;
       }
 
       .mobile-menu {
@@ -1218,6 +1253,7 @@
     }
 
     @media (max-width: 520px) {
+
       .topbar {
         height: 62px;
       }
@@ -1308,6 +1344,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       *,
       *::before,
       *::after {
@@ -1331,9 +1368,7 @@
 
   <div class="app">
 
-    <!-- =======================================================
-         SIDEBAR
-         ======================================================= -->
+    <!-- SIDEBAR -->
 
     <aside class="sidebar" id="sidebar">
 
@@ -1370,17 +1405,26 @@
 
       <div class="section-title">القدرات</div>
 
-      <button class="side-item" data-prompt="ابحث لي على الويب عن آخر المعلومات المهمة اليوم واشرحها باختصار.">
+      <button
+        class="side-item"
+        data-prompt="ابحث لي على الويب عن آخر المعلومات المهمة اليوم واشرحها باختصار."
+      >
         <span class="side-icon">🌐</span>
         <span>بحث الويب</span>
       </button>
 
-      <button class="side-item" data-prompt="ساعدني بكتابة وتحسين هذا الكود واشرح لي الأخطاء بطريقة بسيطة.">
+      <button
+        class="side-item"
+        data-prompt="ساعدني بكتابة وتحسين هذا الكود واشرح لي الأخطاء بطريقة بسيطة."
+      >
         <span class="side-icon">💻</span>
         <span>البرمجة</span>
       </button>
 
-      <button class="side-item" data-prompt="سأرسل لك ملفاً. حلله واستخرج أهم المعلومات الموجودة بداخله.">
+      <button
+        class="side-item"
+        data-prompt="سأرسل لك ملفاً. حلله واستخرج أهم المعلومات الموجودة بداخله."
+      >
         <span class="side-icon">🧠</span>
         <span>تحليل الملفات</span>
       </button>
@@ -1392,9 +1436,7 @@
 
     </aside>
 
-    <!-- =======================================================
-         MAIN
-         ======================================================= -->
+    <!-- MAIN -->
 
     <main class="main">
 
@@ -1402,7 +1444,14 @@
 
         <div class="top-left">
 
-          <button class="mobile-menu" id="mobileMenu">
+          <button
+            class="mobile-menu"
+            id="mobileMenu"
+            type="button"
+            aria-label="فتح القائمة"
+            aria-controls="sidebar"
+            aria-expanded="false"
+          >
             ☰
           </button>
 
@@ -1425,9 +1474,7 @@
 
       </header>
 
-      <!-- =====================================================
-           CHAT AREA
-           ===================================================== -->
+      <!-- CHAT -->
 
       <section class="chat" id="chat">
 
@@ -1490,9 +1537,7 @@
 
       </section>
 
-      <!-- =====================================================
-           COMPOSER
-           ===================================================== -->
+      <!-- COMPOSER -->
 
       <div class="composer-area">
 
@@ -1575,7 +1620,6 @@
 
     const chat = document.getElementById("chat");
     const chatInner = document.getElementById("chatInner");
-    const welcome = document.getElementById("welcome");
 
     const messageInput = document.getElementById("messageInput");
     const sendBtn = document.getElementById("sendBtn");
@@ -1622,27 +1666,65 @@
     }
 
     /* =========================================================
-       MOBILE SIDEBAR
+       MOBILE SIDEBAR — FIX
        ========================================================= */
 
     function openSidebar() {
+      if (window.innerWidth > 850) return;
+
       sidebar.classList.add("open");
       overlay.classList.add("show");
+      document.body.classList.add("sidebar-open");
+
+      mobileMenu.setAttribute("aria-expanded", "true");
     }
 
     function closeSidebar() {
       sidebar.classList.remove("open");
       overlay.classList.remove("show");
+      document.body.classList.remove("sidebar-open");
+
+      mobileMenu.setAttribute("aria-expanded", "false");
     }
 
-    mobileMenu.addEventListener("click", openSidebar);
-    overlay.addEventListener("click", closeSidebar);
+    function toggleSidebar() {
+      if (sidebar.classList.contains("open")) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    }
+
+    mobileMenu.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleSidebar();
+    });
+
+    overlay.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      closeSidebar();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeSidebar();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 850) {
+        closeSidebar();
+      }
+    });
 
     /* =========================================================
        NEW CHAT
        ========================================================= */
 
     newChatBtn.addEventListener("click", () => {
+
       conversation = [];
       selectedFiles = [];
       lastUserText = "";
@@ -1666,7 +1748,9 @@
        ========================================================= */
 
     function createWelcome() {
+
       const box = document.createElement("div");
+
       box.className = "welcome";
       box.id = "welcome";
 
@@ -1682,25 +1766,37 @@
 
         <div class="quick-grid">
 
-          <button class="quick" data-prompt="اشرح لي ما الذي تستطيع فعله وما هي أهم قدراتك؟">
+          <button
+            class="quick"
+            data-prompt="اشرح لي ما الذي تستطيع فعله وما هي أهم قدراتك؟"
+          >
             <span class="quick-icon">🧠</span>
             <strong>اسأل Sultan AI</strong>
             <small>تعرف على قدراته</small>
           </button>
 
-          <button class="quick" data-prompt="ابحث على الويب عن أحدث المعلومات المهمة في التقنية اليوم، واذكر المصادر.">
+          <button
+            class="quick"
+            data-prompt="ابحث على الويب عن أحدث المعلومات المهمة في التقنية اليوم، واذكر المصادر."
+          >
             <span class="quick-icon">🌐</span>
             <strong>بحث على الويب</strong>
             <small>معلومات حديثة</small>
           </button>
 
-          <button class="quick" data-prompt="اكتب لي مثالاً احترافياً في البرمجة واشرح لي كيف يعمل خطوة بخطوة.">
+          <button
+            class="quick"
+            data-prompt="اكتب لي مثالاً احترافياً في البرمجة واشرح لي كيف يعمل خطوة بخطوة."
+          >
             <span class="quick-icon">💻</span>
             <strong>برمجة</strong>
             <small>كود وشرح</small>
           </button>
 
-          <button class="quick" data-prompt="ما هي أفضل طريقة لتحليل ملف أو صورة؟ سأرسل لك ملفاً الآن.">
+          <button
+            class="quick"
+            data-prompt="ما هي أفضل طريقة لتحليل ملف أو صورة؟ سأرسل لك ملفاً الآن."
+          >
             <span class="quick-icon">📎</span>
             <strong>ملفات وصور</strong>
             <small>تحليل المحتوى</small>
@@ -1717,14 +1813,18 @@
        ========================================================= */
 
     document.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-prompt]");
+
+      const button =
+        event.target.closest("[data-prompt]");
 
       if (!button) return;
 
       const prompt = button.dataset.prompt;
 
       messageInput.value = prompt;
+
       autoResize();
+
       messageInput.focus();
 
       closeSidebar();
@@ -1735,6 +1835,7 @@
        ========================================================= */
 
     function autoResize() {
+
       messageInput.style.height = "auto";
 
       const height = Math.min(
@@ -1742,20 +1843,32 @@
         160
       );
 
-      messageInput.style.height = height + "px";
+      messageInput.style.height =
+        height + "px";
     }
 
-    messageInput.addEventListener("input", autoResize);
+    messageInput.addEventListener(
+      "input",
+      autoResize
+    );
 
-    messageInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
+    messageInput.addEventListener(
+      "keydown",
+      (event) => {
 
-        if (!sending) {
-          sendMessage();
+        if (
+          event.key === "Enter" &&
+          !event.shiftKey
+        ) {
+
+          event.preventDefault();
+
+          if (!sending) {
+            sendMessage();
+          }
         }
       }
-    });
+    );
 
     /* =========================================================
        FILE INPUT
@@ -1766,28 +1879,45 @@
     });
 
     fileInput.addEventListener("change", () => {
-      const incoming = Array.from(fileInput.files || []);
+
+      const incoming =
+        Array.from(fileInput.files || []);
 
       if (!incoming.length) return;
 
       for (const file of incoming) {
 
-        if (selectedFiles.length >= MAX_FILES) {
-          showToast(`الحد الأقصى ${MAX_FILES} ملفات.`);
+        if (
+          selectedFiles.length >=
+          MAX_FILES
+        ) {
+
+          showToast(
+            `الحد الأقصى ${MAX_FILES} ملفات.`
+          );
+
           break;
         }
 
-        if (file.size > MAX_FILE_SIZE) {
-          showToast(`الملف ${file.name} أكبر من 20MB.`);
+        if (
+          file.size >
+          MAX_FILE_SIZE
+        ) {
+
+          showToast(
+            `الملف ${file.name} أكبر من 20MB.`
+          );
+
           continue;
         }
 
-        const duplicate = selectedFiles.some(
-          item =>
-            item.name === file.name &&
-            item.size === file.size &&
-            item.lastModified === file.lastModified
-        );
+        const duplicate =
+          selectedFiles.some(
+            item =>
+              item.name === file.name &&
+              item.size === file.size &&
+              item.lastModified === file.lastModified
+          );
 
         if (duplicate) continue;
 
@@ -1804,56 +1934,92 @@
        ========================================================= */
 
     function renderAttachments() {
+
       attachments.innerHTML = "";
 
-      selectedFiles.forEach((file, index) => {
+      selectedFiles.forEach(
+        (file, index) => {
 
-        const item = document.createElement("div");
-        item.className = "attachment";
+          const item =
+            document.createElement("div");
 
-        const preview = document.createElement("div");
-        preview.className = "attachment-preview";
+          item.className =
+            "attachment";
 
-        if (file.type.startsWith("image/")) {
+          const preview =
+            document.createElement("div");
 
-          const img = document.createElement("img");
-          img.src = URL.createObjectURL(file);
+          preview.className =
+            "attachment-preview";
 
-          img.onload = () => {
-            URL.revokeObjectURL(img.src);
-          };
+          if (
+            file.type.startsWith("image/")
+          ) {
 
-          preview.appendChild(img);
+            const img =
+              document.createElement("img");
 
-        } else {
+            img.src =
+              URL.createObjectURL(file);
 
-          preview.textContent =
-            file.name.toLowerCase().endsWith(".pdf")
-              ? "📄"
-              : "📎";
+            img.onload = () => {
+              URL.revokeObjectURL(img.src);
+            };
+
+            preview.appendChild(img);
+
+          } else {
+
+            preview.textContent =
+              file.name
+                .toLowerCase()
+                .endsWith(".pdf")
+                ? "📄"
+                : "📎";
+          }
+
+          const name =
+            document.createElement("div");
+
+          name.className =
+            "attachment-name";
+
+          name.textContent =
+            file.name;
+
+          const remove =
+            document.createElement("button");
+
+          remove.className =
+            "remove-file";
+
+          remove.type = "button";
+
+          remove.textContent = "×";
+
+          remove.title =
+            "إزالة الملف";
+
+          remove.addEventListener(
+            "click",
+            () => {
+
+              selectedFiles.splice(
+                index,
+                1
+              );
+
+              renderAttachments();
+            }
+          );
+
+          item.appendChild(preview);
+          item.appendChild(name);
+          item.appendChild(remove);
+
+          attachments.appendChild(item);
         }
-
-        const name = document.createElement("div");
-        name.className = "attachment-name";
-        name.textContent = file.name;
-
-        const remove = document.createElement("button");
-        remove.className = "remove-file";
-        remove.type = "button";
-        remove.textContent = "×";
-        remove.title = "إزالة الملف";
-
-        remove.addEventListener("click", () => {
-          selectedFiles.splice(index, 1);
-          renderAttachments();
-        });
-
-        item.appendChild(preview);
-        item.appendChild(name);
-        item.appendChild(remove);
-
-        attachments.appendChild(item);
-      });
+      );
     }
 
     /* =========================================================
@@ -1861,23 +2027,35 @@
        ========================================================= */
 
     function fileToDataURL(file) {
-      return new Promise((resolve, reject) => {
 
-        const reader = new FileReader();
+      return new Promise(
+        (resolve, reject) => {
 
-        reader.onload = () => resolve({
-          name: file.name,
-          type: file.type || "application/octet-stream",
-          size: file.size,
-          data: reader.result
-        });
+          const reader =
+            new FileReader();
 
-        reader.onerror = () => reject(
-          new Error(`تعذر قراءة الملف ${file.name}`)
-        );
+          reader.onload = () => {
 
-        reader.readAsDataURL(file);
-      });
+            resolve({
+              name: file.name,
+              type:
+                file.type ||
+                "application/octet-stream",
+              size: file.size,
+              data: reader.result
+            });
+          };
+
+          reader.onerror = () =>
+            reject(
+              new Error(
+                `تعذر قراءة الملف ${file.name}`
+              )
+            );
+
+          reader.readAsDataURL(file);
+        }
+      );
     }
 
     async function prepareFiles(files) {
@@ -1886,8 +2064,14 @@
 
       for (const file of files) {
 
-        if (file.size > MAX_FILE_SIZE) {
-          throw new Error(`الملف ${file.name} أكبر من 20MB.`);
+        if (
+          file.size >
+          MAX_FILE_SIZE
+        ) {
+
+          throw new Error(
+            `الملف ${file.name} أكبر من 20MB.`
+          );
         }
 
         output.push(
@@ -1905,11 +2089,26 @@
     function escapeHTML(value) {
 
       return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
     }
 
     /* =========================================================
@@ -1918,88 +2117,113 @@
 
     function renderAssistantText(text) {
 
-      let source = String(text || "");
+      let source =
+        String(text || "");
 
       const codeBlocks = [];
 
-      source = source.replace(
-        /```([a-zA-Z0-9_+-]*)\n?([\s\S]*?)```/g,
-        (_, language, code) => {
+      source =
+        source.replace(
+          /```([a-zA-Z0-9_+-]*)\n?([\s\S]*?)```/g,
+          (_, language, code) => {
 
-          const index = codeBlocks.length;
+            const index =
+              codeBlocks.length;
 
-          codeBlocks.push({
-            language: language || "code",
-            code: code.replace(/\n$/, "")
-          });
+            codeBlocks.push({
+              language:
+                language || "code",
+              code:
+                code.replace(
+                  /\n$/,
+                  ""
+                )
+            });
 
-          return `@@CODE_BLOCK_${index}@@`;
+            return `@@CODE_BLOCK_${index}@@`;
+          }
+        );
+
+      let html =
+        escapeHTML(source);
+
+      html =
+        html.replace(
+          /`([^`\n]+)`/g,
+          '<code class="inline-code">$1</code>'
+        );
+
+      html =
+        html.replace(
+          /\*\*([^*]+)\*\*/g,
+          "<strong>$1</strong>"
+        );
+
+      html =
+        html.replace(
+          /^### (.+)$/gm,
+          "<strong>$1</strong>"
+        );
+
+      html =
+        html.replace(
+          /^## (.+)$/gm,
+          "<strong>$1</strong>"
+        );
+
+      html =
+        html.replace(
+          /^# (.+)$/gm,
+          "<strong>$1</strong>"
+        );
+
+      html =
+        html.replace(
+          /^[-•] (.+)$/gm,
+          "• $1"
+        );
+
+      html =
+        html.replace(
+          /\n/g,
+          "<br>"
+        );
+
+      codeBlocks.forEach(
+        (block, index) => {
+
+          const safeCode =
+            escapeHTML(
+              block.code
+            );
+
+          const blockHTML = `
+            <div class="code-wrap">
+              <div class="code-head">
+                <span>
+                  ${escapeHTML(block.language)}
+                </span>
+
+                <button
+                  class="code-copy"
+                  type="button"
+                  data-code="${encodeURIComponent(block.code)}"
+                >
+                  نسخ
+                </button>
+              </div>
+
+              <pre class="code">${safeCode}</pre>
+            </div>
+          `;
+
+          html =
+            html.replace(
+              `@@CODE_BLOCK_${index}@@`,
+              blockHTML
+            );
         }
       );
-
-      let html = escapeHTML(source);
-
-      html = html.replace(
-        /`([^`\n]+)`/g,
-        '<code class="inline-code">$1</code>'
-      );
-
-      html = html.replace(
-        /\*\*([^*]+)\*\*/g,
-        "<strong>$1</strong>"
-      );
-
-      html = html.replace(
-        /^### (.+)$/gm,
-        "<strong>$1</strong>"
-      );
-
-      html = html.replace(
-        /^## (.+)$/gm,
-        "<strong>$1</strong>"
-      );
-
-      html = html.replace(
-        /^# (.+)$/gm,
-        "<strong>$1</strong>"
-      );
-
-      html = html.replace(
-        /^[-•] (.+)$/gm,
-        "• $1"
-      );
-
-      html = html.replace(
-        /\n/g,
-        "<br>"
-      );
-
-      codeBlocks.forEach((block, index) => {
-
-        const safeCode = escapeHTML(block.code);
-
-        const blockHTML = `
-          <div class="code-wrap">
-            <div class="code-head">
-              <span>${escapeHTML(block.language)}</span>
-              <button
-                class="code-copy"
-                type="button"
-                data-code="${encodeURIComponent(block.code)}"
-              >
-                نسخ
-              </button>
-            </div>
-
-            <pre class="code">${safeCode}</pre>
-          </div>
-        `;
-
-        html = html.replace(
-          `@@CODE_BLOCK_${index}@@`,
-          blockHTML
-        );
-      });
 
       return html;
     }
@@ -2014,35 +2238,76 @@
       options = {}
     ) {
 
-      if (welcome) {
-        welcome.remove();
+      const currentWelcome =
+        document.getElementById(
+          "welcome"
+        );
+
+      if (currentWelcome) {
+        currentWelcome.remove();
       }
 
-      const message = document.createElement("article");
-      message.className = `message ${role}`;
+      const message =
+        document.createElement(
+          "article"
+        );
 
-      const avatar = document.createElement("div");
-      avatar.className = "avatar";
+      message.className =
+        `message ${role}`;
+
+      const avatar =
+        document.createElement(
+          "div"
+        );
+
+      avatar.className =
+        "avatar";
+
       avatar.textContent =
-        role === "assistant" ? "S" : "أ";
+        role === "assistant"
+          ? "S"
+          : "أ";
 
-      const body = document.createElement("div");
-      body.className = "message-body";
+      const body =
+        document.createElement(
+          "div"
+        );
 
-      const name = document.createElement("div");
-      name.className = "message-name";
+      body.className =
+        "message-body";
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+      name.className =
+        "message-name";
+
       name.textContent =
         role === "assistant"
           ? "Sultan AI"
           : "أنت";
 
-      const textBox = document.createElement("div");
-      textBox.className = "message-text";
+      const textBox =
+        document.createElement(
+          "div"
+        );
+
+      textBox.className =
+        "message-text";
 
       if (role === "assistant") {
-        textBox.innerHTML = renderAssistantText(text);
+
+        textBox.innerHTML =
+          renderAssistantText(
+            text
+          );
+
       } else {
-        textBox.textContent = text;
+
+        textBox.textContent =
+          text;
       }
 
       body.appendChild(name);
@@ -2050,36 +2315,72 @@
 
       if (role === "assistant") {
 
-        const actions = document.createElement("div");
-        actions.className = "message-actions";
+        const actions =
+          document.createElement(
+            "div"
+          );
 
-        const copy = document.createElement("button");
-        copy.className = "action-btn";
+        actions.className =
+          "message-actions";
+
+        const copy =
+          document.createElement(
+            "button"
+          );
+
+        copy.className =
+          "action-btn";
+
         copy.type = "button";
-        copy.textContent = "نسخ";
 
-        copy.addEventListener("click", async () => {
+        copy.textContent =
+          "نسخ";
 
-          try {
-            await navigator.clipboard.writeText(
-              String(text || "")
-            );
+        copy.addEventListener(
+          "click",
+          async () => {
 
-            showToast("تم نسخ الرد ✓");
+            try {
 
-          } catch {
-            showToast("لم أستطع النسخ تلقائياً.");
+              await navigator.clipboard.writeText(
+                String(text || "")
+              );
+
+              showToast(
+                "تم نسخ الرد ✓"
+              );
+
+            } catch {
+
+              showToast(
+                "لم أستطع النسخ تلقائياً."
+              );
+            }
           }
-        });
+        );
 
-        const regenerate = document.createElement("button");
-        regenerate.className = "action-btn";
-        regenerate.type = "button";
-        regenerate.textContent = "إعادة التوليد";
+        const regenerate =
+          document.createElement(
+            "button"
+          );
 
-        regenerate.addEventListener("click", () => {
-          regenerateLastResponse(message);
-        });
+        regenerate.className =
+          "action-btn";
+
+        regenerate.type =
+          "button";
+
+        regenerate.textContent =
+          "إعادة التوليد";
+
+        regenerate.addEventListener(
+          "click",
+          () => {
+            regenerateLastResponse(
+              message
+            );
+          }
+        );
 
         actions.appendChild(copy);
         actions.appendChild(regenerate);
@@ -2087,44 +2388,72 @@
         body.appendChild(actions);
 
         if (
-          Array.isArray(options.toolsUsed) &&
+          Array.isArray(
+            options.toolsUsed
+          ) &&
           options.toolsUsed.length
         ) {
 
-          const badges = document.createElement("div");
-          badges.className = "tool-badges";
+          const badges =
+            document.createElement(
+              "div"
+            );
 
-          options.toolsUsed.forEach(tool => {
+          badges.className =
+            "tool-badges";
 
-            const badge = document.createElement("span");
-            badge.className = "tool-badge";
+          options.toolsUsed.forEach(
+            tool => {
 
-            const labels = {
-              web_search: "🌐 بحث ويب",
-              visit_website: "🔗 قراءة موقع",
-              code_interpreter: "💻 تنفيذ كود",
-              wolfram_alpha: "🧮 حساب"
-            };
+              const badge =
+                document.createElement(
+                  "span"
+                );
 
-            badge.textContent =
-              labels[tool] || `⚙ ${tool}`;
+              badge.className =
+                "tool-badge";
 
-            badges.appendChild(badge);
-          });
+              const labels = {
+                web_search:
+                  "🌐 بحث ويب",
+                visit_website:
+                  "🔗 قراءة موقع",
+                code_interpreter:
+                  "💻 تنفيذ كود",
+                wolfram_alpha:
+                  "🧮 حساب"
+              };
 
-          body.appendChild(badges);
+              badge.textContent =
+                labels[tool] ||
+                `⚙ ${tool}`;
+
+              badges.appendChild(
+                badge
+              );
+            }
+          );
+
+          body.appendChild(
+            badges
+          );
         }
       }
 
       if (role === "user") {
+
         message.appendChild(body);
         message.appendChild(avatar);
+
       } else {
+
         message.appendChild(avatar);
         message.appendChild(body);
       }
 
-      chatInner.appendChild(message);
+      chatInner.appendChild(
+        message
+      );
 
       scrollToBottom();
 
@@ -2137,10 +2466,16 @@
 
     function showTyping() {
 
-      const typing = document.createElement("div");
+      const typing =
+        document.createElement(
+          "div"
+        );
 
-      typing.className = "typing";
-      typing.id = "typingIndicator";
+      typing.className =
+        "typing";
+
+      typing.id =
+        "typingIndicator";
 
       typing.innerHTML = `
         <div class="avatar">S</div>
@@ -2152,7 +2487,9 @@
         </div>
       `;
 
-      chatInner.appendChild(typing);
+      chatInner.appendChild(
+        typing
+      );
 
       scrollToBottom();
     }
@@ -2160,7 +2497,9 @@
     function hideTyping() {
 
       const typing =
-        document.getElementById("typingIndicator");
+        document.getElementById(
+          "typingIndicator"
+        );
 
       if (typing) {
         typing.remove();
@@ -2173,42 +2512,60 @@
 
     function scrollToBottom() {
 
-      requestAnimationFrame(() => {
-        chat.scrollTop = chat.scrollHeight;
-      });
+      requestAnimationFrame(
+        () => {
+          chat.scrollTop =
+            chat.scrollHeight;
+        }
+      );
     }
 
     /* =========================================================
        COPY CODE
        ========================================================= */
 
-    document.addEventListener("click", async event => {
+    document.addEventListener(
+      "click",
+      async event => {
 
-      const button =
-        event.target.closest(".code-copy");
+        const button =
+          event.target.closest(
+            ".code-copy"
+          );
 
-      if (!button) return;
+        if (!button) return;
 
-      const code = decodeURIComponent(
-        button.dataset.code || ""
-      );
+        const code =
+          decodeURIComponent(
+            button.dataset.code ||
+            ""
+          );
 
-      try {
+        try {
 
-        await navigator.clipboard.writeText(code);
+          await navigator.clipboard.writeText(
+            code
+          );
 
-        const oldText = button.textContent;
+          const oldText =
+            button.textContent;
 
-        button.textContent = "تم ✓";
+          button.textContent =
+            "تم ✓";
 
-        setTimeout(() => {
-          button.textContent = oldText;
-        }, 1200);
+          setTimeout(() => {
+            button.textContent =
+              oldText;
+          }, 1200);
 
-      } catch {
-        showToast("تعذر نسخ الكود.");
+        } catch {
+
+          showToast(
+            "تعذر نسخ الكود."
+          );
+        }
       }
-    });
+    );
 
     /* =========================================================
        BUILD SERVER HISTORY
@@ -2228,41 +2585,56 @@
        API REQUEST
        ========================================================= */
 
-    async function requestAI(text, files) {
+    async function requestAI(
+      text,
+      files
+    ) {
 
-      abortController = new AbortController();
+      abortController =
+        new AbortController();
 
       const payload = {
         message: text,
-        messages: getServerConversation(),
+        messages:
+          getServerConversation(),
         files
       };
 
-      const response = await fetch(
-        "/api/chat",
-        {
-          method: "POST",
+      const response =
+        await fetch(
+          "/api/chat",
+          {
+            method: "POST",
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
 
-          body: JSON.stringify(payload),
+            body:
+              JSON.stringify(
+                payload
+              ),
 
-          signal: abortController.signal
-        }
-      );
+            signal:
+              abortController.signal
+          }
+        );
 
       if (!response.ok) {
 
         let errorText = "";
 
         try {
-          const errorData = await response.json();
+
+          const errorData =
+            await response.json();
+
           errorText =
             errorData.error ||
             errorData.message ||
             "";
+
         } catch {}
 
         throw new Error(
@@ -2278,7 +2650,10 @@
        SEND MESSAGE
        ========================================================= */
 
-    async function sendMessage(customText = null, config = {}) {
+    async function sendMessage(
+      customText = null,
+      config = {}
+    ) {
 
       if (sending) return;
 
@@ -2291,298 +2666,32 @@
         config.files ||
         [...selectedFiles];
 
-      if (!text && !filesToSend.length) {
-        showToast("اكتب رسالة أو أرفق ملفاً أولاً.");
-        return;
-      }
-
-      sending = true;
-
-      sendBtn.classList.add("stop");
-      sendBtn.textContent = "■";
-      sendBtn.title = "إيقاف";
-
-      lastUserText = text;
-
-      if (config.addUser !== false) {
-
-        addMessage(
-          "user",
-          text ||
-          "أرسلت ملفاً للتحليل."
-        );
-
-        conversation.push({
-          role: "user",
-          content:
-            text ||
-            "أرسلت ملفاً للتحليل."
-        });
-      }
-
-      messageInput.value = "";
-      autoResize();
-
-      let preparedFiles = [];
-
-      try {
-
-        if (filesToSend.length) {
-
-          preparedFiles =
-            await prepareFiles(filesToSend);
-
-          if (config.clearFiles !== false) {
-            selectedFiles = [];
-            renderAttachments();
-          }
-        }
-
-        showTyping();
-
-        const data =
-          await requestAI(
-            text,
-            preparedFiles
-          );
-
-        hideTyping();
-
-        const reply =
-          data.reply ||
-          data.message ||
-          "لم يصل رد من Sultan AI.";
-
-        addMessage(
-          "assistant",
-          reply,
-          {
-            toolsUsed:
-              Array.isArray(data.toolsUsed)
-                ? data.toolsUsed
-                : []
-          }
-        );
-
-        conversation.push({
-          role: "assistant",
-          content: reply
-        });
-
-        if (conversation.length > MAX_HISTORY) {
-          conversation =
-            conversation.slice(-MAX_HISTORY);
-        }
-
-      } catch (error) {
-
-        hideTyping();
-
-        if (
-          error.name === "AbortError"
-        ) {
-          showToast("تم إيقاف الطلب.");
-        } else {
-
-          console.error(
-            "Sultan AI error:",
-            error
-          );
-
-          addMessage(
-            "assistant",
-            "تعذر الحصول على رد من Sultan AI حالياً."
-          );
-        }
-
-      } finally {
-
-        sending = false;
-
-        abortController = null;
-
-        sendBtn.classList.remove("stop");
-        sendBtn.textContent = "➤";
-        sendBtn.title = "إرسال";
-
-        messageInput.focus();
-
-        scrollToBottom();
-      }
-    }
-
-    /* =========================================================
-       STOP REQUEST
-       ========================================================= */
-
-    sendBtn.addEventListener("click", () => {
-
-      if (sending) {
-
-        if (abortController) {
-          abortController.abort();
-        }
-
-        return;
-      }
-
-      sendMessage();
-    });
-
-    /* =========================================================
-       TRUE REGENERATE
-       ========================================================= */
-
-    async function regenerateLastResponse(messageElement) {
-
-      if (sending) {
-        showToast("انتظر حتى ينتهي الرد الحالي.");
-        return;
-      }
-
-      if (!lastUserText) {
-        showToast("لا يوجد رد سابق لإعادة توليده.");
-        return;
-      }
-
-      /*
-        Remove the selected assistant message
-        from the UI.
-      */
-
-      if (messageElement) {
-        messageElement.remove();
-      }
-
-      /*
-        Remove the latest assistant message
-        from conversation history.
-      */
-
-      for (let i = conversation.length - 1; i >= 0; i--) {
-
-        if (conversation[i].role === "assistant") {
-          conversation.splice(i, 1);
-          break;
-        }
-      }
-
-      /*
-        Re-send without adding another user message.
-      */
-
-      showTyping();
-
-      sending = true;
-
-      sendBtn.classList.add("stop");
-      sendBtn.textContent = "■";
-
-      try {
-
-        const data =
-          await requestAI(
-            lastUserText,
-            []
-          );
-
-        hideTyping();
-
-        const reply =
-          data.reply ||
-          data.message ||
-          "لم يصل رد من Sultan AI.";
-
-        addMessage(
-          "assistant",
-          reply,
-          {
-            toolsUsed:
-              Array.isArray(data.toolsUsed)
-                ? data.toolsUsed
-                : []
-          }
-        );
-
-        conversation.push({
-          role: "assistant",
-          content: reply
-        });
-
-      } catch (error) {
-
-        hideTyping();
-
-        if (
-          error.name !== "AbortError"
-        ) {
-
-          console.error(
-            "Regenerate error:",
-            error
-          );
-
-          addMessage(
-            "assistant",
-            "تعذر إعادة توليد الرد حالياً."
-          );
-        }
-
-      } finally {
-
-        sending = false;
-
-        abortController = null;
-
-        sendBtn.classList.remove("stop");
-        sendBtn.textContent = "➤";
-
-        messageInput.focus();
-
-        scrollToBottom();
-      }
-    }
-
-    /* =========================================================
-       SIDEBAR BUTTONS
-       ========================================================= */
-
-    document
-      .getElementById("filesSideBtn")
-      .addEventListener("click", () => {
-
-        closeSidebar();
-
-        fileInput.click();
-      });
-
-    document
-      .getElementById("fastSideBtn")
-      .addEventListener("click", () => {
-
-        closeSidebar();
+      if (
+        !text &&
+        !filesToSend.length
+      ) {
 
         showToast(
-          "⚡ الوضع السريع مفعّل في واجهة Sultan AI."
+          "اكتب رسالة أو أرفق ملفاً أولاً."
         );
-      });
 
-    document
-      .getElementById("chatSideBtn")
-      .addEventListener("click", () => {
-        closeSidebar();
-        messageInput.focus();
-      });
+        return;
+      }
 
-    /* =========================================================
-       INITIAL
-       ========================================================= */
+      sending = true;
 
-    autoResize();
+      sendBtn.classList.add(
+        "stop"
+      );
 
-    messageInput.focus();
+      sendBtn.textContent =
+        "■";
 
-  </script>
+      sendBtn.title =
+        "إيقاف";
 
-</body>
-</html>
+      lastUserText =
+        text;
+
+      if (
+        config.addUser !==
