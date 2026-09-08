@@ -1,851 +1,1006 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-  <title>Sultan AI</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #080808;
-      --panel: #101010;
-      --panel2: #151515;
-      --border: rgba(255,255,255,.08);
-      --text: #f5f5f5;
-      --muted: #999;
-      --orange: #ff6a00;
-      --orange2: #ff8a00;
-      --danger: #ff4444;
-    }
-
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      color: var(--text);
-      font-family:
-        Arial,
-        "Segoe UI",
-        sans-serif;
-    }
-
-    button,
-    textarea,
-    input {
-      font: inherit;
-    }
-
-    button {
-      border: 0;
-      cursor: pointer;
-    }
-
-    /* =====================================================
-       APP
-    ===================================================== */
-
-    .app {
-      width: 100%;
-      height: 100dvh;
-      display: flex;
-      position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(
-          circle at 80% 20%,
-          rgba(255,106,0,.08),
-          transparent 30%
-        ),
-        #080808;
-    }
-
-    /* =====================================================
-       SIDEBAR
-    ===================================================== */
-
-    .sidebar {
-      width: 270px;
-      height: 100%;
-      flex-shrink: 0;
-      background:
-        linear-gradient(
-          180deg,
-          #111,
-          #0a0a0a
-        );
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 18px;
-      z-index: 20;
-      transition: transform .25s ease;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 18px;
-    }
-
-    .brand-logo {
-      width: 43px;
-      height: 43px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        linear-gradient(
-          135deg,
-          var(--orange),
-          var(--orange2)
-        );
-      color: #111;
-      font-size: 23px;
-      font-weight: 1000;
-      box-shadow:
-        0 0 25px rgba(255,106,0,.25);
-    }
-
-    .brand-text strong {
-      display: block;
-      font-size: 18px;
-      font-weight: 900;
-    }
-
-    .brand-text span {
-      color: #777;
-      font-size: 11px;
-    }
-
-    .new-chat {
-      width: 100%;
-      padding: 13px;
-      border-radius: 13px;
-      color: white;
-      background:
-        linear-gradient(
-          135deg,
-          #ff6500,
-          #ff8b00
-        );
-      font-weight: 900;
-      margin-bottom: 16px;
-      box-shadow:
-        0 8px 25px rgba(255,106,0,.12);
-    }
-
-    .nav-title {
-      color: #666;
-      font-size: 11px;
-      margin: 10px 4px;
-    }
-
-    .nav-item {
-      width: 100%;
-      padding: 12px;
-      border-radius: 11px;
-      color: #bbb;
-      background: transparent;
-      text-align: right;
-      margin-bottom: 5px;
-      transition: .2s;
-    }
-
-    .nav-item:hover,
-    .nav-item.active {
-      color: white;
-      background: rgba(255,255,255,.06);
-    }
-
-    .creator {
-      margin-top: auto;
-      padding: 14px;
-      border-radius: 15px;
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,106,0,.13),
-          rgba(255,255,255,.025)
-        );
-      border: 1px solid rgba(255,106,0,.12);
-    }
-
-    .creator small {
-      display: block;
-      color: #777;
-      font-size: 10px;
-      margin-bottom: 5px;
-    }
-
-    .creator strong {
-      font-size: 13px;
-    }
-
-    /* =====================================================
-       MAIN
-    ===================================================== */
-
-    .main {
-      min-width: 0;
-      flex: 1;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    .topbar {
-      height: 67px;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      background: rgba(8,8,8,.82);
-      backdrop-filter: blur(15px);
-      z-index: 10;
-    }
-
-    .top-title {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-weight: 900;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #25d366;
-      box-shadow: 0 0 10px #25d366;
-    }
-
-    .mode {
-      color: #aaa;
-      font-size: 12px;
-    }
-
-    /* =====================================================
-       MOBILE MENU
-    ===================================================== */
-
-    .menu-btn {
-      display: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.06);
-      color: white;
-      font-size: 20px;
-    }
-
-    /* =====================================================
-       CHAT
-    ===================================================== */
-
-    .chat {
-      flex: 1;
-      overflow-y: auto;
-      padding: 32px 20px 180px;
-      scroll-behavior: smooth;
-    }
-
-    .chat-inner {
-      max-width: 950px;
-      margin: auto;
-    }
-
-    .welcome {
-      min-height: 55vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      animation: fadeUp .4s ease;
-    }
-
-    .welcome-logo {
-      width: 78px;
-      height: 78px;
-      border-radius: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        linear-gradient(
-          135deg,
-          var(--orange),
-          var(--orange2)
-        );
-      color: #111;
-      font-size: 40px;
-      font-weight: 1000;
-      box-shadow:
-        0 0 55px rgba(255,106,0,.23);
-      margin-bottom: 22px;
-    }
-
-    .welcome h1 {
-      font-size: clamp(30px, 5vw, 48px);
-      font-weight: 1000;
-      margin-bottom: 9px;
-    }
-
-    .welcome h1 span {
-      color: var(--orange);
-    }
-
-    .welcome p {
-      max-width: 620px;
-      color: #888;
-      line-height: 1.7;
-      font-size: 14px;
-    }
-
-    .quick {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 28px;
-    }
-
-    .quick button {
-      min-height: 64px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      color: #ccc;
-      background: rgba(255,255,255,.025);
-      padding: 12px;
-      text-align: right;
-      transition: .2s;
-    }
-
-    .quick button:hover {
-      border-color: rgba(255,106,0,.3);
-      background: rgba(255,106,0,.05);
-      transform: translateY(-2px);
-    }
-
-    .quick b {
-      color: white;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .quick span {
-      color: #777;
-      font-size: 11px;
-    }
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    .message {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 25px;
-      direction: rtl;
-      animation: fadeUp .25s ease;
-    }
-
-    .message.user {
-      flex-direction: row;
-    }
-
-    .message.assistant {
-      flex-direction: row;
-    }
-
-    .avatar {
-      width: 36px;
-      height: 36px;
-      min-width: 36px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 13px;
-      background: #191919;
-      border: 1px solid var(--border);
-    }
-
-    .assistant .avatar {
-      background:
-        linear-gradient(
-          135deg,
-          var(--orange),
-          var(--orange2)
-        );
-      color: #111;
-    }
-
-    .bubble-wrap {
-      min-width: 0;
-      max-width: 82%;
-    }
-
-    .name {
-      color: #777;
-      font-size: 10px;
-      margin-bottom: 5px;
-    }
-
-    .bubble {
-      padding: 13px 15px;
-      border-radius: 16px;
-      line-height: 1.75;
-      font-size: 14px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: #121212;
-      border: 1px solid var(--border);
-    }
-
-    .user .bubble {
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,106,0,.16),
-          rgba(255,106,0,.07)
-        );
-      border-color:
-        rgba(255,106,0,.13);
-    }
-
-    /* =====================================================
-       ATTACHMENT PREVIEW
-    ===================================================== */
-
-    .attachments {
-      display: none;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin: 0 auto 9px;
-      max-width: 950px;
-    }
-
-    .attachments.show {
-      display: flex;
-    }
-
-    .attachment {
-      position: relative;
-      width: 92px;
-      height: 92px;
-      border-radius: 13px;
-      overflow: hidden;
-      background: #151515;
-      border: 1px solid var(--border);
-    }
-
-    .attachment img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .file-card {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 4px;
-      color: #bbb;
-      padding: 7px;
-      text-align: center;
-    }
-
-    .file-icon {
-      font-size: 25px;
-    }
-
-    .file-name {
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 9px;
-    }
-
-    .remove-file {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: rgba(0,0,0,.8);
-      color: white;
-      font-size: 12px;
-      z-index: 2;
-    }
-
-    /* =====================================================
-       TYPING
-    ===================================================== */
-
-    .typing {
-      display: none;
-      align-items: center;
-      gap: 5px;
-      margin: 5px 0 20px;
-    }
-
-    .typing.show {
-      display: flex;
-    }
-
-    .typing .avatar {
-      background:
-        linear-gradient(
-          135deg,
-          var(--orange),
-          var(--orange2)
-        );
-      color: #111;
-    }
-
-    .dots {
-      display: flex;
-      gap: 4px;
-      padding: 12px 14px;
-      background: #121212;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-    }
-
-    .dots i {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #888;
-      animation: dot 1.1s infinite;
-    }
-
-    .dots i:nth-child(2) {
-      animation-delay: .15s;
-    }
-
-    .dots i:nth-child(3) {
-      animation-delay: .3s;
-    }
-
-    /* =====================================================
-       COMPOSER
-    ===================================================== */
-
-    .composer-area {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 16px 20px 20px;
-      background:
-        linear-gradient(
-          transparent,
-          #080808 35%
-        );
-    }
-
-    .composer {
-      max-width: 950px;
-      margin: auto;
-      display: flex;
-      align-items: flex-end;
-      gap: 9px;
-      padding: 10px;
-      background: rgba(18,18,18,.95);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 18px;
-      box-shadow:
-        0 15px 50px rgba(0,0,0,.4);
-      backdrop-filter: blur(18px);
-    }
-
-    .attach {
-      width: 43px;
-      height: 43px;
-      min-width: 43px;
-      border-radius: 12px;
-      background: #1c1c1c;
-      color: #aaa;
-      font-size: 25px;
-      transition: .2s;
-    }
-
-    .attach:hover {
-      color: white;
-      background: #252525;
-    }
-
-    #fileInput {
-      display: none;
-    }
-
-    textarea {
-      flex: 1;
-      min-width: 0;
-      max-height: 150px;
-      min-height: 43px;
-      resize: none;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: white;
-      padding: 11px 4px;
-      line-height: 1.5;
-      direction: rtl;
-    }
-
-    textarea::placeholder {
-      color: #666;
-    }
-
-    .send {
-      width: 43px;
-      height: 43px;
-      min-width: 43px;
-      border-radius: 12px;
-      background:
-        linear-gradient(
-          135deg,
-          var(--orange),
-          var(--orange2)
-        );
-      color: #111;
-      font-size: 18px;
-      font-weight: 1000;
-      transition: .2s;
-    }
-
-    .send:hover {
-      transform: scale(1.04);
-    }
-
-    .send:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-    }
-
-    .hint {
-      max-width: 950px;
-      margin: 8px auto 0;
-      text-align: center;
-      color: #555;
-      font-size: 9px;
-    }
-
-    /* =====================================================
-       MOBILE
-    ===================================================== */
-
-    .overlay {
-      display: none;
-    }
-
-    @media (max-width: 800px) {
-
-      .sidebar {
-        position: fixed;
-        right: 0;
-        top: 0;
-        transform: translateX(105%);
-        box-shadow: -20px 0 50px rgba(0,0,0,.45);
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .menu-btn {
-        display: block;
-      }
-
-      .topbar {
-        padding: 0 12px;
-      }
-
-      .top-title {
-        font-size: 13px;
-      }
-
-      .mode {
-        display: none;
-      }
-
-      .overlay.show {
-        display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.6);
-        z-index: 15;
-      }
-
-      .chat {
-        padding-left: 12px;
-        padding-right: 12px;
-        padding-top: 20px;
-      }
-
-      .bubble-wrap {
-        max-width: 88%;
-      }
-
-      .quick {
-        grid-template-columns: 1fr;
-      }
-
-      .composer-area {
-        padding:
-          10px
-          10px
-          calc(10px + env(safe-area-inset-bottom));
-      }
-
-      .composer {
-        border-radius: 16px;
-      }
-
-      .hint {
-        display: none;
-      }
-
-      .welcome {
-        min-height: 60vh;
-      }
-
-      .welcome-logo {
-        width: 66px;
-        height: 66px;
-        font-size: 33px;
-      }
-    }
-
-    /* =====================================================
-       ANIMATIONS
-    ===================================================== */
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes dot {
-      0%,
-      60%,
-      100% {
-        transform: translateY(0);
-        opacity: .45;
-      }
-
-      30% {
-        transform: translateY(-4px);
-        opacity: 1;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>Sultan AI — Smart AI Assistant</title>
+<meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي سريع للبرمجة، التحليل، الصور والملفات.">
+<meta name="theme-color" content="#080808">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#070707;
+  --panel:#0e0e0f;
+  --panel2:#141416;
+  --panel3:#19191b;
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,106,0,.18);
+  --text:#f5f5f7;
+  --muted:#8b8b91;
+  --muted2:#5e5e64;
+  --orange:#ff6800;
+  --orange2:#ff9800;
+  --green:#27d66f;
+  --danger:#ff4d4d;
+  --shadow:0 20px 70px rgba(0,0,0,.45);
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,"Segoe UI",sans-serif;
+}
+
+body{
+  -webkit-font-smoothing:antialiased;
+}
+
+button,input,textarea{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+button:focus-visible,
+textarea:focus-visible{
+  outline:2px solid rgba(255,106,0,.55);
+  outline-offset:2px;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.app{
+  width:100%;
+  height:100dvh;
+  display:flex;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 75% 5%,rgba(255,106,0,.10),transparent 27%),
+    radial-gradient(circle at 15% 90%,rgba(255,106,0,.045),transparent 25%),
+    var(--bg);
+}
+
+.app::before{
+  content:"";
+  position:absolute;
+  width:380px;
+  height:380px;
+  right:18%;
+  top:-220px;
+  border-radius:50%;
+  background:rgba(255,106,0,.06);
+  filter:blur(80px);
+  pointer-events:none;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  width:276px;
+  height:100%;
+  flex-shrink:0;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  background:
+    linear-gradient(180deg,rgba(20,20,20,.96),rgba(8,8,8,.98));
+  border-left:1px solid var(--border);
+  z-index:30;
+  transition:transform .28s cubic-bezier(.2,.8,.2,1);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:20px;
+}
+
+.brand-logo,
+.welcome-logo,
+.assistant-avatar{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:#111;
+  font-weight:1000;
+}
+
+.brand-logo{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  box-shadow:0 0 28px rgba(255,106,0,.24);
+}
+
+.brand-logo::after,
+.welcome-logo::after,
+.assistant-avatar::after{
+  content:"";
+  position:absolute;
+  inset:-80%;
+  background:linear-gradient(110deg,transparent 42%,rgba(255,255,255,.32) 50%,transparent 58%);
+  transform:rotate(20deg);
+  animation:shine 4.5s infinite;
+}
+
+.brand-text strong{
+  display:block;
+  font-size:18px;
+  font-weight:900;
+}
+
+.brand-text span{
+  color:#707076;
+  font-size:11px;
+}
+
+.new-chat{
+  width:100%;
+  padding:13px;
+  border-radius:13px;
+  color:#111;
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  font-weight:900;
+  box-shadow:0 9px 30px rgba(255,106,0,.13);
+  transition:transform .18s,box-shadow .18s;
+}
+
+.new-chat:hover{
+  transform:translateY(-1px);
+  box-shadow:0 12px 35px rgba(255,106,0,.22);
+}
+
+.new-chat:active{
+  transform:scale(.98);
+}
+
+.nav-title{
+  color:#55555b;
+  font-size:10px;
+  letter-spacing:.08em;
+  margin:20px 4px 9px;
+}
+
+.nav-item{
+  width:100%;
+  padding:12px;
+  border-radius:11px;
+  color:#aaa;
+  background:transparent;
+  text-align:right;
+  margin-bottom:5px;
+  transition:background .18s,color .18s,transform .18s;
+}
+
+.nav-item:hover,
+.nav-item.active{
+  color:#fff;
+  background:rgba(255,255,255,.055);
+}
+
+.nav-item:hover{
+  transform:translateX(-2px);
+}
+
+.creator{
+  margin-top:auto;
+  padding:14px;
+  border-radius:15px;
+  background:
+    linear-gradient(145deg,rgba(255,106,0,.12),rgba(255,255,255,.025));
+  border:1px solid rgba(255,106,0,.12);
+}
+
+.creator small{
+  display:block;
+  color:#66666c;
+  font-size:9px;
+  margin-bottom:5px;
+}
+
+.creator strong{
+  font-size:12px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  min-width:0;
+  flex:1;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+.topbar{
+  height:67px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  background:rgba(7,7,7,.72);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  z-index:10;
+}
+
+.top-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:900;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 13px var(--green);
+  animation:pulse 2s infinite;
+}
+
+.mode{
+  color:#77777d;
+  font-size:11px;
+}
+
+.menu-btn{
+  display:none;
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  background:rgba(255,255,255,.055);
+  color:white;
+  font-size:19px;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:30px 20px 190px;
+  scroll-behavior:smooth;
+  scrollbar-width:thin;
+  scrollbar-color:#303033 transparent;
+}
+
+.chat::-webkit-scrollbar{
+  width:6px;
+}
+
+.chat::-webkit-scrollbar-thumb{
+  background:#29292c;
+  border-radius:10px;
+}
+
+.chat-inner{
+  width:100%;
+  max-width:950px;
+  margin:auto;
+}
+
+.welcome{
+  min-height:56vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  animation:welcomeIn .55s cubic-bezier(.2,.8,.2,1);
+}
+
+.welcome-logo{
+  width:82px;
+  height:82px;
+  border-radius:27px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:41px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 0 65px rgba(255,106,0,.20);
+  margin-bottom:21px;
+  animation:float 4s ease-in-out infinite;
+}
+
+.welcome h1{
+  font-size:clamp(30px,5vw,48px);
+  line-height:1.15;
+  font-weight:1000;
+  margin-bottom:10px;
+}
+
+.welcome h1 span{
+  color:var(--orange);
+  text-shadow:0 0 30px rgba(255,106,0,.2);
+}
+
+.welcome p{
+  max-width:640px;
+  color:#85858b;
+  line-height:1.8;
+  font-size:14px;
+}
+
+.quick{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:28px;
+}
+
+.quick button{
+  min-height:66px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  color:#ccc;
+  background:rgba(255,255,255,.025);
+  padding:13px;
+  text-align:right;
+  transition:
+    transform .2s,
+    background .2s,
+    border-color .2s,
+    box-shadow .2s;
+}
+
+.quick button:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,106,0,.28);
+  background:rgba(255,106,0,.055);
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+
+.quick button:active{
+  transform:scale(.98);
+}
+
+.quick b{
+  color:#f2f2f2;
+  display:block;
+  margin-bottom:4px;
+}
+
+.quick span{
+  color:#6e6e74;
+  font-size:10px;
+}
+
+/* =========================
+   MESSAGES
+========================= */
+
+.message{
+  display:flex;
+  gap:11px;
+  margin-bottom:25px;
+  direction:rtl;
+  animation:messageIn .25s ease both;
+}
+
+.avatar{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:11px;
+  background:#19191b;
+  border:1px solid var(--border);
+}
+
+.assistant-avatar{
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:#111;
+  border:0;
+  box-shadow:0 5px 20px rgba(255,106,0,.13);
+}
+
+.bubble-wrap{
+  min-width:0;
+  max-width:82%;
+}
+
+.name{
+  color:#707076;
+  font-size:10px;
+  margin-bottom:5px;
+}
+
+.bubble{
+  padding:13px 15px;
+  border-radius:17px;
+  line-height:1.78;
+  font-size:14px;
+  white-space:pre-wrap;
+  word-break:break-word;
+  background:rgba(18,18,18,.92);
+  border:1px solid var(--border);
+  box-shadow:0 5px 25px rgba(0,0,0,.08);
+}
+
+.user .bubble{
+  background:
+    linear-gradient(135deg,rgba(255,106,0,.15),rgba(255,106,0,.055));
+  border-color:rgba(255,106,0,.14);
+}
+
+.message-actions{
+  display:flex;
+  gap:5px;
+  margin-top:6px;
+  opacity:.55;
+  transition:opacity .18s;
+}
+
+.message:hover .message-actions{
+  opacity:1;
+}
+
+.action-btn{
+  width:28px;
+  height:27px;
+  border-radius:8px;
+  color:#999;
+  background:rgba(255,255,255,.035);
+  font-size:12px;
+  transition:.18s;
+}
+
+.action-btn:hover{
+  color:#fff;
+  background:rgba(255,255,255,.08);
+}
+
+.code-block{
+  direction:ltr;
+  text-align:left;
+  margin:10px 0;
+  padding:13px;
+  overflow:auto;
+  border-radius:11px;
+  background:#090909;
+  border:1px solid rgba(255,255,255,.08);
+  font-family:Consolas,Monaco,monospace;
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* =========================
+   TYPING
+========================= */
+
+.typing{
+  display:none;
+  align-items:center;
+  gap:6px;
+  margin:5px 0 20px;
+}
+
+.typing.show{
+  display:flex;
+}
+
+.dots{
+  display:flex;
+  gap:4px;
+  padding:12px 14px;
+  background:#121214;
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
+.dots i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#888;
+  animation:dot 1.05s infinite;
+}
+
+.dots i:nth-child(2){animation-delay:.14s}
+.dots i:nth-child(3){animation-delay:.28s}
+
+/* =========================
+   ATTACHMENTS
+========================= */
+
+.attachments{
+  display:none;
+  gap:8px;
+  flex-wrap:wrap;
+  max-width:950px;
+  margin:0 auto 9px;
+}
+
+.attachments.show{
+  display:flex;
+}
+
+.attachment{
+  position:relative;
+  width:82px;
+  height:82px;
+  border-radius:13px;
+  overflow:hidden;
+  background:#151517;
+  border:1px solid var(--border);
+  animation:messageIn .2s ease;
+}
+
+.attachment img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.file-card{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:4px;
+  color:#bbb;
+  padding:7px;
+  text-align:center;
+}
+
+.file-icon{
+  font-size:23px;
+}
+
+.file-name{
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:8px;
+}
+
+.remove-file{
+  position:absolute;
+  top:5px;
+  left:5px;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:rgba(0,0,0,.78);
+  color:white;
+  font-size:12px;
+  z-index:2;
+}
+
+/* =========================
+   COMPOSER
+========================= */
+
+.composer-area{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:15px 20px 19px;
+  background:linear-gradient(transparent,#070707 35%);
+  z-index:5;
+}
+
+.composer{
+  max-width:950px;
+  margin:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:9px;
+  background:rgba(18,18,19,.93);
+  border:1px solid rgba(255,255,255,.095);
+  border-radius:19px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  transition:border-color .2s,box-shadow .2s;
+}
+
+.composer:focus-within{
+  border-color:rgba(255,106,0,.25);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.48),
+    0 0 0 3px rgba(255,106,0,.035);
+}
+
+.attach{
+  width:43px;
+  height:43px;
+  min-width:43px;
+  border-radius:12px;
+  background:#1b1b1d;
+  color:#aaa;
+  font-size:23px;
+  transition:.18s;
+}
+
+.attach:hover{
+  color:white;
+  background:#252527;
+  transform:rotate(8deg);
+}
+
+#fileInput{
+  display:none;
+}
+
+textarea{
+  flex:1;
+  min-width:0;
+  min-height:43px;
+  max-height:150px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:white;
+  padding:11px 4px;
+  line-height:1.5;
+  direction:rtl;
+  overflow-y:auto;
+}
+
+textarea::placeholder{
+  color:#626269;
+}
+
+.send{
+  width:43px;
+  height:43px;
+  min-width:43px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:#111;
+  font-size:18px;
+  font-weight:1000;
+  box-shadow:0 5px 20px rgba(255,106,0,.12);
+  transition:transform .18s,box-shadow .18s,opacity .18s;
+}
+
+.send:hover:not(:disabled){
+  transform:scale(1.055);
+  box-shadow:0 7px 25px rgba(255,106,0,.22);
+}
+
+.send:active:not(:disabled){
+  transform:scale(.94);
+}
+
+.send:disabled{
+  opacity:.42;
+  cursor:not-allowed;
+}
+
+.hint{
+  max-width:950px;
+  margin:7px auto 0;
+  text-align:center;
+  color:#505056;
+  font-size:9px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:105px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  padding:9px 14px;
+  border-radius:11px;
+  background:#1d1d20;
+  border:1px solid var(--border);
+  color:#ddd;
+  font-size:11px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+  transition:.25s;
+  z-index:100;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.overlay{
+  display:none;
+}
+
+@media(max-width:800px){
+
+  .sidebar{
+    position:fixed;
+    right:0;
+    top:0;
+    transform:translateX(105%);
+    box-shadow:-20px 0 60px rgba(0,0,0,.5);
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .menu-btn{
+    display:block;
+  }
+
+  .topbar{
+    height:60px;
+    padding:0 11px;
+  }
+
+  .top-title{
+    font-size:13px;
+  }
+
+  .mode{
+    display:none;
+  }
+
+  .overlay.show{
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(2px);
+    z-index:25;
+  }
+
+  .chat{
+    padding:20px 11px 175px;
+  }
+
+  .bubble-wrap{
+    max-width:88%;
+  }
+
+  .bubble{
+    font-size:13px;
+  }
+
+  .quick{
+    grid-template-columns:1fr;
+    margin-top:22px;
+  }
+
+  .welcome{
+    min-height:62vh;
+  }
+
+  .welcome-logo{
+    width:67px;
+    height:67px;
+    border-radius:22px;
+    font-size:33px;
+  }
+
+  .welcome h1{
+    font-size:30px;
+  }
+
+  .welcome p{
+    font-size:12px;
+    padding:0 8px;
+  }
+
+  .composer-area{
+    padding:
+      9px
+      9px
+      calc(9px + env(safe-area-inset-bottom));
+  }
+
+  .composer{
+    border-radius:17px;
+    padding:8px;
+  }
+
+  .hint{
+    display:none;
+  }
+
+  .attachments{
+    padding:0 2px;
+  }
+
+  .attachment{
+    width:72px;
+    height:72px;
+  }
+
+  .message-actions{
+    opacity:1;
+  }
+}
+
+@media(max-width:420px){
+  .avatar{
+    width:32px;
+    height:32px;
+    min-width:32px;
+    border-radius:10px;
+  }
+
+  .bubble-wrap{
+    max-width:90%;
+  }
+
+  .bubble{
+    padding:11px 12px;
+  }
+
+  .attach,
+  .send{
+    width:40px;
+    height:40px;
+    min-width:40px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes welcomeIn{
+  from{
+    opacity:0;
+    transform:translateY(14px) scale(.985);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+@keyframes messageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+@keyframes dot{
+  0%,60%,100%{
+    transform:translateY(0);
+    opacity:.4;
+  }
+ 30%{
+    transform:translateY(-4px);
+    opacity:1;
+  }
+}
+
+@keyframes pulse{
+  0%,100%{
+    opacity:1;
+    transform:scale(1);
+  }
+  50%{
+    opacity:.55;
+    transform:scale(.78);
+  }
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+
+@keyframes shine{
+  0%{transform:translateX(-120%) rotate(20deg)}
+  25%,100%{transform:translateX(120%) rotate(20deg)}
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <!-- ===================================================
-       SIDEBAR
-  ==================================================== -->
-
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
       <div class="brand-logo">S</div>
-
       <div class="brand-text">
         <strong>Sultan AI</strong>
         <span>Smart AI Assistant</span>
       </div>
     </div>
 
-    <button
-      class="new-chat"
-      onclick="newChat()"
-    >
+    <button class="new-chat" id="newChatBtn">
       ＋ محادثة جديدة
     </button>
 
-    <div class="nav-title">
-      WORKSPACE
-    </div>
+    <div class="nav-title">WORKSPACE</div>
 
-    <button
-      class="nav-item active"
-      onclick="focusComposer()"
-    >
+    <button class="nav-item active" id="chatNav">
       💬 المحادثة
     </button>
 
-    <button
-      class="nav-item"
-      onclick="openFilePicker()"
-    >
+    <button class="nav-item" id="filesNav">
       📎 الملفات والصور
     </button>
 
-    <button
-      class="nav-item"
-      onclick="focusComposer()"
-    >
+    <button class="nav-item" id="fastNav">
       ⚡ الوضع السريع
     </button>
 
     <div class="creator">
-
-      <small>
-        CREATED BY
-      </small>
-
-      <strong>
-        Ali Sultan ⚡ • Ali Arandis
-      </strong>
-
+      <small>CREATED BY</small>
+      <strong>Ali Sultan ⚡ • Ali Arandis</strong>
     </div>
 
   </aside>
 
-  <div
-    class="overlay"
-    id="overlay"
-    onclick="closeSidebar()"
-  ></div>
-
-  <!-- ===================================================
-       MAIN
-  ==================================================== -->
+  <div class="overlay" id="overlay"></div>
 
   <main class="main">
 
@@ -853,11 +1008,9 @@
 
       <button
         class="menu-btn"
-        onclick="toggleSidebar()"
-        aria-label="Menu"
-      >
-        ☰
-      </button>
+        id="menuBtn"
+        aria-label="فتح القائمة"
+      >☰</button>
 
       <div class="top-title">
         <span class="status-dot"></span>
@@ -870,32 +1023,16 @@
 
     </header>
 
-    <!-- =================================================
-         CHAT
-    ================================================== -->
+    <section class="chat" id="chat">
 
-    <section
-      class="chat"
-      id="chat"
-    >
+      <div class="chat-inner" id="chatInner">
 
-      <div
-        class="chat-inner"
-        id="chatInner"
-      >
+        <div class="welcome" id="welcome">
 
-        <div
-          class="welcome"
-          id="welcome"
-        >
-
-          <div class="welcome-logo">
-            S
-          </div>
+          <div class="welcome-logo">S</div>
 
           <h1>
-            أهلا فيك مع
-            <span>Sultan AI</span>
+            أهلا فيك مع <span>Sultan AI</span>
           </h1>
 
           <p>
@@ -905,30 +1042,22 @@
 
           <div class="quick">
 
-            <button
-              onclick="quickAsk('اشرحلي كيف بتقدر تساعدني')"
-            >
+            <button data-question="اشرحلي كيف بتقدر تساعدني">
               <b>🤖 شو بتقدر تعمل؟</b>
               <span>تعرّف على قدرات Sultan AI</span>
             </button>
 
-            <button
-              onclick="quickAsk('ما هي آخر أخبار التكنولوجيا اليوم؟')"
-            >
+            <button data-question="ما هي آخر أخبار التكنولوجيا اليوم؟">
               <b>🌐 بحث على الويب</b>
               <span>معلومات حديثة ومحدثة</span>
             </button>
 
-            <button
-              onclick="quickAsk('اكتبلي صفحة HTML احترافية من الصفر')"
-            >
+            <button data-question="اكتبلي صفحة HTML احترافية من الصفر">
               <b>💻 برمجة</b>
               <span>ساعدني ببناء كود</span>
             </button>
 
-            <button
-              onclick="openFilePicker()"
-            >
+            <button id="quickFile">
               <b>📎 تحليل ملف أو صورة</b>
               <span>ارفع ملف وخلي Sultan AI يحلله</span>
             </button>
@@ -937,18 +1066,11 @@
 
         </div>
 
-        <div
-          id="messages"
-        ></div>
+        <div id="messages"></div>
 
-        <div
-          class="typing"
-          id="typing"
-        >
+        <div class="typing" id="typing">
 
-          <div class="avatar">
-            S
-          </div>
+          <div class="avatar assistant-avatar">S</div>
 
           <div class="dots">
             <i></i>
@@ -962,16 +1084,9 @@
 
     </section>
 
-    <!-- =================================================
-         COMPOSER
-    ================================================== -->
-
     <div class="composer-area">
 
-      <div
-        class="attachments"
-        id="attachments"
-      ></div>
+      <div class="attachments" id="attachments"></div>
 
       <div class="composer">
 
@@ -984,171 +1099,165 @@
 
         <button
           class="attach"
+          id="attachBtn"
           type="button"
-          onclick="openFilePicker()"
-          aria-label="Add image or file"
           title="إضافة صورة أو ملف"
-        >
-          ＋
-        </button>
+          aria-label="إضافة صورة أو ملف"
+        >＋</button>
 
         <textarea
           id="input"
           rows="1"
           placeholder="اكتب رسالتك إلى Sultan AI..."
           autocomplete="off"
+          spellcheck="true"
         ></textarea>
 
         <button
           class="send"
           id="send"
           type="button"
-          onclick="sendMessage()"
-          aria-label="Send"
-        >
-          ➤
-        </button>
+          aria-label="إرسال"
+        >➤</button>
 
       </div>
 
       <div class="hint">
-        Sultan AI قد يستخدم البحث والبرمجة والأدوات المناسبة حسب سؤالك.
+        Sultan AI قد يستخدم الأدوات المناسبة حسب سؤالك.
       </div>
 
     </div>
 
   </main>
-
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
+"use strict";
+
 /* =========================================================
    STATE
 ========================================================= */
 
 let conversation = [];
-
 let selectedFiles = [];
-
 let sending = false;
+let lastUserText = "";
+let toastTimer = null;
+
+/*
+  Limit frontend history.
+  The server also limits history.
+*/
+const MAX_HISTORY = 20;
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const input =
-  document.getElementById("input");
+const $ = id => document.getElementById(id);
 
-const sendButton =
-  document.getElementById("send");
+const input = $("input");
+const sendButton = $("send");
+const messages = $("messages");
+const welcome = $("welcome");
+const typing = $("typing");
+const chat = $("chat");
+const attachments = $("attachments");
+const fileInput = $("fileInput");
+const sidebar = $("sidebar");
+const overlay = $("overlay");
+const toast = $("toast");
 
-const messages =
-  document.getElementById("messages");
+/* =========================================================
+   TOAST
+========================================================= */
 
-const welcome =
-  document.getElementById("welcome");
+function showToast(text){
 
-const typing =
-  document.getElementById("typing");
+  toast.textContent = text;
+  toast.classList.add("show");
 
-const chat =
-  document.getElementById("chat");
+  clearTimeout(toastTimer);
 
-const attachments =
-  document.getElementById("attachments");
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1800);
+}
 
-const fileInput =
-  document.getElementById("fileInput");
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-const sidebar =
-  document.getElementById("sidebar");
+function toggleSidebar(){
 
-const overlay =
-  document.getElementById("overlay");
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+}
+
+function closeSidebar(){
+
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+}
+
+$("menuBtn").addEventListener("click", toggleSidebar);
+overlay.addEventListener("click", closeSidebar);
 
 /* =========================================================
    FILE PICKER
 ========================================================= */
 
-function openFilePicker() {
+function openFilePicker(){
 
-  if (sending) {
-    return;
-  }
+  if(sending) return;
 
   fileInput.click();
 }
 
-fileInput.addEventListener(
-  "change",
-  event => {
+$("attachBtn").addEventListener("click", openFilePicker);
+$("filesNav").addEventListener("click", openFilePicker);
+$("quickFile").addEventListener("click", openFilePicker);
 
-    const files =
-      Array.from(
-        event.target.files || []
-      );
+fileInput.addEventListener("change", event => {
 
-    if (!files.length) {
-      return;
-    }
+  const files = Array.from(event.target.files || []);
 
+  if(files.length){
     addSelectedFiles(files);
-
-    /*
-      Reset input so selecting
-      the same file again works.
-    */
-
-    fileInput.value = "";
-
   }
-);
+
+  fileInput.value = "";
+});
 
 /* =========================================================
-   ADD FILES
+   FILES
 ========================================================= */
 
-function addSelectedFiles(files) {
+function addSelectedFiles(files){
 
-  const maxFiles = 5;
+  for(const file of files){
 
-  for (const file of files) {
-
-    if (
-      selectedFiles.length >=
-      maxFiles
-    ) {
+    if(selectedFiles.length >= MAX_FILES){
+      showToast(`الحد الأقصى ${MAX_FILES} ملفات`);
       break;
     }
 
-    /*
-      20MB maximum per file.
-    */
-
-    if (
-      file.size >
-      20 * 1024 * 1024
-    ) {
-
-      alert(
-        `الملف ${file.name} أكبر من 20MB.`
-      );
-
+    if(file.size > MAX_FILE_SIZE){
+      showToast(`${file.name} أكبر من 20MB`);
       continue;
     }
 
-    const duplicate =
-      selectedFiles.some(
-        f =>
-          f.name === file.name &&
-          f.size === file.size &&
-          f.lastModified ===
-            file.lastModified
-      );
+    const duplicate = selectedFiles.some(f =>
+      f.name === file.name &&
+      f.size === file.size &&
+      f.lastModified === file.lastModified
+    );
 
-    if (duplicate) {
-      continue;
-    }
+    if(duplicate) continue;
 
     selectedFiles.push(file);
   }
@@ -1156,440 +1265,326 @@ function addSelectedFiles(files) {
   renderAttachments();
 }
 
-/* =========================================================
-   RENDER FILES
-========================================================= */
+function getFileIcon(file){
 
-function renderAttachments() {
+  const ext = file.name
+    .split(".")
+    .pop()
+    ?.toLowerCase();
 
-  attachments.innerHTML = "";
-
-  if (!selectedFiles.length) {
-
-    attachments.classList.remove(
-      "show"
-    );
-
-    return;
-  }
-
-  attachments.classList.add(
-    "show"
-  );
-
-  selectedFiles.forEach(
-    (file, index) => {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "attachment";
-
-      const remove =
-        document.createElement(
-          "button"
-        );
-
-      remove.className =
-        "remove-file";
-
-      remove.type = "button";
-
-      remove.textContent =
-        "×";
-
-      remove.onclick =
-        () => removeFile(index);
-
-      card.appendChild(remove);
-
-      if (
-        file.type.startsWith(
-          "image/"
-        )
-      ) {
-
-        const img =
-          document.createElement(
-            "img"
-          );
-
-        const reader =
-          new FileReader();
-
-        reader.onload =
-          event => {
-            img.src =
-              event.target.result;
-          };
-
-        reader.readAsDataURL(file);
-
-        card.appendChild(img);
-
-      } else {
-
-        const fileCard =
-          document.createElement(
-            "div"
-          );
-
-        fileCard.className =
-          "file-card";
-
-        const icon =
-          document.createElement(
-            "div"
-          );
-
-        icon.className =
-          "file-icon";
-
-        icon.textContent =
-          getFileIcon(file);
-
-        const name =
-          document.createElement(
-            "div"
-          );
-
-        name.className =
-          "file-name";
-
-        name.textContent =
-          file.name;
-
-        fileCard.appendChild(icon);
-        fileCard.appendChild(name);
-
-        card.appendChild(
-          fileCard
-        );
-      }
-
-      attachments.appendChild(
-        card
-      );
-
-    }
-  );
-}
-
-/* =========================================================
-   FILE ICON
-========================================================= */
-
-function getFileIcon(file) {
-
-  const ext =
-    file.name
-      .split(".")
-      .pop()
-      ?.toLowerCase();
-
-  if (
-    [
-      "js",
-      "jsx",
-      "ts",
-      "tsx"
-    ].includes(ext)
-  ) {
-    return "💻";
-  }
-
-  if (
-    [
-      "html",
-      "htm"
-    ].includes(ext)
-  ) {
-    return "🌐";
-  }
-
-  if (
-    [
-      "css",
-      "scss"
-    ].includes(ext)
-  ) {
-    return "🎨";
-  }
-
-  if (
-    [
-      "json",
-      "csv"
-    ].includes(ext)
-  ) {
-    return "📊";
-  }
-
-  if (
-    [
-      "py",
-      "java",
-      "c",
-      "cpp",
-      "php"
-    ].includes(ext)
-  ) {
-    return "🧑‍💻";
-  }
-
-  if (ext === "pdf") {
-    return "📕";
-  }
-
-  if (
-    [
-      "txt",
-      "md",
-      "markdown"
-    ].includes(ext)
-  ) {
-    return "📄";
-  }
+  if(["js","jsx","ts","tsx"].includes(ext)) return "💻";
+  if(["html","htm"].includes(ext)) return "🌐";
+  if(["css","scss"].includes(ext)) return "🎨";
+  if(["json","csv"].includes(ext)) return "📊";
+  if(["py","java","c","cpp","php"].includes(ext)) return "🧑‍💻";
+  if(ext === "pdf") return "📕";
+  if(["txt","md","markdown"].includes(ext)) return "📄";
 
   return "📎";
 }
 
-/* =========================================================
-   REMOVE FILE
-========================================================= */
+function renderAttachments(){
 
-function removeFile(index) {
+  attachments.replaceChildren();
 
-  selectedFiles.splice(
-    index,
-    1
-  );
-
-  renderAttachments();
-}
-
-/* =========================================================
-   FILE TO BASE64
-========================================================= */
-
-function fileToBase64(file) {
-
-  return new Promise(
-    (resolve, reject) => {
-
-      const reader =
-        new FileReader();
-
-      reader.onload =
-        () => {
-
-          const result =
-            String(
-              reader.result || ""
-            );
-
-          /*
-            Server accepts either
-            full data URL or Base64.
-          */
-
-          resolve(result);
-        };
-
-      reader.onerror =
-        () => {
-
-          reject(
-            new Error(
-              "تعذر قراءة الملف."
-            )
-          );
-
-        };
-
-      reader.readAsDataURL(file);
-
-    }
-  );
-}
-
-/* =========================================================
-   PREPARE FILES
-========================================================= */
-
-async function prepareFiles() {
-
-  const output = [];
-
-  for (
-    const file of selectedFiles
-  ) {
-
-    const data =
-      await fileToBase64(file);
-
-    output.push({
-
-      name:
-        file.name,
-
-      type:
-        file.type ||
-        "application/octet-stream",
-
-      size:
-        file.size,
-
-      data
-
-    });
-  }
-
-  return output;
-}
-
-/* =========================================================
-   QUICK ASK
-========================================================= */
-
-function quickAsk(text) {
-
-  input.value = text;
-
-  autoResize();
-
-  sendMessage();
-}
-
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
-
-async function sendMessage() {
-
-  if (sending) {
+  if(!selectedFiles.length){
+    attachments.classList.remove("show");
     return;
   }
 
-  const text =
-    input.value.trim();
+  attachments.classList.add("show");
 
-  if (
-    !text &&
-    !selectedFiles.length
-  ) {
+  const fragment = document.createDocumentFragment();
+
+  selectedFiles.forEach((file,index) => {
+
+    const card = document.createElement("div");
+    card.className = "attachment";
+
+    const remove = document.createElement("button");
+
+    remove.className = "remove-file";
+    remove.type = "button";
+    remove.textContent = "×";
+    remove.title = "حذف الملف";
+
+    remove.addEventListener("click", () => {
+      selectedFiles.splice(index,1);
+      renderAttachments();
+    });
+
+    card.appendChild(remove);
+
+    if(file.type.startsWith("image/")){
+
+      const img = document.createElement("img");
+      img.alt = file.name;
+      img.loading = "lazy";
+
+      /*
+        Object URL is much faster than
+        converting the image to Base64
+        just for the preview.
+      */
+      const url = URL.createObjectURL(file);
+
+      img.src = url;
+
+      img.addEventListener("load", () => {
+        URL.revokeObjectURL(url);
+      }, {once:true});
+
+      card.appendChild(img);
+
+    }else{
+
+      const fileCard = document.createElement("div");
+      fileCard.className = "file-card";
+
+      const icon = document.createElement("div");
+      icon.className = "file-icon";
+      icon.textContent = getFileIcon(file);
+
+      const name = document.createElement("div");
+      name.className = "file-name";
+      name.textContent = file.name;
+      name.title = file.name;
+
+      fileCard.append(icon,name);
+      card.appendChild(fileCard);
+    }
+
+    fragment.appendChild(card);
+  });
+
+  attachments.appendChild(fragment);
+}
+
+function fileToBase64(file){
+
+  return new Promise((resolve,reject) => {
+
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("تعذر قراءة الملف."));
+
+    reader.readAsDataURL(file);
+  });
+}
+
+async function prepareFiles(){
+
+  if(!selectedFiles.length) return [];
+
+  /*
+    Parallel reading is faster than
+    reading files one after another.
+  */
+  return Promise.all(
+    selectedFiles.map(async file => ({
+      name:file.name,
+      type:file.type || "application/octet-stream",
+      size:file.size,
+      data:await fileToBase64(file)
+    }))
+  );
+}
+
+/* =========================================================
+   MESSAGE HELPERS
+========================================================= */
+
+function addMessage(role,text){
+
+  const wrapper = document.createElement("div");
+  wrapper.className = `message ${role}`;
+
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+
+  if(role === "assistant"){
+    avatar.classList.add("assistant-avatar");
+    avatar.textContent = "S";
+  }else{
+    avatar.textContent = "أنت";
+  }
+
+  const bubbleWrap = document.createElement("div");
+  bubbleWrap.className = "bubble-wrap";
+
+  const name = document.createElement("div");
+  name.className = "name";
+  name.textContent = role === "assistant" ? "Sultan AI" : "أنت";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+
+  /*
+    textContent keeps responses safe.
+  */
+  bubble.textContent = text;
+
+  bubbleWrap.append(name,bubble);
+
+  if(role === "assistant"){
+    const actions = document.createElement("div");
+    actions.className = "message-actions";
+
+    const copy = document.createElement("button");
+    copy.className = "action-btn";
+    copy.type = "button";
+    copy.textContent = "⧉";
+    copy.title = "نسخ الرد";
+
+    copy.addEventListener("click", async () => {
+
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast("تم نسخ الرد ✓");
+      }catch{
+        showToast("ما قدرت أنسخ الرد");
+      }
+    });
+
+    const regenerate = document.createElement("button");
+    regenerate.className = "action-btn";
+    regenerate.type = "button";
+    regenerate.textContent = "↻";
+    regenerate.title = "إعادة السؤال";
+
+    regenerate.addEventListener("click", () => {
+
+      if(sending || !lastUserText) return;
+
+      input.value = lastUserText;
+      autoResize();
+      sendMessage();
+    });
+
+    actions.append(copy,regenerate);
+    bubbleWrap.appendChild(actions);
+  }
+
+  wrapper.append(avatar,bubbleWrap);
+  messages.appendChild(wrapper);
+
+  scrollToBottom();
+}
+
+function showTyping(){
+  typing.classList.add("show");
+  scrollToBottom();
+}
+
+function hideTyping(){
+  typing.classList.remove("show");
+}
+
+function scrollToBottom(){
+
+  requestAnimationFrame(() => {
+    chat.scrollTop = chat.scrollHeight;
+  });
+}
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function pushConversation(role,content){
+
+  conversation.push({role,content});
+
+  if(conversation.length > MAX_HISTORY){
+    conversation =
+      conversation.slice(-MAX_HISTORY);
+  }
+}
+
+/* =========================================================
+   SEND
+========================================================= */
+
+async function sendMessage(){
+
+  if(sending) return;
+
+  const text = input.value.trim();
+
+  if(!text && !selectedFiles.length){
     return;
   }
 
   sending = true;
-
   sendButton.disabled = true;
 
-  welcome.style.display =
-    "none";
+  welcome.style.display = "none";
 
-  const filesForServer =
-    await prepareFiles();
-
-  /*
-    Display user message.
-  */
-
-  let displayText =
-    text;
-
-  if (
-    selectedFiles.length
-  ) {
-
-    const fileNames =
-      selectedFiles
-        .map(
-          file =>
-            `📎 ${file.name}`
-        )
-        .join("\n");
-
-    displayText =
-      displayText
-        ? `${displayText}\n\n${fileNames}`
-        : fileNames;
-  }
-
-  addMessage(
-    "user",
-    displayText
+  const displayFiles = selectedFiles.map(
+    file => `📎 ${file.name}`
   );
 
-  /*
-    Keep text conversation history.
-  */
+  let displayText = text;
 
-  conversation.push({
-    role: "user",
-    content:
-      text ||
-      "حلل الملفات المرفقة."
-  });
+  if(displayFiles.length){
+    displayText = displayText
+      ? `${displayText}\n\n${displayFiles.join("\n")}`
+      : displayFiles.join("\n");
+  }
+
+  addMessage("user",displayText);
+
+  lastUserText = text;
+
+  /*
+    Store only the actual text.
+  */
+  pushConversation(
+    "user",
+    text || "حلل الملفات المرفقة."
+  );
 
   input.value = "";
-
   autoResize();
 
-  renderAttachments();
+  try{
 
-  showTyping();
+    /*
+      Prepare files after displaying
+      the message so the UI feels instant.
+    */
+    const filesForServer = await prepareFiles();
 
-  try {
+    selectedFiles = [];
+    renderAttachments();
 
-    const response =
-      await fetch(
-        "/api/chat",
-        {
-          method: "POST",
+    showTyping();
 
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
+    const response = await fetch("/api/chat",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        messages:conversation,
+        message:text,
+        files:filesForServer
+      })
+    });
 
-          body:
-            JSON.stringify({
+    let data;
 
-              messages:
-                conversation,
-
-              message:
-                text,
-
-              files:
-                filesForServer
-
-            })
-        }
-      );
-
-    let data = null;
-
-    try {
-      data =
-        await response.json();
+    try{
+      data = await response.json();
+    }catch{
+      throw new Error("Invalid server response");
     }
 
-    catch {
-      throw new Error(
-        "Invalid server response"
-      );
-    }
-
-    if (!response.ok) {
-
+    if(!response.ok){
       throw new Error(
         data?.reply ||
-        "Server error"
+        `Server error ${response.status}`
       );
     }
 
@@ -1599,284 +1594,127 @@ async function sendMessage() {
 
     hideTyping();
 
-    addMessage(
-      "assistant",
-      reply
-    );
+    addMessage("assistant",reply);
 
-    conversation.push({
-      role: "assistant",
-      content: reply
-    });
+    pushConversation("assistant",reply);
 
-    /*
-      Clear selected files
-      after successful request.
-    */
+  }catch(error){
 
-    selectedFiles = [];
-
-    renderAttachments();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "SULTAN AI:",
-      error
-    );
+    console.error("SULTAN AI:",error);
 
     hideTyping();
 
     addMessage(
       "assistant",
-      "⚠️ صار خطأ بالاتصال مع Sultan AI.\n\n" +
-      (
-        error?.message ||
-        "جرّب مرة ثانية."
-      )
+      "ما قدرت أحصل على رد حاليًا. جرّب إرسال السؤال مرة ثانية."
     );
 
-  }
-
-  finally {
+  }finally{
 
     sending = false;
-
-    sendButton.disabled =
-      false;
+    sendButton.disabled = false;
 
     input.focus();
-
   }
 }
 
-/* =========================================================
-   ADD MESSAGE
-========================================================= */
-
-function addMessage(
-  role,
-  text
-) {
-
-  const wrapper =
-    document.createElement(
-      "div"
-    );
-
-  wrapper.className =
-    `message ${role}`;
-
-  const avatar =
-    document.createElement(
-      "div"
-    );
-
-  avatar.className =
-    "avatar";
-
-  avatar.textContent =
-    role === "assistant"
-      ? "S"
-      : "أنت";
-
-  const bubbleWrap =
-    document.createElement(
-      "div"
-    );
-
-  bubbleWrap.className =
-    "bubble-wrap";
-
-  const name =
-    document.createElement(
-      "div"
-    );
-
-  name.className =
-    "name";
-
-  name.textContent =
-    role === "assistant"
-      ? "Sultan AI"
-      : "أنت";
-
-  const bubble =
-    document.createElement(
-      "div"
-    );
-
-  bubble.className =
-    "bubble";
-
-  /*
-    textContent prevents
-    uploaded content from
-    becoming executable HTML.
-  */
-
-  bubble.textContent =
-    text;
-
-  bubbleWrap.appendChild(name);
-  bubbleWrap.appendChild(bubble);
-
-  wrapper.appendChild(avatar);
-  wrapper.appendChild(bubbleWrap);
-
-  messages.appendChild(wrapper);
-
-  scrollToBottom();
-}
+sendButton.addEventListener("click",sendMessage);
 
 /* =========================================================
-   TYPING
+   QUICK QUESTIONS
 ========================================================= */
 
-function showTyping() {
+document.querySelectorAll("[data-question]").forEach(button => {
 
-  typing.classList.add(
-    "show"
-  );
+  button.addEventListener("click",() => {
 
-  scrollToBottom();
-}
-
-function hideTyping() {
-
-  typing.classList.remove(
-    "show"
-  );
-}
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-function scrollToBottom() {
-
-  requestAnimationFrame(
-    () => {
-
-      chat.scrollTop =
-        chat.scrollHeight;
-
-    }
-  );
-}
+    input.value = button.dataset.question;
+    autoResize();
+    sendMessage();
+  });
+});
 
 /* =========================================================
    TEXTAREA
 ========================================================= */
 
-input.addEventListener(
-  "input",
-  autoResize
-);
+input.addEventListener("input",autoResize);
 
-function autoResize() {
+function autoResize(){
 
-  input.style.height =
-    "auto";
+  input.style.height = "auto";
 
   input.style.height =
-    Math.min(
-      input.scrollHeight,
-      150
-    ) + "px";
+    Math.min(input.scrollHeight,150) + "px";
 }
 
-input.addEventListener(
-  "keydown",
-  event => {
+input.addEventListener("keydown",event => {
 
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+  if(
+    event.key === "Enter" &&
+    !event.shiftKey &&
+    !event.isComposing
+  ){
 
-      event.preventDefault();
-
-      sendMessage();
-
-    }
-
+    event.preventDefault();
+    sendMessage();
   }
-);
+});
 
 /* =========================================================
    NEW CHAT
 ========================================================= */
 
-function newChat() {
+function newChat(){
+
+  if(sending) return;
 
   conversation = [];
-
   selectedFiles = [];
+  lastUserText = "";
 
-  messages.innerHTML = "";
+  messages.replaceChildren();
 
   renderAttachments();
 
-  welcome.style.display =
-    "flex";
+  welcome.style.display = "flex";
 
   input.value = "";
-
   autoResize();
 
   closeSidebar();
-
   input.focus();
-
 }
 
+$("newChatBtn").addEventListener("click",newChat);
+
 /* =========================================================
-   FOCUS
+   NAV
 ========================================================= */
 
-function focusComposer() {
-
+$("chatNav").addEventListener("click",() => {
   closeSidebar();
-
   input.focus();
+});
 
-}
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-function toggleSidebar() {
-
-  sidebar.classList.toggle(
-    "open"
-  );
-
-  overlay.classList.toggle(
-    "show"
-  );
-}
-
-function closeSidebar() {
-
-  sidebar.classList.remove(
-    "open"
-  );
-
-  overlay.classList.remove(
-    "show"
-  );
-}
+$("fastNav").addEventListener("click",() => {
+  closeSidebar();
+  showToast("⚡ Sultan AI يعمل بالوضع السريع");
+  input.focus();
+});
 
 /* =========================================================
    START
 ========================================================= */
 
-input.focus();
+autoResize();
 
+/*
+  Don't force keyboard open on mobile.
+*/
+if(window.innerWidth > 800){
+  input.focus();
+}
 </script>
 
 </body>
