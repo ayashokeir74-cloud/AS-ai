@@ -2694,4 +2694,359 @@
         text;
 
       if (
-        config.addUser !==
+        config.addUser !== false
+      ) {
+
+        addMessage(
+          "user",
+          text ||
+            "أرسلت ملفاً للتحليل."
+        );
+
+        conversation.push({
+          role: "user",
+          content:
+            text ||
+            "أرسلت ملفاً للتحليل."
+        });
+      }
+
+      messageInput.value =
+        "";
+
+      autoResize();
+
+      let preparedFiles = [];
+
+      try {
+
+        if (
+          filesToSend.length
+        ) {
+
+          preparedFiles =
+            await prepareFiles(
+              filesToSend
+            );
+
+          if (
+            config.clearFiles !==
+            false
+          ) {
+
+            selectedFiles =
+              [];
+
+            renderAttachments();
+          }
+        }
+
+        showTyping();
+
+        const data =
+          await requestAI(
+            text,
+            preparedFiles
+          );
+
+        hideTyping();
+
+        const reply =
+          data.reply ||
+          data.message ||
+          "لم يصل رد من Sultan AI.";
+
+        addMessage(
+          "assistant",
+          reply,
+          {
+            toolsUsed:
+              Array.isArray(
+                data.toolsUsed
+              )
+                ? data.toolsUsed
+                : []
+          }
+        );
+
+        conversation.push({
+          role: "assistant",
+          content: reply
+        });
+
+        if (
+          conversation.length >
+          MAX_HISTORY
+        ) {
+
+          conversation =
+            conversation.slice(
+              -MAX_HISTORY
+            );
+        }
+
+      } catch (error) {
+
+        hideTyping();
+
+        if (
+          error.name ===
+          "AbortError"
+        ) {
+
+          showToast(
+            "تم إيقاف الطلب."
+          );
+
+        } else {
+
+          console.error(
+            "Sultan AI error:",
+            error
+          );
+
+          addMessage(
+            "assistant",
+            "تعذر الحصول على رد من Sultan AI حالياً."
+          );
+        }
+
+      } finally {
+
+        sending = false;
+
+        abortController =
+          null;
+
+        sendBtn.classList.remove(
+          "stop"
+        );
+
+        sendBtn.textContent =
+          "➤";
+
+        sendBtn.title =
+          "إرسال";
+
+        messageInput.focus();
+
+        scrollToBottom();
+      }
+    }
+
+    /* =========================================================
+       STOP REQUEST
+       ========================================================= */
+
+    sendBtn.addEventListener(
+      "click",
+      () => {
+
+        if (sending) {
+
+          if (abortController) {
+            abortController.abort();
+          }
+
+          return;
+        }
+
+        sendMessage();
+      }
+    );
+
+    /* =========================================================
+       TRUE REGENERATE
+       ========================================================= */
+
+    async function regenerateLastResponse(
+      messageElement
+    ) {
+
+      if (sending) {
+
+        showToast(
+          "انتظر حتى ينتهي الرد الحالي."
+        );
+
+        return;
+      }
+
+      if (!lastUserText) {
+
+        showToast(
+          "لا يوجد رد سابق لإعادة توليده."
+        );
+
+        return;
+      }
+
+      if (messageElement) {
+        messageElement.remove();
+      }
+
+      for (
+        let i =
+          conversation.length - 1;
+        i >= 0;
+        i--
+      ) {
+
+        if (
+          conversation[i].role ===
+          "assistant"
+        ) {
+
+          conversation.splice(
+            i,
+            1
+          );
+
+          break;
+        }
+      }
+
+      showTyping();
+
+      sending = true;
+
+      sendBtn.classList.add(
+        "stop"
+      );
+
+      sendBtn.textContent =
+        "■";
+
+      try {
+
+        const data =
+          await requestAI(
+            lastUserText,
+            []
+          );
+
+        hideTyping();
+
+        const reply =
+          data.reply ||
+          data.message ||
+          "لم يصل رد من Sultan AI.";
+
+        addMessage(
+          "assistant",
+          reply,
+          {
+            toolsUsed:
+              Array.isArray(
+                data.toolsUsed
+              )
+                ? data.toolsUsed
+                : []
+          }
+        );
+
+        conversation.push({
+          role: "assistant",
+          content: reply
+        });
+
+      } catch (error) {
+
+        hideTyping();
+
+        if (
+          error.name !==
+          "AbortError"
+        ) {
+
+          console.error(
+            "Regenerate error:",
+            error
+          );
+
+          addMessage(
+            "assistant",
+            "تعذر إعادة توليد الرد حالياً."
+          );
+        }
+
+      } finally {
+
+        sending = false;
+
+        abortController =
+          null;
+
+        sendBtn.classList.remove(
+          "stop"
+        );
+
+        sendBtn.textContent =
+          "➤";
+
+        messageInput.focus();
+
+        scrollToBottom();
+      }
+    }
+
+    /* =========================================================
+       SIDEBAR BUTTONS
+       ========================================================= */
+
+    document
+      .getElementById(
+        "filesSideBtn"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          closeSidebar();
+
+          fileInput.click();
+        }
+      );
+
+    document
+      .getElementById(
+        "fastSideBtn"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          closeSidebar();
+
+          showToast(
+            "⚡ الوضع السريع مفعّل في واجهة Sultan AI."
+          );
+        }
+      );
+
+    document
+      .getElementById(
+        "chatSideBtn"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          closeSidebar();
+
+          messageInput.focus();
+        }
+      );
+
+    /* =========================================================
+       INITIAL
+       ========================================================= */
+
+    autoResize();
+
+    messageInput.focus();
+
+  </script>
+
+</body>
+</html>
