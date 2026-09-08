@@ -1,7 +1,7 @@
 {
   "name": "sultan-ai",
-  "version": "5.0.0",
-  "description": "Sultan AI V5 - Advanced AI Assistant with Groq Compound, Web Search, Website Reading, Code Execution, Wolfram Alpha, File and Image Analysis",
+  "version": "7.0.0",
+  "description": "Sultan AI V7 - Advanced AI Assistant powered by Groq Compound with Web Search, Website Reading, Code Execution, Vision and File Analysis",
   "type": "module",
   "main": "server.js",
   "scripts": {
