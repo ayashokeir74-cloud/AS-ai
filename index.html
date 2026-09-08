@@ -22,7 +22,6 @@
   --line: rgba(255,255,255,.08);
   --fire: #ff5a1f;
   --fire2: #ffb000;
-  --danger: #ff2d00;
 }
 
 body {
@@ -32,11 +31,11 @@ body {
     radial-gradient(circle at 10% 90%, rgba(255,150,0,.06), transparent 25%),
     var(--bg);
   color: var(--text);
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   overflow: hidden;
 }
 
-/* Background particles */
 #particles {
   position: fixed;
   inset: 0;
@@ -44,7 +43,6 @@ body {
   z-index: 0;
 }
 
-/* App */
 .app {
   position: relative;
   z-index: 1;
@@ -52,7 +50,8 @@ body {
   display: flex;
 }
 
-/* Sidebar */
+/* SIDEBAR */
+
 .sidebar {
   width: 265px;
   height: 100%;
@@ -80,7 +79,7 @@ body {
   place-items: center;
   font-weight: 900;
   font-size: 19px;
-  background: linear-gradient(145deg, #ff8a00, #ff2800);
+  background: linear-gradient(145deg,#ff8a00,#ff2800);
   box-shadow:
     0 0 22px rgba(255,75,0,.38),
     inset 0 1px 0 rgba(255,255,255,.25);
@@ -98,7 +97,11 @@ body {
 
 .new-chat {
   border: 1px solid rgba(255,100,30,.25);
-  background: linear-gradient(135deg, rgba(255,80,20,.16), rgba(255,160,0,.07));
+  background: linear-gradient(
+    135deg,
+    rgba(255,80,20,.16),
+    rgba(255,160,0,.07)
+  );
   color: white;
   border-radius: 13px;
   padding: 13px 15px;
@@ -164,7 +167,15 @@ body {
   font-size: 13px;
 }
 
-/* Main */
+.assisted {
+  display: block;
+  margin-top: 7px;
+  color: #ff8a45 !important;
+  font-size: 10px !important;
+}
+
+/* MAIN */
+
 .main {
   flex: 1;
   min-width: 0;
@@ -218,7 +229,8 @@ body {
   font-weight: 700;
 }
 
-/* Chat */
+/* CHAT */
+
 .chat {
   flex: 1;
   overflow-y: auto;
@@ -227,11 +239,12 @@ body {
 }
 
 .chat-inner {
-  width: min(850px, 100%);
+  width: min(850px,100%);
   margin: auto;
 }
 
-/* Welcome */
+/* WELCOME */
+
 .welcome {
   min-height: 55vh;
   display: flex;
@@ -253,7 +266,7 @@ body {
   place-items: center;
   font-size: 29px;
   font-weight: 950;
-  background: linear-gradient(145deg, #ff9a00, #ff2600);
+  background: linear-gradient(145deg,#ff9a00,#ff2600);
   box-shadow:
     0 0 30px rgba(255,70,0,.3),
     0 0 90px rgba(255,70,0,.12);
@@ -266,13 +279,13 @@ body {
 }
 
 .welcome h1 {
-  font-size: clamp(38px, 6vw, 66px);
+  font-size: clamp(38px,6vw,66px);
   line-height: 1;
   letter-spacing: -3px;
 }
 
 .gradient {
-  background: linear-gradient(90deg, #fff, #ffb066, #ff4b17);
+  background: linear-gradient(90deg,#fff,#ffb066,#ff4b17);
   -webkit-background-clip: text;
   color: transparent;
 }
@@ -285,7 +298,7 @@ body {
 
 .quick {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2,1fr);
   gap: 10px;
   margin-top: 28px;
 }
@@ -307,7 +320,8 @@ body {
   transform: translateY(-1px);
 }
 
-/* Messages */
+/* MESSAGES */
+
 .message {
   display: flex;
   gap: 12px;
@@ -316,8 +330,14 @@ body {
 }
 
 @keyframes appear {
-  from { opacity: 0; transform: translateY(7px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .avatar {
@@ -365,7 +385,8 @@ body {
   border-radius: 13px;
 }
 
-/* Typing */
+/* TYPING */
+
 .typing {
   display: inline-flex;
   gap: 4px;
@@ -380,26 +401,41 @@ body {
   animation: blink .8s infinite alternate;
 }
 
-.typing i:nth-child(2) { animation-delay: .15s; }
-.typing i:nth-child(3) { animation-delay: .3s; }
-
-@keyframes blink {
-  from { opacity: .25; transform: translateY(0); }
-  to { opacity: 1; transform: translateY(-3px); }
+.typing i:nth-child(2) {
+  animation-delay: .15s;
 }
 
-/* Composer */
+.typing i:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes blink {
+  from {
+    opacity: .25;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* COMPOSER */
+
 .composer-wrap {
   position: fixed;
   left: 265px;
   right: 0;
   bottom: 0;
   padding: 15px 18px 18px;
-  background: linear-gradient(transparent, rgba(7,7,10,.96) 30%);
+  background: linear-gradient(
+    transparent,
+    rgba(7,7,10,.96) 30%
+  );
 }
 
 .composer {
-  width: min(850px, 100%);
+  width: min(850px,100%);
   margin: auto;
   display: flex;
   align-items: flex-end;
@@ -468,7 +504,8 @@ body {
   margin-top: 8px;
 }
 
-/* Fire sparks */
+/* SPARKS */
+
 .spark {
   position: fixed;
   width: 3px;
@@ -486,21 +523,20 @@ body {
     opacity: 0;
     transform: translate(0,0) scale(.4);
   }
+
   15% {
     opacity: .9;
   }
+
   100% {
     opacity: 0;
-    transform: translate(var(--x), var(--y)) scale(0);
+    transform: translate(var(--x),var(--y)) scale(0);
   }
 }
 
-/* Mobile */
-@media (max-width: 720px) {
+/* MOBILE */
 
-  body {
-    overflow: hidden;
-  }
+@media(max-width:720px) {
 
   .sidebar {
     position: fixed;
@@ -562,7 +598,10 @@ body {
 
     <div class="brand">
       <div class="logo">S</div>
-      <div class="brand-text">Sultan <span>AI</span></div>
+
+      <div class="brand-text">
+        Sultan <span>AI</span>
+      </div>
     </div>
 
     <button class="new-chat" onclick="newChat()">
@@ -570,7 +609,10 @@ body {
     </button>
 
     <div class="nav">
-      <div class="nav-title">Workspace</div>
+
+      <div class="nav-title">
+        Workspace
+      </div>
 
       <button class="nav-item" onclick="newChat()">
         💬 New conversation
@@ -583,13 +625,25 @@ body {
       <button class="nav-item">
         ⚙️ Settings
       </button>
+
     </div>
 
     <div class="sidebar-bottom">
+
       <div class="creator">
+
         <small>CREATED BY</small>
-        <strong>Ali Sultan ⚡</strong>
+
+        <strong>
+          Ali Sultan ⚡
+        </strong>
+
+        <small class="assisted">
+          Assisted by Ali Arandis
+        </small>
+
       </div>
+
     </div>
 
   </aside>
@@ -598,7 +652,9 @@ body {
 
     <header class="topbar">
 
-      <button class="mobile-menu" onclick="toggleSidebar()">
+      <button
+        class="mobile-menu"
+        onclick="toggleSidebar()">
         ☰
       </button>
 
@@ -621,17 +677,24 @@ body {
 
           <div class="welcome-content">
 
-            <div class="fire-logo">S</div>
+            <div class="fire-logo">
+              S
+            </div>
 
             <h1>
-              Meet <span class="gradient">Sultan AI</span>
+              Meet
+              <span class="gradient">
+                Sultan AI
+              </span>
             </h1>
 
             <p>
-              Fast. Smart. Powerful. Your next-generation AI assistant.
+              Fast. Smart. Powerful.
+              Your next-generation AI assistant.
             </p>
 
             <div class="quick">
+
               <button onclick="quickAsk('Explain something to me simply')">
                 🧠 Explain something
               </button>
@@ -647,6 +710,7 @@ body {
               <button onclick="quickAsk('Help me with coding')">
                 💻 Help me code
               </button>
+
             </div>
 
           </div>
@@ -673,7 +737,10 @@ body {
           oninput="autoResize(this)"
         ></textarea>
 
-        <button class="send" onclick="sendMessage()" title="Send">
+        <button
+          class="send"
+          onclick="sendMessage()"
+          title="Send">
           ➤
         </button>
 
@@ -691,80 +758,147 @@ body {
 
 <script>
 
-/* ==============================
-   Sultan AI Frontend
-   Ready for backend connection
-================================ */
+/* ==========================================
+   SULTAN AI
+   REAL BACKEND + STREAMING
+========================================== */
 
-const promptBox = document.getElementById("prompt");
-const chatInner = document.getElementById("chatInner");
-const welcome = document.getElementById("welcome");
+const promptBox =
+  document.getElementById("prompt");
 
-/* Mobile sidebar */
+const chatInner =
+  document.getElementById("chatInner");
+
+const welcome =
+  document.getElementById("welcome");
+
+let conversation = [];
+
+
+/* MOBILE SIDEBAR */
+
 function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("open");
+
+  document
+    .getElementById("sidebar")
+    .classList
+    .toggle("open");
+
 }
 
-/* New chat */
+
+/* NEW CHAT */
+
 function newChat() {
+
+  conversation = [];
+
   chatInner.innerHTML = "";
+
   chatInner.appendChild(welcome);
+
   welcome.style.display = "flex";
+
+  promptBox.value = "";
+
+  autoResize(promptBox);
+
   promptBox.focus();
 
-  document.getElementById("sidebar").classList.remove("open");
+  document
+    .getElementById("sidebar")
+    .classList
+    .remove("open");
 }
 
-/* Quick buttons */
+
+/* QUICK ASK */
+
 function quickAsk(text) {
+
   promptBox.value = text;
+
   autoResize(promptBox);
+
   sendMessage();
 }
 
-/* Enter to send */
+
+/* ENTER */
+
 function handleKey(e) {
-  if (e.key === "Enter" && !e.shiftKey) {
+
+  if (
+    e.key === "Enter" &&
+    !e.shiftKey
+  ) {
+
     e.preventDefault();
+
     sendMessage();
   }
 }
 
-/* Resize textarea */
+
+/* TEXTAREA */
+
 function autoResize(el) {
+
   el.style.height = "42px";
-  el.style.height = Math.min(el.scrollHeight, 150) + "px";
+
+  el.style.height =
+    Math.min(el.scrollHeight,150) + "px";
 }
 
-/* Add message */
-function addMessage(type, text) {
 
-  if (welcome) {
-    welcome.style.display = "none";
-  }
+/* ADD MESSAGE */
 
-  const message = document.createElement("div");
-  message.className = `message ${type}`;
+function addMessage(type,text) {
 
-  const avatar = document.createElement("div");
+  welcome.style.display = "none";
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    `message ${type}`;
+
+  const avatar =
+    document.createElement("div");
+
   avatar.className = "avatar";
-  avatar.textContent = type === "ai" ? "S" : "YOU";
 
-  const body = document.createElement("div");
+  avatar.textContent =
+    type === "ai" ? "S" : "YOU";
+
+  const body =
+    document.createElement("div");
+
   body.className = "msg-body";
 
-  const name = document.createElement("div");
-  name.className = "msg-name";
-  name.textContent = type === "ai" ? "Sultan AI" : "You";
+  const name =
+    document.createElement("div");
 
-  const content = document.createElement("div");
+  name.className = "msg-name";
+
+  name.textContent =
+    type === "ai"
+      ? "Sultan AI"
+      : "You";
+
+  const content =
+    document.createElement("div");
+
   content.className = "msg-text";
+
   content.textContent = text;
 
   body.appendChild(name);
+
   body.appendChild(content);
 
   message.appendChild(avatar);
+
   message.appendChild(body);
 
   chatInner.appendChild(message);
@@ -774,37 +908,60 @@ function addMessage(type, text) {
   return content;
 }
 
-/* Typing indicator */
+
+/* TYPING */
+
 function addTyping() {
 
-  if (welcome) {
-    welcome.style.display = "none";
-  }
+  welcome.style.display = "none";
 
-  const message = document.createElement("div");
-  message.className = "message ai";
-  message.id = "typingMessage";
+  const message =
+    document.createElement("div");
 
-  const avatar = document.createElement("div");
-  avatar.className = "avatar";
+  message.className =
+    "message ai";
+
+  message.id =
+    "typingMessage";
+
+  const avatar =
+    document.createElement("div");
+
+  avatar.className =
+    "avatar";
+
   avatar.textContent = "S";
 
-  const body = document.createElement("div");
-  body.className = "msg-body";
+  const body =
+    document.createElement("div");
 
-  const name = document.createElement("div");
-  name.className = "msg-name";
-  name.textContent = "Sultan AI";
+  body.className =
+    "msg-body";
 
-  const typing = document.createElement("div");
-  typing.className = "typing";
+  const name =
+    document.createElement("div");
 
-  typing.innerHTML = "<i></i><i></i><i></i>";
+  name.className =
+    "msg-name";
+
+  name.textContent =
+    "Sultan AI";
+
+  const typing =
+    document.createElement("div");
+
+  typing.className =
+    "typing";
+
+  typing.innerHTML =
+    "<i></i><i></i><i></i>";
 
   body.appendChild(name);
+
   body.appendChild(typing);
 
   message.appendChild(avatar);
+
   message.appendChild(body);
 
   chatInner.appendChild(message);
@@ -814,132 +971,320 @@ function addTyping() {
   return message;
 }
 
-/* Send message */
+
+/* ==========================================
+   SEND TO REAL SERVER
+========================================== */
+
 async function sendMessage() {
 
-  const text = promptBox.value.trim();
+  const text =
+    promptBox.value.trim();
 
   if (!text) return;
 
+
   promptBox.value = "";
+
   autoResize(promptBox);
 
-  addMessage("user", text);
 
-  const typing = addTyping();
+  addMessage("user",text);
 
-  /*
-    BACKEND CONNECTION
 
-    Later the server will receive:
+  conversation.push({
+    role: "user",
+    content: text
+  });
 
-    POST /api/chat
 
-    {
-      message: "..."
-    }
+  const typing =
+    addTyping();
 
-    and return the AI response.
-
-    For now we keep the frontend independent.
-  */
 
   try {
 
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: text
-      })
-    });
+    const response =
+      await fetch("/api/chat", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          messages: conversation
+        })
+
+      });
+
 
     if (!response.ok) {
-      throw new Error("Backend not connected");
+
+      throw new Error(
+        `Server error: ${response.status}`
+      );
+
     }
 
-    const data = await response.json();
+
+    if (!response.body) {
+
+      throw new Error(
+        "Streaming is not supported."
+      );
+
+    }
+
 
     typing.remove();
 
-    addMessage(
-      "ai",
-      data.reply || "Sultan AI didn't receive a response."
-    );
+
+    const aiText =
+      addMessage("ai","");
+
+
+    let fullResponse = "";
+
+
+    const reader =
+      response.body.getReader();
+
+    const decoder =
+      new TextDecoder("utf-8");
+
+
+    let buffer = "";
+
+
+    while (true) {
+
+      const result =
+        await reader.read();
+
+      if (result.done)
+        break;
+
+
+      buffer +=
+        decoder.decode(
+          result.value,
+          { stream: true }
+        );
+
+
+      const lines =
+        buffer.split("\n");
+
+
+      buffer =
+        lines.pop() || "";
+
+
+      for (const line of lines) {
+
+        if (
+          !line.startsWith("data:")
+        ) {
+          continue;
+        }
+
+
+        const raw =
+          line
+            .slice(5)
+            .trim();
+
+
+        if (!raw)
+          continue;
+
+
+        try {
+
+          const data =
+            JSON.parse(raw);
+
+
+          if (
+            data.type === "token"
+          ) {
+
+            fullResponse +=
+              data.content || "";
+
+            aiText.textContent =
+              fullResponse;
+
+            scrollBottom();
+
+          }
+
+
+          if (
+            data.type === "error"
+          ) {
+
+            throw new Error(
+              data.error ||
+              "AI error"
+            );
+
+          }
+
+        } catch (err) {
+
+          if (
+            err.message ===
+            "AI error"
+          ) {
+            throw err;
+          }
+
+        }
+
+      }
+
+    }
+
+
+    conversation.push({
+      role: "assistant",
+      content: fullResponse
+    });
+
+
+    scrollBottom();
+
 
   } catch (error) {
 
+    console.error(
+      "Sultan AI:",
+      error
+    );
+
+
     typing.remove();
 
-    /*
-      Temporary frontend response.
-      This will disappear once the real server is connected.
-    */
 
     addMessage(
       "ai",
-      "⚡ Sultan AI is ready. Connect the server to activate the real AI."
+      "⚠️ Sultan AI couldn't connect to the AI service. Please try again."
     );
+
   }
+
 }
 
-/* Scroll */
+
+/* SCROLL */
+
 function scrollBottom() {
+
   requestAnimationFrame(() => {
-    const chat = document.getElementById("chat");
-    chat.scrollTop = chat.scrollHeight;
+
+    const chat =
+      document.getElementById("chat");
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
   });
+
 }
 
-/* ==============================
-   Fire particle engine
-================================ */
 
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
+/* ==========================================
+   FIRE PARTICLES
+========================================== */
 
-let W, H;
+const canvas =
+  document.getElementById("particles");
+
+const ctx =
+  canvas.getContext("2d");
+
+let W,H;
+
 
 function resizeCanvas() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+
+  W =
+    canvas.width =
+      window.innerWidth;
+
+  H =
+    canvas.height =
+      window.innerHeight;
+
 }
 
+
 resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+
+window.addEventListener(
+  "resize",
+  resizeCanvas
+);
+
 
 function fireSpark() {
 
-  const spark = document.createElement("div");
-  spark.className = "spark";
+  const spark =
+    document.createElement("div");
+
+  spark.className =
+    "spark";
+
 
   spark.style.left =
-    (window.innerWidth * .5 + (Math.random() - .5) * 120) + "px";
+    (
+      window.innerWidth * .5 +
+      (Math.random() - .5) * 120
+    ) + "px";
+
 
   spark.style.top =
-    (window.innerHeight * .22 + Math.random() * 100) + "px";
+    (
+      window.innerHeight * .22 +
+      Math.random() * 100
+    ) + "px";
+
 
   spark.style.setProperty(
     "--x",
     ((Math.random() - .5) * 180) + "px"
   );
 
+
   spark.style.setProperty(
     "--y",
     (-40 - Math.random() * 150) + "px"
   );
 
+
   spark.style.animationDuration =
     (.8 + Math.random() * 1.5) + "s";
 
+
   document.body.appendChild(spark);
 
-  setTimeout(() => spark.remove(), 2500);
+
+  setTimeout(
+    () => spark.remove(),
+    2500
+  );
+
 }
 
-setInterval(fireSpark, 180);
+
+setInterval(
+  fireSpark,
+  180
+);
 
 </script>
 
