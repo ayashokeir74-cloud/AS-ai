@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#070812" />
-  <meta name="description" content="A S AI — مساعد ذكاء اصطناعي متطور" />
-
-  <title>A S AI — AI Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AS AI</title>
 
   <style>
     * {
@@ -16,39 +13,38 @@
     }
 
     :root {
-      --bg: #070812;
-      --bg2: #0b0d19;
-      --panel: rgba(17, 20, 35, .82);
-      --panel2: rgba(24, 27, 45, .72);
-      --border: rgba(255,255,255,.08);
-      --text: #f5f7ff;
-      --muted: #8e94aa;
-      --purple: #8b5cf6;
-      --purple2: #6d28d9;
-      --cyan: #22d3ee;
-      --green: #34d399;
-      --danger: #fb7185;
-      --radius: 22px;
-      --sidebar: 285px;
+      --bg: #ffffff;
+      --panel: #f7f7f5;
+      --panel-2: #efefec;
+      --text: #242424;
+      --muted: #77746e;
+      --border: #e4e2dd;
+      --accent: #c96f45;
+      --accent-dark: #ad5933;
+      --user: #f0eee9;
+      --shadow: 0 8px 30px rgba(0,0,0,.06);
     }
 
-    html,
+    body.dark {
+      --bg: #171716;
+      --panel: #20201e;
+      --panel-2: #292927;
+      --text: #eeeeea;
+      --muted: #a3a19a;
+      --border: #353531;
+      --accent: #e48b60;
+      --accent-dark: #c96f45;
+      --user: #292927;
+      --shadow: 0 8px 30px rgba(0,0,0,.3);
+    }
+
     body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 15% 15%, rgba(124,58,237,.16), transparent 28%),
-        radial-gradient(circle at 85% 10%, rgba(34,211,238,.10), transparent 25%),
-        radial-gradient(circle at 50% 100%, rgba(124,58,237,.08), transparent 35%),
-        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
       color: var(--text);
-      font-family:
-        Inter,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
+      height: 100vh;
+      overflow: hidden;
     }
 
     button,
@@ -60,435 +56,245 @@
     button {
       border: 0;
       cursor: pointer;
+      color: inherit;
     }
-
-    ::selection {
-      background: rgba(139,92,246,.35);
-    }
-
-    ::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,.10);
-      border-radius: 20px;
-    }
-
-    /* =========================
-       APP
-    ========================= */
 
     .app {
-      width: 100%;
-      height: 100%;
       display: flex;
-      position: relative;
-      overflow: hidden;
+      width: 100%;
+      height: 100vh;
     }
 
-    /* =========================
-       SIDEBAR
-    ========================= */
+    /* SIDEBAR */
 
     .sidebar {
-      width: var(--sidebar);
-      height: 100%;
-      flex-shrink: 0;
-      padding: 18px;
+      width: 270px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      background: rgba(8, 10, 20, .82);
-      border-left: 1px solid var(--border);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      z-index: 30;
+      padding: 18px 14px;
+      transition: .25s ease;
+      flex-shrink: 0;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 8px 4px 16px;
+      gap: 11px;
+      padding: 8px 9px 22px;
     }
 
     .brand-logo {
-      width: 47px;
-      height: 47px;
-      border-radius: 15px;
+      width: 37px;
+      height: 37px;
+      border-radius: 11px;
+      background: var(--accent);
+      color: white;
       display: grid;
       place-items: center;
-      color: white;
-      font-weight: 900;
-      font-size: 16px;
-      letter-spacing: -1px;
-      background:
-        linear-gradient(135deg, #9b6cff, #6d28d9 55%, #22d3ee);
-      box-shadow:
-        0 10px 35px rgba(124,58,237,.28),
-        inset 0 1px rgba(255,255,255,.3);
+      font-weight: 800;
+      font-size: 15px;
+      box-shadow: var(--shadow);
     }
 
-    .brand-text h1 {
-      font-size: 18px;
-      font-weight: 850;
+    .brand-name {
+      font-size: 19px;
+      font-weight: 750;
       letter-spacing: -.4px;
     }
 
-    .brand-text p {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 3px;
-    }
-
     .new-chat {
-      height: 48px;
-      border-radius: 15px;
-      color: white;
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: 11px;
+      text-align: left;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 9px;
-      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-      box-shadow: 0 10px 30px rgba(109,40,217,.22);
+      gap: 10px;
+      font-weight: 650;
       transition: .2s;
-      font-weight: 750;
     }
 
     .new-chat:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 13px 35px rgba(109,40,217,.32);
+      background: var(--panel-2);
     }
 
-    .sidebar-title {
-      color: #696f86;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.4px;
-      margin: 5px 4px 0;
+    .section-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 25px 10px 9px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
     }
 
-    .history {
+    .chat-list {
       flex: 1;
-      min-height: 0;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
     }
 
-    .history-empty {
-      color: #676d82;
-      font-size: 12px;
-      text-align: center;
-      padding: 25px 10px;
-      line-height: 1.8;
-    }
-
-    .history-item {
-      width: 100%;
-      min-height: 43px;
-      padding: 9px 11px;
-      border-radius: 12px;
-      background: transparent;
-      color: #b9bfd1;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      text-align: right;
-      transition: .18s;
-      overflow: hidden;
-    }
-
-    .history-item:hover {
-      background: rgba(255,255,255,.055);
-      color: white;
-    }
-
-    .history-item.active {
-      background: rgba(139,92,246,.13);
-      color: white;
-    }
-
-    .history-icon {
-      opacity: .65;
-      flex-shrink: 0;
-    }
-
-    .history-name {
-      overflow: hidden;
+    .chat-item {
+      padding: 10px 11px;
+      border-radius: 9px;
+      font-size: 14px;
+      color: var(--muted);
       white-space: nowrap;
+      overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 12px;
+      margin-bottom: 2px;
     }
 
-    .sidebar-bottom {
+    .chat-item:hover {
+      background: var(--panel-2);
+      color: var(--text);
+    }
+
+    .bottom {
       border-top: 1px solid var(--border);
-      padding-top: 15px;
+      padding-top: 13px;
+      display: flex;
+      gap: 7px;
     }
 
-    .creator {
-      padding: 13px;
-      border-radius: 15px;
-      background: linear-gradient(
-        135deg,
-        rgba(139,92,246,.10),
-        rgba(34,211,238,.04)
-      );
-      border: 1px solid rgba(139,92,246,.10);
+    .small-btn {
+      flex: 1;
+      background: transparent;
+      border-radius: 9px;
+      padding: 10px 7px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .creator-label {
-      color: #777d93;
-      font-size: 10px;
-      margin-bottom: 6px;
+    .small-btn:hover {
+      background: var(--panel-2);
+      color: var(--text);
     }
 
-    .creator-name {
-      font-size: 12px;
-      font-weight: 750;
-      line-height: 1.7;
-      color: #e8eaff;
-    }
-
-    .copyright {
-      text-align: center;
-      color: #555b70;
-      font-size: 9px;
-      margin-top: 11px;
-    }
-
-    /* =========================
-       MAIN
-    ========================= */
+    /* MAIN */
 
     .main {
       flex: 1;
       min-width: 0;
-      height: 100%;
       display: flex;
       flex-direction: column;
       position: relative;
     }
 
     .topbar {
-      height: 72px;
-      flex-shrink: 0;
-      padding: 12px 20px;
+      height: 62px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: rgba(7,8,18,.56);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      z-index: 10;
-    }
-
-    .top-left {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-width: 0;
+      padding: 0 22px;
+      background: var(--bg);
     }
 
     .mobile-menu {
       display: none;
+      background: transparent;
+      font-size: 22px;
+      margin-right: 12px;
     }
 
-    .model-pill {
-      height: 38px;
-      padding: 0 13px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.035);
+    .model {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #cdd1df;
-      font-size: 11px;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 650;
+      color: var(--text);
     }
 
-    .status-dot {
-      width: 7px;
-      height: 7px;
+    .model-dot {
+      width: 8px;
+      height: 8px;
+      background: #55a66b;
       border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 12px rgba(52,211,153,.7);
     }
 
     .top-actions {
       display: flex;
-      align-items: center;
-      gap: 7px;
+      gap: 5px;
     }
 
-    .icon-button {
+    .icon-btn {
       width: 38px;
       height: 38px;
-      border-radius: 12px;
-      background: rgba(255,255,255,.035);
-      border: 1px solid var(--border);
-      color: #adb3c7;
-      display: grid;
-      place-items: center;
-      transition: .18s;
+      background: transparent;
+      border-radius: 9px;
+      font-size: 18px;
     }
 
-    .icon-button:hover {
-      color: white;
-      background: rgba(255,255,255,.07);
+    .icon-btn:hover {
+      background: var(--panel);
     }
 
-    /* =========================
-       CHAT
-    ========================= */
+    /* CHAT */
 
-    .chat-area {
+    .messages {
       flex: 1;
-      min-height: 0;
       overflow-y: auto;
-      padding: 34px 22px 150px;
       scroll-behavior: smooth;
+      padding: 38px 20px 150px;
     }
 
-    .chat-inner {
-      width: min(940px, 100%);
-      margin: 0 auto;
+    .conversation {
+      width: min(820px, 100%);
+      margin: auto;
     }
 
     .welcome {
-      min-height: calc(100vh - 245px);
+      min-height: 62vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 20px 0 70px;
-    }
-
-    .hero-badge {
-      width: fit-content;
-      display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 7px 11px;
-      border-radius: 100px;
-      border: 1px solid rgba(139,92,246,.18);
-      background: rgba(139,92,246,.08);
-      color: #bda8ff;
-      font-size: 10px;
-      font-weight: 800;
-      margin-bottom: 18px;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      padding: 20px;
     }
 
-    .hero-badge span {
-      width: 6px;
-      height: 6px;
-      background: #a78bfa;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #8b5cf6;
-    }
-
-    .hero h2 {
-      max-width: 700px;
-      font-size: clamp(34px, 6vw, 62px);
-      line-height: 1.03;
-      letter-spacing: -2.8px;
-      font-weight: 900;
-      margin-bottom: 17px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(
-        100deg,
-        #ffffff 5%,
-        #c4b5fd 43%,
-        #67e8f9 95%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-description {
-      max-width: 650px;
-      color: #8d93a8;
-      font-size: 14px;
-      line-height: 1.9;
-      margin-bottom: 30px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      max-width: 850px;
-    }
-
-    .feature {
-      padding: 17px;
-      border-radius: 18px;
-      background: linear-gradient(
-        145deg,
-        rgba(255,255,255,.055),
-        rgba(255,255,255,.018)
-      );
-      border: 1px solid var(--border);
-      transition: .2s;
-    }
-
-    .feature:hover {
-      transform: translateY(-2px);
-      border-color: rgba(139,92,246,.22);
-      background: rgba(255,255,255,.065);
-    }
-
-    .feature-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
+    .welcome-mark {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: var(--accent);
+      color: white;
       display: grid;
       place-items: center;
-      background: rgba(139,92,246,.12);
-      color: #b9a0ff;
-      margin-bottom: 12px;
+      font-size: 21px;
+      font-weight: 800;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
     }
 
-    .feature h3 {
-      font-size: 12px;
-      margin-bottom: 6px;
+    .welcome h1 {
+      font-size: clamp(28px, 5vw, 43px);
+      letter-spacing: -1.5px;
+      margin-bottom: 10px;
     }
 
-    .feature p {
-      color: #777e93;
-      font-size: 10px;
-      line-height: 1.7;
-    }
-
-    /* =========================
-       MESSAGES
-    ========================= */
-
-    .messages {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
+    .welcome p {
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.6;
+      font-size: 15px;
     }
 
     .message {
       display: flex;
-      gap: 12px;
-      animation: messageIn .25s ease;
+      flex-direction: column;
+      margin-bottom: 30px;
+      animation: appear .2s ease;
     }
 
-    @keyframes messageIn {
+    @keyframes appear {
       from {
         opacity: 0;
-        transform: translateY(7px);
+        transform: translateY(5px);
       }
       to {
         opacity: 1;
@@ -497,521 +303,229 @@
     }
 
     .message.user {
-      flex-direction: row-reverse;
+      align-items: flex-end;
     }
 
-    .avatar {
-      width: 34px;
-      height: 34px;
-      flex: 0 0 34px;
-      border-radius: 11px;
-      display: grid;
-      place-items: center;
-      font-size: 10px;
-      font-weight: 900;
-      margin-top: 2px;
+    .message.ai {
+      align-items: flex-start;
     }
 
-    .assistant .avatar {
-      background: linear-gradient(135deg,#8b5cf6,#22d3ee);
-      color: white;
-    }
-
-    .user .avatar {
-      background: rgba(255,255,255,.08);
-      border: 1px solid var(--border);
-      color: #c9cde0;
-    }
-
-    .message-content {
-      max-width: min(78%, 760px);
-      min-width: 0;
-    }
-
-    .message-name {
-      color: #737a91;
-      font-size: 9px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .user .message-name {
-      text-align: right;
+    .message-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 7px;
+      padding: 0 4px;
     }
 
     .bubble {
-      color: #e5e8f1;
-      font-size: 13px;
-      line-height: 1.85;
+      max-width: min(720px, 92%);
+      line-height: 1.7;
+      font-size: 15px;
       white-space: pre-wrap;
-      word-break: break-word;
+      overflow-wrap: anywhere;
     }
 
     .user .bubble {
-      padding: 12px 15px;
-      border-radius: 17px 17px 4px 17px;
-      background: linear-gradient(
-        135deg,
-        rgba(139,92,246,.18),
-        rgba(109,40,217,.11)
-      );
-      border: 1px solid rgba(139,92,246,.13);
+      background: var(--user);
+      padding: 12px 16px;
+      border-radius: 17px;
     }
 
-    .assistant .bubble {
-      padding-top: 1px;
+    .ai .bubble {
+      padding: 2px 4px;
     }
 
-    .bubble pre {
-      direction: ltr;
-      text-align: left;
-      white-space: pre;
-      overflow-x: auto;
-      margin: 13px 0;
-      padding: 15px;
+    .message-image {
+      max-width: 300px;
+      max-height: 300px;
       border-radius: 13px;
-      background: #05060d;
-      border: 1px solid rgba(255,255,255,.07);
-      color: #d9def0;
-      font-size: 11px;
-      line-height: 1.65;
-    }
-
-    .bubble code {
-      font-family: Consolas, Monaco, monospace;
-    }
-
-    .typing {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 10px 0;
-    }
-
-    .typing span {
-      width: 5px;
-      height: 5px;
-      background: #8b5cf6;
-      border-radius: 50%;
-      animation: typing .9s infinite;
-    }
-
-    .typing span:nth-child(2) {
-      animation-delay: .15s;
-    }
-
-    .typing span:nth-child(3) {
-      animation-delay: .3s;
-    }
-
-    @keyframes typing {
-      0%, 60%, 100% {
-        opacity: .25;
-        transform: translateY(0);
-      }
-      30% {
-        opacity: 1;
-        transform: translateY(-3px);
-      }
-    }
-
-    /* =========================
-       IMAGE RESULTS
-    ========================= */
-
-    .generated-image {
-      margin-top: 9px;
-      max-width: 100%;
-      border-radius: 18px;
-      overflow: hidden;
-      background: #0a0b14;
+      margin-bottom: 9px;
       border: 1px solid var(--border);
-      box-shadow: 0 18px 60px rgba(0,0,0,.3);
     }
 
-    .generated-image img {
-      display: block;
-      width: 100%;
-      max-height: 650px;
-      object-fit: contain;
-      background: #05060c;
-    }
+    /* COMPOSER */
 
-    .image-actions {
-      padding: 9px;
-      display: flex;
-      gap: 7px;
-      background: rgba(10,11,20,.92);
-    }
-
-    .image-action {
-      height: 34px;
-      padding: 0 12px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.055);
-      border: 1px solid var(--border);
-      color: #c4c8d8;
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .image-action:hover {
-      background: rgba(255,255,255,.09);
-      color: white;
-    }
-
-    /* =========================
-       COMPOSER
-    ========================= */
-
-    .composer-wrap {
+    .composer-area {
       position: absolute;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      padding: 16px 20px 19px;
-      background:
-        linear-gradient(
-          to top,
-          rgba(7,8,18,1) 25%,
-          rgba(7,8,18,.94) 70%,
-          transparent
-        );
-      z-index: 15;
+      padding: 16px 20px 13px;
+      background: linear-gradient(
+        transparent,
+        var(--bg) 24%
+      );
     }
 
-    .composer-inner {
-      width: min(940px, 100%);
-      margin: 0 auto;
-    }
-
-    .mode-bar {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      margin-bottom: 8px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .mode-bar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .mode {
-      height: 31px;
-      padding: 0 10px;
-      border-radius: 9px;
-      color: #747b91;
-      background: transparent;
-      border: 1px solid transparent;
-      white-space: nowrap;
-      font-size: 10px;
-      font-weight: 750;
-      transition: .18s;
-    }
-
-    .mode:hover {
-      color: #b9bed0;
-    }
-
-    .mode.active {
-      color: #dcd5ff;
-      background: rgba(139,92,246,.11);
-      border-color: rgba(139,92,246,.15);
+    .composer-wrap {
+      width: min(820px, 100%);
+      margin: auto;
     }
 
     .composer {
-      position: relative;
-      border-radius: 20px;
-      padding: 10px;
-      background:
-        linear-gradient(
-          145deg,
-          rgba(25,28,45,.94),
-          rgba(13,15,27,.97)
-        );
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow:
-        0 18px 55px rgba(0,0,0,.32),
-        inset 0 1px rgba(255,255,255,.035);
-    }
-
-    .upload-preview {
-      display: none;
-      margin: 3px 3px 8px;
-      position: relative;
-      width: 76px;
-      height: 76px;
-      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: 17px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,.10);
     }
 
-    .upload-preview.show {
+    .preview {
+      display: none;
+      padding: 12px 13px 0;
+    }
+
+    .preview.active {
       display: block;
     }
 
-    .upload-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .preview-box {
+      position: relative;
+      display: inline-block;
     }
 
-    .remove-upload {
+    .preview img {
+      width: 85px;
+      height: 85px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .remove-image {
       position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 21px;
-      height: 21px;
+      right: -7px;
+      top: -7px;
+      width: 23px;
+      height: 23px;
       border-radius: 50%;
-      background: rgba(0,0,0,.72);
-      color: white;
+      background: var(--text);
+      color: var(--bg);
       font-size: 12px;
     }
 
-    .textarea-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-    }
-
-    #prompt {
+    textarea {
+      display: block;
       width: 100%;
-      min-height: 46px;
+      min-height: 55px;
       max-height: 180px;
       resize: none;
-      outline: none;
       border: 0;
+      outline: 0;
       background: transparent;
-      color: #eef0f7;
-      padding: 10px 9px;
-      font-size: 13px;
-      line-height: 1.7;
+      color: var(--text);
+      padding: 17px 17px 5px;
+      line-height: 1.5;
+      font-size: 15px;
     }
 
-    #prompt::placeholder {
-      color: #62697d;
+    textarea::placeholder {
+      color: var(--muted);
     }
 
-    .composer-actions {
+    .composer-bottom {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding-bottom: 2px;
+      justify-content: space-between;
+      padding: 7px 9px 9px;
+    }
+
+    .composer-left,
+    .composer-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .tool-btn {
-      width: 37px;
-      height: 37px;
-      border-radius: 11px;
-      color: #81889d;
-      background: rgba(255,255,255,.035);
-      border: 1px solid rgba(255,255,255,.055);
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      transition: .18s;
+      height: 36px;
+      min-width: 36px;
+      padding: 0 10px;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
     }
 
     .tool-btn:hover {
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .send {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--accent);
       color: white;
-      background: rgba(255,255,255,.08);
+      font-size: 17px;
+      font-weight: 700;
     }
 
-    .send-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      color: white;
-      background: linear-gradient(135deg,#8b5cf6,#6d28d9);
-      box-shadow: 0 7px 25px rgba(109,40,217,.25);
-      transition: .18s;
-      flex-shrink: 0;
+    .send:hover {
+      background: var(--accent-dark);
     }
 
-    .send-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .send-btn:disabled {
+    .send:disabled {
       opacity: .45;
       cursor: not-allowed;
-      transform: none;
     }
 
-    .composer-hint {
-      color: #4e5569;
+    .disclaimer {
       text-align: center;
-      font-size: 8px;
-      margin-top: 7px;
+      font-size: 11px;
+      color: var(--muted);
+      padding-top: 8px;
     }
 
-    #fileInput {
-      display: none;
-    }
+    /* RESPONSIVE */
 
-    /* =========================
-       OVERLAY / MOBILE
-    ========================= */
-
-    .overlay {
-      display: none;
-    }
-
-    @media (max-width: 850px) {
-      :root {
-        --sidebar: 285px;
-      }
-
+    @media (max-width: 760px) {
       .sidebar {
         position: fixed;
+        z-index: 20;
+        left: -285px;
         top: 0;
         bottom: 0;
-        right: 0;
-        transform: translateX(105%);
-        transition: transform .25s ease;
-        box-shadow: -20px 0 60px rgba(0,0,0,.45);
+        box-shadow: var(--shadow);
       }
 
       .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.52);
-        z-index: 25;
-        backdrop-filter: blur(3px);
-      }
-
-      .overlay.show {
-        display: block;
+        left: 0;
       }
 
       .mobile-menu {
-        display: grid;
+        display: inline-block;
       }
 
       .topbar {
-        padding: 10px 12px;
+        padding: 0 13px;
       }
 
-      .chat-area {
+      .messages {
         padding: 25px 13px 145px;
       }
 
-      .composer-wrap {
-        padding: 11px 10px 13px;
-      }
-
-      .hero h2 {
-        font-size: clamp(33px, 10vw, 49px);
-        letter-spacing: -2px;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .feature {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 13px;
-      }
-
-      .feature-icon {
-        flex-shrink: 0;
-        margin: 0;
-      }
-
-      .feature h3 {
-        margin-bottom: 3px;
+      .composer-area {
+        padding: 12px 10px 9px;
       }
 
       .welcome {
-        min-height: auto;
-        padding: 20px 0 35px;
+        min-height: 55vh;
       }
 
-      .message-content {
-        max-width: 87%;
-      }
-
-      .model-pill {
-        max-width: 180px;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-
-    @media (max-width: 470px) {
-      .top-actions .icon-button:nth-child(2) {
-        display: none;
-      }
-
-      .hero-description {
-        font-size: 12px;
-      }
-
-      .hero h2 {
-        font-size: 36px;
-      }
-
-      .avatar {
-        width: 30px;
-        height: 30px;
-        flex-basis: 30px;
-        border-radius: 9px;
-      }
-
-      .message {
-        gap: 8px;
+      .welcome h1 {
+        font-size: 31px;
       }
 
       .bubble {
-        font-size: 12px;
+        font-size: 14px;
       }
 
-      .mode {
-        padding: 0 8px;
+      .model {
+        font-size: 13px;
       }
-
-      .composer {
-        border-radius: 17px;
-      }
-
-      #prompt {
-        font-size: 12px;
-      }
-    }
-
-    /* =========================
-       UTILITY
-    ========================= */
-
-    .hidden {
-      display: none !important;
-    }
-
-    .error-box {
-      color: #fda4af;
-      background: rgba(244,63,94,.07);
-      border: 1px solid rgba(244,63,94,.13);
-      border-radius: 13px;
-      padding: 12px;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .search-note {
-      margin-top: 8px;
-      color: #777e94;
-      font-size: 9px;
     }
   </style>
 </head>
@@ -1020,288 +534,136 @@
 
 <div class="app">
 
-  <!-- =========================
-       SIDEBAR
-  ========================== -->
-
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
       <div class="brand-logo">AS</div>
-
-      <div class="brand-text">
-        <h1>A S AI</h1>
-        <p>AI Assistant</p>
-      </div>
+      <div class="brand-name">AS AI</div>
     </div>
 
-    <button class="new-chat" id="newChatBtn">
-      <span>＋</span>
-      محادثة جديدة
+    <button class="new-chat" onclick="newChat()">
+      ＋ <span>New chat</span>
     </button>
 
-    <div class="sidebar-title">المحادثات</div>
+    <div class="section-title">Recent chats</div>
 
-    <div class="history" id="history">
-      <div class="history-empty">
-        لا توجد محادثات محفوظة بعد.
-        <br>
-        ابدأ محادثة جديدة.
-      </div>
+    <div class="chat-list" id="chatList">
+      <div class="chat-item">Welcome to AS AI</div>
     </div>
 
-    <div class="sidebar-bottom">
-
-      <div class="creator">
-        <div class="creator-label">صُنِع بواسطة</div>
-
-        <div class="creator-name">
-          تم إنشاء هذا الذكاء الاصطناعي بواسطة علي سلطان
-          <br>
-          وبمساعدة علي عرندس
-        </div>
-      </div>
-
-      <div class="copyright">
-        © 2026 A S AI — جميع الحقوق محفوظة.
-      </div>
-
+    <div class="bottom">
+      <button class="small-btn" onclick="toggleTheme()">◐ Theme</button>
+      <button class="small-btn" onclick="showAbout()">ⓘ About</button>
     </div>
 
   </aside>
 
-  <div class="overlay" id="overlay"></div>
-
-  <!-- =========================
-       MAIN
-  ========================== -->
-
+  <!-- MAIN -->
   <main class="main">
 
     <header class="topbar">
 
-      <div class="top-left">
+      <div style="display:flex;align-items:center;">
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
 
-        <button
-          class="icon-button mobile-menu"
-          id="menuBtn"
-          aria-label="القائمة"
-        >
-          ☰
-        </button>
-
-        <div class="model-pill">
-          <span class="status-dot"></span>
-          <span>A S AI</span>
-          <span style="color:#5d6478;">•</span>
-          <span id="modeLabel">محادثة ذكية</span>
+        <div class="model">
+          <span class="model-dot"></span>
+          AS AI
         </div>
-
       </div>
 
       <div class="top-actions">
-
-        <button
-          class="icon-button"
-          id="clearBtn"
-          title="مسح المحادثة"
-        >
-          ⌫
-        </button>
-
-        <button
-          class="icon-button"
-          id="newTopBtn"
-          title="محادثة جديدة"
-        >
-          ＋
-        </button>
-
+        <button class="icon-btn" title="New chat" onclick="newChat()">＋</button>
       </div>
 
     </header>
 
-    <!-- =========================
-         CHAT AREA
-    ========================== -->
+    <!-- MESSAGES -->
+    <section class="messages" id="messages">
 
-    <section class="chat-area" id="chatArea">
-
-      <div class="chat-inner">
+      <div class="conversation" id="conversation">
 
         <div class="welcome" id="welcome">
 
-          <div class="hero">
+          <div class="welcome-mark">AS</div>
 
-            <div class="hero-badge">
-              <span></span>
-              A S AI — الجيل الجديد
-            </div>
+          <h1>How can I help?</h1>
 
-            <h2>
-              <span class="gradient-text">
-                أهلاً بك في
-                <br>
-                A S AI
-              </span>
-            </h2>
-
-            <p class="hero-description">
-              مساعدك الذكي للمحادثة، البرمجة، البحث، إنشاء الصور
-              وتعديلها. اكتب طلبك واترك الباقي على A S AI.
-            </p>
-
-            <div class="feature-grid">
-
-              <div class="feature">
-
-                <div class="feature-icon">
-                  ✦
-                </div>
-
-                <div>
-                  <h3>ذكاء متطور</h3>
-                  <p>
-                    إجابات سريعة ومناسبة لسؤالك.
-                  </p>
-                </div>
-
-              </div>
-
-              <div class="feature">
-
-                <div class="feature-icon">
-                  ◈
-                </div>
-
-                <div>
-                  <h3>إنشاء الصور</h3>
-                  <p>
-                    أنشئ صورًا جديدة أو عدّل صورة موجودة.
-                  </p>
-                </div>
-
-              </div>
-
-              <div class="feature">
-
-                <div class="feature-icon">
-                  &lt;/&gt;
-                </div>
-
-                <div>
-                  <h3>البرمجة</h3>
-                  <p>
-                    ساعدك في كتابة وفهم وتصحيح الأكواد.
-                  </p>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
+          <p>
+            Ask anything, write code, analyze an image,
+            or start a new conversation with AS AI.
+          </p>
 
         </div>
-
-        <div class="messages" id="messages"></div>
 
       </div>
 
     </section>
 
-    <!-- =========================
-         COMPOSER
-    ========================== -->
+    <!-- COMPOSER -->
+    <div class="composer-area">
 
-    <div class="composer-wrap">
-
-      <div class="composer-inner">
-
-        <div class="mode-bar">
-
-          <button
-            class="mode active"
-            data-mode="chat"
-          >
-            ✦ محادثة
-          </button>
-
-          <button
-            class="mode"
-            data-mode="search"
-          >
-            ⌕ بحث
-          </button>
-
-          <button
-            class="mode"
-            data-mode="code"
-          >
-            &lt;/&gt; برمجة
-          </button>
-
-          <button
-            class="mode"
-            data-mode="image"
-          >
-            ◈ إنشاء صورة
-          </button>
-
-        </div>
+      <div class="composer-wrap">
 
         <div class="composer">
 
-          <div
-            class="upload-preview"
-            id="uploadPreview"
-          >
-            <img id="previewImage" alt="الصورة المرفوعة">
-
-            <button
-              class="remove-upload"
-              id="removeUpload"
-              title="إزالة الصورة"
-            >
-              ×
-            </button>
+          <div class="preview" id="preview">
+            <div class="preview-box">
+              <img id="previewImg" alt="Selected image">
+              <button class="remove-image" onclick="removeImage()">×</button>
+            </div>
           </div>
 
-          <div class="textarea-row">
+          <textarea
+            id="prompt"
+            placeholder="Message AS AI..."
+            rows="1"
+            oninput="autoResize(this)"
+            onkeydown="handleKey(event)"
+          ></textarea>
 
-            <textarea
-              id="prompt"
-              rows="1"
-              autocomplete="off"
-              placeholder="اكتب رسالتك إلى A S AI..."
-            ></textarea>
+          <div class="composer-bottom">
 
-            <div class="composer-actions">
+            <div class="composer-left">
+
+              <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                hidden
+                onchange="selectImage(event)"
+              >
 
               <button
                 class="tool-btn"
-                id="uploadBtn"
-                title="رفع صورة"
+                onclick="document.getElementById('imageInput').click()"
+                title="Upload image"
               >
-                ⊕
+                ＋ Attach
               </button>
 
+            </div>
+
+            <div class="composer-right">
               <button
-                class="send-btn"
+                class="send"
                 id="sendBtn"
-                title="إرسال"
+                onclick="sendMessage()"
+                title="Send"
               >
-                ➤
+                ↑
               </button>
-
             </div>
 
           </div>
 
         </div>
 
-        <div class="composer-hint">
-          A S AI قد يخطئ أحيانًا — راجع المعلومات المهمة.
+        <div class="disclaimer">
+          AS AI can make mistakes. Check important information.
+          <br>
+          © 2026 Ali Sultan & Ali Arandis
         </div>
 
       </div>
@@ -1312,1175 +674,273 @@
 
 </div>
 
-<input
-  type="file"
-  id="fileInput"
-  accept="image/*"
-/>
-
 <script>
-  /*
-   * ============================================
-   * A S AI — NEW FRONTEND
-   * ============================================
-   *
-   * متوافق مع:
-   * /api/chat
-   * /api/images
-   *
-   * لا يوجد API KEY هنا.
-   * المفتاح يبقى على السيرفر.
-   */
 
-  const state = {
-    mode: "chat",
-    messages: [],
-    image: null,
-    imageData: null,
-    busy: false
-  };
+  const promptBox = document.getElementById("prompt");
+  const messages = document.getElementById("messages");
+  const conversation = document.getElementById("conversation");
+  const welcome = document.getElementById("welcome");
+  const sendBtn = document.getElementById("sendBtn");
 
-  const els = {
-    sidebar: document.getElementById("sidebar"),
-    overlay: document.getElementById("overlay"),
-    menuBtn: document.getElementById("menuBtn"),
-    newChatBtn: document.getElementById("newChatBtn"),
-    newTopBtn: document.getElementById("newTopBtn"),
-    clearBtn: document.getElementById("clearBtn"),
-    history: document.getElementById("history"),
-    welcome: document.getElementById("welcome"),
-    messages: document.getElementById("messages"),
-    chatArea: document.getElementById("chatArea"),
-    prompt: document.getElementById("prompt"),
-    sendBtn: document.getElementById("sendBtn"),
-    uploadBtn: document.getElementById("uploadBtn"),
-    fileInput: document.getElementById("fileInput"),
-    uploadPreview: document.getElementById("uploadPreview"),
-    previewImage: document.getElementById("previewImage"),
-    removeUpload: document.getElementById("removeUpload"),
-    modeLabel: document.getElementById("modeLabel")
-  };
+  let selectedImage = null;
+  let busy = false;
 
-  const STORAGE_KEY = "as_ai_new_chats_v1";
+  /* THEME */
 
-  let chats = loadChats();
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
 
-  /* =========================
-     STORAGE
-  ========================== */
-
-  function loadChats() {
-    try {
-      const data = localStorage.getItem(STORAGE_KEY);
-
-      if (!data) {
-        return [];
-      }
-
-      const parsed = JSON.parse(data);
-
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function saveChats() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(chats.slice(0, 30))
-      );
-    } catch {}
-  }
-
-  /* =========================
-     SIDEBAR
-  ========================== */
-
-  function renderHistory() {
-    els.history.innerHTML = "";
-
-    if (!chats.length) {
-      els.history.innerHTML = `
-        <div class="history-empty">
-          لا توجد محادثات محفوظة بعد.
-          <br>
-          ابدأ محادثة جديدة.
-        </div>
-      `;
-
-      return;
-    }
-
-    chats.forEach((chat, index) => {
-
-      const button = document.createElement("button");
-
-      button.className = "history-item";
-
-      button.innerHTML = `
-        <span class="history-icon">◌</span>
-        <span class="history-name"></span>
-      `;
-
-      button.querySelector(".history-name").textContent =
-        chat.title || "محادثة جديدة";
-
-      button.addEventListener("click", () => {
-        loadChat(index);
-        closeSidebar();
-      });
-
-      els.history.appendChild(button);
-    });
-  }
-
-  function createChat() {
-
-    if (state.messages.length) {
-      saveCurrentChat();
-    }
-
-    state.messages = [];
-    state.image = null;
-    state.imageData = null;
-    state.busy = false;
-
-    removeUploadedImage();
-
-    els.messages.innerHTML = "";
-    els.welcome.classList.remove("hidden");
-
-    els.prompt.value = "";
-
-    autoResize();
-
-    scrollToBottom();
-
-    closeSidebar();
-  }
-
-  function saveCurrentChat() {
-
-    if (!state.messages.length) {
-      return;
-    }
-
-    const firstUser = state.messages.find(
-      m => m.role === "user"
+    localStorage.setItem(
+      "asai-theme",
+      document.body.classList.contains("dark")
+        ? "dark"
+        : "light"
     );
-
-    const title =
-      firstUser?.content?.slice(0, 45) ||
-      "محادثة جديدة";
-
-    const record = {
-      title,
-      messages: state.messages,
-      updatedAt: Date.now()
-    };
-
-    chats.unshift(record);
-
-    chats = chats
-      .filter((chat, i, arr) =>
-        i === arr.findIndex(x =>
-          x.updatedAt === chat.updatedAt
-        )
-      )
-      .slice(0, 30);
-
-    saveChats();
-    renderHistory();
   }
 
-  function loadChat(index) {
-
-    const chat = chats[index];
-
-    if (!chat) {
-      return;
-    }
-
-    state.messages = Array.isArray(chat.messages)
-      ? chat.messages
-      : [];
-
-    state.image = null;
-    state.imageData = null;
-
-    removeUploadedImage();
-
-    els.messages.innerHTML = "";
-
-    els.welcome.classList.toggle(
-      "hidden",
-      state.messages.length > 0
-    );
-
-    state.messages.forEach(message => {
-      addMessageToUI(
-        message.role,
-        message.content,
-        message.image
-      );
-    });
-
-    scrollToBottom();
+  if (localStorage.getItem("asai-theme") === "dark") {
+    document.body.classList.add("dark");
   }
 
-  /* =========================
-     SIDEBAR MOBILE
-  ========================== */
+  /* SIDEBAR */
 
-  function openSidebar() {
-    els.sidebar.classList.add("open");
-    els.overlay.classList.add("show");
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
   }
 
-  function closeSidebar() {
-    els.sidebar.classList.remove("open");
-    els.overlay.classList.remove("show");
+  /* NEW CHAT */
+
+  function newChat() {
+    conversation.innerHTML = `
+      <div class="welcome" id="welcome">
+        <div class="welcome-mark">AS</div>
+        <h1>How can I help?</h1>
+        <p>
+          Ask anything, write code, analyze an image,
+          or start a new conversation with AS AI.
+        </p>
+      </div>
+    `;
+
+    promptBox.value = "";
+    removeImage();
+    promptBox.focus();
   }
 
-  els.menuBtn.addEventListener("click", openSidebar);
-  els.overlay.addEventListener("click", closeSidebar);
+  /* TEXTAREA */
 
-  /* =========================
-     MODES
-  ========================== */
-
-  document.querySelectorAll(".mode").forEach(button => {
-
-    button.addEventListener("click", () => {
-
-      document
-        .querySelectorAll(".mode")
-        .forEach(x => x.classList.remove("active"));
-
-      button.classList.add("active");
-
-      state.mode = button.dataset.mode;
-
-      updateModeUI();
-    });
-
-  });
-
-  function updateModeUI() {
-
-    const labels = {
-      chat: "محادثة ذكية",
-      search: "بحث ذكي",
-      code: "وضع البرمجة",
-      image: "إنشاء الصور"
-    };
-
-    els.modeLabel.textContent =
-      labels[state.mode] || labels.chat;
-
-    if (state.mode === "image") {
-
-      els.prompt.placeholder =
-        "اكتب وصف الصورة التي تريد إنشاءها أو تعديلها...";
-
-    } else if (state.mode === "code") {
-
-      els.prompt.placeholder =
-        "اكتب سؤالًا أو اطلب كودًا...";
-
-    } else if (state.mode === "search") {
-
-      els.prompt.placeholder =
-        "ما الذي تريد البحث عنه؟";
-
-    } else {
-
-      els.prompt.placeholder =
-        "اكتب رسالتك إلى A S AI...";
-    }
+  function autoResize(el) {
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, 180) + "px";
   }
 
-  /* =========================
-     TEXTAREA
-  ========================== */
-
-  function autoResize() {
-
-    els.prompt.style.height = "auto";
-
-    els.prompt.style.height =
-      Math.min(els.prompt.scrollHeight, 180) + "px";
-  }
-
-  els.prompt.addEventListener("input", autoResize);
-
-  els.prompt.addEventListener("keydown", event => {
-
-    if (event.key === "Enter" && !event.shiftKey) {
-
-      event.preventDefault();
-
+  function handleKey(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
-  });
+  }
 
-  /* =========================
-     IMAGE UPLOAD
-  ========================== */
+  /* IMAGE */
 
-  els.uploadBtn.addEventListener(
-    "click",
-    () => els.fileInput.click()
-  );
+  function selectImage(event) {
+    const file = event.target.files[0];
 
-  els.fileInput.addEventListener(
-    "change",
-    handleImageUpload
-  );
+    if (!file) return;
 
-  els.removeUpload.addEventListener(
-    "click",
-    removeUploadedImage
-  );
-
-  function handleImageUpload(event) {
-
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      return;
-    }
+    selectedImage = file;
 
     const reader = new FileReader();
 
-    reader.onload = () => {
-
-      state.imageData = reader.result;
-      state.image = reader.result;
-
-      els.previewImage.src = reader.result;
-
-      els.uploadPreview.classList.add("show");
-
-      if (state.mode !== "image") {
-        state.mode = "image";
-
-        document
-          .querySelectorAll(".mode")
-          .forEach(x => x.classList.remove("active"));
-
-        document
-          .querySelector('[data-mode="image"]')
-          ?.classList.add("active");
-
-        updateModeUI();
-      }
+    reader.onload = function(e) {
+      document.getElementById("previewImg").src = e.target.result;
+      document.getElementById("preview").classList.add("active");
     };
 
     reader.readAsDataURL(file);
   }
 
-  function removeUploadedImage() {
-
-    state.image = null;
-    state.imageData = null;
-
-    els.previewImage.removeAttribute("src");
-
-    els.uploadPreview.classList.remove("show");
-
-    els.fileInput.value = "";
+  function removeImage() {
+    selectedImage = null;
+    document.getElementById("imageInput").value = "";
+    document.getElementById("preview").classList.remove("active");
+    document.getElementById("previewImg").src = "";
   }
 
-  /* =========================
-     SEND
-  ========================== */
+  /* MESSAGE UI */
 
-  els.sendBtn.addEventListener(
-    "click",
-    sendMessage
-  );
+  function addUserMessage(text, image) {
+
+    welcome?.remove();
+
+    const message = document.createElement("div");
+    message.className = "message user";
+
+    let html = `<div class="message-label">You</div>`;
+
+    if (image) {
+      const url = URL.createObjectURL(image);
+
+      html += `
+        <img class="message-image"
+             src="${url}"
+             alt="Uploaded image">
+      `;
+    }
+
+    if (text) {
+      html += `<div class="bubble">${escapeHTML(text)}</div>`;
+    }
+
+    message.innerHTML = html;
+
+    conversation.appendChild(message);
+
+    scrollBottom();
+  }
+
+  function addAIMessage() {
+
+    const message = document.createElement("div");
+    message.className = "message ai";
+
+    message.innerHTML = `
+      <div class="message-label">AS AI</div>
+      <div class="bubble"></div>
+    `;
+
+    conversation.appendChild(message);
+
+    scrollBottom();
+
+    return message.querySelector(".bubble");
+  }
+
+  function scrollBottom() {
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function escapeHTML(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  /* SEND */
 
   async function sendMessage() {
 
-    if (state.busy) {
-      return;
-    }
+    if (busy) return;
 
-    const text = els.prompt.value.trim();
+    const text = promptBox.value.trim();
 
-    if (!text && !state.imageData) {
-      return;
-    }
+    if (!text && !selectedImage) return;
 
-    if (state.mode === "image") {
+    busy = true;
+    sendBtn.disabled = true;
 
-      await generateImage(text);
-      return;
-    }
+    const image = selectedImage;
 
-    const userText = text || "حلّل هذه الصورة.";
+    addUserMessage(text, image);
 
-    state.busy = true;
+    promptBox.value = "";
+    promptBox.style.height = "55px";
 
-    els.sendBtn.disabled = true;
+    removeImage();
 
-    els.welcome.classList.add("hidden");
-
-    addMessageToUI(
-      "user",
-      userText,
-      state.imageData
-    );
-
-    state.messages.push({
-      role: "user",
-      content: userText,
-      image: state.imageData || null
-    });
-
-    els.prompt.value = "";
-
-    autoResize();
-
-    const attachedImage = state.imageData;
-
-    removeUploadedImage();
-
-    const assistantBubble =
-      addStreamingAssistant();
+    const aiBubble = addAIMessage();
 
     try {
 
-      await streamChat(
-        assistantBubble,
-        attachedImage
-      );
+      /*
+       * IMPORTANT:
+       * Change this URL if your server uses another endpoint.
+       */
 
-    } catch (error) {
+      const formData = new FormData();
 
-      assistantBubble.innerHTML = `
-        <div class="error-box">
-          ${escapeHTML(
-            friendlyError(error)
-          )}
-        </div>
-      `;
-    }
+      formData.append("message", text);
 
-    state.busy = false;
+      if (image) {
+        formData.append("image", image);
+      }
 
-    els.sendBtn.disabled = false;
-
-    saveCurrentChat();
-
-    scrollToBottom();
-  }
-
-  /* =========================
-     STREAM CHAT
-  ========================== */
-
-  async function streamChat(
-    bubble,
-    attachedImage
-  ) {
-
-    const payload = {
-      messages: state.messages.map(message => ({
-        role: message.role,
-        content: message.content,
-        ...(message.image
-          ? { image: message.image }
-          : {})
-      })),
-
-      mode: state.mode
-    };
-
-    if (attachedImage) {
-      payload.image = attachedImage;
-    }
-
-    const response = await fetch(
-      "/api/chat",
-      {
+      const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      }
-    );
+        body: formData
+      });
 
-    if (!response.ok) {
-
-      const text = await response.text();
-
-      throw new Error(
-        text || `HTTP ${response.status}`
-      );
-    }
-
-    if (!response.body) {
-      throw new Error(
-        "السيرفر لم يُرجع Stream."
-      );
-    }
-
-    const reader =
-      response.body.getReader();
-
-    const decoder =
-      new TextDecoder();
-
-    let buffer = "";
-    let fullText = "";
-
-    while (true) {
-
-      const { value, done } =
-        await reader.read();
-
-      if (done) {
-        break;
+      if (!response.ok) {
+        throw new Error("Server error " + response.status);
       }
 
-      buffer += decoder.decode(
-        value,
-        { stream: true }
-      );
+      /*
+       * Streaming support
+       */
 
-      const parts =
-        buffer.split("\n");
+      if (response.body) {
 
-      buffer = parts.pop() || "";
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-      for (const line of parts) {
+        let fullText = "";
 
-        if (!line.startsWith("data:")) {
-          continue;
-        }
+        while (true) {
 
-        const raw =
-          line.slice(5).trim();
+          const { value, done } = await reader.read();
 
-        if (!raw) {
-          continue;
-        }
+          if (done) break;
 
-        if (raw === "[DONE]") {
-          continue;
-        }
-
-        let data;
-
-        try {
-          data = JSON.parse(raw);
-        } catch {
-          data = {
-            text: raw
-          };
-        }
-
-        const chunk =
-          data.text ??
-          data.delta ??
-          data.content ??
-          "";
-
-        if (chunk) {
+          const chunk = decoder.decode(value, {
+            stream: true
+          });
 
           fullText += chunk;
 
-          bubble.innerHTML =
-            formatText(fullText);
+          aiBubble.textContent = fullText;
 
-          scrollToBottom();
+          scrollBottom();
         }
 
-        if (data.error) {
-          throw new Error(data.error);
-        }
+      } else {
+
+        const data = await response.json();
+
+        aiBubble.textContent =
+          data.text ||
+          data.response ||
+          "No response.";
+
       }
-    }
-
-    if (!fullText.trim()) {
-
-      fullText =
-        "لم يصل رد من النموذج.";
-
-      bubble.textContent = fullText;
-    }
-
-    state.messages.push({
-      role: "assistant",
-      content: fullText
-    });
-  }
-
-  /* =========================
-     IMAGE GENERATION
-  ========================== */
-
-  async function generateImage(prompt) {
-
-    if (!prompt.trim() && !state.imageData) {
-      return;
-    }
-
-    state.busy = true;
-
-    els.sendBtn.disabled = true;
-
-    els.welcome.classList.add("hidden");
-
-    addMessageToUI(
-      "user",
-      prompt || "تعديل الصورة",
-      state.imageData
-    );
-
-    state.messages.push({
-      role: "user",
-      content: prompt || "تعديل الصورة",
-      image: state.imageData || null
-    });
-
-    els.prompt.value = "";
-
-    autoResize();
-
-    const sourceImage = state.imageData;
-
-    removeUploadedImage();
-
-    const loadingMessage =
-      createAssistantMessage();
-
-    loadingMessage.bubble.innerHTML = `
-      <div class="typing">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div style="color:#747b91;font-size:10px;">
-        A S AI يعمل على إنشاء الصورة...
-      </div>
-    `;
-
-    try {
-
-      const response = await fetch(
-        "/api/images",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            prompt:
-              prompt ||
-              "حسّن الصورة المرفقة مع الحفاظ على محتواها.",
-
-            image:
-              sourceImage || null,
-
-            imageSize: "1K",
-
-            aspectRatio: "1:1"
-          })
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.error ||
-          data.message ||
-          `HTTP ${response.status}`
-        );
-      }
-
-      const imageUrl =
-        data.image ||
-        data.imageUrl ||
-        data.url ||
-        data.data?.image ||
-        data.data?.imageUrl;
-
-      const text =
-        data.text ||
-        data.message ||
-        "";
-
-      if (!imageUrl) {
-
-        loadingMessage.bubble.innerHTML =
-          formatText(
-            text ||
-            "تمت معالجة الطلب، لكن السيرفر لم يُرجع صورة."
-          );
-
-        return;
-      }
-
-      loadingMessage.bubble.innerHTML =
-        formatText(
-          text ||
-          "تم إنشاء الصورة بنجاح."
-        );
-
-      addImageResult(
-        loadingMessage.container,
-        imageUrl
-      );
-
-      state.messages.push({
-        role: "assistant",
-        content:
-          text ||
-          "تم إنشاء الصورة بنجاح.",
-        image:
-          imageUrl
-      });
 
     } catch (error) {
 
-      loadingMessage.bubble.innerHTML = `
-        <div class="error-box">
-          ${escapeHTML(
-            friendlyError(error)
-          )}
-        </div>
-      `;
-    }
+      console.error(error);
 
-    state.busy = false;
+      aiBubble.textContent =
+        "Sorry, I couldn't connect to AS AI right now.";
 
-    els.sendBtn.disabled = false;
+    } finally {
 
-    saveCurrentChat();
+      busy = false;
+      sendBtn.disabled = false;
 
-    scrollToBottom();
-  }
-
-  /* =========================
-     UI MESSAGES
-  ========================== */
-
-  function addMessageToUI(
-    role,
-    text,
-    image
-  ) {
-
-    const message =
-      document.createElement("div");
-
-    message.className =
-      `message ${role}`;
-
-    const avatar =
-      document.createElement("div");
-
-    avatar.className = "avatar";
-
-    avatar.textContent =
-      role === "user"
-        ? "أنت"
-        : "AS";
-
-    const content =
-      document.createElement("div");
-
-    content.className =
-      "message-content";
-
-    const name =
-      document.createElement("div");
-
-    name.className =
-      "message-name";
-
-    name.textContent =
-      role === "user"
-        ? "أنت"
-        : "A S AI";
-
-    const bubble =
-      document.createElement("div");
-
-    bubble.className = "bubble";
-
-    bubble.innerHTML =
-      formatText(text || "");
-
-    content.appendChild(name);
-    content.appendChild(bubble);
-
-    if (image) {
-
-      const imageBox =
-        createImageElement(image);
-
-      content.appendChild(imageBox);
-    }
-
-    message.appendChild(avatar);
-    message.appendChild(content);
-
-    els.messages.appendChild(message);
-
-    scrollToBottom();
-
-    return message;
-  }
-
-  function createAssistantMessage() {
-
-    const message =
-      document.createElement("div");
-
-    message.className =
-      "message assistant";
-
-    const avatar =
-      document.createElement("div");
-
-    avatar.className = "avatar";
-    avatar.textContent = "AS";
-
-    const content =
-      document.createElement("div");
-
-    content.className =
-      "message-content";
-
-    const name =
-      document.createElement("div");
-
-    name.className =
-      "message-name";
-
-    name.textContent = "A S AI";
-
-    const bubble =
-      document.createElement("div");
-
-    bubble.className = "bubble";
-
-    content.appendChild(name);
-    content.appendChild(bubble);
-
-    message.appendChild(avatar);
-    message.appendChild(content);
-
-    els.messages.appendChild(message);
-
-    scrollToBottom();
-
-    return {
-      container: content,
-      bubble
-    };
-  }
-
-  function addStreamingAssistant() {
-
-    return createAssistantMessage().bubble;
-  }
-
-  /* =========================
-     IMAGE UI
-  ========================== */
-
-  function addImageResult(
-    container,
-    src
-  ) {
-
-    const box =
-      createImageElement(src);
-
-    container.appendChild(box);
-  }
-
-  function createImageElement(src) {
-
-    const wrapper =
-      document.createElement("div");
-
-    wrapper.className =
-      "generated-image";
-
-    const img =
-      document.createElement("img");
-
-    img.src = src;
-
-    img.alt =
-      "صورة تم إنشاؤها بواسطة A S AI";
-
-    img.loading = "lazy";
-
-    const actions =
-      document.createElement("div");
-
-    actions.className =
-      "image-actions";
-
-    const download =
-      document.createElement("button");
-
-    download.className =
-      "image-action";
-
-    download.textContent =
-      "↓ تنزيل الصورة";
-
-    download.addEventListener(
-      "click",
-      () => downloadImage(src)
-    );
-
-    const open =
-      document.createElement("button");
-
-    open.className =
-      "image-action";
-
-    open.textContent =
-      "↗ فتح";
-
-    open.addEventListener(
-      "click",
-      () => window.open(src, "_blank")
-    );
-
-    actions.appendChild(download);
-    actions.appendChild(open);
-
-    wrapper.appendChild(img);
-    wrapper.appendChild(actions);
-
-    return wrapper;
-  }
-
-  async function downloadImage(src) {
-
-    try {
-
-      const response =
-        await fetch(src);
-
-      const blob =
-        await response.blob();
-
-      const url =
-        URL.createObjectURL(blob);
-
-      const a =
-        document.createElement("a");
-
-      a.href = url;
-
-      a.download =
-        `AS-AI-${Date.now()}.png`;
-
-      document.body.appendChild(a);
-
-      a.click();
-
-      a.remove();
-
-      URL.revokeObjectURL(url);
-
-    } catch {
-
-      window.open(src, "_blank");
+      promptBox.focus();
+      scrollBottom();
     }
   }
 
-  /* =========================
-     FORMAT TEXT
-  ========================== */
+  /* ABOUT */
 
-  function formatText(text) {
+  function showAbout() {
 
-    let safe =
-      escapeHTML(String(text));
+    const bubble = addAIMessage();
 
-    /*
-     * Code blocks
-     */
+    bubble.textContent =
+      "AS AI\n\nCreated by Ali Sultan & Ali Arandis.\n\nA modern AI assistant for chat, coding and image analysis.";
 
-    safe = safe.replace(
-      /```([\s\S]*?)```/g,
-      (_, code) => `
-        <pre><code>${code.trim()}</code></pre>
-      `
-    );
-
-    /*
-     * Inline code
-     */
-
-    safe = safe.replace(
-      /`([^`]+)`/g,
-      "<code>$1</code>"
-    );
-
-    /*
-     * Bold
-     */
-
-    safe = safe.replace(
-      /\*\*(.*?)\*\*/g,
-      "<strong>$1</strong>"
-    );
-
-    /*
-     * Line breaks
-     */
-
-    safe = safe.replace(
-      /\n/g,
-      "<br>"
-    );
-
-    return safe;
+    scrollBottom();
   }
-
-  function escapeHTML(value) {
-
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-  /* =========================
-     ERRORS
-  ========================== */
-
-  function friendlyError(error) {
-
-    const message =
-      error?.message ||
-      String(error);
-
-    if (
-      message.includes("429") ||
-      message.toLowerCase().includes("quota")
-    ) {
-
-      return "وصلنا إلى حد الطلبات المؤقت من Gemini. جرّب مرة ثانية بعد قليل.";
-    }
-
-    if (
-      message.includes("500") ||
-      message.includes("502") ||
-      message.includes("503") ||
-      message.includes("504")
-    ) {
-
-      return "السيرفر مشغول حاليًا. جرّب مرة ثانية بعد لحظات.";
-    }
-
-    if (
-      message.includes("Failed to fetch")
-    ) {
-
-      return "تعذر الاتصال بالسيرفر. تأكد أن الموقع يعمل ثم جرّب مرة ثانية.";
-    }
-
-    return message;
-  }
-
-  /* =========================
-     CLEAR
-  ========================== */
-
-  els.clearBtn.addEventListener(
-    "click",
-    () => {
-
-      if (!state.messages.length) {
-        return;
-      }
-
-      state.messages = [];
-
-      els.messages.innerHTML = "";
-
-      els.welcome.classList.remove(
-        "hidden"
-      );
-
-      removeUploadedImage();
-
-      els.prompt.value = "";
-
-      autoResize();
-
-      scrollToBottom();
-    }
-  );
-
-  els.newChatBtn.addEventListener(
-    "click",
-    createChat
-  );
-
-  els.newTopBtn.addEventListener(
-    "click",
-    createChat
-  );
-
-  /* =========================
-     SCROLL
-  ========================== */
-
-  function scrollToBottom() {
-
-    requestAnimationFrame(() => {
-
-      els.chatArea.scrollTop =
-        els.chatArea.scrollHeight;
-
-    });
-  }
-
-  /* =========================
-     INIT
-  ========================== */
-
-  renderHistory();
-
-  updateModeUI();
-
-  autoResize();
-
-  /*
-   * منع السحب الغريب على الهاتف
-   * مع إبقاء التمرير داخل المحادثة.
-   */
-
-  document.addEventListener(
-    "gesturestart",
-    event => event.preventDefault()
-  );
 
 </script>
 
