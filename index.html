@@ -1,1578 +1,1944 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#070a0d">
-<title>A S AI</title><style>
-*{box-sizing:border-box}
-
-:root{
-  --bg:#070a0d;
-  --bg2:#0b0f13;
-  --panel:#10151a;
-  --panel2:#151b21;
-  --panel3:#1b2229;
-  --border:#263039;
-  --text:#f4f7f8;
-  --muted:#89949f;
-  --accent:#18c99a;
-  --accent2:#0d9f79;
-  --danger:#ff5c6c;
-  --shadow:0 15px 50px rgba(0,0,0,.35);
-}
-
-html,body{
-  width:100%;
-  height:100%;
-  margin:0;
-}
-
-body{
-  background:
-    radial-gradient(circle at 70% -10%,rgba(24,201,154,.09),transparent 30%),
-    radial-gradient(circle at 0% 100%,rgba(13,159,121,.06),transparent 30%),
-    var(--bg);
-  color:var(--text);
-  font-family:Arial,"Segoe UI",Tahoma,sans-serif;
-  overflow:hidden;
-}
-
-button,textarea{
-  font-family:inherit;
-}
-
-button{
-  -webkit-tap-highlight-color:transparent;
-}
-
-.app{
-  height:100dvh;
-  display:flex;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-  width:280px;
-  flex:none;
-  background:rgba(5,8,11,.92);
-  border-left:1px solid var(--border);
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  backdrop-filter:blur(20px);
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:8px;
-  margin-bottom:18px;
-  font-size:20px;
-  font-weight:800;
-}
-
-.logo{
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  font-size:13px;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--accent),#08745d);
-  box-shadow:0 0 30px rgba(24,201,154,.18);
-}
-
-.brand span{
-  color:var(--accent);
-}
-
-.side-button{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:white;
-  padding:13px;
-  border-radius:13px;
-  cursor:pointer;
-  text-align:right;
-  transition:.2s;
-  margin-bottom:9px;
-}
-
-.side-button:hover{
-  background:var(--panel3);
-  border-color:#394650;
-  transform:translateY(-1px);
-}
-
-.side-button.image{
-  background:linear-gradient(
-    135deg,
-    rgba(24,201,154,.13),
-    rgba(24,201,154,.04)
-  );
-  border-color:rgba(24,201,154,.3);
-}
-
-.history-title{
-  color:#697580;
-  font-size:11px;
-  margin:24px 10px 10px;
-}
-
-.history-item{
-  padding:12px;
-  border-radius:11px;
-  background:rgba(255,255,255,.025);
-  color:#c9d0d5;
-  font-size:13px;
-}
-
-.sidebar-bottom{
-  margin-top:auto;
-  padding:15px 8px 5px;
-  border-top:1px solid var(--border);
-  color:#68737d;
-  font-size:11px;
-  line-height:1.8;
-}
-
-/* MAIN */
-
-.main{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-}
-
-.header{
-  height:64px;
-  flex:none;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 22px;
-  border-bottom:1px solid var(--border);
-  background:rgba(7,10,13,.72);
-  backdrop-filter:blur(18px);
-  z-index:5;
-}
-
-.header-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:15px;
-  font-weight:800;
-}
-
-.header-mini-logo{
-  width:30px;
-  height:30px;
-  border-radius:9px;
-  display:grid;
-  place-items:center;
-  font-size:9px;
-  background:linear-gradient(135deg,var(--accent),#08745d);
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  color:#7fe7c9;
-  font-size:10px;
-  font-weight:500;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 0 10px var(--accent);
-}
-
-/* CHAT */
-
-.chat{
-  flex:1;
-  overflow-y:auto;
-  padding:28px 15px 30px;
-  scroll-behavior:smooth;
-}
-
-.chat::-webkit-scrollbar{
-  width:7px;
-}
-
-.chat::-webkit-scrollbar-thumb{
-  background:#283139;
-  border-radius:20px;
-}
-
-.chat::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-/* WELCOME */
-
-.welcome{
-  max-width:800px;
-  margin:7vh auto 50px;
-  text-align:center;
-  animation:appear .5s ease;
-}
-
-@keyframes appear{
-  from{
-    opacity:0;
-    transform:translateY(12px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-.welcome-logo{
-  width:92px;
-  height:92px;
-  margin:auto;
-  border-radius:28px;
-  display:grid;
-  place-items:center;
-  font-size:28px;
-  font-weight:900;
-  background:
-    linear-gradient(135deg,var(--accent),#08745d);
-  box-shadow:
-    0 0 50px rgba(24,201,154,.17),
-    inset 0 1px 0 rgba(255,255,255,.18);
-  animation:float 3.2s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-7px)}
-}
-
-.welcome h1{
-  font-size:36px;
-  margin:24px 0 10px;
-  letter-spacing:-1px;
-}
-
-.welcome p{
-  color:var(--muted);
-  margin:0;
-}
-
-.tools{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:36px;
-}
-
-.tool{
-  min-height:125px;
-  padding:19px;
-  text-align:right;
-  color:#e7ebee;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.045),
-      rgba(255,255,255,.015)
-    );
-  border:1px solid var(--border);
-  border-radius:17px;
-  cursor:pointer;
-  transition:.22s;
-}
-
-.tool:hover{
-  transform:translateY(-3px);
-  border-color:#3a4750;
-  background:var(--panel2);
-  box-shadow:var(--shadow);
-}
-
-.tool-icon{
-  font-size:22px;
-  margin-bottom:10px;
-}
-
-.tool b{
-  display:block;
-  margin-bottom:6px;
-}
-
-.tool small{
-  color:#7f8a94;
-  line-height:1.6;
-}
-
-/* MESSAGES */
-
-.message{
-  max-width:900px;
-  margin:24px auto;
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  animation:messageIn .25s ease;
-}
-
-@keyframes messageIn{
-  from{
-    opacity:0;
-    transform:translateY(6px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-.avatar{
-  width:38px;
-  height:38px;
-  flex:none;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  font-size:10px;
-  font-weight:900;
-  background:#293139;
-}
-
-.ai .avatar{
-  background:linear-gradient(135deg,var(--accent),#08745d);
-  box-shadow:0 5px 20px rgba(24,201,154,.12);
-}
-
-.bubble{
-  max-width:calc(100% - 52px);
-  min-width:0;
-  padding:13px 16px;
-  border:1px solid var(--border);
-  border-radius:16px;
-  background:rgba(20,25,30,.92);
-  line-height:1.85;
-  white-space:pre-wrap;
-  word-break:break-word;
-  font-size:14px;
-  box-shadow:0 5px 25px rgba(0,0,0,.08);
-}
-
-.user .bubble{
-  background:#1a2127;
-}
-
-.message-image{
-  max-width:min(620px,100%);
-  max-height:520px;
-  border-radius:14px;
-  display:block;
-  object-fit:contain;
-}
-
-.generated-image{
-  width:100%;
-  max-width:620px;
-  max-height:650px;
-  object-fit:contain;
-  border-radius:16px;
-  display:block;
-  background:#0a0d10;
-}
-
-/* IMAGE */
-
-.image-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:10px;
-}
-
-.action-btn{
-  border:1px solid #334049;
-  background:#11171b;
-  color:#d9e2e5;
-  padding:8px 12px;
-  border-radius:10px;
-  cursor:pointer;
-  font-size:12px;
-  transition:.2s;
-}
-
-.action-btn:hover{
-  background:#202930;
-  border-color:#46545e;
-}
-
-.action-btn.primary{
-  background:rgba(24,201,154,.1);
-  border-color:rgba(24,201,154,.3);
-  color:#a8f4df;
-}
-
-/* REACTIONS */
-
-.reactions{
-  display:flex;
-  gap:3px;
-  margin-top:8px;
-}
-
-.reaction{
-  border:1px solid transparent;
-  background:transparent;
-  color:#727d86;
-  border-radius:8px;
-  padding:5px 7px;
-  cursor:pointer;
-  font-size:13px;
-}
-
-.reaction:hover,
-.reaction.active{
-  background:#202b2d;
-  border-color:#31534a;
-  color:white;
-}
-
-/* LOADING */
-
-.loading{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  padding:6px 2px;
-}
-
-.loading span{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#909ba4;
-  animation:dot 1.15s infinite;
-}
-
-.loading span:nth-child(2){animation-delay:.15s}
-.loading span:nth-child(3){animation-delay:.3s}
-
-@keyframes dot{
-  0%,80%,100%{opacity:.25;transform:translateY(0)}
-  40%{opacity:1;transform:translateY(-3px)}
-}
-
-/* COMPOSER */
-
-.composer{
-  flex:none;
-  padding:10px 15px 17px;
-  background:
-    linear-gradient(
-      transparent,
-      rgba(7,10,13,.96) 24%
-    );
-  z-index:4;
-}
-
-.preview{
-  max-width:900px;
-  margin:0 auto 9px;
-  position:relative;
-  display:none;
-}
-
-.preview img{
-  width:120px;
-  height:90px;
-  object-fit:cover;
-  border-radius:13px;
-  border:1px solid var(--border);
-}
-
-.remove-preview{
-  position:absolute;
-  top:-7px;
-  right:-7px;
-  width:25px;
-  height:25px;
-  border:0;
-  border-radius:50%;
-  background:var(--danger);
-  color:white;
-  cursor:pointer;
-  font-size:16px;
-}
-
-.composer-box{
-  max-width:900px;
-  margin:auto;
-  display:flex;
-  align-items:flex-end;
-  gap:7px;
-  padding:8px;
-  border:1px solid #303b43;
-  border-radius:18px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(25,31,37,.98),
-      rgba(14,19,23,.98)
-    );
-  box-shadow:0 12px 45px rgba(0,0,0,.38);
-  transition:.2s;
-}
-
-.composer-box:focus-within{
-  border-color:#3d5552;
-  box-shadow:
-    0 12px 45px rgba(0,0,0,.4),
-    0 0 0 2px rgba(24,201,154,.04);
-}
-
-textarea{
-  flex:1;
-  min-width:0;
-  min-height:45px;
-  max-height:160px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:white;
-  font-size:14px;
-  line-height:1.6;
-  padding:10px;
-}
-
-textarea::placeholder{
-  color:#707c85;
-}
-
-.icon-button,
-.send{
-  width:44px;
-  height:44px;
-  flex:none;
-  border:0;
-  border-radius:12px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.icon-button{
-  background:#252d34;
-  color:white;
-  font-size:17px;
-}
-
-.icon-button:hover{
-  background:#303a42;
-  transform:translateY(-1px);
-}
-
-.send{
-  background:linear-gradient(135deg,var(--accent),#0d9c77);
-  color:white;
-  font-size:19px;
-  font-weight:bold;
-  box-shadow:0 5px 18px rgba(24,201,154,.15);
-}
-
-.send:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.08);
-}
-
-.send:disabled,
-.icon-button:disabled{
-  opacity:.35;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.hint{
-  max-width:900px;
-  margin:7px auto 0;
-  text-align:center;
-  color:#5e6972;
-  font-size:10px;
-}
-
-/* MOBILE */
-
-@media(max-width:760px){
-
-  .sidebar{
-    display:none;
-  }
-
-  .header{
-    height:57px;
-    padding:0 14px;
-  }
-
-  .chat{
-    padding:18px 9px 20px;
-  }
-
-  .welcome{
-    margin-top:5vh;
-  }
-
-  .welcome-logo{
-    width:72px;
-    height:72px;
-    border-radius:22px;
-    font-size:22px;
-  }
-
-  .welcome h1{
-    font-size:27px;
-    margin-top:20px;
-  }
-
-  .welcome p{
-    font-size:13px;
-  }
-
-  .tools{
-    grid-template-columns:1fr;
-    gap:9px;
-    margin-top:28px;
-  }
-
-  .tool{
-    min-height:auto;
-    padding:15px;
-  }
-
-  .message{
-    margin:18px 2px;
-    gap:8px;
-  }
-
-  .avatar{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-  }
-
-  .bubble{
-    max-width:calc(100% - 42px);
-    font-size:14px;
-    padding:11px 13px;
-  }
-
-  .composer{
-    padding:7px 7px 11px;
-  }
-
-  .composer-box{
-    border-radius:16px;
-    gap:4px;
-    padding:6px;
-  }
-
-  textarea{
-    padding:9px 7px;
-    min-height:43px;
-  }
-
-  .icon-button,
-  .send{
-    width:42px;
-    height:42px;
-  }
-
-  .hint{
-    font-size:9px;
-  }
-}
-</style></head><body><div class="app"><aside class="sidebar">  <div class="brand">
-    <div class="logo">AS</div>
-    <div>A S <span>AI</span></div>
-  </div>  <button class="side-button" onclick="newChat()">
-    ＋ &nbsp; محادثة جديدة
-  </button>  <button class="side-button image" onclick="startImageMode()">
-    🎨 &nbsp; إنشاء صورة
-  </button>  <div class="history-title">المحادثات</div>  <div class="history-item">
-    💬 &nbsp; المحادثة الحالية
-  </div>  <div class="sidebar-bottom">
-    <b>A S AI</b><br>
-    مساعدك الذكي المدعوم بالذكاء الاصطناعي
-  </div></aside><main class="main"><header class="header">  <div class="header-title">
-    <div class="header-mini-logo">AS</div>
-    A S AI
-  </div>  <div class="status">
-    <span class="status-dot"></span>
-    متصل
-  </div></header><section class="chat" id="chat"><div class="welcome" id="welcome">  <div class="welcome-logo">AS</div>  <h1>مرحباً، أنا A S AI</h1>  <p>مساعدك الذكي للشرح، الأفكار، الصور والمزيد.</p>  <div class="tools"><div class="tool" onclick="useSuggestion('اشرح لي البرمجة بطريقة سهلة وبأمثلة')">
-  <div class="tool-icon">💡</div>
-  <b>شرح وتعلّم</b>
-  <small>اشرح لي أي موضوع بطريقة بسيطة وواضحة</small>
-</div>
-
-<div class="tool" onclick="startImageMode()">
-  <div class="tool-icon">🎨</div>
-  <b>إنشاء صورة</b>
-  <small>اكتب وصف الصورة التي تريد إنشاءها</small>
-</div>
-
-<div class="tool" onclick="useSuggestion('ساعدني في ابتكار فكرة مشروع جديدة ومميزة')">
-  <div class="tool-icon">🚀</div>
-  <b>أفكار ومشاريع</b>
-  <small>طوّر فكرتك وحوّلها إلى مشروع</small>
-</div>
-
-<div class="tool" onclick="useSuggestion('ما هي قدراتك؟ أخبرني بالتفصيل وباختصار')">
-  <div class="tool-icon">✨</div>
-  <b>ماذا تستطيع؟</b>
-  <small>اكتشف قدرات A S AI</small>
-</div>
-
-  </div></div></section><div class="composer">  <div class="preview" id="preview">
-    <button class="remove-preview" onclick="removeImage()">×</button>
-    <img id="previewImage" alt="الصورة المحددة">
-  </div>  <div class="composer-box"><button
-  class="icon-button"
-  id="uploadButton"
-  onclick="document.getElementById('imageInput').click()"
-  title="رفع صورة"
->📎</button>
-
-<input
-  type="file"
-  id="imageInput"
-  accept="image/png,image/jpeg,image/webp"
-  hidden
->
-
-<textarea
-  id="input"
-  rows="1"
-  placeholder="اكتب رسالتك إلى A S AI..."
-></textarea>
-
-<button
-  class="send"
-  id="send"
-  onclick="sendMessage()"
-  title="إرسال"
->↑</button>
-
-  </div>  <div class="hint">
-    A S AI • ارفع صورة، اسأل سؤالاً أو أنشئ صورة
-  </div></div></main>
-</div><script>
-
-const API_URL="/api/chat";
-const IMAGE_API_URL="/api/images";
-
-const input=document.getElementById("input");
-const chat=document.getElementById("chat");
-const send=document.getElementById("send");
-const imageInput=document.getElementById("imageInput");
-const preview=document.getElementById("preview");
-const previewImage=document.getElementById("previewImage");
-
-let history=[];
-let imageMode=false;
-let selectedImage=null;
-
-/* =========================
-   RESTORE CHAT
-========================= */
-
-try{
-  const saved=localStorage.getItem("as_ai_history");
-
-  if(saved){
-    history=JSON.parse(saved);
-
-    history.forEach(message=>{
-      if(message.role==="user"){
-        addMessage(message.content,"user",false);
-      }
-
-      if(message.role==="assistant"){
-        addMessage(message.content,"ai",false);
-      }
-    });
-  }
-}catch(e){
-  history=[];
-}
-
-/* =========================
-   SAVE
-========================= */
-
-function saveHistory(){
-  try{
-    localStorage.setItem(
-      "as_ai_history",
-      JSON.stringify(history.slice(-30))
-    );
-  }catch(e){}
-}
-
-/* =========================
-   ENTER
-========================= */
-
-input.addEventListener("keydown",function(e){
-
-  if(e.key==="Enter" && !e.shiftKey){
-
-    e.preventDefault();
-
-    sendMessage();
-
-  }
-
-});
-
-/* =========================
-   AUTO RESIZE
-========================= */
-
-input.addEventListener("input",function(){
-
-  this.style.height="auto";
-
-  this.style.height=
-    Math.min(this.scrollHeight,160)+"px";
-
-});
-
-/* =========================
-   IMAGE SELECT
-========================= */
-
-imageInput.addEventListener("change",function(){
-
-  const file=this.files[0];
-
-  if(!file)return;
-
-  if(!file.type.startsWith("image/")){
-
-    alert("الملف يجب أن يكون صورة.");
-
-    imageInput.value="";
-
-    return;
-  }
-
-  if(file.size>8*1024*1024){
-
-    alert("حجم الصورة يجب أن يكون أقل من 8MB.");
-
-    imageInput.value="";
-
-    return;
-  }
-
-  const reader=new FileReader();
-
-  reader.onload=function(e){
-
-    selectedImage=e.target.result;
-
-    previewImage.src=selectedImage;
-
-    preview.style.display="block";
-
-    input.placeholder=
-      "اكتب ماذا تريد من A S AI أن يفعل بالصورة...";
-
-    input.focus();
-
-  };
-
-  reader.readAsDataURL(file);
-
-});
-
-/* =========================
-   REMOVE IMAGE
-========================= */
-
-function removeImage(){
-
-  selectedImage=null;
-
-  imageInput.value="";
-
-  preview.style.display="none";
-
-  previewImage.src="";
-
-  input.placeholder=imageMode
-    ? "اكتب وصف الصورة التي تريد إنشاءها..."
-    : "اكتب رسالتك إلى A S AI...";
-}
-
-/* =========================
-   ADD MESSAGE
-========================= */
-
-function addMessage(text,who,scroll=true){
-
-  document.getElementById("welcome")?.remove();
-
-  const row=document.createElement("div");
-
-  row.className="message "+who;
-
-  const avatar=document.createElement("div");
-
-  avatar.className="avatar";
-
-  avatar.textContent=
-    who==="user"?"أنت":"AS";
-
-  const bubble=document.createElement("div");
-
-  bubble.className="bubble";
-
-  bubble.textContent=text;
-
-  row.appendChild(avatar);
-
-  row.appendChild(bubble);
-
-  if(who==="ai"){
-    addReactions(bubble);
-  }
-
-  chat.appendChild(row);
-
-  if(scroll){
-    chat.scrollTop=chat.scrollHeight;
-  }
-
-  return bubble;
-}
-
-/* =========================
-   USER IMAGE
-========================= */
-
-function addUserImageMessage(image,text){
-
-  document.getElementById("welcome")?.remove();
-
-  const row=document.createElement("div");
-
-  row.className="message user";
-
-  const avatar=document.createElement("div");
-
-  avatar.className="avatar";
-
-  avatar.textContent="أنت";
-
-  const bubble=document.createElement("div");
-
-  bubble.className="bubble";
-
-  const img=document.createElement("img");
-
-  img.className="message-image";
-
-  img.src=image;
-
-  img.alt="الصورة المرسلة";
-
-  bubble.appendChild(img);
-
-  if(text){
-
-    const caption=document.createElement("div");
-
-    caption.style.marginTop="9px";
-
-    caption.textContent=text;
-
-    bubble.appendChild(caption);
-
-  }
-
-  row.appendChild(avatar);
-
-  row.appendChild(bubble);
-
-  chat.appendChild(row);
-
-  chat.scrollTop=chat.scrollHeight;
-}
-
-/* =========================
-   IMAGE MESSAGE
-========================= */
-
-function addImageMessage(image){
-
-  document.getElementById("welcome")?.remove();
-
-  const row=document.createElement("div");
-
-  row.className="message ai";
-
-  const avatar=document.createElement("div");
-
-  avatar.className="avatar";
-
-  avatar.textContent="AS";
-
-  const bubble=document.createElement("div");
-
-  bubble.className="bubble";
-
-  const img=document.createElement("img");
-
-  img.className="generated-image";
-
-  img.src=image;
-
-  img.alt="صورة أنشأها A S AI";
-
-  img.onload=()=>{
-    chat.scrollTop=chat.scrollHeight;
-  };
-
-  const actions=document.createElement("div");
-
-  actions.className="image-actions";
-
-  const download=document.createElement("button");
-
-  download.className="action-btn primary";
-
-  download.textContent="⬇️ تنزيل الصورة";
-
-  download.onclick=()=>downloadImage(image);
-
-  const open=document.createElement("button");
-
-  open.className="action-btn";
-
-  open.textContent="🔍 عرض كامل";
-
-  open.onclick=()=>{
-
-    const win=window.open();
-
-    if(win){
-
-      win.document.write(
-        `<img src="${image}" style="max-width:100%;height:auto;background:#111">`
-      );
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d10">
+  <title>A S AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-  };
-
-  actions.appendChild(download);
-  actions.appendChild(open);
-
-  bubble.appendChild(img);
-  bubble.appendChild(actions);
-
-  addReactions(bubble);
-
-  row.appendChild(avatar);
-  row.appendChild(bubble);
-
-  chat.appendChild(row);
-
-  chat.scrollTop=chat.scrollHeight;
-}
-
-/* =========================
-   DOWNLOAD IMAGE
-========================= */
-
-async function downloadImage(src){
-
-  try{
-
-    const response=await fetch(src);
-
-    const blob=await response.blob();
-
-    const blobUrl=URL.createObjectURL(blob);
-
-    const a=document.createElement("a");
-
-    a.href=blobUrl;
-
-    a.download=
-      "AS-AI-"+Date.now()+".png";
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-    setTimeout(()=>{
-      URL.revokeObjectURL(blobUrl);
-    },1000);
-
-  }catch(error){
-
-    const a=document.createElement("a");
-
-    a.href=src;
-
-    a.download="AS-AI-image.png";
-
-    a.target="_blank";
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-  }
-}
-
-/* =========================
-   REACTIONS
-========================= */
-
-function addReactions(container){
-
-  const reactions=document.createElement("div");
-
-  reactions.className="reactions";
-
-  ["👍","❤️","😂","😮"].forEach(emoji=>{
-
-    const button=document.createElement("button");
-
-    button.className="reaction";
-
-    button.textContent=emoji;
-
-    button.onclick=function(){
-
-      reactions
-        .querySelectorAll(".reaction")
-        .forEach(b=>b.classList.remove("active"));
-
-      button.classList.add("active");
-
-    };
-
-    reactions.appendChild(button);
-
-  });
-
-  container.appendChild(reactions);
-}
-
-/* =========================
-   COPY
-========================= */
-
-function addCopyButton(container,text){
-
-  const actions=document.createElement("div");
-
-  actions.className="image-actions";
-
-  const copy=document.createElement("button");
-
-  copy.className="action-btn";
-
-  copy.textContent="📋 نسخ";
-
-  copy.onclick=async()=>{
-
-    try{
-
-      await navigator.clipboard.writeText(text);
-
-      copy.textContent="✅ تم النسخ";
-
-      setTimeout(()=>{
-        copy.textContent="📋 نسخ";
-      },1500);
-
-    }catch(e){}
-
-  };
-
-  actions.appendChild(copy);
-
-  container.appendChild(actions);
-}
-
-/* =========================
-   LOADING
-========================= */
-
-function showLoading(){
-
-  const old=document.getElementById("loading");
-
-  old?.remove();
-
-  const row=document.createElement("div");
-
-  row.className="message ai";
-
-  row.id="loading";
-
-  row.innerHTML=`
-    <div class="avatar">AS</div>
-    <div class="bubble">
-      <div class="loading">
-        <span></span>
-        <span></span>
-        <span></span>
+    :root {
+      --bg: #0b0d10;
+      --panel: #11151a;
+      --panel2: #171c22;
+      --border: #252b33;
+      --text: #f5f7fa;
+      --muted: #9aa4af;
+      --accent: #22c55e;
+      --accent2: #16a34a;
+      --user: #1b222a;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      height: 100dvh;
+      width: 100%;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 280px;
+      flex: none;
+      background: #0f1216;
+      border-left: 1px solid var(--border);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 6px 16px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), #0ea5e9);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: #06110a;
+      box-shadow: 0 8px 28px #16a34a22;
+    }
+
+    .brand strong {
+      font-size: 18px;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .new-chat {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 12px;
+      text-align: right;
+    }
+
+    .new-chat:hover {
+      border-color: #39424c;
+      background: #1b2128;
+    }
+
+    .side-title {
+      font-size: 11px;
+      color: #68727d;
+      margin: 10px 6px 0;
+    }
+
+    .history {
+      overflow: auto;
+      flex: 1;
+    }
+
+    .history-item {
+      padding: 10px 11px;
+      border-radius: 10px;
+      color: #c9d0d7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 3px 0;
+    }
+
+    .history-item:hover {
+      background: #171c22;
+    }
+
+    .side-footer {
+      color: #69737e;
+      font-size: 11px;
+      padding: 8px 6px;
+      line-height: 1.7;
+    }
+
+    /* MAIN */
+
+    .main {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .topbar {
+      height: 62px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      background: #0d1014cc;
+      backdrop-filter: blur(16px);
+      z-index: 3;
+    }
+
+    .top-title {
+      font-weight: 750;
+    }
+
+    .status {
+      font-size: 11px;
+      color: #7f8a95;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px #22c55e;
+    }
+
+    /* MESSAGES */
+
+    .messages {
+      flex: 1;
+      overflow: auto;
+      padding: 26px 16px 150px;
+    }
+
+    .welcome {
+      max-width: 900px;
+      margin: 6vh auto 0;
+      text-align: center;
+    }
+
+    .welcome h1 {
+      font-size: clamp(30px, 5vw, 52px);
+      margin: 0 0 10px;
+      letter-spacing: -1.5px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      margin: 0 auto 28px;
+      max-width: 650px;
+      line-height: 1.8;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      text-align: right;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #14191f, #101419);
+      padding: 17px;
+      border-radius: 16px;
+      transition: .2s;
+      color: white;
+      text-align: right;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #3a444f;
+    }
+
+    .card b {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .card span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .message {
+      max-width: 900px;
+      margin: 0 auto 18px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .message.user {
+      justify-content: flex-start;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      flex: none;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .assistant .avatar {
+      background: #183522;
+      color: #65e08b;
+    }
+
+    .user .avatar {
+      background: #252b33;
+      color: #dce2e8;
+    }
+
+    .bubble {
+      max-width: min(780px, 85%);
+      padding: 13px 15px;
+      border-radius: 16px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .assistant .bubble {
+      background: transparent;
+      padding-right: 4px;
+    }
+
+    .user .bubble {
+      background: var(--user);
+      border: 1px solid #2a323b;
+    }
+
+    .tools {
+      display: flex;
+      gap: 5px;
+      margin-top: 7px;
+      direction: ltr;
+    }
+
+    .tool {
+      border: 1px solid var(--border);
+      background: #11161b;
+      color: #9da7b1;
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+
+    .tool:hover {
+      color: #fff;
+      background: #1a2027;
+    }
+
+    /* GENERATED IMAGE */
+
+    .generated {
+      max-width: 760px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #0f1317;
+      margin-top: 10px;
+    }
+
+    .generated img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      object-fit: contain;
+      background: #090b0e;
+    }
+
+    .image-actions {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      direction: rtl;
+    }
+
+    .primary {
+      border: 0;
+      background: var(--accent);
+      color: #041008;
+      font-weight: 800;
+      padding: 9px 13px;
+      border-radius: 10px;
+    }
+
+    .primary:hover {
+      background: #34d469;
+    }
+
+    .secondary {
+      border: 1px solid var(--border);
+      background: #151a20;
+      color: #e7ebef;
+      padding: 9px 13px;
+      border-radius: 10px;
+    }
+
+    /* COMPOSER */
+
+    .composer-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 14px 16px 18px;
+      background: linear-gradient(transparent, #0b0d10 30%);
+      z-index: 4;
+    }
+
+    .composer {
+      max-width: 900px;
+      margin: auto;
+      border: 1px solid #303842;
+      background: #12171c;
+      border-radius: 18px;
+      box-shadow: 0 12px 45px #0008;
+      overflow: hidden;
+    }
+
+    .preview {
+      display: none;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .preview.show {
+      display: block;
+    }
+
+    .preview img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .remove-preview {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border: 0;
+      background: #000b;
+      color: #fff;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      flex: none;
+      border: 1px solid var(--border);
+      background: #171c22;
+      color: #dbe1e7;
+      border-radius: 12px;
+    }
+
+    .icon-btn:hover {
+      background: #20262d;
+    }
+
+    textarea {
+      flex: 1;
+      resize: none;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      min-height: 42px;
+      max-height: 150px;
+      padding: 10px 4px;
+      line-height: 1.6;
+    }
+
+    textarea::placeholder {
+      color: #6f7984;
+    }
+
+    .send {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--accent);
+      font-size: 18px;
+    }
+
+    .send:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .modebar {
+      display: flex;
+      gap: 7px;
+      padding: 0 10px 10px;
+      overflow: auto;
+    }
+
+    .mode {
+      border: 1px solid var(--border);
+      background: #11161b;
+      color: #9ca6b0;
+      border-radius: 9px;
+      padding: 7px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .mode.active {
+      background: #153521;
+      border-color: #2b9e50;
+      color: #83eea4;
+    }
+
+    .hint {
+      text-align: center;
+      color: #606a74;
+      font-size: 10px;
+      margin-top: 7px;
+    }
+
+    /* LOADING */
+
+    .loading {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      color: #8b96a1;
+    }
+
+    .loading i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #8b96a1;
+      animation: loading 1s infinite;
+    }
+
+    .loading i:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .loading i:nth-child(3) {
+      animation-delay: .3s;
+    }
+
+    @keyframes loading {
+      50% {
+        opacity: .2;
+        transform: translateY(-2px);
+      }
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 22px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 100px;
+      transform: translateX(-50%) translateY(15px);
+      background: #20262d;
+      border: 1px solid #343c46;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+      .sidebar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 10;
+        transform: translateX(105%);
+        transition: .25s;
+        box-shadow: -20px 0 50px #0008;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 12px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome {
+        margin-top: 5vh;
+      }
+
+      .messages {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .bubble {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <div class="logo">AS</div>
+
+      <div>
+        <strong>A S AI</strong>
+        <small>ذكاء اصطناعي متعدد الاستخدامات</small>
       </div>
     </div>
-  `;
 
-  chat.appendChild(row);
+    <button class="new-chat" id="newChat">
+      ＋ محادثة جديدة
+    </button>
 
-  chat.scrollTop=chat.scrollHeight;
-}
+    <div class="side-title">
+      المحادثات الأخيرة
+    </div>
 
-/* =========================
-   SEND
-========================= */
+    <div class="history" id="historyList"></div>
 
-async function sendMessage(){
+    <div class="side-footer">
+      A S AI يستخدم Gemini عبر الخادم.
+      مفتاح API لا يتم وضعه داخل المتصفح.
+    </div>
 
-  const text=input.value.trim();
+  </aside>
 
-  if(!text && !selectedImage){
-    return;
-  }
 
-  if(send.disabled){
-    return;
-  }
+  <main class="main">
 
-  if(imageMode && !selectedImage){
+    <header class="topbar">
 
-    await generateImage(text);
+      <button class="mobile-menu" id="menuBtn">
+        ☰
+      </button>
 
-    return;
-  }
+      <div class="top-title">
+        A S AI
+      </div>
 
-  const imageToSend=selectedImage;
+      <div class="status">
+        <span class="dot"></span>
+        متصل
+      </div>
 
-  if(imageToSend){
+    </header>
 
-    addUserImageMessage(
-      imageToSend,
-      text
+
+    <section class="messages" id="messages">
+
+      <div class="welcome" id="welcome">
+
+        <h1>
+          شو فيني ساعدك؟
+        </h1>
+
+        <p>
+          محادثة سريعة، فهم للصور، وإنشاء وتعديل الصور من نفس المكان.
+        </p>
+
+
+        <div class="cards">
+
+          <button
+            class="card"
+            data-prompt="اشرحلي هذا الموضوع بطريقة سهلة"
+          >
+            <b>🧠 اسألني</b>
+
+            <span>
+              شرح، أفكار، برمجة، دراسة وأسئلة عامة.
+            </span>
+          </button>
+
+
+          <button
+            class="card"
+            data-mode="image"
+            data-prompt="اعمل صورة سينمائية لمدينة مستقبلية في لبنان وقت الغروب"
+          >
+            <b>🎨 أنشئ صورة</b>
+
+            <span>
+              اكتب وصف الصورة التي تريد إنشاءها.
+            </span>
+          </button>
+
+
+          <button
+            class="card"
+            data-mode="image"
+            data-prompt="حسّن جودة الصورة وحافظ على تفاصيلها الطبيعية"
+          >
+            <b>🖼️ عدّل صورة</b>
+
+            <span>
+              ارفع صورة واكتب التعديل المطلوب.
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <div class="composer-wrap">
+
+      <div class="composer">
+
+        <div class="preview" id="preview">
+
+          <button
+            class="remove-preview"
+            id="removeImage"
+          >
+            ×
+          </button>
+
+          <img
+            id="previewImg"
+            alt="الصورة المرفوعة"
+          >
+
+        </div>
+
+
+        <div class="modebar">
+
+          <button
+            class="mode active"
+            data-mode="chat"
+          >
+            💬 محادثة
+          </button>
+
+          <button
+            class="mode"
+            data-mode="image"
+          >
+            🎨 إنشاء/تعديل صورة
+          </button>
+
+        </div>
+
+
+        <div class="input-row">
+
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            hidden
+          >
+
+          <button
+            class="icon-btn"
+            id="uploadBtn"
+            title="رفع صورة"
+          >
+            📎
+          </button>
+
+          <textarea
+            id="prompt"
+            rows="1"
+            placeholder="اكتب رسالتك..."
+          ></textarea>
+
+          <button
+            class="send"
+            id="sendBtn"
+            title="إرسال"
+          >
+            ➤
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="hint">
+        A S AI قد يخطئ أحيانًا. راجع المعلومات المهمة.
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+  const $ = selector => document.querySelector(selector);
+
+  const messagesEl = $("#messages");
+  const welcome = $("#welcome");
+  const promptEl = $("#prompt");
+  const sendBtn = $("#sendBtn");
+  const fileInput = $("#fileInput");
+  const preview = $("#preview");
+  const previewImg = $("#previewImg");
+  const toast = $("#toast");
+
+  let history =
+    JSON.parse(
+      localStorage.getItem("asai_history") || "[]"
     );
 
-  }else{
+  let currentImage = null;
+  let mode = "chat";
+  let busy = false;
 
-    addMessage(
-      text,
-      "user"
+
+  function saveHistory() {
+
+    localStorage.setItem(
+      "asai_history",
+      JSON.stringify(history.slice(-30))
     );
 
   }
 
-  history.push({
-    role:"user",
-    content:text || "حلل هذه الصورة."
-  });
 
-  saveHistory();
+  function showToast(text) {
 
-  input.value="";
+    toast.textContent = text;
 
-  input.style.height="auto";
+    toast.classList.add("show");
 
-  removeImage();
+    clearTimeout(showToast.timer);
 
-  send.disabled=true;
+    showToast.timer =
+      setTimeout(
+        () => toast.classList.remove("show"),
+        2500
+      );
 
-  showLoading();
+  }
 
-  try{
 
-    const response=await fetch(API_URL,{
+  function renderHistory() {
 
-      method:"POST",
+    const list = $("#historyList");
 
-      headers:{
-        "Content-Type":"application/json"
-      },
+    list.innerHTML = "";
 
-      body:JSON.stringify({
+    history
+      .filter(x => x.role === "user")
+      .slice(-12)
+      .reverse()
+      .forEach(x => {
 
-        messages:history,
+        const item =
+          document.createElement("div");
 
-        image:imageToSend || null
+        item.className = "history-item";
 
-      })
+        item.textContent =
+          x.content || "محادثة";
+
+        list.appendChild(item);
+
+      });
+
+  }
+
+
+  function scrollBottom() {
+
+    requestAnimationFrame(() => {
+
+      messagesEl.scrollTop =
+        messagesEl.scrollHeight;
 
     });
 
-    const data=await response.json();
+  }
 
-    document.getElementById("loading")?.remove();
 
-    if(!response.ok){
+  function addMessage(
+    role,
+    text = "",
+    imageUrl = null
+  ) {
 
-      throw new Error(
-        data.error || "حدث خطأ"
+    welcome.style.display = "none";
+
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "message " + role;
+
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className = "avatar";
+
+    avatar.textContent =
+      role === "assistant"
+        ? "AS"
+        : "أنت";
+
+
+    const body =
+      document.createElement("div");
+
+    body.className = "body";
+
+
+    const bubble =
+      document.createElement("div");
+
+    bubble.className = "bubble";
+
+
+    if (text) {
+      bubble.textContent = text;
+    }
+
+
+    body.appendChild(bubble);
+
+
+    if (imageUrl) {
+
+      const box =
+        document.createElement("div");
+
+      box.className = "generated";
+
+
+      const img =
+        document.createElement("img");
+
+      img.src = imageUrl;
+
+      img.alt =
+        "صورة من A S AI";
+
+
+      img.addEventListener(
+        "click",
+        () => window.open(imageUrl, "_blank")
+      );
+
+
+      box.appendChild(img);
+
+
+      const actions =
+        document.createElement("div");
+
+      actions.className =
+        "image-actions";
+
+
+      const download =
+        document.createElement("button");
+
+      download.className = "primary";
+
+      download.textContent =
+        "⬇ تحميل الصورة";
+
+      download.onclick =
+        () => downloadImage(imageUrl);
+
+
+      const open =
+        document.createElement("button");
+
+      open.className = "secondary";
+
+      open.textContent =
+        "🔍 تكبير";
+
+      open.onclick =
+        () => window.open(imageUrl, "_blank");
+
+
+      actions.append(
+        download,
+        open
+      );
+
+
+      box.appendChild(actions);
+
+      body.appendChild(box);
+
+    }
+
+
+    if (role === "assistant") {
+
+      const tools =
+        document.createElement("div");
+
+      tools.className = "tools";
+
+
+      const copy =
+        document.createElement("button");
+
+      copy.className = "tool";
+
+      copy.textContent = "نسخ";
+
+
+      copy.onclick = async () => {
+
+        try {
+
+          await navigator.clipboard.writeText(
+            bubble.textContent
+          );
+
+          showToast("تم النسخ");
+
+        } catch {
+
+          showToast("تعذر النسخ");
+
+        }
+
+      };
+
+
+      tools.appendChild(copy);
+
+      body.appendChild(tools);
+
+    }
+
+
+    row.append(
+      avatar,
+      body
+    );
+
+    messagesEl.appendChild(row);
+
+    scrollBottom();
+
+
+    return {
+      row,
+      bubble,
+      body
+    };
+
+  }
+
+
+  async function downloadImage(url) {
+
+    try {
+
+      const response =
+        await fetch(url);
+
+      const blob =
+        await response.blob();
+
+      const objectUrl =
+        URL.createObjectURL(blob);
+
+
+      const a =
+        document.createElement("a");
+
+      a.href = objectUrl;
+
+      a.download =
+        "as-ai-image.png";
+
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      a.remove();
+
+
+      setTimeout(
+        () => URL.revokeObjectURL(objectUrl),
+        1000
+      );
+
+    } catch {
+
+      window.open(
+        url,
+        "_blank"
       );
 
     }
 
-    const reply=
-      data.reply ||
-      "لم يصلني رد.";
+  }
 
-    const bubble=
-      addMessage(
-        reply,
-        "ai"
-      );
 
-    addCopyButton(
-      bubble,
-      reply
+  function setMode(nextMode) {
+
+    mode = nextMode;
+
+
+    document
+      .querySelectorAll(".mode")
+      .forEach(button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.mode === nextMode
+        );
+
+      });
+
+
+    promptEl.placeholder =
+      nextMode === "image"
+
+        ? (
+            currentImage
+              ? "اكتب التعديل المطلوب للصورة..."
+              : "اكتب وصف الصورة التي تريد إنشاءها..."
+          )
+
+        : "اكتب رسالتك...";
+
+  }
+
+
+  function clearImage() {
+
+    currentImage = null;
+
+    fileInput.value = "";
+
+    preview.classList.remove("show");
+
+    previewImg.removeAttribute("src");
+
+    setMode(mode);
+
+  }
+
+
+  function resizeImage(
+    file,
+    maxSide = 1800
+  ) {
+
+    return new Promise(
+      (resolve, reject) => {
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload = () => {
+
+          const img =
+            new Image();
+
+
+          img.onload = () => {
+
+            const scale =
+              Math.min(
+                1,
+                maxSide /
+                  Math.max(
+                    img.width,
+                    img.height
+                  )
+              );
+
+
+            const canvas =
+              document.createElement("canvas");
+
+
+            canvas.width =
+              Math.round(
+                img.width * scale
+              );
+
+
+            canvas.height =
+              Math.round(
+                img.height * scale
+              );
+
+
+            const ctx =
+              canvas.getContext("2d");
+
+
+            ctx.drawImage(
+              img,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+
+            resolve(
+              canvas.toDataURL(
+                "image/jpeg",
+                .88
+              )
+            );
+
+          };
+
+
+          img.onerror = reject;
+
+          img.src =
+            reader.result;
+
+        };
+
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+
+      }
     );
 
-    history.push({
-      role:"assistant",
-      content:reply
+  }
+
+
+  fileInput.addEventListener(
+    "change",
+    async () => {
+
+      const file =
+        fileInput.files?.[0];
+
+
+      if (!file) return;
+
+
+      if (!file.type.startsWith("image/")) {
+
+        showToast(
+          "الملف ليس صورة"
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        currentImage =
+          await resizeImage(file);
+
+
+        previewImg.src =
+          currentImage;
+
+
+        preview.classList.add(
+          "show"
+        );
+
+
+        setMode("image");
+
+        showToast(
+          "تم تجهيز الصورة"
+        );
+
+      } catch {
+
+        showToast(
+          "تعذر قراءة الصورة"
+        );
+
+      }
+
+    }
+  );
+
+
+  $("#uploadBtn").onclick =
+    () => fileInput.click();
+
+
+  $("#removeImage").onclick =
+    clearImage;
+
+
+  document
+    .querySelectorAll(".mode")
+    .forEach(button => {
+
+      button.onclick =
+        () => setMode(
+          button.dataset.mode
+        );
+
     });
+
+
+  document
+    .querySelectorAll(".card")
+    .forEach(card => {
+
+      card.onclick = () => {
+
+        if (card.dataset.mode) {
+
+          setMode(
+            card.dataset.mode
+          );
+
+        }
+
+
+        promptEl.value =
+          card.dataset.prompt || "";
+
+
+        autoGrow();
+
+        promptEl.focus();
+
+      };
+
+    });
+
+
+  $("#newChat").onclick = () => {
+
+    history = [];
 
     saveHistory();
 
-  }catch(error){
 
-    console.error(error);
+    messagesEl.innerHTML = "";
 
-    document.getElementById("loading")?.remove();
-
-    addMessage(
-      error.message ||
-      "تعذر الاتصال بالذكاء الاصطناعي حالياً.",
-      "ai"
+    messagesEl.appendChild(
+      welcome
     );
 
+    welcome.style.display = "";
+
+
+    clearImage();
+
+    setMode("chat");
+
+    renderHistory();
+
+
+    $("#sidebar")
+      .classList.remove("open");
+
+  };
+
+
+  $("#menuBtn").onclick = () => {
+
+    $("#sidebar")
+      .classList.toggle("open");
+
+  };
+
+
+  function autoGrow() {
+
+    promptEl.style.height =
+      "auto";
+
+
+    promptEl.style.height =
+      Math.min(
+        promptEl.scrollHeight,
+        150
+      ) + "px";
+
   }
 
-  send.disabled=false;
 
-  input.focus();
-}
-
-/* =========================
-   IMAGE GENERATION
-========================= */
-
-async function generateImage(prompt){
-
-  if(!prompt){
-    return;
-  }
-
-  addMessage(
-    "🎨 "+prompt,
-    "user"
+  promptEl.addEventListener(
+    "input",
+    autoGrow
   );
 
-  input.value="";
 
-  input.style.height="auto";
+  promptEl.addEventListener(
+    "keydown",
+    event => {
 
-  send.disabled=true;
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
 
-  showLoading();
+        event.preventDefault();
 
-  try{
+        send();
 
-    const response=await fetch(
-      IMAGE_API_URL,
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify({
-          prompt:prompt
-        })
       }
+
+    }
+  );
+
+
+  function setBusy(value) {
+
+    busy = value;
+
+    sendBtn.disabled = value;
+
+
+    sendBtn.textContent =
+      value
+        ? "…"
+        : "➤";
+
+  }
+
+
+  async function send() {
+
+    if (busy) return;
+
+
+    const text =
+      promptEl.value.trim();
+
+
+    if (!text && !currentImage) {
+      return;
+    }
+
+
+    const sentImage =
+      currentImage;
+
+
+    const userText =
+      text ||
+      (
+        sentImage
+          ? "حلل هذه الصورة."
+          : ""
+      );
+
+
+    addMessage(
+      "user",
+      userText,
+      sentImage && mode === "chat"
+        ? sentImage
+        : null
     );
 
-    const data=await response.json();
 
-    document.getElementById("loading")?.remove();
+    promptEl.value = "";
 
-    if(!response.ok){
+    autoGrow();
+
+    setBusy(true);
+
+
+    try {
+
+      if (mode === "image") {
+
+        await generateImage(
+          userText,
+          sentImage
+        );
+
+      } else {
+
+        await chat(
+          userText,
+          sentImage
+        );
+
+      }
+
+    } catch (error) {
+
+      addMessage(
+        "assistant",
+        error.message ||
+          "حدث خطأ."
+      );
+
+    } finally {
+
+      setBusy(false);
+
+      clearImage();
+
+      renderHistory();
+
+    }
+
+  }
+
+
+  async function chat(
+    userText,
+    image
+  ) {
+
+    history.push({
+      role: "user",
+      content: userText
+    });
+
+
+    saveHistory();
+
+
+    const placeholder =
+      addMessage(
+        "assistant",
+        ""
+      );
+
+
+    placeholder.bubble.innerHTML =
+      `
+      <span class="loading">
+        <i></i>
+        <i></i>
+        <i></i>
+        جاري التفكير...
+      </span>
+      `;
+
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            messages: history,
+            image: image || null
+          })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      let data = {};
+
+      try {
+        data =
+          await response.json();
+      } catch {}
 
       throw new Error(
         data.error ||
-        "فشل إنشاء الصورة"
+        "تعذر الاتصال بالخادم."
       );
 
     }
 
-    const image=
-      data.image ||
-      data.image_url;
 
-    if(!image){
+    if (!response.body) {
 
       throw new Error(
-        "لم تصل الصورة من السيرفر."
+        "المتصفح لا يدعم الرد المتدفق."
       );
 
     }
 
-    addImageMessage(image);
 
-  }catch(error){
+    placeholder.bubble.textContent =
+      "";
 
-    console.error(error);
 
-    document.getElementById("loading")?.remove();
+    const reader =
+      response.body.getReader();
 
-    addMessage(
-      error.message ||
-      "تعذر إنشاء الصورة حالياً.",
-      "ai"
+
+    const decoder =
+      new TextDecoder();
+
+
+    let buffer = "";
+
+    let finalText = "";
+
+
+    while (true) {
+
+      const {
+        value,
+        done
+      } = await reader.read();
+
+
+      if (done) break;
+
+
+      buffer +=
+        decoder.decode(
+          value,
+          { stream: true }
+        );
+
+
+      const events =
+        buffer.split("\n\n");
+
+
+      buffer =
+        events.pop() || "";
+
+
+      for (
+        const event of events
+      ) {
+
+        const line =
+          event
+            .split("\n")
+            .find(
+              x =>
+                x.startsWith(
+                  "data: "
+                )
+            );
+
+
+        if (!line) continue;
+
+
+        const data =
+          JSON.parse(
+            line.slice(6)
+          );
+
+
+        if (data.type === "text") {
+
+          finalText +=
+            data.text || "";
+
+
+          placeholder.bubble.textContent =
+            finalText;
+
+
+          scrollBottom();
+
+        }
+
+
+        if (data.type === "error") {
+
+          throw new Error(
+            data.error
+          );
+
+        }
+
+      }
+
+    }
+
+
+    if (!finalText) {
+
+      finalText =
+        "لم يصلني رد من الذكاء الاصطناعي.";
+
+    }
+
+
+    history.push({
+      role: "assistant",
+      content: finalText
+    });
+
+
+    saveHistory();
+
+  }
+
+
+  async function generateImage(
+    prompt,
+    image
+  ) {
+
+    const placeholder =
+      addMessage(
+        "assistant",
+        ""
+      );
+
+
+    placeholder.bubble.innerHTML =
+      `
+      <span class="loading">
+        <i></i>
+        <i></i>
+        <i></i>
+        جاري إنشاء الصورة...
+      </span>
+      `;
+
+
+    const response =
+      await fetch(
+        "/api/images",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            prompt,
+            image: image || null,
+            imageSize: "1K"
+          })
+
+        }
+      );
+
+
+    let data = {};
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {}
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "تعذر إنشاء الصورة."
+      );
+
+    }
+
+
+    if (!data.image) {
+
+      throw new Error(
+        "لم تصل الصورة من Gemini."
+      );
+
+    }
+
+
+    placeholder.bubble.textContent =
+      "";
+
+
+    const box =
+      document.createElement("div");
+
+    box.className =
+      "generated";
+
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      data.image;
+
+    img.alt =
+      "صورة مولدة من A S AI";
+
+
+    img.onclick =
+      () =>
+        window.open(
+          data.image,
+          "_blank"
+        );
+
+
+    box.appendChild(img);
+
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "image-actions";
+
+
+    const download =
+      document.createElement("button");
+
+    download.className =
+      "primary";
+
+    download.textContent =
+      "⬇ تحميل الصورة";
+
+
+    download.onclick =
+      () =>
+        downloadImage(
+          data.image
+        );
+
+
+    const open =
+      document.createElement("button");
+
+    open.className =
+      "secondary";
+
+    open.textContent =
+      "🔍 تكبير";
+
+
+    open.onclick =
+      () =>
+        window.open(
+          data.image,
+          "_blank"
+        );
+
+
+    actions.append(
+      download,
+      open
+    );
+
+
+    box.appendChild(actions);
+
+
+    placeholder.body.appendChild(
+      box
+    );
+
+
+    history.push({
+      role: "user",
+      content: prompt
+    });
+
+
+    history.push({
+      role: "assistant",
+      content: "[تم إنشاء صورة]"
+    });
+
+
+    saveHistory();
+
+  }
+
+
+  function restore() {
+
+    renderHistory();
+
+
+    const recent =
+      history.slice(-12);
+
+
+    if (!recent.length) {
+      return;
+    }
+
+
+    welcome.style.display =
+      "none";
+
+
+    recent.forEach(
+      message => {
+
+        addMessage(
+          message.role,
+          message.content
+        );
+
+      }
     );
 
   }
 
-  imageMode=false;
 
-  input.placeholder=
-    "اكتب رسالتك إلى A S AI...";
+  restore();
 
-  send.disabled=false;
+</script>
 
-  input.focus();
-}
-
-/* =========================
-   IMAGE MODE
-========================= */
-
-function startImageMode(){
-
-  imageMode=true;
-
-  input.placeholder=
-    "اكتب وصف الصورة التي تريد إنشاءها...";
-
-  input.focus();
-}
-
-/* =========================
-   SUGGESTION
-========================= */
-
-function useSuggestion(text){
-
-  imageMode=false;
-
-  input.placeholder=
-    "اكتب رسالتك إلى A S AI...";
-
-  input.value=text;
-
-  input.style.height="auto";
-
-  input.style.height=
-    Math.min(input.scrollHeight,160)+"px";
-
-  input.focus();
-}
-
-/* =========================
-   NEW CHAT
-========================= */
-
-function newChat(){
-
-  history=[];
-
-  localStorage.removeItem("as_ai_history");
-
-  chat.innerHTML=`
-
-    <div class="welcome" id="welcome">
-
-      <div class="welcome-logo">AS</div>
-
-      <h1>مرحباً، أنا A S AI</h1>
-
-      <p>مساعدك الذكي للشرح، الأفكار، الصور والمزيد.</p>
-
-      <div class="tools">
-
-        <div class="tool" onclick="useSuggestion('اشرح لي البرمجة بطريقة سهلة وبأمثلة')">
-          <div class="tool-icon">💡</div>
-          <b>شرح وتعلّم</b>
-          <small>اشرح لي أي موضوع بطريقة بسيطة وواضحة</small>
-        </div>
-
-        <div class="tool" onclick="startImageMode()">
-          <div class="tool-icon">🎨</div>
-          <b>إنشاء صورة</b>
-          <small>اكتب وصف الصورة التي تريد إنشاءها</small>
-        </div>
-
-        <div class="tool" onclick="useSuggestion('ساعدني في ابتكار فكرة مشروع جديدة ومميزة')">
-          <div class="tool-icon">🚀</div>
-          <b>أفكار ومشاريع</b>
-          <small>طوّر فكرتك وحوّلها إلى مشروع</small>
-        </div>
-
-        <div class="tool" onclick="useSuggestion('ما هي قدراتك؟ أخبرني بالتفصيل وباختصار')">
-          <div class="tool-icon">✨</div>
-          <b>ماذا تستطيع؟</b>
-          <small>اكتشف قدرات A S AI</small>
-        </div>
-
-      </div>
-
-    </div>
-  `;
-
-  imageMode=false;
-
-  removeImage();
-
-  input.value="";
-
-  input.focus();
-}
-
-</script></body>
+</body>
 </html>
