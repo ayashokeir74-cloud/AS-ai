@@ -12,12 +12,13 @@
 <style>
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent!important;
 }
 
 html,body{
   margin:0;
   width:100%;
+  height:100%;
   min-height:100%;
   background:#08090b;
   color:#f5f5f5;
@@ -43,12 +44,17 @@ button{
   -webkit-tap-highlight-color:transparent!important;
   -webkit-touch-callout:none;
   user-select:none;
+  touch-action:manipulation;
 }
 
 button:focus,
 button:focus-visible{
   outline:none!important;
   box-shadow:none!important;
+}
+
+button:active{
+  outline:none!important;
 }
 
 .app{
@@ -427,6 +433,11 @@ button:focus-visible{
   unicode-bidi:embed;
 }
 
+.assistant-text a{
+  color:#ff9300;
+  text-decoration:none;
+}
+
 .code-wrap{
   margin:14px 0;
   border:1px solid #292d34;
@@ -774,46 +785,72 @@ button:focus-visible{
     <div class="logo">
       <div class="logo-icon">
         <svg viewBox="0 0 100 100" fill="none">
-          <path d="M24 24h52v38H24z" stroke="white" stroke-width="8" rx="10"/>
-          <path d="M36 76h28M50 62v14" stroke="white" stroke-width="8" stroke-linecap="round"/>
-          <path d="M38 40h24M38 50h15" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <path d="M24 24h52v38H24z"
+                stroke="white"
+                stroke-width="8"
+                rx="10"/>
+          <path d="M36 76h28M50 62v14"
+                stroke="white"
+                stroke-width="8"
+                stroke-linecap="round"/>
+          <path d="M38 40h24M38 50h15"
+                stroke="white"
+                stroke-width="6"
+                stroke-linecap="round"/>
         </svg>
       </div>
-      <div class="logo-text">Sultan <span>AI</span></div>
+
+      <div class="logo-text">
+        Sultan <span>AI</span>
+      </div>
     </div>
 
-    <button type="button" class="new-chat" id="newChat">
+    <button type="button"
+            class="new-chat"
+            id="newChat">
       + محادثة جديدة
     </button>
 
     <nav class="nav">
 
-      <button type="button" class="nav-btn active" data-mode="chat">
+      <button type="button"
+              class="nav-btn active"
+              data-mode="chat">
         <span class="nav-icon">💬</span>
         <span>المحادثة</span>
       </button>
 
-      <button type="button" class="nav-btn" data-mode="files">
+      <button type="button"
+              class="nav-btn"
+              data-mode="files">
         <span class="nav-icon">📁</span>
         <span>الملفات</span>
       </button>
 
-      <button type="button" class="nav-btn" data-mode="fast">
+      <button type="button"
+              class="nav-btn"
+              data-mode="fast">
         <span class="nav-icon">⚡</span>
         <span>الوضع السريع</span>
       </button>
 
-      <button type="button" class="nav-btn" data-mode="web">
+      <button type="button"
+              class="nav-btn"
+              data-mode="web">
         <span class="nav-icon">🌐</span>
         <span>البحث والويب</span>
       </button>
 
-      <button type="button" class="nav-btn" data-mode="code">
+      <button type="button"
+              class="nav-btn"
+              data-mode="code">
         <span class="nav-icon">💻</span>
         <span>البرمجة</span>
       </button>
 
-      <button type="button" class="nav-btn" data-mode="analysis">
+      <button type="button"
+              class="nav-btn"
+              data-mode="analysis">
         <span class="nav-icon">🧠</span>
         <span>التحليل</span>
       </button>
@@ -841,7 +878,9 @@ button:focus-visible{
         aria-expanded="false"
       >☰</button>
 
-      <div class="top-title">Sultan AI</div>
+      <div class="top-title">
+        Sultan AI
+      </div>
 
       <div class="status">
         <span class="status-dot"></span>
@@ -859,14 +898,31 @@ button:focus-visible{
           <div class="welcome-inner">
 
             <div class="hero-logo">
+
               <svg viewBox="0 0 100 100" fill="none">
-                <path d="M24 24h52v38H24z" stroke="white" stroke-width="8" rx="10"/>
-                <path d="M36 76h28M50 62v14" stroke="white" stroke-width="8" stroke-linecap="round"/>
-                <path d="M38 40h24M38 50h15" stroke="white" stroke-width="6" stroke-linecap="round"/>
+
+                <path d="M24 24h52v38H24z"
+                      stroke="white"
+                      stroke-width="8"
+                      rx="10"/>
+
+                <path d="M36 76h28M50 62v14"
+                      stroke="white"
+                      stroke-width="8"
+                      stroke-linecap="round"/>
+
+                <path d="M38 40h24M38 50h15"
+                      stroke="white"
+                      stroke-width="6"
+                      stroke-linecap="round"/>
+
               </svg>
+
             </div>
 
-            <h1>أهلاً بك في <span>Sultan AI</span></h1>
+            <h1>
+              أهلاً بك في <span>Sultan AI</span>
+            </h1>
 
             <p>
               مساعدك الذكي للمحادثة، البرمجة، تحليل الملفات والبحث.
@@ -874,22 +930,38 @@ button:focus-visible{
 
             <div class="quick-grid">
 
-              <button type="button" class="quick" data-prompt="اشرح لي كيف يعمل الذكاء الاصطناعي بطريقة سهلة ومفهومة">
+              <button
+                type="button"
+                class="quick"
+                data-prompt="اشرح لي كيف يعمل الذكاء الاصطناعي بطريقة سهلة ومفهومة"
+              >
                 <strong>🧠 تعلّم شيئاً جديداً</strong>
                 <span>شرح مبسط لأي موضوع</span>
               </button>
 
-              <button type="button" class="quick" data-prompt="اكتب لي مثالاً برمجياً واشرح لي كيف يعمل خطوة بخطوة">
+              <button
+                type="button"
+                class="quick"
+                data-prompt="اكتب لي مثالاً برمجياً واشرح لي كيف يعمل خطوة بخطوة"
+              >
                 <strong>💻 ساعدني بالبرمجة</strong>
                 <span>اكتب وفسّر الكود</span>
               </button>
 
-              <button type="button" class="quick" data-prompt="حلل هذه الفكرة واقترح أفضل طريقة لتنفيذها">
+              <button
+                type="button"
+                class="quick"
+                data-prompt="حلل هذه الفكرة واقترح أفضل طريقة لتنفيذها"
+              >
                 <strong>🔎 حلّل فكرة</strong>
                 <span>تحليل واقتراحات عملية</span>
               </button>
 
-              <button type="button" class="quick" data-prompt="ما هي أهم التقنيات الجديدة في الذكاء الاصطناعي حالياً؟">
+              <button
+                type="button"
+                class="quick"
+                data-prompt="ما هي أهم التقنيات الجديدة في الذكاء الاصطناعي حالياً؟"
+              >
                 <strong>🌐 ابحث عن المعلومات</strong>
                 <span>معلومات حديثة عند الحاجة</span>
               </button>
@@ -907,7 +979,8 @@ button:focus-visible{
 
         <div class="composer">
 
-          <div class="file-list" id="fileList"></div>
+          <div class="file-list"
+               id="fileList"></div>
 
           <div class="composer-row">
 
@@ -1004,77 +1077,50 @@ let toastTimer = null;
 
 
 /* =========================================================
-   HELPERS
+   ELEMENTS
 ========================================================= */
 
-const $ = id => document.getElementById(id);
+const chat = document.getElementById("chat");
+const welcome = document.getElementById("welcome");
 
-const chat = $("chat");
-const welcome = $("welcome");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const mobileMenu = document.getElementById("mobileMenu");
 
-const sidebar = $("sidebar");
-const overlay = $("overlay");
-const mobileMenu = $("mobileMenu");
+const newChatButton = document.getElementById("newChat");
 
-const newChatButton = $("newChat");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
 
-const messageInput = $("messageInput");
-const sendButton = $("sendButton");
+const attachButton = document.getElementById("attachButton");
+const fileInput = document.getElementById("fileInput");
+const fileList = document.getElementById("fileList");
 
-const attachButton = $("attachButton");
-const fileInput = $("fileInput");
-const fileList = $("fileList");
-
-const fastToggle = $("fastToggle");
-const toast = $("toast");
+const fastToggle = document.getElementById("fastToggle");
+const toast = document.getElementById("toast");
 
 
 /* =========================================================
    ERROR HANDLING
 ========================================================= */
 
-window.addEventListener("error", event => {
-  console.error("Sultan AI error:", event.error || event.message);
+window.addEventListener("error", function(event){
+
+  console.error(
+    "Sultan AI error:",
+    event.error || event.message
+  );
+
 });
 
-window.addEventListener("unhandledrejection", event => {
-  console.error("Sultan AI promise error:", event.reason);
+window.addEventListener("unhandledrejection", function(event){
+
+  console.error(
+    "Sultan AI promise error:",
+    event.reason
+  );
+
 });
-
-
-/* =========================================================
-   IMPORTANT:
-   NORMAL CLICK SYSTEM
-   No pointerup
-   No preventDefault
-   No touchstart
-========================================================= */
-
-function bindPress(element, callback){
-
-  if(!element) return;
-
-  let locked = false;
-
-  element.addEventListener("click", function(event){
-
-    if(locked) return;
-
-    locked = true;
-
-    try{
-      callback(event);
-    }catch(error){
-      console.error(error);
-      showToast("حدث خطأ، حاول مرة أخرى.");
-    }
-
-    setTimeout(() => {
-      locked = false;
-    }, 250);
-
-  }, false);
-}
 
 
 /* =========================================================
@@ -1088,11 +1134,15 @@ function showToast(message){
   clearTimeout(toastTimer);
 
   toast.textContent = message;
+
   toast.classList.add("show");
 
-  toastTimer = setTimeout(() => {
+  toastTimer = setTimeout(function(){
+
     toast.classList.remove("show");
-  }, 2600);
+
+  },2600);
+
 }
 
 
@@ -1102,31 +1152,78 @@ function showToast(message){
 
 function openSidebar(){
 
+  if(!sidebar || !overlay) return;
+
   sidebar.classList.add("open");
   overlay.classList.add("show");
 
-  mobileMenu.setAttribute("aria-expanded","true");
+  if(mobileMenu){
+
+    mobileMenu.setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+  }
+
 }
 
+
 function closeSidebar(){
+
+  if(!sidebar || !overlay) return;
 
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
 
-  mobileMenu.setAttribute("aria-expanded","false");
-}
+  if(mobileMenu){
 
-bindPress(mobileMenu, () => {
+    mobileMenu.setAttribute(
+      "aria-expanded",
+      "false"
+    );
 
-  if(sidebar.classList.contains("open")){
-    closeSidebar();
-  }else{
-    openSidebar();
   }
 
-});
+}
 
-bindPress(overlay, closeSidebar);
+
+if(mobileMenu){
+
+  mobileMenu.addEventListener(
+    "click",
+    function(){
+
+      if(sidebar.classList.contains("open")){
+
+        closeSidebar();
+
+      }else{
+
+        openSidebar();
+
+      }
+
+    },
+    false
+  );
+
+}
+
+
+if(overlay){
+
+  overlay.addEventListener(
+    "click",
+    function(){
+
+      closeSidebar();
+
+    },
+    false
+  );
+
+}
 
 
 /* =========================================================
@@ -1136,78 +1233,142 @@ bindPress(overlay, closeSidebar);
 function newChat(){
 
   if(sending){
+
     stopRequest();
+
   }
 
   conversation = [];
+
   selectedFiles = [];
+
   lastUserText = "";
+
   lastRequestFiles = [];
 
   renderSelectedFiles();
 
   chat.innerHTML = "";
+
   chat.appendChild(welcome);
 
   welcome.style.display = "";
 
   messageInput.value = "";
+
   autoResize();
 
   sendButton.classList.remove("stop");
+
   sendButton.textContent = "➤";
+
   sendButton.title = "إرسال";
+
+  sendButton.setAttribute(
+    "aria-label",
+    "إرسال"
+  );
 
   closeSidebar();
 
   messageInput.focus();
 
   showToast("تم إنشاء محادثة جديدة.");
+
 }
 
-bindPress(newChatButton, newChat);
+
+if(newChatButton){
+
+  newChatButton.addEventListener(
+    "click",
+    newChat,
+    false
+  );
+
+}
 
 
 /* =========================================================
    NAVIGATION
 ========================================================= */
 
-document.querySelectorAll(".nav-btn").forEach(button => {
+document.querySelectorAll(".nav-btn").forEach(function(button){
 
-  bindPress(button, () => {
+  button.addEventListener(
+    "click",
+    function(){
 
-    document.querySelectorAll(".nav-btn").forEach(item => {
-      item.classList.remove("active");
-    });
+      document.querySelectorAll(".nav-btn")
+        .forEach(function(item){
 
-    button.classList.add("active");
+          item.classList.remove("active");
 
-    const mode = button.dataset.mode;
+        });
 
-    if(mode === "files"){
-      showToast("أرفق ملفاً من زر 📎");
-    }
+      button.classList.add("active");
 
-    if(mode === "fast"){
-      setFastMode(true);
-      showToast("تم تفعيل الوضع السريع.");
-    }
+      const mode = button.dataset.mode;
 
-    if(mode === "web"){
-      showToast("Sultan AI يستطيع استخدام أدوات الويب عند دعمها من الخادم.");
-    }
+      if(mode === "chat"){
 
-    if(mode === "code"){
-      showToast("اكتب طلبك البرمجي في مربع الرسالة.");
-    }
+        showToast("وضع المحادثة مفعل.");
 
-    if(mode === "analysis"){
-      showToast("أرسل النص أو الملف الذي تريد تحليله.");
-    }
+      }
 
-    closeSidebar();
+      if(mode === "files"){
 
-  });
+        showToast(
+          "أرفق ملفاً من زر 📎"
+        );
+
+        if(!sending){
+
+          fileInput.click();
+
+        }
+
+      }
+
+      if(mode === "fast"){
+
+        setFastMode(true);
+
+        showToast(
+          "تم تفعيل الوضع السريع."
+        );
+
+      }
+
+      if(mode === "web"){
+
+        showToast(
+          "Sultan AI يستطيع استخدام أدوات الويب عند دعمها من الخادم."
+        );
+
+      }
+
+      if(mode === "code"){
+
+        showToast(
+          "اكتب طلبك البرمجي في مربع الرسالة."
+        );
+
+      }
+
+      if(mode === "analysis"){
+
+        showToast(
+          "أرسل النص أو الملف الذي تريد تحليله."
+        );
+
+      }
+
+      closeSidebar();
+
+    },
+    false
+  );
 
 });
 
@@ -1216,23 +1377,28 @@ document.querySelectorAll(".nav-btn").forEach(button => {
    QUICK PROMPTS
 ========================================================= */
 
-document.querySelectorAll(".quick").forEach(button => {
+document.querySelectorAll(".quick").forEach(function(button){
 
-  bindPress(button, () => {
+  button.addEventListener(
+    "click",
+    function(){
 
-    const prompt = button.dataset.prompt || "";
+      const prompt =
+        button.dataset.prompt || "";
 
-    if(!prompt) return;
+      if(!prompt) return;
 
-    messageInput.value = prompt;
+      messageInput.value = prompt;
 
-    autoResize();
+      autoResize();
 
-    messageInput.focus();
+      messageInput.focus();
 
-    sendMessage();
+      sendMessage();
 
-  });
+    },
+    false
+  );
 
 });
 
@@ -1245,17 +1411,36 @@ function setFastMode(value){
 
   fastMode = Boolean(value);
 
-  fastToggle.classList.toggle("active", fastMode);
+  if(fastToggle){
 
-  fastToggle.setAttribute(
-    "aria-pressed",
-    fastMode ? "true" : "false"
-  );
+    fastToggle.classList.toggle(
+      "active",
+      fastMode
+    );
+
+    fastToggle.setAttribute(
+      "aria-pressed",
+      fastMode ? "true" : "false"
+    );
+
+  }
+
 }
 
-bindPress(fastToggle, () => {
-  setFastMode(!fastMode);
-});
+
+if(fastToggle){
+
+  fastToggle.addEventListener(
+    "click",
+    function(){
+
+      setFastMode(!fastMode);
+
+    },
+    false
+  );
+
+}
 
 
 /* =========================================================
@@ -1264,6 +1449,8 @@ bindPress(fastToggle, () => {
 
 function autoResize(){
 
+  if(!messageInput) return;
+
   messageInput.style.height = "auto";
 
   const height = Math.min(
@@ -1271,52 +1458,90 @@ function autoResize(){
     150
   );
 
-  messageInput.style.height = height + "px";
+  messageInput.style.height =
+    height + "px";
+
 }
 
-messageInput.addEventListener("input", autoResize);
 
-messageInput.addEventListener("keydown", event => {
+messageInput.addEventListener(
+  "input",
+  autoResize,
+  false
+);
 
-  if(event.isComposing) return;
 
-  if(event.key === "Enter" && !event.shiftKey){
+messageInput.addEventListener(
+  "keydown",
+  function(event){
 
-    event.preventDefault();
+    if(event.isComposing) return;
 
-    if(!sending){
-      sendMessage();
+    if(
+      event.key === "Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+
+      if(!sending){
+
+        sendMessage();
+
+      }
+
     }
 
-  }
-
-});
+  },
+  false
+);
 
 
 /* =========================================================
    FILE UPLOAD
 ========================================================= */
 
-bindPress(attachButton, () => {
+if(attachButton){
 
-  if(sending){
-    showToast("انتظر حتى انتهاء الطلب الحالي.");
-    return;
-  }
+  attachButton.addEventListener(
+    "click",
+    function(){
 
-  fileInput.click();
+      if(sending){
 
-});
+        showToast(
+          "انتظر حتى انتهاء الطلب الحالي."
+        );
 
-fileInput.addEventListener("change", event => {
+        return;
 
-  const files = Array.from(event.target.files || []);
+      }
 
-  addFiles(files);
+      fileInput.click();
 
-  fileInput.value = "";
+    },
+    false
+  );
 
-});
+}
+
+
+fileInput.addEventListener(
+  "change",
+  function(event){
+
+    const files =
+      Array.from(
+        event.target.files || []
+      );
+
+    addFiles(files);
+
+    fileInput.value = "";
+
+  },
+  false
+);
 
 
 function addFiles(files){
@@ -1327,39 +1552,65 @@ function addFiles(files){
 
     if(selectedFiles.length >= MAX_FILES){
 
-      showToast(`الحد الأقصى ${MAX_FILES} ملفات.`);
+      showToast(
+        `الحد الأقصى ${MAX_FILES} ملفات.`
+      );
+
       break;
+
     }
 
     if(file.size > MAX_FILE_SIZE){
 
-      showToast(`الملف ${file.name} أكبر من 20MB.`);
+      showToast(
+        `الملف ${file.name} أكبر من 20MB.`
+      );
+
       continue;
+
     }
 
     const total =
-      selectedFiles.reduce((sum,item) => sum + item.size,0)
-      + file.size;
+      selectedFiles.reduce(
+        function(sum,item){
+
+          return sum + item.size;
+
+        },
+        0
+      ) + file.size;
 
     if(total > MAX_TOTAL_FILE_BYTES){
 
-      showToast("تجاوز الحجم الإجمالي المسموح للملفات.");
+      showToast(
+        "تجاوز الحجم الإجمالي المسموح للملفات."
+      );
+
       continue;
+
     }
 
-    const duplicate = selectedFiles.some(
-      item =>
-        item.name === file.name &&
-        item.size === file.size &&
-        item.lastModified === file.lastModified
-    );
+    const duplicate =
+      selectedFiles.some(
+        function(item){
+
+          return (
+            item.name === file.name &&
+            item.size === file.size &&
+            item.lastModified === file.lastModified
+          );
+
+        }
+      );
 
     if(duplicate) continue;
 
     selectedFiles.push(file);
+
   }
 
   renderSelectedFiles();
+
 }
 
 
@@ -1367,36 +1618,57 @@ function renderSelectedFiles(){
 
   fileList.innerHTML = "";
 
-  selectedFiles.forEach((file,index) => {
+  selectedFiles.forEach(
+    function(file,index){
 
-    const chip = document.createElement("div");
+      const chip =
+        document.createElement("div");
 
-    chip.className = "file-chip";
+      chip.className = "file-chip";
 
-    const name = document.createElement("span");
-    name.textContent = file.name;
+      const name =
+        document.createElement("span");
 
-    const remove = document.createElement("button");
+      name.textContent = file.name;
 
-    remove.type = "button";
-    remove.className = "file-remove";
-    remove.textContent = "×";
-    remove.setAttribute("aria-label","حذف الملف");
+      const remove =
+        document.createElement("button");
 
-    bindPress(remove, () => {
+      remove.type = "button";
 
-      selectedFiles.splice(index,1);
+      remove.className = "file-remove";
 
-      renderSelectedFiles();
+      remove.textContent = "×";
 
-    });
+      remove.setAttribute(
+        "aria-label",
+        "حذف الملف"
+      );
 
-    chip.appendChild(name);
-    chip.appendChild(remove);
+      remove.addEventListener(
+        "click",
+        function(){
 
-    fileList.appendChild(chip);
+          selectedFiles.splice(
+            index,
+            1
+          );
 
-  });
+          renderSelectedFiles();
+
+        },
+        false
+      );
+
+      chip.appendChild(name);
+
+      chip.appendChild(remove);
+
+      fileList.appendChild(chip);
+
+    }
+  );
+
 }
 
 
@@ -1406,28 +1678,44 @@ function renderSelectedFiles(){
 
 function readFile(file){
 
-  return new Promise((resolve,reject) => {
+  return new Promise(
+    function(resolve,reject){
 
-    const reader = new FileReader();
+      const reader =
+        new FileReader();
 
-    reader.onload = () => {
+      reader.onload = function(){
 
-      resolve({
-        name:file.name,
-        type:file.type || "application/octet-stream",
-        size:file.size,
-        data:reader.result
-      });
+        resolve({
 
-    };
+          name:file.name,
 
-    reader.onerror = () => {
-      reject(new Error("تعذر قراءة الملف."));
-    };
+          type:
+            file.type ||
+            "application/octet-stream",
 
-    reader.readAsDataURL(file);
+          size:file.size,
 
-  });
+          data:reader.result
+
+        });
+
+      };
+
+      reader.onerror = function(){
+
+        reject(
+          new Error(
+            "تعذر قراءة الملف."
+          )
+        );
+
+      };
+
+      reader.readAsDataURL(file);
+
+    }
+  );
 
 }
 
@@ -1448,13 +1736,16 @@ async function prepareFiles(files){
 
       console.error(error);
 
-      showToast(`تعذر قراءة ${file.name}`);
+      showToast(
+        `تعذر قراءة ${file.name}`
+      );
 
     }
 
   }
 
   return output;
+
 }
 
 
@@ -1465,34 +1756,45 @@ async function prepareFiles(files){
 function escapeHTML(text){
 
   return String(text)
+
     .replace(/&/g,"&amp;")
+
     .replace(/</g,"&lt;")
+
     .replace(/>/g,"&gt;")
+
     .replace(/"/g,"&quot;")
+
     .replace(/'/g,"&#039;");
+
 }
 
 
 function inlineMarkdown(text){
 
-  let result = escapeHTML(text);
+  let result =
+    escapeHTML(text);
 
-  result = result.replace(
-    /\*\*(.+?)\*\*/g,
-    "<strong>$1</strong>"
-  );
+  result =
+    result.replace(
+      /\*\*(.+?)\*\*/g,
+      "<strong>$1</strong>"
+    );
 
-  result = result.replace(
-    /`([^`]+)`/g,
-    "<code>$1</code>"
-  );
+  result =
+    result.replace(
+      /`([^`]+)`/g,
+      "<code>$1</code>"
+    );
 
-  result = result.replace(
-    /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,
-    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-  );
+  result =
+    result.replace(
+      /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
 
   return result;
+
 }
 
 
@@ -1501,108 +1803,163 @@ function renderMarkdown(text){
   if(!text) return "";
 
   const blocks = [];
+
   let source = String(text);
 
-  source = source.replace(
-    /```([\w-]*)\n?([\s\S]*?)```/g,
-    function(_,language,code){
+  source =
+    source.replace(
+      /```([\w-]*)\n?([\s\S]*?)```/g,
+      function(_,language,code){
 
-      const id = "code_" + Math.random()
-        .toString(36)
-        .slice(2);
+        const id =
+          "code_" +
+          Math.random()
+            .toString(36)
+            .slice(2);
 
-      blocks.push({
-        id,
-        language:language || "code",
-        code
-      });
+        blocks.push({
 
-      return `___CODE_BLOCK_${blocks.length - 1}___`;
-    }
-  );
+          id,
 
-  const lines = source.split("\n");
+          language:
+            language || "code",
+
+          code
+
+        });
+
+        return `___CODE_BLOCK_${blocks.length - 1}___`;
+
+      }
+    );
+
+  const lines =
+    source.split("\n");
 
   let html = "";
+
   let paragraph = [];
+
 
   function flushParagraph(){
 
     if(!paragraph.length) return;
 
-    html += "<p>" +
-      paragraph.map(inlineMarkdown).join("<br>") +
+    html +=
+      "<p>" +
+      paragraph
+        .map(inlineMarkdown)
+        .join("<br>") +
       "</p>";
 
     paragraph = [];
+
   }
+
 
   for(const line of lines){
 
-    const trimmed = line.trim();
+    const trimmed =
+      line.trim();
 
     if(!trimmed){
 
       flushParagraph();
 
       continue;
+
     }
+
 
     if(/^#{1,3}\s/.test(trimmed)){
 
       flushParagraph();
 
-      const match = trimmed.match(/^(#{1,3})\s+(.*)$/);
+      const match =
+        trimmed.match(
+          /^(#{1,3})\s+(.*)$/
+        );
 
-      const level = match[1].length;
+      const level =
+        match[1].length;
 
-      html += `<h${level + 2}>${inlineMarkdown(match[2])}</h${level + 2}>`;
+      html +=
+        `<h${level + 2}>${inlineMarkdown(match[2])}</h${level + 2}>`;
 
       continue;
+
     }
+
 
     if(/^[*-]\s+/.test(trimmed)){
 
       flushParagraph();
 
-      html += `<div>• ${inlineMarkdown(
-        trimmed.replace(/^[*-]\s+/,"")
-      )}</div>`;
+      html +=
+        `<div>• ${inlineMarkdown(
+          trimmed.replace(
+            /^[*-]\s+/,
+            ""
+          )
+        )}</div>`;
 
       continue;
+
     }
 
     paragraph.push(line);
+
   }
+
 
   flushParagraph();
 
-  blocks.forEach((block,index) => {
 
-    const codeHTML = escapeHTML(block.code);
+  blocks.forEach(
+    function(block,index){
 
-    const blockHTML = `
-      <div class="code-wrap">
-        <div class="code-head">
-          <span>${escapeHTML(block.language)}</span>
-          <button
-            type="button"
-            class="copy-code"
-            data-copy-code="${block.id}"
-          >نسخ</button>
+      const codeHTML =
+        escapeHTML(block.code);
+
+      const blockHTML = `
+        <div class="code-wrap">
+
+          <div class="code-head">
+
+            <span>
+              ${escapeHTML(block.language)}
+            </span>
+
+            <button
+              type="button"
+              class="copy-code"
+              data-copy-code="${block.id}"
+            >
+              نسخ
+            </button>
+
+          </div>
+
+          <pre
+            class="code-content"
+            id="${block.id}"
+          >${codeHTML}</pre>
+
         </div>
-        <pre class="code-content" id="${block.id}">${codeHTML}</pre>
-      </div>
-    `;
+      `;
 
-    html = html.replace(
-      `___CODE_BLOCK_${index}___`,
-      blockHTML
-    );
+      html =
+        html.replace(
+          `___CODE_BLOCK_${index}___`,
+          blockHTML
+        );
 
-  });
+    }
+  );
+
 
   return html;
+
 }
 
 
@@ -1612,8 +1969,13 @@ function renderMarkdown(text){
 
 function hideWelcome(){
 
-  if(welcome && welcome.parentNode){
+  if(
+    welcome &&
+    welcome.parentNode
+  ){
+
     welcome.remove();
+
   }
 
 }
@@ -1621,11 +1983,14 @@ function hideWelcome(){
 
 function scrollBottom(){
 
-  requestAnimationFrame(() => {
+  requestAnimationFrame(
+    function(){
 
-    chat.scrollTop = chat.scrollHeight;
+      chat.scrollTop =
+        chat.scrollHeight;
 
-  });
+    }
+  );
 
 }
 
@@ -1634,21 +1999,27 @@ function addUserMessage(text){
 
   hideWelcome();
 
-  const message = document.createElement("div");
+  const message =
+    document.createElement("div");
 
-  message.className = "message user";
+  message.className =
+    "message user";
 
-  const bubble = document.createElement("div");
+  const bubble =
+    document.createElement("div");
 
-  bubble.className = "bubble";
+  bubble.className =
+    "bubble";
 
-  bubble.textContent = text;
+  bubble.textContent =
+    text;
 
   message.appendChild(bubble);
 
   chat.appendChild(message);
 
   scrollBottom();
+
 }
 
 
@@ -1656,25 +2027,39 @@ function addTypingMessage(){
 
   hideWelcome();
 
-  const message = document.createElement("div");
+  const message =
+    document.createElement("div");
 
-  message.className = "message assistant";
-  message.id = "typingMessage";
+  message.className =
+    "message assistant";
+
+  message.id =
+    "typingMessage";
 
   message.innerHTML = `
+
     <div class="assistant-wrap">
 
       <div class="avatar">
+
         <svg viewBox="0 0 100 100" fill="none">
-          <path d="M24 24h52v38H24z"
+
+          <path
+            d="M24 24h52v38H24z"
             stroke="white"
             stroke-width="8"
-            rx="10"/>
-          <path d="M36 76h28M50 62v14"
+            rx="10"
+          />
+
+          <path
+            d="M36 76h28M50 62v14"
             stroke="white"
             stroke-width="8"
-            stroke-linecap="round"/>
+            stroke-linecap="round"
+          />
+
         </svg>
+
       </div>
 
       <div class="assistant-content">
@@ -1684,9 +2069,11 @@ function addTypingMessage(){
         </div>
 
         <div class="typing">
+
           <i></i>
           <i></i>
           <i></i>
+
         </div>
 
       </div>
@@ -1699,15 +2086,21 @@ function addTypingMessage(){
   scrollBottom();
 
   return message;
+
 }
 
 
 function removeTyping(){
 
-  const typing = $("typingMessage");
+  const typing =
+    document.getElementById(
+      "typingMessage"
+    );
 
   if(typing){
+
     typing.remove();
+
   }
 
 }
@@ -1717,28 +2110,43 @@ function addAssistantMessage(text){
 
   removeTyping();
 
-  const message = document.createElement("div");
+  const message =
+    document.createElement("div");
 
-  message.className = "message assistant";
+  message.className =
+    "message assistant";
 
   message.innerHTML = `
+
     <div class="assistant-wrap">
 
       <div class="avatar">
+
         <svg viewBox="0 0 100 100" fill="none">
-          <path d="M24 24h52v38H24z"
+
+          <path
+            d="M24 24h52v38H24z"
             stroke="white"
             stroke-width="8"
-            rx="10"/>
-          <path d="M36 76h28M50 62v14"
+            rx="10"
+          />
+
+          <path
+            d="M36 76h28M50 62v14"
             stroke="white"
             stroke-linecap="round"
-            stroke-width="8"/>
-          <path d="M38 40h24M38 50h15"
+            stroke-width="8"
+          />
+
+          <path
+            d="M38 40h24M38 50h15"
             stroke="white"
             stroke-linecap="round"
-            stroke-width="6"/>
+            stroke-width="6"
+          />
+
         </svg>
+
       </div>
 
       <div class="assistant-content">
@@ -1779,6 +2187,7 @@ function addAssistantMessage(text){
   bindMessageActions(message);
 
   scrollBottom();
+
 }
 
 
@@ -1789,93 +2198,157 @@ function addAssistantMessage(text){
 function bindMessageActions(message){
 
   const copyButton =
-    message.querySelector('[data-action="copy"]');
+    message.querySelector(
+      '[data-action="copy"]'
+    );
 
   const regenerateButton =
-    message.querySelector('[data-action="regenerate"]');
+    message.querySelector(
+      '[data-action="regenerate"]'
+    );
 
   const copyCodeButtons =
-    message.querySelectorAll("[data-copy-code]");
+    message.querySelectorAll(
+      "[data-copy-code]"
+    );
 
 
-  bindPress(copyButton, async () => {
+  if(copyButton){
 
-    const textElement =
-      message.querySelector(".assistant-text");
+    copyButton.addEventListener(
+      "click",
+      async function(){
 
-    const text =
-      textElement
-        ? textElement.innerText
-        : "";
+        const textElement =
+          message.querySelector(
+            ".assistant-text"
+          );
 
-    try{
+        const text =
+          textElement
+            ? textElement.innerText
+            : "";
 
-      await copyText(text);
+        try{
 
-      showToast("تم نسخ الرد.");
+          await copyText(text);
 
-    }catch(error){
+          showToast(
+            "تم نسخ الرد."
+          );
 
-      showToast("تعذر النسخ.");
+        }catch(error){
+
+          console.error(error);
+
+          showToast(
+            "تعذر النسخ."
+          );
+
+        }
+
+      },
+      false
+    );
+
+  }
+
+
+  if(regenerateButton){
+
+    regenerateButton.addEventListener(
+      "click",
+      function(){
+
+        if(!lastUserText){
+
+          showToast(
+            "لا يوجد طلب سابق."
+          );
+
+          return;
+
+        }
+
+        if(sending){
+
+          showToast(
+            "يوجد طلب قيد التنفيذ."
+          );
+
+          return;
+
+        }
+
+        sendMessage(
+          lastUserText,
+          true
+        );
+
+      },
+      false
+    );
+
+  }
+
+
+  copyCodeButtons.forEach(
+    function(button){
+
+      button.addEventListener(
+        "click",
+        async function(){
+
+          const id =
+            button.dataset.copyCode;
+
+          const codeElement =
+            document.getElementById(id);
+
+          if(!codeElement) return;
+
+          try{
+
+            await copyText(
+              codeElement.textContent
+            );
+
+            button.textContent =
+              "تم النسخ";
+
+            setTimeout(
+              function(){
+
+                button.textContent =
+                  "نسخ";
+
+              },
+              1200
+            );
+
+          }catch(error){
+
+            console.error(error);
+
+            showToast(
+              "تعذر نسخ الكود."
+            );
+
+          }
+
+        },
+        false
+      );
 
     }
-
-  });
-
-
-  bindPress(regenerateButton, () => {
-
-    if(!lastUserText){
-
-      showToast("لا يوجد طلب سابق.");
-      return;
-
-    }
-
-    if(sending){
-
-      showToast("يوجد طلب قيد التنفيذ.");
-      return;
-
-    }
-
-    sendMessage(lastUserText,true);
-
-  });
-
-
-  copyCodeButtons.forEach(button => {
-
-    bindPress(button, async () => {
-
-      const id = button.dataset.copyCode;
-
-      const codeElement = $(id);
-
-      if(!codeElement) return;
-
-      try{
-
-        await copyText(codeElement.textContent);
-
-        button.textContent = "تم النسخ";
-
-        setTimeout(() => {
-          button.textContent = "نسخ";
-        },1200);
-
-      }catch(error){
-
-        showToast("تعذر نسخ الكود.");
-
-      }
-
-    });
-
-  });
+  );
 
 }
 
+
+/* =========================================================
+   COPY
+========================================================= */
 
 async function copyText(text){
 
@@ -1884,22 +2357,34 @@ async function copyText(text){
     window.isSecureContext
   ){
 
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(
+      text
+    );
 
     return;
+
   }
 
+
   const textarea =
-    document.createElement("textarea");
+    document.createElement(
+      "textarea"
+    );
 
   textarea.value = text;
 
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
+  textarea.style.position =
+    "fixed";
 
-  document.body.appendChild(textarea);
+  textarea.style.opacity =
+    "0";
+
+  document.body.appendChild(
+    textarea
+  );
 
   textarea.focus();
+
   textarea.select();
 
   const success =
@@ -1908,7 +2393,11 @@ async function copyText(text){
   textarea.remove();
 
   if(!success){
-    throw new Error("Copy failed");
+
+    throw new Error(
+      "Copy failed"
+    );
+
   }
 
 }
@@ -1918,73 +2407,107 @@ async function copyText(text){
    SEND BUTTON
 ========================================================= */
 
-bindPress(sendButton, () => {
+if(sendButton){
 
-  if(sending){
+  sendButton.addEventListener(
+    "click",
+    function(){
 
-    stopRequest();
+      if(sending){
 
-  }else{
+        stopRequest();
 
-    sendMessage();
+      }else{
 
-  }
+        sendMessage();
 
-});
+      }
+
+    },
+    false
+  );
+
+}
 
 
 /* =========================================================
    SEND MESSAGE
 ========================================================= */
 
-async function sendMessage(customText = null,isRegenerate = false){
+async function sendMessage(
+  customText = null,
+  isRegenerate = false
+){
 
   if(sending) return;
+
 
   const text =
     customText !== null
       ? String(customText).trim()
       : messageInput.value.trim();
 
+
   if(!text){
 
-    showToast("اكتب رسالة أولاً.");
+    showToast(
+      "اكتب رسالة أولاً."
+    );
+
     messageInput.focus();
 
     return;
+
   }
+
 
   lastUserText = text;
 
+
   let filesForRequest = [];
+
 
   if(!isRegenerate){
 
-    filesForRequest = [...selectedFiles];
+    filesForRequest =
+      [...selectedFiles];
 
-    lastRequestFiles = [...selectedFiles];
+    lastRequestFiles =
+      [...selectedFiles];
 
   }else{
 
-    filesForRequest = [...lastRequestFiles];
+    filesForRequest =
+      [...lastRequestFiles];
 
   }
+
 
   if(!isRegenerate){
 
     addUserMessage(text);
 
     conversation.push({
+
       role:"user",
+
       content:text
+
     });
 
-    if(conversation.length > MAX_HISTORY){
+
+    if(
+      conversation.length >
+      MAX_HISTORY
+    ){
 
       conversation =
-        conversation.slice(-MAX_HISTORY);
+        conversation.slice(
+          -MAX_HISTORY
+        );
 
     }
+
 
     messageInput.value = "";
 
@@ -2000,14 +2523,19 @@ async function sendMessage(customText = null,isRegenerate = false){
 
   }
 
+
   addTypingMessage();
 
   setSendingState(true);
 
+
   try{
 
     const preparedFiles =
-      await prepareFiles(filesForRequest);
+      await prepareFiles(
+        filesForRequest
+      );
+
 
     const answer =
       await requestAI(
@@ -2015,23 +2543,39 @@ async function sendMessage(customText = null,isRegenerate = false){
         preparedFiles
       );
 
+
     if(!answer){
 
-      throw new Error("لم يصل رد من الخادم.");
+      throw new Error(
+        "لم يصل رد من الخادم."
+      );
 
     }
 
-    addAssistantMessage(answer);
+
+    addAssistantMessage(
+      answer
+    );
+
 
     conversation.push({
+
       role:"assistant",
+
       content:answer
+
     });
 
-    if(conversation.length > MAX_HISTORY){
+
+    if(
+      conversation.length >
+      MAX_HISTORY
+    ){
 
       conversation =
-        conversation.slice(-MAX_HISTORY);
+        conversation.slice(
+          -MAX_HISTORY
+        );
 
     }
 
@@ -2041,29 +2585,45 @@ async function sendMessage(customText = null,isRegenerate = false){
 
     removeTyping();
 
-    let message =
+
+    let errorMessage =
       "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي.";
 
-    if(error.name === "AbortError"){
 
-      message = "تم إيقاف الطلب.";
-
-    }else if(
-      String(error.message || "").includes("Failed to fetch")
+    if(
+      error.name ===
+      "AbortError"
     ){
 
-      message =
+      errorMessage =
+        "تم إيقاف الطلب.";
+
+    }else if(
+      String(
+        error.message || ""
+      ).includes(
+        "Failed to fetch"
+      )
+    ){
+
+      errorMessage =
         "تعذر الاتصال بالخادم. تأكد أن السيرفر يعمل.";
 
     }else if(error.message){
 
-      message = error.message;
+      errorMessage =
+        error.message;
 
     }
 
-    addAssistantMessage("⚠️ " + message);
 
-    showToast(message);
+    addAssistantMessage(
+      "⚠️ " + errorMessage
+    );
+
+    showToast(
+      errorMessage
+    );
 
   }finally{
 
@@ -2078,26 +2638,38 @@ async function sendMessage(customText = null,isRegenerate = false){
    API REQUEST
 ========================================================= */
 
-async function requestAI(text,files){
+async function requestAI(
+  text,
+  files
+){
 
   abortController =
     new AbortController();
 
+
   const timeout =
-    setTimeout(() => {
+    setTimeout(
+      function(){
 
-      if(abortController){
-        abortController.abort();
-      }
+        if(abortController){
 
-    },REQUEST_TIMEOUT);
+          abortController.abort();
+
+        }
+
+      },
+      REQUEST_TIMEOUT
+    );
 
 
   const payload = {
 
     message:text,
 
-    messages:conversation.slice(-MAX_HISTORY),
+    messages:
+      conversation.slice(
+        -MAX_HISTORY
+      ),
 
     files:files,
 
@@ -2109,28 +2681,36 @@ async function requestAI(text,files){
   try{
 
     const response =
-      await fetch(API_ENDPOINT,{
+      await fetch(
+        API_ENDPOINT,
+        {
+          method:"POST",
 
-        method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          body:
+            JSON.stringify(
+              payload
+            ),
 
-        body:JSON.stringify(payload),
+          signal:
+            abortController.signal,
 
-        signal:abortController.signal,
-
-        cache:"no-store"
-
-      });
+          cache:"no-store"
+        }
+      );
 
 
     let data = null;
 
+
     try{
 
-      data = await response.json();
+      data =
+        await response.json();
 
     }catch(error){
 
@@ -2144,9 +2724,13 @@ async function requestAI(text,files){
     if(!response.ok){
 
       throw new Error(
+
         data?.error ||
+
         data?.message ||
+
         `خطأ من الخادم (${response.status})`
+
       );
 
     }
@@ -2160,14 +2744,21 @@ async function requestAI(text,files){
       data?.text;
 
 
-    if(typeof answer === "string"){
+    if(
+      typeof answer ===
+      "string"
+    ){
 
       return answer;
 
     }
 
 
-    if(answer && typeof answer === "object"){
+    if(
+      answer &&
+      typeof answer ===
+      "object"
+    ){
 
       return JSON.stringify(
         answer,
@@ -2181,6 +2772,7 @@ async function requestAI(text,files){
     throw new Error(
       "لم يتم العثور على نص الرد من الخادم."
     );
+
 
   }finally{
 
@@ -2199,15 +2791,21 @@ async function requestAI(text,files){
 
 function setSendingState(value){
 
-  sending = Boolean(value);
+  sending =
+    Boolean(value);
+
 
   if(sending){
 
-    sendButton.classList.add("stop");
+    sendButton.classList.add(
+      "stop"
+    );
 
-    sendButton.textContent = "■";
+    sendButton.textContent =
+      "■";
 
-    sendButton.title = "إيقاف الطلب";
+    sendButton.title =
+      "إيقاف الطلب";
 
     sendButton.setAttribute(
       "aria-label",
@@ -2216,11 +2814,15 @@ function setSendingState(value){
 
   }else{
 
-    sendButton.classList.remove("stop");
+    sendButton.classList.remove(
+      "stop"
+    );
 
-    sendButton.textContent = "➤";
+    sendButton.textContent =
+      "➤";
 
-    sendButton.title = "إرسال";
+    sendButton.title =
+      "إرسال";
 
     sendButton.setAttribute(
       "aria-label",
@@ -2248,7 +2850,10 @@ function stopRequest(){
 
   removeTyping();
 
-  showToast("تم إيقاف الطلب.");
+  showToast(
+    "تم إيقاف الطلب."
+  );
+
 }
 
 
@@ -2268,32 +2873,62 @@ async function checkHealth(){
         }
       );
 
+
     if(!response.ok){
 
-      throw new Error("Health check failed");
+      throw new Error(
+        "Health check failed"
+      );
 
     }
 
-    document.querySelector(".status").innerHTML = `
-      <span class="status-dot"></span>
-      متصل
-    `;
-
-  }catch(error){
-
-    console.warn("Health check:",error);
 
     const status =
-      document.querySelector(".status");
+      document.querySelector(
+        ".status"
+      );
+
 
     if(status){
 
       status.innerHTML = `
+
+        <span class="status-dot"></span>
+
+        متصل
+
+      `;
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Health check:",
+      error
+    );
+
+
+    const status =
+      document.querySelector(
+        ".status"
+      );
+
+
+    if(status){
+
+      status.innerHTML = `
+
         <span
           class="status-dot"
-          style="background:#ff5b45;box-shadow:none"
+          style="
+            background:#ff5b45;
+            box-shadow:none
+          "
         ></span>
+
         غير متاح
+
       `;
 
     }
@@ -2307,60 +2942,89 @@ async function checkHealth(){
    NETWORK STATUS
 ========================================================= */
 
-window.addEventListener("online", () => {
+window.addEventListener(
+  "online",
+  function(){
 
-  const status =
-    document.querySelector(".status");
+    const status =
+      document.querySelector(
+        ".status"
+      );
 
-  if(status){
+    if(status){
 
-    status.innerHTML = `
-      <span class="status-dot"></span>
-      متصل
-    `;
+      status.innerHTML = `
 
-  }
+        <span class="status-dot"></span>
 
-  showToast("عاد الاتصال بالإنترنت.");
+        متصل
 
-});
+      `;
+
+    }
+
+    showToast(
+      "عاد الاتصال بالإنترنت."
+    );
+
+  },
+  false
+);
 
 
-window.addEventListener("offline", () => {
+window.addEventListener(
+  "offline",
+  function(){
 
-  const status =
-    document.querySelector(".status");
+    const status =
+      document.querySelector(
+        ".status"
+      );
 
-  if(status){
+    if(status){
 
-    status.innerHTML = `
-      <span
-        class="status-dot"
-        style="background:#ff5b45;box-shadow:none"
-      ></span>
-      غير متصل
-    `;
+      status.innerHTML = `
 
-  }
+        <span
+          class="status-dot"
+          style="
+            background:#ff5b45;
+            box-shadow:none
+          "
+        ></span>
 
-  showToast("لا يوجد اتصال بالإنترنت.");
+        غير متصل
 
-});
+      `;
+
+    }
+
+    showToast(
+      "لا يوجد اتصال بالإنترنت."
+    );
+
+  },
+  false
+);
 
 
 /* =========================================================
-   CLOSE SIDEBAR WITH ESC
+   ESC
 ========================================================= */
 
-document.addEventListener("keydown", event => {
+document.addEventListener(
+  "keydown",
+  function(event){
 
-  if(event.key === "Escape"){
+    if(event.key === "Escape"){
 
-    closeSidebar();
+      closeSidebar();
 
-  }
+    }
 
-});
+  },
+  false
+);
 
 
 /* =========================================================
@@ -2376,7 +3040,7 @@ function init(){
   checkHealth();
 
   console.log(
-    "Sultan AI V7.2 loaded successfully."
+    "Sultan AI V7.2 - Button System OK"
   );
 
 }
