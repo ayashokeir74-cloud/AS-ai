@@ -51,9 +51,6 @@ const MAX_HISTORY_MESSAGES = 12;
 const MAX_HISTORY_ITEM_CHARS = 3500;
 const MAX_HISTORY_CHARS = 18000;
 
-/*
-  Smart Context limits
-*/
 const SMART_CONTEXT_THRESHOLD = 12000;
 const SMART_CONTEXT_RECENT_MESSAGES = 8;
 const SMART_CONTEXT_OLD_ITEM_CHARS = 650;
@@ -264,9 +261,40 @@ function cleanHistory(messages) {
         item?.role
       );
 
-    const content =
+    let content = "";
+
+    if (
+      typeof item?.content ===
+      "string"
+    ) {
+
+      content =
+        item.content;
+
+    } else if (
+      Array.isArray(
+        item?.content
+      )
+    ) {
+
+      content =
+        item.content
+          .filter(
+            part =>
+              part?.type === "text" &&
+              typeof part?.text === "string"
+          )
+          .map(
+            part =>
+              part.text
+          )
+          .join("\n");
+
+    }
+
+    content =
       clampText(
-        item?.content || "",
+        content,
         MAX_HISTORY_ITEM_CHARS
       ).trim();
 
@@ -302,21 +330,6 @@ function cleanHistory(messages) {
 /* =========================================================
    SMART CONTEXT
 ========================================================= */
-
-/*
-  الهدف:
-  عدم إرسال كل تاريخ المحادثة بنفس الحجم دائماً.
-
-  إذا كانت المحادثة قصيرة:
-  نرسلها بشكل طبيعي.
-
-  إذا أصبحت طويلة:
-  نحتفظ بآخر الرسائل المهمة،
-  ونبني Context مختصر من الرسائل القديمة.
-
-  هذا لا يحتاج طلب إضافي إلى Groq،
-  وبالتالي لا يزيد latency بشكل كبير.
-*/
 
 function buildSmartContext(messages) {
 
@@ -884,7 +897,7 @@ async function processFiles(files) {
 
       const data =
         typeof file?.data ===
-        "string"
+          "string"
           ? file.data
           : "";
 
@@ -1091,10 +1104,6 @@ function buildSystemPrompt(
 ${modeConfig.instruction}
 `;
 
-  /*
-    Smart Context
-  */
-
   if (contextSummary) {
 
     prompt += `
@@ -1190,13 +1199,42 @@ function buildGroqMessages({
     }
   ];
 
+  /*
+    لا نضيف آخر user message من history
+    إذا كان مطابقاً تماماً للرسالة الحالية.
+    هذا يمنع تكرار الرسالة في بعض واجهات Frontend.
+  */
+
+  const lastHistory =
+    history.length
+      ? history[history.length - 1]
+      : null;
+
+  const shouldSkipLast =
+    lastHistory &&
+    lastHistory.role === "user" &&
+    lastHistory.content.trim() ===
+      String(text).trim();
+
+  const historyToSend =
+    shouldSkipLast
+      ? history.slice(
+          0,
+          -1
+        )
+      : history;
+
   for (
-    const item of history
+    const item of historyToSend
   ) {
 
     messages.push({
-      role: item.role,
-      content: item.content
+      role:
+        item.role,
+
+      content:
+        item.content
+
     });
 
   }
@@ -1262,12 +1300,6 @@ function fitGroqRequest(request) {
         ]
       : [];
 
-  /*
-    حذف أقدم رسائل المحادثة
-    مع الحفاظ على system
-    وآخر user message.
-  */
-
   while (
     size >
       MAX_GROQ_REQUEST_BYTES &&
@@ -1288,10 +1320,6 @@ function fitGroqRequest(request) {
       );
 
   }
-
-  /*
-    تقليل محتوى الرسائل
-  */
 
   if (
     size >
@@ -1388,11 +1416,6 @@ function fitGroqRequest(request) {
       );
 
   }
-
-  /*
-    إذا كانت الصور سبب تضخم الطلب،
-    نقلل عدد أجزاء المحتوى.
-  */
 
   size =
     safeJsonSize(
@@ -1703,22 +1726,130 @@ function friendlyError(
 
 /* =========================================================
    COMMON REQUEST VALIDATION
+   FIXED: supports message / text / messages
 ========================================================= */
 
-async function prepareRequest(
-  body
-) {
+async function prepareRequest(body) {
+
+  body =
+    body &&
+    typeof body === "object"
+      ? body
+      : {};
+
+  /*
+    1) message
+  */
+
+  let directMessage =
+    typeof body.message === "string"
+      ? body.message
+      : "";
+
+  /*
+    2) text
+  */
+
+  let textMessage =
+    typeof body.text === "string"
+      ? body.text
+      : "";
+
+  /*
+    3) messages
+  */
+
+  const historyMessages =
+    Array.isArray(body.messages)
+      ? body.messages
+      : [];
+
+  /*
+    البحث عن آخر user message
+  */
+
+  let lastUserMessage = "";
+
+  for (
+    let i =
+      historyMessages.length - 1;
+    i >= 0;
+    i--
+  ) {
+
+    const item =
+      historyMessages[i];
+
+    if (
+      !item ||
+      item.role !== "user"
+    ) {
+
+      continue;
+
+    }
+
+    if (
+      typeof item.content === "string"
+    ) {
+
+      lastUserMessage =
+        item.content;
+
+    } else if (
+      Array.isArray(item.content)
+    ) {
+
+      lastUserMessage =
+        item.content
+          .filter(
+            part =>
+              part?.type === "text" &&
+              typeof part?.text === "string"
+          )
+          .map(
+            part =>
+              part.text
+          )
+          .join("\n");
+
+    }
+
+    if (
+      lastUserMessage.trim()
+    ) {
+
+      break;
+
+    }
+
+  }
+
+  /*
+    الأولوية:
+    message
+    ثم text
+    ثم آخر user message
+  */
+
+  const rawText =
+    directMessage ||
+    textMessage ||
+    lastUserMessage ||
+    "";
 
   const text =
     clampText(
-      body?.message || "",
+      rawText,
       MAX_MESSAGE_CHARS
     ).trim();
 
+  /*
+    FILES
+  */
+
   const files =
-    Array.isArray(
-      body?.files
-    )
+    Array.isArray(body.files)
       ? body.files.slice(
           0,
           MAX_FILES
@@ -1742,7 +1873,7 @@ async function prepareRequest(
     ) {
 
       throw new Error(
-        `الملف ${file?.name || ""} أكبر من 20MB.`
+        `الملف ${file?.name || "غير معروف"} أكبر من 20MB.`
       );
 
     }
@@ -1763,6 +1894,11 @@ async function prepareRequest(
 
   }
 
+  /*
+    لا نرفض الطلب إذا عندنا
+    رسالة أو ملفات.
+  */
+
   if (
     !text &&
     !files.length
@@ -1775,33 +1911,48 @@ async function prepareRequest(
   }
 
   /*
-    Smart Context
+    SMART CONTEXT
   */
 
   const smartContext =
     buildSmartContext(
-      body?.messages
+      historyMessages
     );
+
+  /*
+    MODE
+  */
 
   const mode =
     normalizeMode(
-      body?.mode,
+      body.mode,
       Boolean(
-        body?.fastMode
+        body.fastMode
       ),
       files
     );
+
+  /*
+    PROCESS FILES
+  */
 
   const processedFiles =
     await processFiles(
       files
     );
 
+  /*
+    FILE-ONLY REQUEST
+  */
+
+  const finalText =
+    text ||
+    "حلل الملفات المرفقة وقدم نتيجة مفيدة.";
+
   return {
 
     text:
-      text ||
-      "حلل الملفات المرفقة وقدم نتيجة مفيدة.",
+      finalText,
 
     history:
       smartContext.history,
@@ -2051,18 +2202,46 @@ app.post(
           request
         );
 
+      console.log(
+        `[CHAT ${id}] message=${text.length} chars, history=${history.length}, mode=${mode}, request=${requestSizeBytes} bytes`
+      );
+
       const completion =
         await callGroq(
           request
         );
 
-      const reply =
+      let reply =
         completion
           ?.choices?.[0]
           ?.message
           ?.content;
 
-      if (!reply) {
+      /*
+        بعض الاستجابات قد تعيد content
+        بشكل غير متوقع، لذلك نحاول تحويله.
+      */
+
+      if (
+        Array.isArray(reply)
+      ) {
+
+        reply =
+          reply
+            .map(
+              part =>
+                typeof part === "string"
+                  ? part
+                  : part?.text || ""
+            )
+            .join("");
+
+      }
+
+      if (
+        !reply ||
+        !String(reply).trim()
+      ) {
 
         throw new Error(
           "لم تصل إجابة من نموذج الذكاء الاصطناعي."
@@ -2207,11 +2386,6 @@ app.post(
       "no"
     );
 
-    /*
-      منع بعض طبقات الضغط
-      من تأخير SSE.
-    */
-
     res.setHeader(
       "Content-Encoding",
       "identity"
@@ -2253,12 +2427,30 @@ app.post(
 
       }
 
-      res.write(
-        `event: ${event}\n` +
-        `data: ${JSON.stringify(
-          data
-        )}\n\n`
-      );
+      try {
+
+        res.write(
+          `event: ${event}\n` +
+          `data: ${JSON.stringify(
+            data
+          )}\n\n`
+        );
+
+        if (
+          typeof res.flush ===
+          "function"
+        ) {
+
+          res.flush();
+
+        }
+
+      } catch {
+
+        clientClosed =
+          true;
+
+      }
 
     }
 
@@ -2304,6 +2496,10 @@ app.post(
           request
         );
 
+      console.log(
+        `[STREAM ${id}] message=${text.length} chars, history=${history.length}, mode=${mode}, request=${requestSizeBytes} bytes`
+      );
+
       /*
         META
       */
@@ -2340,7 +2536,7 @@ app.post(
       );
 
       /*
-        THINKING STATUS
+        THINKING
       */
 
       sendEvent(
@@ -2374,8 +2570,9 @@ app.post(
         );
 
       /*
-        في حال رجعت الاستجابة
-        بشكل عادي بدل stream.
+        FALLBACK
+        إذا رجعت الاستجابة
+        بدون async iterator.
       */
 
       if (
@@ -2385,42 +2582,80 @@ app.post(
         ] !== "function"
       ) {
 
-        const fallbackReply =
+        let fallbackReply =
           completion
             ?.choices?.[0]
             ?.message?.content ||
           "";
 
         if (
-          fallbackReply
+          Array.isArray(
+            fallbackReply
+          )
         ) {
 
-          sendEvent(
-            "status",
-            {
+          fallbackReply =
+            fallbackReply
+              .map(
+                part =>
+                  typeof part === "string"
+                    ? part
+                    : part?.text || ""
+              )
+              .join("");
 
-              status:
-                "generating",
+        }
 
-              text:
-                "تم تجهيز الإجابة..."
-
-            }
+        fallbackReply =
+          String(
+            fallbackReply
           );
 
-          sendEvent(
-            "token",
-            {
+        if (
+          !fallbackReply.trim()
+        ) {
 
-              text:
-                String(
-                  fallbackReply
-                )
-
-            }
+          throw new Error(
+            "لم تصل إجابة من نموذج الذكاء الاصطناعي."
           );
 
         }
+
+        sendEvent(
+          "status",
+          {
+
+            status:
+              "generating",
+
+            text:
+              "تم تجهيز الإجابة..."
+
+          }
+        );
+
+        sendEvent(
+          "token",
+          {
+
+            text:
+              fallbackReply
+
+          }
+        );
+
+        sendEvent(
+          "status",
+          {
+
+            status:
+              "complete",
+
+            text:
+              "اكتملت الإجابة."
+
+          }
+        );
 
         sendEvent(
           "done",
@@ -2430,9 +2665,7 @@ app.post(
               true,
 
             reply:
-              String(
-                fallbackReply
-              ),
+              fallbackReply,
 
             responseTimeMs:
               Date.now() -
@@ -2455,7 +2688,13 @@ app.post(
           }
         );
 
-        res.end();
+        if (
+          !res.writableEnded
+        ) {
+
+          res.end();
+
+        }
 
         return;
 
@@ -2493,10 +2732,26 @@ app.post(
 
         }
 
-        const delta =
+        let delta =
           chunk
             ?.choices?.[0]
             ?.delta?.content;
+
+        if (
+          Array.isArray(delta)
+        ) {
+
+          delta =
+            delta
+              .map(
+                part =>
+                  typeof part === "string"
+                    ? part
+                    : part?.text || ""
+              )
+              .join("");
+
+        }
 
         if (
           delta
@@ -2510,11 +2765,6 @@ app.post(
           fullReply +=
             piece;
 
-          /*
-            إرسال القطعة مباشرة
-            بدون عمليات ثقيلة.
-          */
-
           sendEvent(
             "token",
             {
@@ -2526,6 +2776,22 @@ app.post(
           );
 
         }
+
+      }
+
+      /*
+        إذا انتهى الـstream بدون نص،
+        نرسل خطأ واضح بدل ما يظل Frontend منتظراً.
+      */
+
+      if (
+        !fullReply.trim() &&
+        !clientClosed
+      ) {
+
+        throw new Error(
+          "لم تصل إجابة من نموذج الذكاء الاصطناعي."
+        );
 
       }
 
@@ -2606,7 +2872,9 @@ app.post(
               "error",
 
             text:
-              "حدث خطأ أثناء المعالجة."
+              friendlyError(
+                error
+              )
 
           }
         );
