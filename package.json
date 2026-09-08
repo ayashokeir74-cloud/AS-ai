@@ -2,6 +2,7 @@
   "name": "sultan-ai",
   "version": "1.0.0",
   "description": "Sultan AI - Fast AI Assistant",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -10,6 +11,10 @@
     "node": ">=20"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "groq-sdk": "^0.33.0",
+    "helmet": "^8.1.0"
   }
 }
