@@ -5,10 +5,11 @@ import compression from "compression";
 import Groq from "groq-sdk";
 import crypto from "crypto";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 /* =========================================================
-   SULTAN AI V7.2
+   SULTAN AI V8
    Advanced AI Backend
 ========================================================= */
 
@@ -17,8 +18,7 @@ const __dirname = path.dirname(__filename);
 
 const PORT = Number(process.env.PORT || 10000);
 
-const GROQ_API_KEY =
-  process.env.GROQ_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 const MODEL =
   process.env.GROQ_MODEL ||
@@ -41,22 +41,13 @@ const SEARCH_COUNTRY =
   "";
 
 const MAX_MESSAGE_CHARS =
-  Number(
-    process.env.MAX_MESSAGE_CHARS ||
-    12000
-  );
+  Number(process.env.MAX_MESSAGE_CHARS || 12000);
 
 const MAX_HISTORY_MESSAGES =
-  Number(
-    process.env.MAX_HISTORY_MESSAGES ||
-    24
-  );
+  Number(process.env.MAX_HISTORY_MESSAGES || 24);
 
 const MAX_FILES =
-  Number(
-    process.env.MAX_FILES ||
-    5
-  );
+  Number(process.env.MAX_FILES || 5);
 
 const MAX_FILE_SIZE =
   Number(
@@ -93,7 +84,21 @@ const RATE_LIMIT_WINDOW_MS =
    STARTUP
 ========================================================= */
 
-if(!GROQ_API_KEY){
+const FRONTEND_PATH =
+  path.join(__dirname, "index.html");
+
+console.log("========================================");
+console.log("          SULTAN AI STARTING");
+console.log("========================================");
+console.log("Directory:", __dirname);
+console.log("Frontend:", FRONTEND_PATH);
+console.log(
+  "index.html exists:",
+  fs.existsSync(FRONTEND_PATH)
+);
+console.log("========================================");
+
+if (!GROQ_API_KEY) {
 
   console.warn(
     "[Sultan AI] WARNING: GROQ_API_KEY is not configured."
@@ -109,9 +114,11 @@ const groq =
       GROQ_API_KEY ||
       "missing-key",
 
-    defaultHeaders:{
+    defaultHeaders: {
+
       "Groq-Model-Version":
         MODEL_VERSION
+
     }
 
   });
@@ -142,9 +149,11 @@ app.use(
 
   helmet({
 
-    crossOriginResourcePolicy:{
+    crossOriginResourcePolicy: {
+
       policy:
         "cross-origin"
+
     },
 
     contentSecurityPolicy:
@@ -164,15 +173,15 @@ app.use(
 
   cors({
 
-    origin:true,
+    origin: true,
 
-    methods:[
+    methods: [
       "GET",
       "POST",
       "OPTIONS"
     ],
 
-    allowedHeaders:[
+    allowedHeaders: [
       "Content-Type",
       "Authorization",
       "X-Requested-With"
@@ -185,15 +194,15 @@ app.use(
 
 app.use(
   express.json({
-    limit:"50mb"
+    limit: "50mb"
   })
 );
 
 
 app.use(
   express.urlencoded({
-    extended:true,
-    limit:"50mb"
+    extended: true,
+    limit: "50mb"
   })
 );
 
@@ -206,25 +215,23 @@ const rateStore =
   new Map();
 
 
-function getClientIP(req){
+function getClientIP(req) {
 
   const forwarded =
     req.headers[
       "x-forwarded-for"
     ];
 
-
-  if(
+  if (
     typeof forwarded ===
     "string"
-  ){
+  ) {
 
     return forwarded
       .split(",")[0]
       .trim();
 
   }
-
 
   return (
     req.ip ||
@@ -239,7 +246,7 @@ function rateLimit(
   req,
   res,
   next
-){
+) {
 
   const ip =
     getClientIP(req);
@@ -247,23 +254,20 @@ function rateLimit(
   const now =
     Date.now();
 
-
   let record =
     rateStore.get(ip);
 
-
-  if(!record){
+  if (!record) {
 
     record = {
 
-      count:0,
+      count: 0,
 
       resetAt:
         now +
         RATE_LIMIT_WINDOW_MS
 
     };
-
 
     rateStore.set(
       ip,
@@ -272,11 +276,10 @@ function rateLimit(
 
   }
 
-
-  if(
+  if (
     now >
     record.resetAt
-  ){
+  ) {
 
     record.count = 0;
 
@@ -286,14 +289,12 @@ function rateLimit(
 
   }
 
-
   record.count++;
 
-
-  if(
+  if (
     record.count >
     RATE_LIMIT_MAX
-  ){
+  ) {
 
     const retryAfter =
       Math.max(
@@ -306,20 +307,16 @@ function rateLimit(
         )
       );
 
-
     res.setHeader(
       "Retry-After",
-      String(
-        retryAfter
-      )
+      String(retryAfter)
     );
-
 
     return res
       .status(429)
       .json({
 
-        success:false,
+        success: false,
 
         error:
           "تم تجاوز عدد الطلبات المسموح بها مؤقتاً. حاول بعد قليل."
@@ -327,7 +324,6 @@ function rateLimit(
       });
 
   }
-
 
   next();
 
@@ -340,19 +336,18 @@ setInterval(
     const now =
       Date.now();
 
-
-    for(
+    for (
       const [
         ip,
         record
       ]
       of rateStore.entries()
-    ){
+    ) {
 
-      if(
+      if (
         now >
         record.resetAt
-      ){
+      ) {
 
         rateStore.delete(
           ip
@@ -406,22 +401,20 @@ const SYSTEM_PROMPT = `
 
 function cleanText(
   value,
-  max =
-    MAX_MESSAGE_CHARS
-){
+  max = MAX_MESSAGE_CHARS
+) {
 
-  if(
+  if (
     typeof value !==
     "string"
-  ){
+  ) {
 
     return "";
 
   }
 
-
   return value
-    .replace(/\u0000/g,"")
+    .replace(/\u0000/g, "")
     .trim()
     .slice(
       0,
@@ -431,9 +424,7 @@ function cleanText(
 }
 
 
-function isImageMime(
-  type
-){
+function isImageMime(type) {
 
   return /^image\//i.test(
     String(type || "")
@@ -442,54 +433,35 @@ function isImageMime(
 }
 
 
-function isTextMime(
-  type
-){
+function isTextMime(type) {
 
   const value =
     String(
       type || ""
     ).toLowerCase();
 
-
   return (
 
-    value.startsWith(
-      "text/"
-    ) ||
+    value.startsWith("text/") ||
 
-    value.includes(
-      "json"
-    ) ||
+    value.includes("json") ||
 
-    value.includes(
-      "javascript"
-    ) ||
+    value.includes("javascript") ||
 
-    value.includes(
-      "typescript"
-    ) ||
+    value.includes("typescript") ||
 
-    value.includes(
-      "xml"
-    ) ||
+    value.includes("xml") ||
 
-    value.includes(
-      "html"
-    ) ||
+    value.includes("html") ||
 
-    value.includes(
-      "css"
-    )
+    value.includes("css")
 
   );
 
 }
 
 
-function isPDFMime(
-  type
-){
+function isPDFMime(type) {
 
   return (
     String(type || "")
@@ -500,32 +472,27 @@ function isPDFMime(
 }
 
 
-function stripDataUrl(
-  value
-){
+function stripDataUrl(value) {
 
-  if(
+  if (
     typeof value !==
     "string"
-  ){
+  ) {
 
     return "";
 
   }
 
-
   const comma =
     value.indexOf(",");
 
-
-  if(
+  if (
     comma === -1
-  ){
+  ) {
 
     return value;
 
   }
-
 
   return value.slice(
     comma + 1
@@ -536,27 +503,23 @@ function stripDataUrl(
 
 function approximateBytesFromBase64(
   base64
-){
+) {
 
-  if(
+  if (
     typeof base64 !==
     "string"
-  ){
+  ) {
 
     return 0;
 
   }
 
-
   const padding =
-    (
-      base64.endsWith("==")
-        ? 2
-        : base64.endsWith("=")
-          ? 1
-          : 0
-    );
-
+    base64.endsWith("==")
+      ? 2
+      : base64.endsWith("=")
+        ? 1
+        : 0;
 
   return Math.floor(
     base64.length * 3 / 4
@@ -569,21 +532,21 @@ function approximateBytesFromBase64(
    FILE NORMALIZATION
 ========================================================= */
 
-function normalizeFiles(
-  files
-){
+function normalizeFiles(files) {
 
-  if(
+  if (
     !Array.isArray(files)
-  ){
+  ) {
 
     return [];
 
   }
 
-
   return files
-    .slice(0,MAX_FILES)
+    .slice(
+      0,
+      MAX_FILES
+    )
     .map(file => {
 
       return {
@@ -620,35 +583,28 @@ function normalizeFiles(
 }
 
 
-function validateFiles(
-  files
-){
+function validateFiles(files) {
 
-  let total =
-    0;
+  let total = 0;
 
-
-  for(
+  for (
     const file of files
-  ){
+  ) {
 
     const declaredSize =
       Number(
         file.size || 0
       );
 
-
     const data =
       stripDataUrl(
         file.data
       );
 
-
     const actualSize =
       approximateBytesFromBase64(
         data
       );
-
 
     const size =
       Math.max(
@@ -656,11 +612,10 @@ function validateFiles(
         actualSize
       );
 
-
-    if(
+    if (
       size >
       MAX_FILE_SIZE
-    ){
+    ) {
 
       throw new Error(
         `الملف ${file.name} أكبر من الحد المسموح وهو 20MB.`
@@ -668,24 +623,21 @@ function validateFiles(
 
     }
 
-
     total +=
       size;
 
   }
 
-
-  if(
+  if (
     total >
     MAX_TOTAL_FILE_SIZE
-  ){
+  ) {
 
     throw new Error(
       "تجاوز الحجم الإجمالي المسموح للملفات."
     );
 
   }
-
 
   return true;
 
@@ -696,40 +648,36 @@ function validateFiles(
    FILE TEXT EXTRACTION
 ========================================================= */
 
-async function extractTextFiles(
-  files
-){
+async function extractTextFiles(files) {
 
   const results = [];
 
-
-  for(
+  for (
     const file of files
-  ){
+  ) {
 
-    if(
+    if (
       !isTextMime(
         file.type
       )
-    ){
+    ) {
 
       continue;
 
     }
-
 
     const base64 =
       stripDataUrl(
         file.data
       );
 
+    if (!base64) {
 
-    if(!base64){
       continue;
+
     }
 
-
-    try{
+    try {
 
       const text =
         Buffer
@@ -745,7 +693,6 @@ async function extractTextFiles(
             50000
           );
 
-
       results.push({
 
         name:
@@ -755,7 +702,7 @@ async function extractTextFiles(
 
       });
 
-    }catch(error){
+    } catch (error) {
 
       console.error(
         "Text extraction error:",
@@ -765,7 +712,6 @@ async function extractTextFiles(
     }
 
   }
-
 
   return results;
 
@@ -779,14 +725,13 @@ async function extractTextFiles(
 function withTimeout(
   promise,
   ms
-){
+) {
 
   let timer;
 
-
   const timeout =
     new Promise(
-      (_,reject) => {
+      (_, reject) => {
 
         timer =
           setTimeout(
@@ -805,14 +750,12 @@ function withTimeout(
       }
     );
 
-
   return Promise.race([
     promise,
     timeout
   ]).finally(
-    () => clearTimeout(
-      timer
-    )
+    () =>
+      clearTimeout(timer)
   );
 
 }
@@ -822,9 +765,7 @@ function withTimeout(
    IMAGE ANALYSIS
 ========================================================= */
 
-async function analyzeImages(
-  files
-){
+async function analyzeImages(files) {
 
   const images =
     files.filter(
@@ -834,24 +775,24 @@ async function analyzeImages(
         )
     );
 
+  if (
+    !images.length
+  ) {
 
-  if(!images.length){
     return [];
-  }
 
+  }
 
   const results = [];
 
-
-  for(
+  for (
     const file of images
-  ){
+  ) {
 
-    try{
+    try {
 
       const dataUrl =
         file.data;
-
 
       const completion =
         await withTimeout(
@@ -861,11 +802,12 @@ async function analyzeImages(
             model:
               VISION_MODEL,
 
-            messages:[
+            messages: [
 
               {
 
-                role:"system",
+                role:
+                  "system",
 
                 content:
                   "حلل الصورة بدقة. صف العناصر المهمة والنصوص الظاهرة والمعلومات المفيدة للمستخدم بدون اختلاق معلومات."
@@ -874,13 +816,15 @@ async function analyzeImages(
 
               {
 
-                role:"user",
+                role:
+                  "user",
 
-                content:[
+                content: [
 
                   {
 
-                    type:"text",
+                    type:
+                      "text",
 
                     text:
                       "حلل هذه الصورة واذكر أهم المعلومات التي يمكن الاستفادة منها."
@@ -889,10 +833,14 @@ async function analyzeImages(
 
                   {
 
-                    type:"image_url",
+                    type:
+                      "image_url",
 
-                    image_url:{
-                      url:dataUrl
+                    image_url: {
+
+                      url:
+                        dataUrl
+
                     }
 
                   }
@@ -903,11 +851,14 @@ async function analyzeImages(
 
             ],
 
-            temperature:0.2,
+            temperature:
+              0.2,
 
-            max_completion_tokens:2048,
+            max_completion_tokens:
+              2048,
 
-            stream:false
+            stream:
+              false
 
           }),
 
@@ -915,12 +866,10 @@ async function analyzeImages(
 
         );
 
-
       const content =
         completion
           ?.choices?.[0]
           ?.message?.content;
-
 
       results.push({
 
@@ -935,14 +884,12 @@ async function analyzeImages(
 
       });
 
-
-    }catch(error){
+    } catch (error) {
 
       console.error(
         "Vision error:",
         error
       );
-
 
       results.push({
 
@@ -958,7 +905,6 @@ async function analyzeImages(
 
   }
 
-
   return results;
 
 }
@@ -968,18 +914,15 @@ async function analyzeImages(
    HISTORY
 ========================================================= */
 
-function normalizeHistory(
-  history
-){
+function normalizeHistory(history) {
 
-  if(
+  if (
     !Array.isArray(history)
-  ){
+  ) {
 
     return [];
 
   }
-
 
   return history
     .slice(
@@ -992,7 +935,6 @@ function normalizeHistory(
         "assistant"
           ? "assistant"
           : "user";
-
 
       return {
 
@@ -1020,7 +962,7 @@ function normalizeHistory(
 
 function conversationCharCount(
   messages
-){
+) {
 
   return messages.reduce(
     (
@@ -1040,30 +982,27 @@ function conversationCharCount(
 
 function optimizeConversation(
   messages
-){
+) {
 
   let result =
     messages.slice(
       -MAX_HISTORY_MESSAGES
     );
 
-
   const MAX_CHARS =
     50000;
 
-
-  while(
+  while (
     conversationCharCount(
       result
     ) >
     MAX_CHARS &&
     result.length > 2
-  ){
+  ) {
 
     result.shift();
 
   }
-
 
   return result;
 
@@ -1074,7 +1013,7 @@ function optimizeConversation(
    TOOLS
 ========================================================= */
 
-function getEnabledTools(){
+function getEnabledTools() {
 
   return [
 
@@ -1093,9 +1032,7 @@ function getEnabledTools(){
    RETRY
 ========================================================= */
 
-function getStatusCode(
-  error
-){
+function getStatusCode(error) {
 
   return Number(
     error?.status ||
@@ -1107,40 +1044,34 @@ function getStatusCode(
 }
 
 
-function isRetryableError(
-  error
-){
+function isRetryableError(error) {
 
   const status =
     getStatusCode(
       error
     );
 
-
-  if(
+  if (
     status === 429
-  ){
+  ) {
 
     return true;
 
   }
 
-
-  if(
+  if (
     status >= 500
-  ){
+  ) {
 
     return true;
 
   }
-
 
   const message =
     String(
       error?.message ||
       ""
     ).toLowerCase();
-
 
   return (
 
@@ -1163,23 +1094,21 @@ function isRetryableError(
 
 async function callGroqWithRetry(
   requestBody
-){
+) {
 
   let lastError =
     null;
 
-
   const attempts =
     3;
 
-
-  for(
+  for (
     let attempt = 1;
     attempt <= attempts;
     attempt++
-  ){
+  ) {
 
-    try{
+    try {
 
       return await withTimeout(
 
@@ -1191,11 +1120,10 @@ async function callGroqWithRetry(
 
       );
 
-    }catch(error){
+    } catch (error) {
 
       lastError =
         error;
-
 
       console.error(
         `[Sultan AI] Groq attempt ${attempt} failed:`,
@@ -1203,19 +1131,17 @@ async function callGroqWithRetry(
         error
       );
 
-
-      if(
+      if (
         !isRetryableError(
           error
         ) ||
         attempt ===
         attempts
-      ){
+      ) {
 
         throw error;
 
       }
-
 
       const delay =
         700 *
@@ -1223,7 +1149,6 @@ async function callGroqWithRetry(
           2,
           attempt - 1
         );
-
 
       await new Promise(
         resolve =>
@@ -1236,7 +1161,6 @@ async function callGroqWithRetry(
     }
 
   }
-
 
   throw lastError;
 
@@ -1258,20 +1182,19 @@ app.post(
     const requestId =
       crypto.randomUUID();
 
-
     const started =
       Date.now();
 
+    try {
 
-    try{
-
-      if(!GROQ_API_KEY){
+      if (!GROQ_API_KEY) {
 
         return res
           .status(503)
           .json({
 
-            success:false,
+            success:
+              false,
 
             error:
               "GROQ_API_KEY غير مضبوط على الخادم.",
@@ -1282,30 +1205,27 @@ app.post(
 
       }
 
-
       const body =
         req.body || {};
-
 
       const message =
         cleanText(
           body.message
         );
 
-
       const fastMode =
         Boolean(
           body.fastMode
         );
 
-
-      if(!message){
+      if (!message) {
 
         return res
           .status(400)
           .json({
 
-            success:false,
+            success:
+              false,
 
             error:
               "الرسالة فارغة.",
@@ -1316,47 +1236,41 @@ app.post(
 
       }
 
-
       const history =
         normalizeHistory(
           body.messages
         );
 
-
-      let files =
+      const files =
         normalizeFiles(
           body.files
         );
 
-
       validateFiles(
         files
       );
-
 
       const textFiles =
         await extractTextFiles(
           files
         );
 
-
       const imageAnalyses =
         await analyzeImages(
           files
         );
-
 
       const historyOptimized =
         optimizeConversation(
           history
         );
 
-
       const messages = [
 
         {
 
-          role:"system",
+          role:
+            "system",
 
           content:
             SYSTEM_PROMPT
@@ -1367,7 +1281,8 @@ app.post(
 
         {
 
-          role:"user",
+          role:
+            "user",
 
           content:
             message
@@ -1377,42 +1292,48 @@ app.post(
       ];
 
 
-      /*
-        إضافة سياق الملفات
-      */
+      /* =====================================================
+         FILE CONTEXT
+      ===================================================== */
 
       const contextParts = [];
 
 
-      if(
+      if (
         textFiles.length
-      ){
+      ) {
 
         contextParts.push(
+
           "\n\n--- ملفات نصية مرفقة ---\n" +
+
           textFiles
             .map(
               file =>
                 `\n[${file.name}]\n${file.text}`
             )
             .join("\n")
+
         );
 
       }
 
 
-      if(
+      if (
         imageAnalyses.length
-      ){
+      ) {
 
         contextParts.push(
+
           "\n\n--- تحليل الصور ---\n" +
+
           imageAnalyses
             .map(
               item =>
                 `\n[${item.name}]\n${item.analysis}`
             )
             .join("\n")
+
         );
 
       }
@@ -1427,24 +1348,27 @@ app.post(
         );
 
 
-      if(
+      if (
         pdfFiles.length
-      ){
+      ) {
 
         contextParts.push(
+
           "\n\nتم إرفاق ملفات PDF. إذا لم يتوفر استخراج مباشر لمحتوى PDF، أخبر المستخدم بذلك بدلاً من اختلاق محتواه."
+
         );
 
       }
 
 
-      if(
+      if (
         contextParts.length
-      ){
+      ) {
 
         messages.push({
 
-          role:"system",
+          role:
+            "system",
 
           content:
             contextParts.join(
@@ -1455,6 +1379,10 @@ app.post(
 
       }
 
+
+      /* =====================================================
+         MODEL
+      ===================================================== */
 
       const selectedModel =
         fastMode
@@ -1477,11 +1405,12 @@ app.post(
         max_completion_tokens:
           8192,
 
-        stream:false,
+        stream:
+          false,
 
-        compound_custom:{
+        compound_custom: {
 
-          tools:{
+          tools: {
 
             enabled_tools:
               getEnabledTools()
@@ -1493,16 +1422,18 @@ app.post(
       };
 
 
-      if(
+      if (
         SEARCH_COUNTRY
-      ){
+      ) {
 
-        requestBody.compound_custom.search_settings = {
+        requestBody
+          .compound_custom
+          .search_settings = {
 
-          country:
-            SEARCH_COUNTRY
+            country:
+              SEARCH_COUNTRY
 
-        };
+          };
 
       }
 
@@ -1519,11 +1450,11 @@ app.post(
           ?.message?.content;
 
 
-      if(
+      if (
         typeof reply !==
         "string" ||
         !reply.trim()
-      ){
+      ) {
 
         throw new Error(
           "لم يرجع النموذج نصاً صالحاً."
@@ -1531,10 +1462,6 @@ app.post(
 
       }
 
-
-      /*
-        محاولة معرفة الأدوات المستخدمة
-      */
 
       const toolsUsed =
         completion
@@ -1548,14 +1475,15 @@ app.post(
 
       return res.json({
 
-        success:true,
+        success:
+          true,
 
         reply:
           reply.trim(),
 
         toolsUsed,
 
-        analyzedFiles:{
+        analyzedFiles: {
 
           text:
             textFiles.map(
@@ -1577,7 +1505,7 @@ app.post(
 
         },
 
-        meta:{
+        meta: {
 
           requestId,
 
@@ -1598,7 +1526,7 @@ app.post(
       });
 
 
-    }catch(error){
+    } catch (error) {
 
       console.error(
         `[Sultan AI] Request ${requestId} failed:`,
@@ -1616,33 +1544,30 @@ app.post(
         "حدث خطأ غير متوقع في الخادم.";
 
 
-      if(
-        status ===
-        401
-      ){
+      if (
+        status === 401
+      ) {
 
         message =
           "مفتاح Groq غير صالح.";
 
-      }else if(
-        status ===
-        429
-      ){
+      } else if (
+        status === 429
+      ) {
 
         message =
           "تم تجاوز حد الطلبات لدى مزود الذكاء الاصطناعي. حاول بعد قليل.";
 
-      }else if(
-        status >=
-        500
-      ){
+      } else if (
+        status >= 500
+      ) {
 
         message =
           "حدث خطأ مؤقت في خدمة الذكاء الاصطناعي.";
 
-      }else if(
+      } else if (
         error?.message
-      ){
+      ) {
 
         message =
           error.message;
@@ -1659,7 +1584,8 @@ app.post(
         )
         .json({
 
-          success:false,
+          success:
+            false,
 
           error:
             message,
@@ -1680,24 +1606,31 @@ app.post(
 
 app.get(
   "/api/health",
-  (req,res) => {
+  (req, res) => {
 
     res.json({
 
-      success:true,
+      success:
+        true,
 
-      online:true,
+      online:
+        true,
 
       configured:
         Boolean(
           GROQ_API_KEY
         ),
 
+      frontend:
+        fs.existsSync(
+          FRONTEND_PATH
+        ),
+
       service:
         "Sultan AI",
 
       version:
-        "7.2",
+        "8.0",
 
       model:
         MODEL,
@@ -1726,41 +1659,51 @@ app.get(
 
 app.get(
   "/api/capabilities",
-  (req,res) => {
+  (req, res) => {
 
     res.json({
 
-      success:true,
+      success:
+        true,
 
       service:
         "Sultan AI",
 
       version:
-        "7.2",
+        "8.0",
 
-      capabilities:{
+      capabilities: {
 
-        chat:true,
+        chat:
+          true,
 
-        webSearch:true,
+        webSearch:
+          true,
 
-        websiteReading:true,
+        websiteReading:
+          true,
 
-        codeInterpreter:true,
+        codeInterpreter:
+          true,
 
-        vision:true,
+        vision:
+          true,
 
-        textFiles:true,
+        textFiles:
+          true,
 
-        pdfSupport:true,
+        pdfSupport:
+          true,
 
-        fastMode:true,
+        fastMode:
+          true,
 
-        conversationHistory:true
+        conversationHistory:
+          true
 
       },
 
-      limits:{
+      limits: {
 
         maxMessageChars:
           MAX_MESSAGE_CHARS,
@@ -1779,7 +1722,7 @@ app.get(
 
       },
 
-      models:{
+      models: {
 
         main:
           MODEL,
@@ -1807,19 +1750,20 @@ app.get(
 
 app.get(
   "/api",
-  (req,res) => {
+  (req, res) => {
 
     res.json({
 
-      success:true,
+      success:
+        true,
 
       service:
         "Sultan AI API",
 
       version:
-        "7.2",
+        "8.0",
 
-      endpoints:{
+      endpoints: {
 
         chat:
           "POST /api/chat",
@@ -1848,14 +1792,17 @@ app.use(
     __dirname,
     {
 
-      index:false,
+      index:
+        false,
 
-      etag:false,
+      etag:
+        false,
 
-      maxAge:0,
+      maxAge:
+        0,
 
       setHeaders:
-        (res,filePath) => {
+        (res) => {
 
           res.setHeader(
             "Cache-Control",
@@ -1865,8 +1812,60 @@ app.use(
         }
 
     }
+
   )
 
+);
+
+
+/* =========================================================
+   ROOT FRONTEND
+========================================================= */
+
+app.get(
+  "/",
+  (req, res) => {
+
+    console.log(
+      "[Sultan AI] GET /"
+    );
+
+    if (
+      !fs.existsSync(
+        FRONTEND_PATH
+      )
+    ) {
+
+      console.error(
+        "[Sultan AI] index.html NOT FOUND:",
+        FRONTEND_PATH
+      );
+
+      return res
+        .status(500)
+        .send(
+          "Sultan AI: index.html غير موجود في مجلد الخادم."
+        );
+
+    }
+
+    res.sendFile(
+      FRONTEND_PATH,
+      (error) => {
+
+        if (error) {
+
+          console.error(
+            "[Sultan AI] Failed to send index.html:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+  }
 );
 
 
@@ -1876,13 +1875,14 @@ app.use(
 
 app.use(
   "/api",
-  (req,res) => {
+  (req, res) => {
 
     res
       .status(404)
       .json({
 
-        success:false,
+        success:
+          false,
 
         error:
           "API endpoint غير موجود."
@@ -1895,18 +1895,40 @@ app.use(
 
 /* =========================================================
    FRONTEND FALLBACK
-   Express 5
 ========================================================= */
 
 app.get(
   "/*splat",
-  (req,res) => {
+  (req, res) => {
+
+    if (
+      !fs.existsSync(
+        FRONTEND_PATH
+      )
+    ) {
+
+      return res
+        .status(500)
+        .send(
+          "Sultan AI: index.html غير موجود في مجلد الخادم."
+        );
+
+    }
 
     res.sendFile(
-      path.join(
-        __dirname,
-        "index.html"
-      )
+      FRONTEND_PATH,
+      (error) => {
+
+        if (error) {
+
+          console.error(
+            "[Sultan AI] Frontend fallback error:",
+            error
+          );
+
+        }
+
+      }
     );
 
   }
@@ -1930,10 +1952,9 @@ app.use(
       error
     );
 
-
-    if(
+    if (
       res.headersSent
-    ){
+    ) {
 
       return next(
         error
@@ -1941,12 +1962,12 @@ app.use(
 
     }
 
-
     res
       .status(500)
       .json({
 
-        success:false,
+        success:
+          false,
 
         error:
           "حدث خطأ داخلي في الخادم."
@@ -1971,7 +1992,7 @@ app.listen(
     );
 
     console.log(
-      "        SULTAN AI V7.2 SERVER"
+      "          SULTAN AI V8 SERVER"
     );
 
     console.log(
@@ -1980,6 +2001,18 @@ app.listen(
 
     console.log(
       `Port: ${PORT}`
+    );
+
+    console.log(
+      `Directory: ${__dirname}`
+    );
+
+    console.log(
+      `Frontend: ${FRONTEND_PATH}`
+    );
+
+    console.log(
+      `Frontend exists: ${fs.existsSync(FRONTEND_PATH)}`
     );
 
     console.log(
