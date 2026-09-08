@@ -7,582 +7,602 @@
 <title>Sultan AI</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-:root {
-  --bg: #07070a;
-  --panel: rgba(17,17,22,.82);
-  --panel2: rgba(24,24,31,.72);
-  --text: #f7f7fa;
-  --muted: #9696a3;
-  --line: rgba(255,255,255,.08);
-  --fire: #ff5a1f;
-  --fire2: #ffb000;
+:root{
+  --bg:#07070a;
+  --panel:rgba(17,17,22,.82);
+  --text:#f7f7fa;
+  --muted:#9696a3;
+  --line:rgba(255,255,255,.08);
+  --fire:#ff5a1f;
+  --fire2:#ffb000;
 }
 
-body {
-  min-height: 100vh;
+body{
+  min-height:100vh;
   background:
-    radial-gradient(circle at 50% 20%, rgba(255,80,20,.10), transparent 30%),
-    radial-gradient(circle at 10% 90%, rgba(255,150,0,.06), transparent 25%),
+    radial-gradient(circle at 50% 20%,rgba(255,80,20,.10),transparent 30%),
+    radial-gradient(circle at 10% 90%,rgba(255,150,0,.06),transparent 25%),
     var(--bg);
-  color: var(--text);
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  overflow: hidden;
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  overflow:hidden;
 }
 
-#particles {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
+#particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
 }
 
-.app {
-  position: relative;
-  z-index: 1;
-  height: 100vh;
-  display: flex;
+.app{
+  position:relative;
+  z-index:1;
+  height:100vh;
+  display:flex;
 }
 
 /* SIDEBAR */
 
-.sidebar {
-  width: 265px;
-  height: 100%;
-  padding: 20px 15px;
-  border-right: 1px solid var(--line);
-  background: rgba(8,8,11,.82);
-  backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: column;
-  transition: .25s ease;
+.sidebar{
+  width:265px;
+  height:100%;
+  padding:20px 15px;
+  border-right:1px solid var(--line);
+  background:rgba(8,8,11,.82);
+  backdrop-filter:blur(20px);
+  display:flex;
+  flex-direction:column;
+  transition:.25s ease;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 5px 8px 25px;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 8px 25px;
 }
 
-.logo {
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  font-size: 19px;
-  background: linear-gradient(145deg,#ff8a00,#ff2800);
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:19px;
+  background:linear-gradient(145deg,#ff8a00,#ff2800);
   box-shadow:
     0 0 22px rgba(255,75,0,.38),
     inset 0 1px 0 rgba(255,255,255,.25);
 }
 
-.brand-text {
-  font-size: 20px;
-  font-weight: 850;
-  letter-spacing: -.5px;
+.brand-text{
+  font-size:20px;
+  font-weight:850;
+  letter-spacing:-.5px;
 }
 
-.brand-text span {
-  color: #ff7228;
+.brand-text span{
+  color:#ff7228;
 }
 
-.new-chat {
-  border: 1px solid rgba(255,100,30,.25);
-  background: linear-gradient(
+.new-chat{
+  border:1px solid rgba(255,100,30,.25);
+  background:linear-gradient(
     135deg,
     rgba(255,80,20,.16),
     rgba(255,160,0,.07)
   );
-  color: white;
-  border-radius: 13px;
-  padding: 13px 15px;
-  font-size: 14px;
-  font-weight: 750;
-  cursor: pointer;
-  transition: .2s;
+  color:white;
+  border-radius:13px;
+  padding:13px 15px;
+  font-size:14px;
+  font-weight:750;
+  cursor:pointer;
+  transition:.2s;
 }
 
-.new-chat:hover {
-  transform: translateY(-1px);
-  border-color: rgba(255,120,30,.55);
-  box-shadow: 0 0 22px rgba(255,70,10,.15);
+.new-chat:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,120,30,.55);
+  box-shadow:0 0 22px rgba(255,70,10,.15);
 }
 
-.nav {
-  margin-top: 22px;
+.nav{
+  margin-top:22px;
 }
 
-.nav-title {
-  color: #666672;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.3px;
-  padding: 0 10px 8px;
+.nav-title{
+  color:#666672;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1.3px;
+  padding:0 10px 8px;
 }
 
-.nav-item {
-  width: 100%;
-  padding: 11px 12px;
-  border-radius: 10px;
-  color: #c8c8d0;
-  background: transparent;
-  border: 0;
-  text-align: left;
-  cursor: pointer;
-  margin-bottom: 4px;
+.nav-item{
+  width:100%;
+  padding:11px 12px;
+  border-radius:10px;
+  color:#c8c8d0;
+  background:transparent;
+  border:0;
+  text-align:left;
+  cursor:pointer;
+  margin-bottom:4px;
 }
 
-.nav-item:hover {
-  background: rgba(255,255,255,.05);
+.nav-item:hover{
+  background:rgba(255,255,255,.05);
 }
 
-.sidebar-bottom {
-  margin-top: auto;
+.sidebar-bottom{
+  margin-top:auto;
 }
 
-.creator {
-  padding: 13px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: rgba(255,255,255,.025);
+/* CREATOR */
+
+.creator{
+  padding:14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,80,20,.07),
+      rgba(255,255,255,.025)
+    );
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
 }
 
-.creator small {
-  color: var(--muted);
-  font-size: 10px;
+.creator-label{
+  color:#666672;
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
 }
 
-.creator strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 13px;
+.creator-names{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:7px;
 }
 
-.assisted {
-  display: block;
-  margin-top: 7px;
-  color: #ff8a45 !important;
-  font-size: 10px !important;
+.creator-main{
+  font-size:13px;
+  font-weight:850;
+  color:#fff;
+}
+
+.creator-separator{
+  color:#ff6d2d;
+  font-size:12px;
+}
+
+.creator-assist{
+  color:#ff965f;
+  font-size:11px;
+  font-weight:650;
 }
 
 /* MAIN */
 
-.main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
+.main{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
 }
 
-.topbar {
-  height: 64px;
-  padding: 0 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  background: rgba(7,7,10,.5);
-  backdrop-filter: blur(16px);
+.topbar{
+  height:64px;
+  padding:0 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+  background:rgba(7,7,10,.5);
+  backdrop-filter:blur(16px);
 }
 
-.mobile-menu {
-  display: none;
-  border: 0;
-  background: transparent;
-  color: white;
-  font-size: 23px;
-  cursor: pointer;
+.mobile-menu{
+  display:none;
+  border:0;
+  background:transparent;
+  color:white;
+  font-size:23px;
+  cursor:pointer;
 }
 
-.status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #aaaab4;
-  font-size: 12px;
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#aaaab4;
+  font-size:12px;
 }
 
-.status-dot {
-  width: 7px;
-  height: 7px;
-  background: #42e87a;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #42e87a;
+.status-dot{
+  width:7px;
+  height:7px;
+  background:#42e87a;
+  border-radius:50%;
+  box-shadow:0 0 10px #42e87a;
 }
 
-.speed {
-  border: 1px solid rgba(255,100,30,.18);
-  background: rgba(255,70,10,.06);
-  color: #ff9a64;
-  padding: 7px 10px;
-  border-radius: 9px;
-  font-size: 11px;
-  font-weight: 700;
+.speed{
+  border:1px solid rgba(255,100,30,.18);
+  background:rgba(255,70,10,.06);
+  color:#ff9a64;
+  padding:7px 10px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:700;
 }
 
 /* CHAT */
 
-.chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 45px 18px 170px;
-  scroll-behavior: smooth;
+.chat{
+  flex:1;
+  overflow-y:auto;
+  padding:45px 18px 170px;
+  scroll-behavior:smooth;
 }
 
-.chat-inner {
-  width: min(850px,100%);
-  margin: auto;
+.chat-inner{
+  width:min(850px,100%);
+  margin:auto;
 }
 
 /* WELCOME */
 
-.welcome {
-  min-height: 55vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.welcome{
+  min-height:55vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
 }
 
-.welcome-content {
-  max-width: 650px;
+.welcome-content{
+  max-width:650px;
 }
 
-.fire-logo {
-  width: 76px;
-  height: 76px;
-  margin: 0 auto 20px;
-  border-radius: 25px;
-  display: grid;
-  place-items: center;
-  font-size: 29px;
-  font-weight: 950;
-  background: linear-gradient(145deg,#ff9a00,#ff2600);
+.fire-logo{
+  width:76px;
+  height:76px;
+  margin:0 auto 20px;
+  border-radius:25px;
+  display:grid;
+  place-items:center;
+  font-size:29px;
+  font-weight:950;
+  background:linear-gradient(145deg,#ff9a00,#ff2600);
   box-shadow:
     0 0 30px rgba(255,70,0,.3),
     0 0 90px rgba(255,70,0,.12);
-  animation: firePulse 1.7s infinite alternate;
+  animation:firePulse 1.7s infinite alternate;
 }
 
-@keyframes firePulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.045); }
+@keyframes firePulse{
+  from{transform:scale(1)}
+  to{transform:scale(1.045)}
 }
 
-.welcome h1 {
-  font-size: clamp(38px,6vw,66px);
-  line-height: 1;
-  letter-spacing: -3px;
+.welcome h1{
+  font-size:clamp(38px,6vw,66px);
+  line-height:1;
+  letter-spacing:-3px;
 }
 
-.gradient {
-  background: linear-gradient(90deg,#fff,#ffb066,#ff4b17);
-  -webkit-background-clip: text;
-  color: transparent;
+.gradient{
+  background:linear-gradient(90deg,#fff,#ffb066,#ff4b17);
+  -webkit-background-clip:text;
+  color:transparent;
 }
 
-.welcome p {
-  color: #9d9da8;
-  margin-top: 18px;
-  font-size: 15px;
+.welcome p{
+  color:#9d9da8;
+  margin-top:18px;
+  font-size:15px;
 }
 
-.quick {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
-  margin-top: 28px;
+.quick{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:28px;
 }
 
-.quick button {
-  padding: 14px;
-  border-radius: 13px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.025);
-  color: #d4d4dc;
-  cursor: pointer;
-  text-align: left;
-  transition: .2s;
+.quick button{
+  padding:14px;
+  border-radius:13px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.025);
+  color:#d4d4dc;
+  cursor:pointer;
+  text-align:left;
+  transition:.2s;
 }
 
-.quick button:hover {
-  border-color: rgba(255,100,30,.35);
-  background: rgba(255,70,10,.06);
-  transform: translateY(-1px);
+.quick button:hover{
+  border-color:rgba(255,100,30,.35);
+  background:rgba(255,70,10,.06);
+  transform:translateY(-1px);
 }
 
 /* MESSAGES */
 
-.message {
-  display: flex;
-  gap: 12px;
-  margin: 20px 0;
-  animation: appear .22s ease;
+.message{
+  display:flex;
+  gap:12px;
+  margin:20px 0;
+  animation:appear .22s ease;
 }
 
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(7px);
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:translateY(7px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  to{
+    opacity:1;
+    transform:translateY(0);
   }
 }
 
-.avatar {
-  flex: 0 0 34px;
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 850;
-  background: #1c1c23;
-  border: 1px solid var(--line);
+.avatar{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  font-weight:850;
+  background:#1c1c23;
+  border:1px solid var(--line);
 }
 
-.ai .avatar {
-  background: linear-gradient(145deg,#ff7b00,#ff2d00);
-  border: 0;
-  box-shadow: 0 0 15px rgba(255,70,0,.18);
+.ai .avatar{
+  background:linear-gradient(145deg,#ff7b00,#ff2d00);
+  border:0;
+  box-shadow:0 0 15px rgba(255,70,0,.18);
 }
 
-.msg-body {
-  min-width: 0;
-  max-width: calc(100% - 50px);
+.msg-body{
+  min-width:0;
+  max-width:calc(100% - 50px);
 }
 
-.msg-name {
-  color: #858590;
-  font-size: 11px;
-  margin-bottom: 5px;
+.msg-name{
+  color:#858590;
+  font-size:11px;
+  margin-bottom:5px;
 }
 
-.msg-text {
-  color: #eeeeF3;
-  font-size: 14px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+.msg-text{
+  color:#eeeeF3;
+  font-size:14px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
-.user .msg-text {
-  background: rgba(255,255,255,.055);
-  border: 1px solid var(--line);
-  padding: 10px 13px;
-  border-radius: 13px;
+.user .msg-text{
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--line);
+  padding:10px 13px;
+  border-radius:13px;
 }
 
 /* TYPING */
 
-.typing {
-  display: inline-flex;
-  gap: 4px;
-  padding: 9px 0;
+.typing{
+  display:inline-flex;
+  gap:4px;
+  padding:9px 0;
 }
 
-.typing i {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ff7130;
-  animation: blink .8s infinite alternate;
+.typing i{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#ff7130;
+  animation:blink .8s infinite alternate;
 }
 
-.typing i:nth-child(2) {
-  animation-delay: .15s;
+.typing i:nth-child(2){
+  animation-delay:.15s;
 }
 
-.typing i:nth-child(3) {
-  animation-delay: .3s;
+.typing i:nth-child(3){
+  animation-delay:.3s;
 }
 
-@keyframes blink {
-  from {
-    opacity: .25;
-    transform: translateY(0);
+@keyframes blink{
+  from{
+    opacity:.25;
+    transform:translateY(0);
   }
-  to {
-    opacity: 1;
-    transform: translateY(-3px);
+  to{
+    opacity:1;
+    transform:translateY(-3px);
   }
 }
 
 /* COMPOSER */
 
-.composer-wrap {
-  position: fixed;
-  left: 265px;
-  right: 0;
-  bottom: 0;
-  padding: 15px 18px 18px;
-  background: linear-gradient(
+.composer-wrap{
+  position:fixed;
+  left:265px;
+  right:0;
+  bottom:0;
+  padding:15px 18px 18px;
+  background:linear-gradient(
     transparent,
     rgba(7,7,10,.96) 30%
   );
 }
 
-.composer {
-  width: min(850px,100%);
-  margin: auto;
-  display: flex;
-  align-items: flex-end;
-  gap: 9px;
-  padding: 9px;
-  border-radius: 17px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(18,18,23,.92);
-  box-shadow: 0 12px 50px rgba(0,0,0,.35);
-  backdrop-filter: blur(20px);
+.composer{
+  width:min(850px,100%);
+  margin:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:9px;
+  padding:9px;
+  border-radius:17px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(18,18,23,.92);
+  box-shadow:0 12px 50px rgba(0,0,0,.35);
+  backdrop-filter:blur(20px);
 }
 
-.attach {
-  width: 42px;
-  height: 42px;
-  border: 0;
-  border-radius: 12px;
-  background: rgba(255,255,255,.05);
-  color: #aaaab4;
-  font-size: 19px;
-  cursor: pointer;
+.attach{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  color:#aaaab4;
+  font-size:19px;
+  cursor:pointer;
 }
 
-#prompt {
-  flex: 1;
-  resize: none;
-  max-height: 150px;
-  min-height: 42px;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: white;
-  font: inherit;
-  padding: 11px 4px;
+#prompt{
+  flex:1;
+  resize:none;
+  max-height:150px;
+  min-height:42px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:white;
+  font:inherit;
+  padding:11px 4px;
 }
 
-#prompt::placeholder {
-  color: #666672;
+#prompt::placeholder{
+  color:#666672;
 }
 
-.send {
-  width: 43px;
-  height: 43px;
-  border: 0;
-  border-radius: 12px;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  background: linear-gradient(145deg,#ff7b00,#ff3000);
-  box-shadow: 0 0 18px rgba(255,70,0,.23);
-  transition: .18s;
+.send{
+  width:43px;
+  height:43px;
+  border:0;
+  border-radius:12px;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  background:linear-gradient(145deg,#ff7b00,#ff3000);
+  box-shadow:0 0 18px rgba(255,70,0,.23);
+  transition:.18s;
 }
 
-.send:hover {
-  transform: scale(1.04);
+.send:hover{
+  transform:scale(1.04);
 }
 
-.send:active {
-  transform: scale(.95);
+.send:active{
+  transform:scale(.95);
 }
 
-.footer {
-  text-align: center;
-  color: #55555f;
-  font-size: 9px;
-  margin-top: 8px;
+.footer{
+  text-align:center;
+  color:#55555f;
+  font-size:9px;
+  margin-top:8px;
 }
 
 /* SPARKS */
 
-.spark {
-  position: fixed;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #ff8a3d;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 0;
-  animation: sparkFly linear forwards;
+.spark{
+  position:fixed;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:#ff8a3d;
+  pointer-events:none;
+  opacity:0;
+  z-index:0;
+  animation:sparkFly linear forwards;
 }
 
-@keyframes sparkFly {
-  0% {
-    opacity: 0;
-    transform: translate(0,0) scale(.4);
+@keyframes sparkFly{
+  0%{
+    opacity:0;
+    transform:translate(0,0) scale(.4);
   }
 
-  15% {
-    opacity: .9;
+  15%{
+    opacity:.9;
   }
 
-  100% {
-    opacity: 0;
-    transform: translate(var(--x),var(--y)) scale(0);
+  100%{
+    opacity:0;
+    transform:translate(var(--x),var(--y)) scale(0);
   }
 }
 
 /* MOBILE */
 
-@media(max-width:720px) {
+@media(max-width:720px){
 
-  .sidebar {
-    position: fixed;
-    z-index: 20;
-    left: 0;
-    top: 0;
-    transform: translateX(-105%);
-    width: 275px;
-    box-shadow: 20px 0 50px rgba(0,0,0,.5);
+  .sidebar{
+    position:fixed;
+    z-index:20;
+    left:0;
+    top:0;
+    transform:translateX(-105%);
+    width:275px;
+    box-shadow:20px 0 50px rgba(0,0,0,.5);
   }
 
-  .sidebar.open {
-    transform: translateX(0);
+  .sidebar.open{
+    transform:translateX(0);
   }
 
-  .mobile-menu {
-    display: block;
+  .mobile-menu{
+    display:block;
   }
 
-  .topbar {
-    padding: 0 14px;
+  .topbar{
+    padding:0 14px;
   }
 
-  .composer-wrap {
-    left: 0;
-    padding: 12px 10px 13px;
+  .composer-wrap{
+    left:0;
+    padding:12px 10px 13px;
   }
 
-  .chat {
-    padding: 30px 12px 150px;
+  .chat{
+    padding:30px 12px 150px;
   }
 
-  .welcome {
-    min-height: 60vh;
+  .welcome{
+    min-height:60vh;
   }
 
-  .welcome h1 {
-    font-size: 43px;
+  .welcome h1{
+    font-size:43px;
   }
 
-  .quick {
-    grid-template-columns: 1fr;
+  .quick{
+    grid-template-columns:1fr;
   }
 
-  .speed {
-    display: none;
+  .speed{
+    display:none;
   }
 }
 </style>
@@ -597,11 +617,15 @@ body {
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
-      <div class="logo">S</div>
+
+      <div class="logo">
+        S
+      </div>
 
       <div class="brand-text">
         Sultan <span>AI</span>
       </div>
+
     </div>
 
     <button class="new-chat" onclick="newChat()">
@@ -632,15 +656,25 @@ body {
 
       <div class="creator">
 
-        <small>CREATED BY</small>
+        <div class="creator-label">
+          CREATED BY
+        </div>
 
-        <strong>
-          Ali Sultan ⚡
-        </strong>
+        <div class="creator-names">
 
-        <small class="assisted">
-          Assisted by Ali Arandis
-        </small>
+          <span class="creator-main">
+            Ali Sultan ⚡
+          </span>
+
+          <span class="creator-separator">
+            •
+          </span>
+
+          <span class="creator-assist">
+            Ali Arandis
+          </span>
+
+        </div>
 
       </div>
 
@@ -725,7 +759,7 @@ body {
 
       <div class="composer">
 
-        <button class="attach" title="Attach">
+        <button class="attach">
           ＋
         </button>
 
@@ -739,8 +773,7 @@ body {
 
         <button
           class="send"
-          onclick="sendMessage()"
-          title="Send">
+          onclick="sendMessage()">
           ➤
         </button>
 
@@ -758,10 +791,9 @@ body {
 
 <script>
 
-/* ==========================================
-   SULTAN AI
-   REAL BACKEND + STREAMING
-========================================== */
+/* =========================
+   VARIABLES
+========================= */
 
 const promptBox =
   document.getElementById("prompt");
@@ -775,9 +807,11 @@ const welcome =
 let conversation = [];
 
 
-/* MOBILE SIDEBAR */
+/* =========================
+   SIDEBAR
+========================= */
 
-function toggleSidebar() {
+function toggleSidebar(){
 
   document
     .getElementById("sidebar")
@@ -787,9 +821,11 @@ function toggleSidebar() {
 }
 
 
-/* NEW CHAT */
+/* =========================
+   NEW CHAT
+========================= */
 
-function newChat() {
+function newChat(){
 
   conversation = [];
 
@@ -809,51 +845,64 @@ function newChat() {
     .getElementById("sidebar")
     .classList
     .remove("open");
+
 }
 
 
-/* QUICK ASK */
+/* =========================
+   QUICK QUESTIONS
+========================= */
 
-function quickAsk(text) {
+function quickAsk(text){
 
   promptBox.value = text;
 
   autoResize(promptBox);
 
   sendMessage();
+
 }
 
 
-/* ENTER */
+/* =========================
+   ENTER KEY
+========================= */
 
-function handleKey(e) {
+function handleKey(e){
 
-  if (
+  if(
     e.key === "Enter" &&
     !e.shiftKey
-  ) {
+  ){
 
     e.preventDefault();
 
     sendMessage();
+
   }
+
 }
 
 
-/* TEXTAREA */
+/* =========================
+   TEXTAREA
+========================= */
 
-function autoResize(el) {
+function autoResize(el){
 
   el.style.height = "42px";
 
   el.style.height =
     Math.min(el.scrollHeight,150) + "px";
+
 }
 
 
-/* ADD MESSAGE */
+/* =========================
+   ADD MESSAGE
+========================= */
 
-function addMessage(type,text) {
+function addMessage(type,text){
 
   welcome.style.display = "none";
 
@@ -866,20 +915,25 @@ function addMessage(type,text) {
   const avatar =
     document.createElement("div");
 
-  avatar.className = "avatar";
+  avatar.className =
+    "avatar";
 
   avatar.textContent =
-    type === "ai" ? "S" : "YOU";
+    type === "ai"
+      ? "S"
+      : "YOU";
 
   const body =
     document.createElement("div");
 
-  body.className = "msg-body";
+  body.className =
+    "msg-body";
 
   const name =
     document.createElement("div");
 
-  name.className = "msg-name";
+  name.className =
+    "msg-name";
 
   name.textContent =
     type === "ai"
@@ -889,9 +943,11 @@ function addMessage(type,text) {
   const content =
     document.createElement("div");
 
-  content.className = "msg-text";
+  content.className =
+    "msg-text";
 
-  content.textContent = text;
+  content.textContent =
+    text;
 
   body.appendChild(name);
 
@@ -906,12 +962,15 @@ function addMessage(type,text) {
   scrollBottom();
 
   return content;
+
 }
 
 
-/* TYPING */
+/* =========================
+   TYPING
+========================= */
 
-function addTyping() {
+function addTyping(){
 
   welcome.style.display = "none";
 
@@ -930,7 +989,8 @@ function addTyping() {
   avatar.className =
     "avatar";
 
-  avatar.textContent = "S";
+  avatar.textContent =
+    "S";
 
   const body =
     document.createElement("div");
@@ -969,19 +1029,21 @@ function addTyping() {
   scrollBottom();
 
   return message;
+
 }
 
 
-/* ==========================================
-   SEND TO REAL SERVER
-========================================== */
+/* =========================
+   REAL AI CHAT
+========================= */
 
-async function sendMessage() {
+async function sendMessage(){
 
   const text =
     promptBox.value.trim();
 
-  if (!text) return;
+  if(!text)
+    return;
 
 
   promptBox.value = "";
@@ -989,12 +1051,18 @@ async function sendMessage() {
   autoResize(promptBox);
 
 
-  addMessage("user",text);
+  addMessage(
+    "user",
+    text
+  );
 
 
   conversation.push({
-    role: "user",
-    content: text
+
+    role:"user",
+
+    content:text
+
   });
 
 
@@ -1002,167 +1070,67 @@ async function sendMessage() {
     addTyping();
 
 
-  try {
+  try{
 
     const response =
-      await fetch("/api/chat", {
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
 
-        method: "POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-
-        body: JSON.stringify({
-          messages: conversation
-        })
-
-      });
+          body:JSON.stringify({
+            messages:conversation
+          })
+        }
+      );
 
 
-    if (!response.ok) {
+    if(!response.ok){
 
       throw new Error(
-        `Server error: ${response.status}`
+        "Server error: " +
+        response.status
       );
 
     }
 
 
-    if (!response.body) {
-
-      throw new Error(
-        "Streaming is not supported."
-      );
-
-    }
+    const data =
+      await response.json();
 
 
     typing.remove();
 
 
-    const aiText =
-      addMessage("ai","");
+    const reply =
+      data.reply ||
+      "ما قدرت آخد جواب من سلطان AI.";
 
 
-    let fullResponse = "";
-
-
-    const reader =
-      response.body.getReader();
-
-    const decoder =
-      new TextDecoder("utf-8");
-
-
-    let buffer = "";
-
-
-    while (true) {
-
-      const result =
-        await reader.read();
-
-      if (result.done)
-        break;
-
-
-      buffer +=
-        decoder.decode(
-          result.value,
-          { stream: true }
-        );
-
-
-      const lines =
-        buffer.split("\n");
-
-
-      buffer =
-        lines.pop() || "";
-
-
-      for (const line of lines) {
-
-        if (
-          !line.startsWith("data:")
-        ) {
-          continue;
-        }
-
-
-        const raw =
-          line
-            .slice(5)
-            .trim();
-
-
-        if (!raw)
-          continue;
-
-
-        try {
-
-          const data =
-            JSON.parse(raw);
-
-
-          if (
-            data.type === "token"
-          ) {
-
-            fullResponse +=
-              data.content || "";
-
-            aiText.textContent =
-              fullResponse;
-
-            scrollBottom();
-
-          }
-
-
-          if (
-            data.type === "error"
-          ) {
-
-            throw new Error(
-              data.error ||
-              "AI error"
-            );
-
-          }
-
-        } catch (err) {
-
-          if (
-            err.message ===
-            "AI error"
-          ) {
-            throw err;
-          }
-
-        }
-
-      }
-
-    }
+    addMessage(
+      "ai",
+      reply
+    );
 
 
     conversation.push({
-      role: "assistant",
-      content: fullResponse
+
+      role:"assistant",
+
+      content:reply
+
     });
 
 
-    scrollBottom();
-
-
-  } catch (error) {
+  }catch(error){
 
     console.error(
-      "Sultan AI:",
+      "Sultan AI Error:",
       error
     );
 
@@ -1172,7 +1140,7 @@ async function sendMessage() {
 
     addMessage(
       "ai",
-      "⚠️ Sultan AI couldn't connect to the AI service. Please try again."
+      "⚠️ Sultan AI couldn't connect to the server. جرّب مرة تانية."
     );
 
   }
@@ -1180,11 +1148,13 @@ async function sendMessage() {
 }
 
 
-/* SCROLL */
+/* =========================
+   SCROLL
+========================= */
 
-function scrollBottom() {
+function scrollBottom(){
 
-  requestAnimationFrame(() => {
+  requestAnimationFrame(()=>{
 
     const chat =
       document.getElementById("chat");
@@ -1197,9 +1167,9 @@ function scrollBottom() {
 }
 
 
-/* ==========================================
+/* =========================
    FIRE PARTICLES
-========================================== */
+========================= */
 
 const canvas =
   document.getElementById("particles");
@@ -1210,7 +1180,7 @@ const ctx =
 let W,H;
 
 
-function resizeCanvas() {
+function resizeCanvas(){
 
   W =
     canvas.width =
@@ -1231,7 +1201,7 @@ window.addEventListener(
 );
 
 
-function fireSpark() {
+function fireSpark(){
 
   const spark =
     document.createElement("div");
@@ -1243,38 +1213,40 @@ function fireSpark() {
   spark.style.left =
     (
       window.innerWidth * .5 +
-      (Math.random() - .5) * 120
+      (Math.random()-.5)*120
     ) + "px";
 
 
   spark.style.top =
     (
-      window.innerHeight * .22 +
-      Math.random() * 100
+      window.innerHeight*.22 +
+      Math.random()*100
     ) + "px";
 
 
   spark.style.setProperty(
     "--x",
-    ((Math.random() - .5) * 180) + "px"
+    ((Math.random()-.5)*180)+"px"
   );
 
 
   spark.style.setProperty(
     "--y",
-    (-40 - Math.random() * 150) + "px"
+    (-40-Math.random()*150)+"px"
   );
 
 
   spark.style.animationDuration =
-    (.8 + Math.random() * 1.5) + "s";
+    (.8+Math.random()*1.5)+"s";
 
 
-  document.body.appendChild(spark);
+  document.body.appendChild(
+    spark
+  );
 
 
   setTimeout(
-    () => spark.remove(),
+    ()=>spark.remove(),
     2500
   );
 
