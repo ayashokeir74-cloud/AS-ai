@@ -67,10 +67,6 @@ body{
     color .3s ease;
 }
 
-/* =====================================================
-   BACKGROUND
-===================================================== */
-
 .bg-grid{
   position:fixed;
   inset:0;
@@ -88,10 +84,6 @@ body.light .bg-grid{
   opacity:.12;
 }
 
-/* =====================================================
-   APP
-===================================================== */
-
 .app{
   position:relative;
   z-index:1;
@@ -99,9 +91,7 @@ body.light .bg-grid{
   display:flex;
 }
 
-/* =====================================================
-   SIDEBAR
-===================================================== */
+/* SIDEBAR */
 
 .sidebar{
   position:fixed;
@@ -142,8 +132,7 @@ body.light .sidebar{
   background:
     radial-gradient(circle at 35% 30%,#fff,transparent 13%),
     linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:
-    0 0 30px rgba(124,92,255,.35);
+  box-shadow:0 0 30px rgba(124,92,255,.35);
   animation:orbFloat 4s ease-in-out infinite;
 }
 
@@ -296,9 +285,7 @@ body.light .sidebar{
   animation:pulseDot 1.7s infinite;
 }
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* MAIN */
 
 .main{
   width:calc(100% - 290px);
@@ -377,9 +364,7 @@ body.light .topbar{
   gap:8px;
 }
 
-/* =====================================================
-   CHAT
-===================================================== */
+/* CHAT */
 
 .chat{
   flex:1;
@@ -507,9 +492,7 @@ body.light .quick{
   margin-top:4px;
 }
 
-/* =====================================================
-   MESSAGES
-===================================================== */
+/* MESSAGES */
 
 .messages{
   display:flex;
@@ -563,6 +546,7 @@ body.light .quick{
   font-size:14px;
   box-shadow:0 8px 30px rgba(0,0,0,.08);
   overflow:hidden;
+  word-break:break-word;
 }
 
 .message.user .bubble{
@@ -688,9 +672,7 @@ body.light .bubble pre{
   color:var(--text);
 }
 
-/* =====================================================
-   STATUS
-===================================================== */
+/* STATUS */
 
 .ai-status{
   display:none;
@@ -729,9 +711,7 @@ body.light .bubble pre{
   min-width:160px;
 }
 
-/* =====================================================
-   TOOL ACTIVITY
-===================================================== */
+/* TOOL ACTIVITY */
 
 .tool-activity{
   display:none;
@@ -779,9 +759,7 @@ body.light .bubble pre{
   font-size:10px;
 }
 
-/* =====================================================
-   COMMAND CENTER
-===================================================== */
+/* COMMAND CENTER */
 
 .command-center{
   position:fixed;
@@ -891,9 +869,7 @@ body.light .command-center{
   pointer-events:auto;
 }
 
-/* =====================================================
-   INPUT AREA
-===================================================== */
+/* INPUT */
 
 .input-zone{
   position:fixed;
@@ -1050,9 +1026,7 @@ body.light .composer{
   font-size:10px;
 }
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* TOAST */
 
 .toast{
   position:fixed;
@@ -1077,9 +1051,7 @@ body.light .composer{
   transform:translate(-50%,0);
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* MOBILE */
 
 @media(max-width:900px){
 
@@ -1204,37 +1176,61 @@ body.light .composer{
   }
 }
 
-/* =====================================================
-   ANIMATIONS
-===================================================== */
+/* ANIMATIONS */
 
 @keyframes orbFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-7px)}
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-7px);
+  }
 }
 
 @keyframes orbGlow{
-  0%,100%{filter:brightness(1)}
-  50%{filter:brightness(1.16)}
+  0%,100%{
+    filter:brightness(1);
+  }
+  50%{
+    filter:brightness(1.16);
+  }
 }
 
 @keyframes ring{
-  from{transform:scale(.9);opacity:.7}
-  to{transform:scale(1.18);opacity:0}
+  from{
+    transform:scale(.9);
+    opacity:.7;
+  }
+  to{
+    transform:scale(1.18);
+    opacity:0;
+  }
 }
 
 @keyframes pulseDot{
-  0%,100%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.6);opacity:.45}
+  0%,100%{
+    transform:scale(1);
+    opacity:1;
+  }
+  50%{
+    transform:scale(1.6);
+    opacity:.45;
+  }
 }
 
 @keyframes statusPulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.08)}
+  0%,100%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.08);
+  }
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 @keyframes fadeUp{
@@ -1259,10 +1255,6 @@ body.light .composer{
   }
 }
 
-/* =====================================================
-   SCROLLBAR
-===================================================== */
-
 ::-webkit-scrollbar{
   width:7px;
 }
@@ -1280,10 +1272,6 @@ body.light ::-webkit-scrollbar-thumb{
   background:rgba(0,0,0,.15);
 }
 
-/* =====================================================
-   HIDDEN
-===================================================== */
-
 .hidden{
   display:none!important;
 }
@@ -1296,17 +1284,19 @@ body.light ::-webkit-scrollbar-thumb{
 
 <div class="app">
 
-<!-- ===================================================
-     SIDEBAR
-=================================================== -->
-
 <aside class="sidebar" id="sidebar">
 
   <div class="brand">
     <div class="brand-orb"></div>
+
     <div>
-      <div class="brand-name">Sultan AI</div>
-      <div class="brand-version">V8.2 • Advanced AI</div>
+      <div class="brand-name">
+        Sultan AI
+      </div>
+
+      <div class="brand-version">
+        V8.2 • Advanced AI
+      </div>
     </div>
   </div>
 
@@ -1403,12 +1393,16 @@ body.light ::-webkit-scrollbar-thumb{
     <div class="api-status">
 
       <div class="status-row">
-        <span>API Status</span>
+
+        <span>
+          API Status
+        </span>
 
         <span class="status-online">
           <span class="status-dot"></span>
           Online
         </span>
+
       </div>
 
     </div>
@@ -1416,10 +1410,6 @@ body.light ::-webkit-scrollbar-thumb{
   </div>
 
 </aside>
-
-<!-- ===================================================
-     MAIN
-=================================================== -->
 
 <main class="main">
 
@@ -1435,10 +1425,17 @@ body.light ::-webkit-scrollbar-thumb{
       </button>
 
       <div class="current-mode">
-        <span id="modeName">Smart</span>
-        <span class="mode-badge" id="modeBadge">
+
+        <span id="modeName">
+          Smart
+        </span>
+
+        <span
+          class="mode-badge"
+          id="modeBadge">
           AI MODE
         </span>
+
       </div>
 
     </div>
@@ -1465,13 +1462,13 @@ body.light ::-webkit-scrollbar-thumb{
 
   <section class="chat">
 
-    <!-- WELCOME -->
-
     <div class="welcome" id="welcome">
 
       <div class="welcome-orb"></div>
 
-      <h1>Sultan AI</h1>
+      <h1>
+        Sultan AI
+      </h1>
 
       <p>
         مساعد ذكاء اصطناعي متقدم، سريع وذكي،
@@ -1484,59 +1481,67 @@ body.light ::-webkit-scrollbar-thumb{
         <button
           class="quick"
           data-prompt="اشرح لي كيف أتعلم البرمجة من الصفر بطريقة سهلة">
+
           <div class="quick-title">
             💻 تعلم البرمجة
           </div>
+
           <div class="quick-sub">
             خطة بسيطة للمبتدئين
           </div>
+
         </button>
 
         <button
           class="quick"
           data-prompt="ساعدني في بناء فكرة مشروع ذكاء اصطناعي">
+
           <div class="quick-title">
             🧠 فكرة مشروع AI
           </div>
+
           <div class="quick-sub">
             خلينا نبني الفكرة خطوة بخطوة
           </div>
+
         </button>
 
         <button
           class="quick"
           data-prompt="اكتب لي كود HTML لموقع احترافي">
+
           <div class="quick-title">
             ⚡ اكتب كود
           </div>
+
           <div class="quick-sub">
             HTML / CSS / JavaScript
           </div>
+
         </button>
 
         <button
           class="quick"
           data-prompt="ما هي أهم أخبار وتقنيات الذكاء الاصطناعي الحديثة؟">
+
           <div class="quick-title">
             🌐 بحث ذكي
           </div>
+
           <div class="quick-sub">
             معلومات حديثة ومصادر
           </div>
+
         </button>
 
       </div>
 
     </div>
 
-    <!-- MESSAGES -->
-
     <div
       class="messages"
       id="messages">
     </div>
-
-    <!-- AI STATUS -->
 
     <div
       class="ai-status"
@@ -1551,8 +1556,6 @@ body.light ::-webkit-scrollbar-thumb{
       </div>
 
     </div>
-
-    <!-- TOOL ACTIVITY -->
 
     <div
       class="tool-activity"
@@ -1573,10 +1576,6 @@ body.light ::-webkit-scrollbar-thumb{
   </section>
 
 </main>
-
-<!-- ===================================================
-     INPUT
-=================================================== -->
 
 <div class="input-zone">
 
@@ -1617,16 +1616,45 @@ body.light ::-webkit-scrollbar-thumb{
           class="mode-select"
           id="modeSelect">
 
-          <option value="smart">Smart</option>
-          <option value="fast">Fast</option>
-          <option value="deep">Deep</option>
-          <option value="code">Code</option>
-          <option value="web">Web</option>
-          <option value="vision">Vision</option>
-          <option value="files">Files</option>
-          <option value="creative">Creative</option>
-          <option value="reasoning">Reasoning</option>
-          <option value="assistant">Assistant</option>
+          <option value="smart">
+            Smart
+          </option>
+
+          <option value="fast">
+            Fast
+          </option>
+
+          <option value="deep">
+            Deep
+          </option>
+
+          <option value="code">
+            Code
+          </option>
+
+          <option value="web">
+            Web
+          </option>
+
+          <option value="vision">
+            Vision
+          </option>
+
+          <option value="files">
+            Files
+          </option>
+
+          <option value="creative">
+            Creative
+          </option>
+
+          <option value="reasoning">
+            Reasoning
+          </option>
+
+          <option value="assistant">
+            Assistant
+          </option>
 
         </select>
 
@@ -1648,10 +1676,6 @@ body.light ::-webkit-scrollbar-thumb{
   </div>
 
 </div>
-
-<!-- ===================================================
-     COMMAND CENTER
-=================================================== -->
 
 <div
   class="overlay"
@@ -1691,94 +1715,174 @@ body.light ::-webkit-scrollbar-thumb{
     <button
       class="command-item"
       data-command="new">
-      <b>＋ محادثة جديدة</b>
-      <span>ابدأ محادثة جديدة</span>
+
+      <b>
+        ＋ محادثة جديدة
+      </b>
+
+      <span>
+        ابدأ محادثة جديدة
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="clear">
-      <b>♲ مسح المحادثة</b>
-      <span>حذف الرسائل الحالية</span>
+
+      <b>
+        ♲ مسح المحادثة
+      </b>
+
+      <span>
+        حذف الرسائل الحالية
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="fast">
-      <b>⚡ Fast Mode</b>
-      <span>إجابة أسرع</span>
+
+      <b>
+        ⚡ Fast Mode
+      </b>
+
+      <span>
+        إجابة أسرع
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="smart">
-      <b>🧠 Smart Mode</b>
-      <span>الوضع الذكي</span>
+
+      <b>
+        🧠 Smart Mode
+      </b>
+
+      <span>
+        الوضع الذكي
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="deep">
-      <b>🔬 Deep Think</b>
-      <span>تحليل أعمق</span>
+
+      <b>
+        🔬 Deep Think
+      </b>
+
+      <span>
+        تحليل أعمق
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="code">
-      <b>💻 Code Mode</b>
-      <span>وضع البرمجة</span>
+
+      <b>
+        💻 Code Mode
+      </b>
+
+      <span>
+        وضع البرمجة
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="web">
-      <b>🌐 Web Mode</b>
-      <span>البحث على الويب</span>
+
+      <b>
+        🌐 Web Mode
+      </b>
+
+      <span>
+        البحث على الويب
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="vision">
-      <b>👁 Vision</b>
-      <span>تحليل الصور</span>
+
+      <b>
+        👁 Vision
+      </b>
+
+      <span>
+        تحليل الصور
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="files">
-      <b>📁 Files</b>
-      <span>تحليل الملفات</span>
+
+      <b>
+        📁 Files
+      </b>
+
+      <span>
+        تحليل الملفات
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="theme">
-      <b>◐ Theme</b>
-      <span>تغيير المظهر</span>
+
+      <b>
+        ◐ Theme
+      </b>
+
+      <span>
+        تغيير المظهر
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="focus">
-      <b>✎ Focus</b>
-      <span>التركيز على مربع الكتابة</span>
+
+      <b>
+        ✎ Focus
+      </b>
+
+      <span>
+        التركيز على مربع الكتابة
+      </span>
+
     </button>
 
     <button
       class="command-item"
       data-command="status">
-      <b>◉ API Status</b>
-      <span>فحص الخادم</span>
+
+      <b>
+        ◉ API Status
+      </b>
+
+      <span>
+        فحص الخادم
+      </span>
+
     </button>
 
   </div>
 
 </div>
-
-<!-- ===================================================
-     TOAST
-=================================================== -->
 
 <div
   class="toast"
@@ -2034,23 +2138,14 @@ function toggleTheme(){
 const modeLabels = {
 
   fast:"Fast",
-
   smart:"Smart",
-
   deep:"Deep Think",
-
   code:"Code",
-
   web:"Web Search",
-
   vision:"Vision",
-
   files:"Files",
-
   creative:"Creative",
-
   reasoning:"Reasoning",
-
   assistant:"Assistant"
 
 };
@@ -2068,9 +2163,7 @@ function setMode(mode){
     modeLabels[mode];
 
   modeSelect.value =
-    modeLabels[mode]
-      ? mode
-      : "smart";
+    mode;
 
   document
     .querySelectorAll(".mode-item")
@@ -2083,36 +2176,24 @@ function setMode(mode){
 
     });
 
-  const colors = {
+  const badges = {
 
     fast:"⚡ FAST",
-
     smart:"🧠 SMART",
-
     deep:"🔬 DEEP",
-
     code:"💻 CODE",
-
     web:"🌐 WEB",
-
     vision:"👁 VISION",
-
     files:"📁 FILES",
-
     creative:"✨ CREATIVE",
-
     reasoning:"🧩 REASONING",
-
     assistant:"🤖 ASSISTANT"
 
   };
 
   modeBadge.textContent =
-    colors[mode] || "AI MODE";
-
-  showToast(
-    `تم اختيار ${modeLabels[mode]}`
-  );
+    badges[mode] ||
+    "AI MODE";
 
 }
 
@@ -2221,7 +2302,10 @@ function updateFilePreview(){
         "file-chip";
 
       chip.innerHTML = `
-        <span>📄 ${escapeHTML(file.name)}</span>
+        <span>
+          📄 ${escapeHTML(file.name)}
+        </span>
+
         <button
           class="remove-file"
           data-index="${index}">
@@ -2281,15 +2365,9 @@ async function prepareFiles(){
 
       result.push({
 
-        name:
-          file.name,
-
-        type:
-          file.type,
-
-        size:
-          file.size,
-
+        name:file.name,
+        type:file.type,
+        size:file.size,
         data
 
       });
@@ -2309,7 +2387,7 @@ async function prepareFiles(){
 }
 
 /* =====================================================
-   INPUT AUTO RESIZE
+   INPUT
 ===================================================== */
 
 function resizeInput(){
@@ -2332,10 +2410,8 @@ function resizeInput(){
 function hideWelcome(){
 
   if(welcome){
-
     welcome.style.display =
       "none";
-
   }
 
 }
@@ -2343,16 +2419,14 @@ function hideWelcome(){
 function showWelcome(){
 
   if(welcome){
-
     welcome.style.display =
       "flex";
-
   }
 
 }
 
 /* =====================================================
-   ADD MESSAGE
+   MESSAGE ELEMENT
 ===================================================== */
 
 function createMessageElement(
@@ -2388,6 +2462,7 @@ function createMessageElement(
       <div
         class="bubble"
         data-bubble>
+
         ${
           role === "assistant"
             ? renderMarkdown(content)
@@ -2396,24 +2471,25 @@ function createMessageElement(
                 "<br>"
               )
         }
+
       </div>
 
       <div class="edit-box">
+
         <textarea></textarea>
 
         <div class="edit-controls">
 
-          <button
-            class="edit-save">
+          <button class="edit-save">
             حفظ وإرسال
           </button>
 
-          <button
-            class="edit-cancel">
+          <button class="edit-cancel">
             إلغاء
           </button>
 
         </div>
+
       </div>
 
       <div class="message-actions">
@@ -2443,6 +2519,10 @@ function createMessageElement(
 
 }
 
+/* =====================================================
+   RENDER
+===================================================== */
+
 function renderAllMessages(){
 
   messagesEl.innerHTML =
@@ -2465,10 +2545,16 @@ function renderAllMessages(){
     }
   );
 
-  window.scrollTo({
-    top:document.body.scrollHeight,
-    behavior:"smooth"
-  });
+  requestAnimationFrame(
+    () => {
+
+      window.scrollTo({
+        top:document.body.scrollHeight,
+        behavior:"smooth"
+      });
+
+    }
+  );
 
 }
 
@@ -2519,7 +2605,7 @@ async function copyText(text){
 }
 
 /* =====================================================
-   EDIT MESSAGE
+   EDIT
 ===================================================== */
 
 function startEdit(
@@ -2578,23 +2664,21 @@ async function saveEdit(
 
   }
 
+  /*
+    نحذف الرسالة المعدلة
+    وكل ما بعدها ثم نرسل
+    النص الجديد كرسالة جديدة.
+  */
+
   messages =
     messages.slice(
       0,
       index
     );
 
-  messages.push({
-
-    role:"user",
-
-    content:value
-
-  });
-
-  renderAllMessages();
-
-  await generateResponse();
+  await generateResponse(
+    value
+  );
 
 }
 
@@ -2605,13 +2689,9 @@ async function saveEdit(
 const statusMessages = [
 
   "Sultan AI يفكر...",
-
   "جاري تحليل طلبك...",
-
   "جاري تجهيز أفضل إجابة...",
-
   "جاري معالجة المعلومات...",
-
   "تقريباً خلصنا..."
 
 ];
@@ -2639,10 +2719,13 @@ function startStatus(text){
       () => {
 
         if(!isGenerating){
+
           clearInterval(
             statusInterval
           );
+
           return;
+
         }
 
         i =
@@ -2671,7 +2754,7 @@ function stopStatus(){
 }
 
 /* =====================================================
-   TOOL ACTIVITY
+   TOOLS
 ===================================================== */
 
 function showTools(tools){
@@ -2679,8 +2762,10 @@ function showTools(tools){
   toolList.innerHTML =
     "";
 
-  if(!Array.isArray(tools) ||
-     !tools.length){
+  if(
+    !Array.isArray(tools) ||
+    !tools.length
+  ){
 
     toolActivity.classList.remove(
       "show"
@@ -2703,11 +2788,14 @@ function showTools(tools){
 
       const names = {
 
-        web_search:"🌐 Web Search",
+        web_search:
+          "🌐 Web Search",
 
-        visit_website:"🔗 Website Visit",
+        visit_website:
+          "🔗 Website Visit",
 
-        code_interpreter:"💻 Code Interpreter"
+        code_interpreter:
+          "💻 Code Interpreter"
 
       };
 
@@ -2740,7 +2828,7 @@ function hideTools(){
 }
 
 /* =====================================================
-   ADD STREAM MESSAGE
+   STREAM MESSAGE
 ===================================================== */
 
 function createStreamingMessage(){
@@ -2767,20 +2855,32 @@ function createStreamingMessage(){
    REQUEST PAYLOAD
 ===================================================== */
 
-async function buildPayload(){
+/*
+  الإصلاح المهم:
+  نرسل userText مباشرة إلى
+  message بدل الاعتماد على
+  input بعد تفريغه.
+*/
+
+async function buildPayload(
+  userText = ""
+){
 
   const files =
     await prepareFiles();
 
+  const cleanText =
+    String(
+      userText || ""
+    ).trim();
+
   return {
 
     message:
-      input.value.trim(),
+      cleanText,
 
     messages:
-      messages.slice(
-        -12
-      ),
+      messages.slice(-12),
 
     files,
 
@@ -2788,13 +2888,197 @@ async function buildPayload(){
       currentMode === "fast",
 
     mode:
-      currentMode === "creative" ||
-      currentMode === "reasoning" ||
-      currentMode === "assistant"
+      (
+        currentMode === "creative" ||
+        currentMode === "reasoning" ||
+        currentMode === "assistant"
+      )
         ? "smart"
         : currentMode
 
   };
+
+}
+
+/* =====================================================
+   SSE EVENT PARSER
+===================================================== */
+
+function parseSSEEvent(
+  rawEvent,
+  handlers
+){
+
+  if(!rawEvent ||
+     !rawEvent.trim()){
+
+    return;
+
+  }
+
+  const normalized =
+    rawEvent.replace(
+      /\r/g,
+      ""
+    );
+
+  const lines =
+    normalized.split(
+      "\n"
+    );
+
+  let eventName =
+    "message";
+
+  const dataLines = [];
+
+  for(
+    const line of lines
+  ){
+
+    if(
+      line.startsWith(
+        "event:"
+      )
+    ){
+
+      eventName =
+        line
+          .slice(6)
+          .trim();
+
+      continue;
+
+    }
+
+    if(
+      line.startsWith(
+        "data:"
+      )
+    ){
+
+      dataLines.push(
+        line.slice(5).trim()
+      );
+
+    }
+
+  }
+
+  if(!dataLines.length){
+    return;
+  }
+
+  const dataText =
+    dataLines.join(
+      "\n"
+    );
+
+  /*
+    بعض SSE servers ممكن
+    يرسلوا [DONE].
+  */
+
+  if(
+    dataText === "[DONE]"
+  ){
+
+    if(
+      handlers.done
+    ){
+
+      handlers.done({
+        reply:""
+      });
+
+    }
+
+    return;
+
+  }
+
+  let data;
+
+  try{
+
+    data =
+      JSON.parse(
+        dataText
+      );
+
+  }catch(error){
+
+    console.warn(
+      "Sultan AI: invalid SSE JSON",
+      dataText
+    );
+
+    return;
+
+  }
+
+  if(
+    eventName === "meta" &&
+    handlers.meta
+  ){
+
+    handlers.meta(
+      data
+    );
+
+    return;
+
+  }
+
+  if(
+    eventName === "status" &&
+    handlers.status
+  ){
+
+    handlers.status(
+      data
+    );
+
+    return;
+
+  }
+
+  if(
+    eventName === "token" &&
+    handlers.token
+  ){
+
+    handlers.token(
+      data
+    );
+
+    return;
+
+  }
+
+  if(
+    eventName === "done" &&
+    handlers.done
+  ){
+
+    handlers.done(
+      data
+    );
+
+    return;
+
+  }
+
+  if(
+    eventName === "error" &&
+    handlers.error
+  ){
+
+    handlers.error(
+      data
+    );
+
+  }
 
 }
 
@@ -2816,6 +3100,7 @@ async function streamRequest(
         headers:{
           "Content-Type":
             "application/json",
+
           "Accept":
             "text/event-stream"
         },
@@ -2838,7 +3123,7 @@ async function streamRequest(
         await response.json();
 
       errorText =
-        data.error ||
+        data?.error ||
         errorText;
 
     }catch{}
@@ -2871,139 +3156,43 @@ async function streamRequest(
   let fullReply =
     "";
 
-  while(true){
+  let serverDone =
+    false;
 
-    const {
-      value,
-      done
-    } =
-      await reader.read();
+  const bubble =
+    assistantElement
+      ? assistantElement.querySelector(
+          "[data-bubble]"
+        )
+      : null;
 
-    if(done){
-      break;
-    }
+  /*
+    تحديث الواجهة بشكل أخف
+    حتى لا يصير Lag مع كل token.
+  */
 
-    buffer +=
-      decoder.decode(
-        value,
-        {
-          stream:true
-        }
-      );
+  let renderQueued =
+    false;
 
-    const events =
-      buffer.split(
-        "\n\n"
-      );
+  function renderStream(){
 
-    buffer =
-      events.pop() || "";
-
-    for(
-      const rawEvent
-      of events
+    if(
+      renderQueued ||
+      !bubble
     ){
 
-      const lines =
-        rawEvent.split(
-          "\n"
-        );
+      return;
 
-      let eventName =
-        "message";
+    }
 
-      let dataText =
-        "";
+    renderQueued =
+      true;
 
-      for(
-        const line
-        of lines
-      ){
+    requestAnimationFrame(
+      () => {
 
-        if(
-          line.startsWith(
-            "event:"
-          )
-        ){
-
-          eventName =
-            line
-              .slice(6)
-              .trim();
-
-        }
-
-        if(
-          line.startsWith(
-            "data:"
-          )
-        ){
-
-          dataText +=
-            line
-              .slice(5)
-              .trim();
-
-        }
-
-      }
-
-      if(!dataText){
-        continue;
-      }
-
-      let data;
-
-      try{
-
-        data =
-          JSON.parse(
-            dataText
-          );
-
-      }catch{
-
-        continue;
-
-      }
-
-      if(
-        eventName ===
-        "meta"
-      ){
-
-        showTools(
-          data.tools
-        );
-
-      }
-
-      if(
-        eventName ===
-        "status"
-      ){
-
-        statusText.textContent =
-          data.text ||
-          "Sultan AI يعمل...";
-
-      }
-
-      if(
-        eventName ===
-        "token"
-      ){
-
-        fullReply +=
-          String(
-            data.text ||
-            ""
-          );
-
-        const bubble =
-          assistantElement.querySelector(
-            "[data-bubble]"
-          );
+        renderQueued =
+          false;
 
         bubble.innerHTML =
           renderMarkdown(
@@ -3017,33 +3206,208 @@ async function streamRequest(
         });
 
       }
+    );
 
-      if(
-        eventName ===
-        "done"
-      ){
+  }
 
-        fullReply =
-          String(
-            data.reply ??
-            fullReply
-          );
+  const handlers = {
 
-      }
+    meta(data){
 
-      if(
-        eventName ===
-        "error"
-      ){
+      showTools(
+        Array.isArray(
+          data?.tools
+        )
+          ? data.tools
+          : []
+      );
 
-        throw new Error(
-          data.error ||
-          "حدث خطأ أثناء التوليد."
+    },
+
+    status(data){
+
+      statusText.textContent =
+        data?.text ||
+        "Sultan AI يعمل...";
+
+    },
+
+    token(data){
+
+      const token =
+        String(
+          data?.text ??
+          data?.token ??
+          data?.content ??
+          ""
         );
 
+      if(!token){
+        return;
       }
 
+      fullReply +=
+        token;
+
+      renderStream();
+
+    },
+
+    done(data){
+
+      const serverReply =
+        String(
+          data?.reply ??
+          data?.text ??
+          ""
+        );
+
+      if(serverReply){
+
+        fullReply =
+          serverReply;
+
+      }
+
+      serverDone =
+        true;
+
+      renderStream();
+
+    },
+
+    error(data){
+
+      throw new Error(
+        data?.error ||
+        "حدث خطأ أثناء التوليد."
+      );
+
     }
+
+  };
+
+  while(true){
+
+    const result =
+      await reader.read();
+
+    if(result.done){
+
+      /*
+        مهم:
+        نطلب من TextDecoder
+        تفريغ آخر bytes.
+      */
+
+      buffer +=
+        decoder.decode();
+
+      break;
+
+    }
+
+    if(result.value){
+
+      buffer +=
+        decoder.decode(
+          result.value,
+          {
+            stream:true
+          }
+        );
+
+    }
+
+    /*
+      SSE يستخدم CRLF أو LF.
+      نحول CRLF إلى LF
+      حتى يصير parser ثابت.
+    */
+
+    buffer =
+      buffer.replace(
+        /\r\n/g,
+        "\n"
+      );
+
+    while(true){
+
+      const separator =
+        buffer.indexOf(
+          "\n\n"
+        );
+
+      if(
+        separator === -1
+      ){
+
+        break;
+
+      }
+
+      const rawEvent =
+        buffer.slice(
+          0,
+          separator
+        );
+
+      buffer =
+        buffer.slice(
+          separator + 2
+        );
+
+      parseSSEEvent(
+        rawEvent,
+        handlers
+      );
+
+    }
+
+  }
+
+  /*
+    معالجة آخر Event إذا
+    وصل بدون separator.
+  */
+
+  if(
+    buffer.trim()
+  ){
+
+    parseSSEEvent(
+      buffer,
+      handlers
+    );
+
+  }
+
+  /*
+    ننتظر آخر تحديث UI.
+  */
+
+  if(
+    renderQueued
+  ){
+
+    await new Promise(
+      resolve =>
+        requestAnimationFrame(
+          resolve
+        )
+    );
+
+  }
+
+  if(
+    !fullReply.trim()
+  ){
+
+    throw new Error(
+      serverDone
+        ? "وصل رد فارغ من Sultan AI."
+        : "انتهى Streaming بدون إجابة من Sultan AI."
+    );
 
   }
 
@@ -3052,7 +3416,7 @@ async function streamRequest(
 }
 
 /* =====================================================
-   NORMAL FALLBACK
+   NORMAL REQUEST
 ===================================================== */
 
 async function normalRequest(
@@ -3067,6 +3431,9 @@ async function normalRequest(
 
         headers:{
           "Content-Type":
+            "application/json",
+
+          "Accept":
             "application/json"
         },
 
@@ -3083,12 +3450,28 @@ async function normalRequest(
         () => ({})
       );
 
-  if(!response.ok ||
-     !data.success){
+  if(
+    !response.ok ||
+    !data.success
+  ){
 
     throw new Error(
-      data.error ||
-      "فشل طلب الذكاء الاصطناعي."
+      data?.error ||
+      `فشل طلب الذكاء الاصطناعي (${response.status}).`
+    );
+
+  }
+
+  const reply =
+    String(
+      data?.reply ||
+      ""
+    );
+
+  if(!reply.trim()){
+
+    throw new Error(
+      "الخادم رجع إجابة فارغة."
     );
 
   }
@@ -3101,17 +3484,29 @@ async function normalRequest(
    GENERATE RESPONSE
 ===================================================== */
 
-async function generateResponse(){
+async function generateResponse(
+  forcedText = null
+){
 
   if(isGenerating){
     return;
   }
 
-  const text =
-    input.value.trim();
+  /*
+    إذا جاي النص من تعديل،
+    نستخدمه مباشرة.
+    غير هيك نقرأ من input.
+  */
 
-  if(!text &&
-     !selectedFiles.length){
+  const text =
+    forcedText !== null
+      ? String(forcedText).trim()
+      : input.value.trim();
+
+  if(
+    !text &&
+    !selectedFiles.length
+  ){
 
     showToast(
       "اكتب رسالة أو أرفق ملفاً."
@@ -3134,6 +3529,11 @@ async function generateResponse(){
   const userText =
     text ||
     "حلل الملفات المرفقة.";
+
+  /*
+    نضيف رسالة المستخدم
+    قبل بناء payload.
+  */
 
   messages.push({
 
@@ -3159,8 +3559,15 @@ async function generateResponse(){
 
   try{
 
+    /*
+      الآن payload.message
+      يحتوي النص الحقيقي.
+    */
+
     const payload =
-      await buildPayload();
+      await buildPayload(
+        userText
+      );
 
     assistantElement =
       createStreamingMessage();
@@ -3169,7 +3576,13 @@ async function generateResponse(){
       "جاري إنشاء الإجابة..."
     );
 
-    let reply;
+    let reply =
+      "";
+
+    /*
+      المحاولة الأولى:
+      Streaming
+    */
 
     try{
 
@@ -3179,19 +3592,17 @@ async function generateResponse(){
           assistantElement
         );
 
-    }catch(
-      streamError
-    ){
+    }catch(streamError){
 
       console.warn(
-        "Streaming fallback:",
+        "Sultan AI Streaming failed:",
         streamError
       );
 
       /*
-        إذا فشل Streaming قبل
-        اكتمال الإجابة، نحذف
-        العنصر ونستخدم API العادي.
+        إذا فشل Streaming،
+        نحذف الفقاعة المؤقتة
+        ونستخدم API العادي.
       */
 
       if(
@@ -3203,6 +3614,13 @@ async function generateResponse(){
 
       }
 
+      assistantElement =
+        null;
+
+      startStatus(
+        "جاري استخدام الاتصال الاحتياطي..."
+      );
+
       const data =
         await normalRequest(
           payload
@@ -3210,30 +3628,27 @@ async function generateResponse(){
 
       reply =
         String(
-          data.reply ||
+          data?.reply ||
           ""
         );
 
-      assistantElement =
-        createMessageElement(
-          "assistant",
-          reply,
-          messages.length
-        );
-
-      messagesEl.appendChild(
-        assistantElement
-      );
-
     }
 
-    if(!reply){
+    if(
+      typeof reply !== "string" ||
+      !reply.trim()
+    ){
 
       throw new Error(
         "لم تصل إجابة من Sultan AI."
       );
 
     }
+
+    /*
+      نضيف الإجابة النهائية
+      إلى سجل المحادثة.
+    */
 
     messages.push({
 
@@ -3255,6 +3670,7 @@ async function generateResponse(){
   }catch(error){
 
     console.error(
+      "Sultan AI error:",
       error
     );
 
@@ -3350,6 +3766,16 @@ function newChat(){
 
 function clearChat(){
 
+  if(isGenerating){
+
+    showToast(
+      "انتظر انتهاء الإجابة الحالية."
+    );
+
+    return;
+
+  }
+
   messages =
     [];
 
@@ -3398,7 +3824,14 @@ async function checkHealth(){
 
     }
 
-  }catch{}
+  }catch(error){
+
+    console.warn(
+      "Health check failed:",
+      error
+    );
+
+  }
 
   showToast(
     "تعذر الوصول إلى الخادم"
@@ -3409,7 +3842,7 @@ async function checkHealth(){
 }
 
 /* =====================================================
-   COMMAND ACTION
+   COMMAND
 ===================================================== */
 
 function executeCommand(
@@ -3447,6 +3880,9 @@ function executeCommand(
     case "web":
     case "vision":
     case "files":
+    case "creative":
+    case "reasoning":
+    case "assistant":
       setMode(command);
       break;
 
@@ -3486,22 +3922,14 @@ function filterCommands(){
 }
 
 /* =====================================================
-   EVENT LISTENERS
+   EVENTS
 ===================================================== */
-
-/*
-  New chat
-*/
 
 $("newChat")
   .addEventListener(
     "click",
     newChat
   );
-
-/*
-  Menu
-*/
 
 $("menuBtn")
   .addEventListener(
@@ -3525,10 +3953,6 @@ $("menuBtn")
     }
   );
 
-/*
-  Overlay
-*/
-
 overlay.addEventListener(
   "click",
   () => {
@@ -3539,29 +3963,17 @@ overlay.addEventListener(
   }
 );
 
-/*
-  Theme
-*/
-
 $("themeBtn")
   .addEventListener(
     "click",
     toggleTheme
   );
 
-/*
-  Top command
-*/
-
 $("topCommand")
   .addEventListener(
     "click",
     openCommand
   );
-
-/*
-  Sidebar command
-*/
 
 $("commandBtn")
   .addEventListener(
@@ -3574,19 +3986,11 @@ $("commandBtn")
     }
   );
 
-/*
-  Clear
-*/
-
 $("clearBtn")
   .addEventListener(
     "click",
     clearChat
   );
-
-/*
-  Close command
-*/
 
 $("closeCommand")
   .addEventListener(
@@ -3594,18 +3998,10 @@ $("closeCommand")
     closeCommandCenter
   );
 
-/*
-  Command search
-*/
-
 commandSearch.addEventListener(
   "input",
   filterCommands
 );
-
-/*
-  Commands
-*/
 
 document
   .querySelectorAll(
@@ -3622,10 +4018,6 @@ document
     );
 
   });
-
-/*
-  Modes
-*/
 
 document
   .querySelectorAll(
@@ -3648,10 +4040,6 @@ document
 
   });
 
-/*
-  Mode select
-*/
-
 modeSelect.addEventListener(
   "change",
   () => {
@@ -3662,10 +4050,6 @@ modeSelect.addEventListener(
 
   }
 );
-
-/*
-  Quick prompts
-*/
 
 document
   .querySelectorAll(
@@ -3690,18 +4074,10 @@ document
 
   });
 
-/*
-  Send
-*/
-
 sendBtn.addEventListener(
   "click",
   generateResponse
 );
-
-/*
-  Enter
-*/
 
 input.addEventListener(
   "keydown",
@@ -3721,18 +4097,12 @@ input.addEventListener(
   }
 );
 
-/*
-  Resize
-*/
-
 input.addEventListener(
   "input",
   resizeInput
 );
 
-/*
-  Attach
-*/
+/* FILE ATTACH */
 
 $("attachBtn")
   .addEventListener(
@@ -3753,10 +4123,6 @@ $("attachBtn")
 
     }
   );
-
-/*
-  File selection
-*/
 
 fileInput.addEventListener(
   "change",
@@ -3812,10 +4178,6 @@ fileInput.addEventListener(
   }
 );
 
-/*
-  File remove
-*/
-
 filePreview.addEventListener(
   "click",
   event => {
@@ -3834,19 +4196,23 @@ filePreview.addEventListener(
         button.dataset.index
       );
 
-    selectedFiles.splice(
-      index,
-      1
-    );
+    if(
+      Number.isInteger(index)
+    ){
+
+      selectedFiles.splice(
+        index,
+        1
+      );
+
+    }
 
     updateFilePreview();
 
   }
 );
 
-/*
-  Message actions
-*/
+/* MESSAGE ACTIONS */
 
 messagesEl.addEventListener(
   "click",
@@ -3875,10 +4241,6 @@ messagesEl.addEventListener(
 
     }
 
-    /*
-      Copy
-    */
-
     if(
       event.target.closest(
         ".copy-message"
@@ -3893,15 +4255,21 @@ messagesEl.addEventListener(
 
     }
 
-    /*
-      Edit
-    */
-
     if(
       event.target.closest(
         ".edit-message"
       )
     ){
+
+      if(isGenerating){
+
+        showToast(
+          "انتظر انتهاء الإجابة."
+        );
+
+        return;
+
+      }
 
       startEdit(
         messageElement,
@@ -3911,10 +4279,6 @@ messagesEl.addEventListener(
       return;
 
     }
-
-    /*
-      Cancel
-    */
 
     if(
       event.target.closest(
@@ -3941,10 +4305,6 @@ messagesEl.addEventListener(
       return;
 
     }
-
-    /*
-      Save
-    */
 
     if(
       event.target.closest(
@@ -3973,7 +4333,7 @@ messagesEl.addEventListener(
 );
 
 /* =====================================================
-   KEYBOARD COMMAND
+   KEYBOARD
 ===================================================== */
 
 document.addEventListener(
@@ -4020,6 +4380,11 @@ document.addEventListener(
       ? "light"
       : "dark"
   );
+
+  /*
+    بدون Toast عند تحميل الصفحة
+    حتى لا يزعج المستخدم.
+  */
 
   setMode(
     "smart"
