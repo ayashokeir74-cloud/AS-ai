@@ -83,8 +83,16 @@ const groq = GROQ_API_KEY
 
 app.disable("x-powered-by");
 
+/*
+  مهم:
+  index.html يحتوي JavaScript وCSS داخل الصفحة.
+  تعطيل CSP هنا يمنع Helmet من منع تشغيل
+  الـ inline JavaScript الموجود في الواجهة.
+*/
+
 app.use(
   helmet({
+    contentSecurityPolicy: false,
     crossOriginResourcePolicy: false
   })
 );
@@ -99,6 +107,11 @@ app.use(
 app.use(
   compression()
 );
+
+/*
+  50MB حتى نستطيع استقبال الملفات من الواجهة.
+  يتم تقليل طلب Groq لاحقاً إلى MAX_GROQ_REQUEST_BYTES.
+*/
 
 app.use(
   express.json({
@@ -125,7 +138,7 @@ const RATE_WINDOW =
 const RATE_LIMIT =
   20;
 
-function rateLimit(req, res, next){
+function rateLimit(req, res, next) {
 
   const ip =
     req.headers["x-forwarded-for"]
@@ -140,15 +153,15 @@ function rateLimit(req, res, next){
   const current =
     rateMap.get(ip);
 
-  if(
+  if (
     !current ||
     now - current.start >
       RATE_WINDOW
-  ){
+  ) {
 
-    rateMap.set(ip,{
-      start:now,
-      count:1
+    rateMap.set(ip, {
+      start: now,
+      count: 1
     });
 
     return next();
@@ -156,27 +169,27 @@ function rateLimit(req, res, next){
 
   current.count++;
 
-  if(
+  if (
     current.count >
     RATE_LIMIT
-  ){
+  ) {
 
     return res.status(429).json({
-      success:false,
-      error:"تم تجاوز عدد الطلبات المسموح به مؤقتاً. حاول بعد قليل."
+      success: false,
+      error:
+        "تم تجاوز عدد الطلبات المسموح به مؤقتاً. حاول بعد قليل."
     });
 
   }
 
   next();
-
 }
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function requestId(){
+function requestId() {
 
   return crypto
     .randomBytes(8)
@@ -184,11 +197,7 @@ function requestId(){
 
 }
 
-
-function clampText(
-  value,
-  max
-){
+function clampText(value, max) {
 
   return String(
     value ?? ""
@@ -199,19 +208,16 @@ function clampText(
 
 }
 
+function safeJsonSize(value) {
 
-function safeJsonSize(
-  value
-){
-
-  try{
+  try {
 
     return Buffer.byteLength(
       JSON.stringify(value),
       "utf8"
     );
 
-  }catch{
+  } catch {
 
     return Infinity;
 
@@ -219,10 +225,7 @@ function safeJsonSize(
 
 }
 
-
-function cleanRole(
-  role
-){
+function cleanRole(role) {
 
   return role === "assistant"
     ? "assistant"
@@ -230,14 +233,11 @@ function cleanRole(
 
 }
 
+function cleanHistory(messages) {
 
-function cleanHistory(
-  messages
-){
-
-  if(
+  if (
     !Array.isArray(messages)
-  ){
+  ) {
 
     return [];
 
@@ -252,12 +252,14 @@ function cleanHistory(
       -MAX_HISTORY_MESSAGES
     );
 
-  for(
+  for (
     const item of sliced
-  ){
+  ) {
 
     const role =
-      cleanRole(item?.role);
+      cleanRole(
+        item?.role
+      );
 
     const content =
       clampText(
@@ -265,14 +267,16 @@ function cleanHistory(
         MAX_HISTORY_ITEM_CHARS
       ).trim();
 
-    if(!content){
+    if (!content) {
+
       continue;
+
     }
 
-    if(
+    if (
       totalChars + content.length >
       MAX_HISTORY_CHARS
-    ){
+    ) {
 
       break;
 
@@ -292,7 +296,6 @@ function cleanHistory(
 
 }
 
-
 /* =========================================================
    MODES
 ========================================================= */
@@ -307,27 +310,28 @@ const VALID_MODES = new Set([
   "files"
 ]);
 
-
 function normalizeMode(
   mode,
   fastMode,
   files
-){
+) {
 
   const requested =
     String(
       mode || ""
     ).toLowerCase();
 
-  if(
-    VALID_MODES.has(requested)
-  ){
+  if (
+    VALID_MODES.has(
+      requested
+    )
+  ) {
 
     return requested;
 
   }
 
-  if(fastMode){
+  if (fastMode) {
 
     return "fast";
 
@@ -339,10 +343,12 @@ function normalizeMode(
       file =>
         String(
           file?.type || ""
-        ).startsWith("image/")
+        ).startsWith(
+          "image/"
+        )
     );
 
-  if(hasImage){
+  if (hasImage) {
 
     return "vision";
 
@@ -352,7 +358,7 @@ function normalizeMode(
     Array.isArray(files) &&
     files.length > 0;
 
-  if(hasFiles){
+  if (hasFiles) {
 
     return "files";
 
@@ -362,7 +368,6 @@ function normalizeMode(
 
 }
 
-
 /* =========================================================
    MODE CONFIG
 ========================================================= */
@@ -371,74 +376,82 @@ function getModeConfig(
   mode,
   hasImages,
   hasFiles
-){
+) {
 
   const configs = {
 
-    fast:{
-      model:FAST_MODEL,
-      temperature:0.35,
-      maxTokens:4096,
-      tools:false,
+    fast: {
+      model: FAST_MODEL,
+      temperature: 0.35,
+      maxTokens: 4096,
+      tools: false,
       instruction:
         "أجب بسرعة ووضوح واختصر دون التضحية بالدقة."
     },
 
-    smart:{
-      model:MAIN_MODEL,
-      temperature:0.2,
-      maxTokens:8192,
-      tools:true,
+    smart: {
+      model: MAIN_MODEL,
+      temperature: 0.2,
+      maxTokens: 8192,
+      tools: true,
       instruction:
         "قدّم إجابة ذكية ومتوازنة ودقيقة."
     },
 
-    deep:{
-      model:MAIN_MODEL,
-      temperature:0.15,
-      maxTokens:10000,
-      tools:true,
+    deep: {
+      model: MAIN_MODEL,
+      temperature: 0.15,
+      maxTokens: 10000,
+      tools: true,
       instruction:
         "حلل الطلب بعمق، ونظّم الإجابة جيداً، وتحقق من المنطق قبل الإجابة."
     },
 
-    code:{
-      model:MAIN_MODEL,
-      temperature:0.15,
-      maxTokens:10000,
-      tools:true,
+    code: {
+      model: MAIN_MODEL,
+      temperature: 0.15,
+      maxTokens: 10000,
+      tools: true,
       instruction:
         "أنت في وضع البرمجة. اكتب كوداً عملياً وآمناً، واشرح الأجزاء المهمة عند الحاجة. لا تختصر الكود المطلوب."
     },
 
-    web:{
-      model:MAIN_MODEL,
-      temperature:0.2,
-      maxTokens:8192,
-      tools:true,
+    web: {
+      model: MAIN_MODEL,
+      temperature: 0.2,
+      maxTokens: 8192,
+      tools: true,
       instruction:
         "أنت في وضع البحث على الويب. استخدم أدوات الويب عندما تكون المعلومات الحديثة أو المصادر الخارجية مفيدة."
     },
 
-    vision:{
+    vision: {
       model:
         hasImages
           ? VISION_MODEL
           : MAIN_MODEL,
-      temperature:0.2,
-      maxTokens:8192,
-      tools:true,
+
+      temperature: 0.2,
+
+      maxTokens: 8192,
+
+      tools: true,
+
       instruction:
         hasImages
           ? "أنت في وضع تحليل الصور. حلل الصور المرفقة بدقة ووصف ما يمكن استنتاجه منها."
           : "لا توجد صورة مرفقة حالياً، لذلك تعامل مع الطلب كمحادثة عادية."
     },
 
-    files:{
-      model:MAIN_MODEL,
-      temperature:0.2,
-      maxTokens:8192,
-      tools:true,
+    files: {
+      model: MAIN_MODEL,
+
+      temperature: 0.2,
+
+      maxTokens: 8192,
+
+      tools: true,
+
       instruction:
         hasFiles
           ? "أنت في وضع تحليل الملفات. استخدم محتوى الملفات المرفقة عند الإجابة."
@@ -454,14 +467,11 @@ function getModeConfig(
 
 }
 
-
 /* =========================================================
    FILE HELPERS
 ========================================================= */
 
-function isTextFile(
-  file
-){
+function isTextFile(file) {
 
   const type =
     String(
@@ -494,52 +504,50 @@ function isTextFile(
       ".h",
       ".sql"
     ].some(
-      ext => name.endsWith(ext)
+      ext =>
+        name.endsWith(ext)
     )
   );
 
 }
 
-
-function isImageFile(
-  file
-){
+function isImageFile(file) {
 
   return String(
     file?.type || ""
   )
     .toLowerCase()
-    .startsWith("image/");
+    .startsWith(
+      "image/"
+    );
 
 }
 
-
-function isPdfFile(
-  file
-){
+function isPdfFile(file) {
 
   return (
     String(
       file?.type || ""
     ).toLowerCase() ===
-    "application/pdf" ||
+      "application/pdf" ||
+
     String(
       file?.name || ""
     )
       .toLowerCase()
-      .endsWith(".pdf")
+      .endsWith(
+        ".pdf"
+      )
   );
 
 }
 
+function dataUrlToBuffer(data) {
 
-function dataUrlToBuffer(
-  data
-){
-
-  if(
-    typeof data !== "string"
-  ){
+  if (
+    typeof data !==
+    "string"
+  ) {
 
     return null;
 
@@ -550,20 +558,20 @@ function dataUrlToBuffer(
       /^data:[^;]+;base64,(.+)$/s
     );
 
-  if(!match){
+  if (!match) {
 
     return null;
 
   }
 
-  try{
+  try {
 
     return Buffer.from(
       match[1],
       "base64"
     );
 
-  }catch{
+  } catch {
 
     return null;
 
@@ -571,26 +579,23 @@ function dataUrlToBuffer(
 
 }
 
-
 /* =========================================================
    PROCESS FILES
 ========================================================= */
 
-async function processFiles(
-  files
-){
+async function processFiles(files) {
 
-  if(
+  if (
     !Array.isArray(files)
-  ){
+  ) {
 
     return {
-      textContext:"",
-      images:[],
-      analyzedFiles:{
-        text:[],
-        images:[],
-        pdf:[]
+      textContext: "",
+      images: [],
+      analyzedFiles: {
+        text: [],
+        images: [],
+        pdf: []
       }
     };
 
@@ -603,9 +608,9 @@ async function processFiles(
     );
 
   const analyzedFiles = {
-    text:[],
-    images:[],
-    pdf:[]
+    text: [],
+    images: [],
+    pdf: []
   };
 
   const textParts = [];
@@ -614,9 +619,9 @@ async function processFiles(
 
   const images = [];
 
-  for(
+  for (
     const file of limited
-  ){
+  ) {
 
     const name =
       clampText(
@@ -633,20 +638,22 @@ async function processFiles(
       );
 
     const size =
-      Number(file?.size) || 0;
+      Number(
+        file?.size
+      ) || 0;
 
-    if(
+    if (
       size >
       MAX_FILE_SIZE
-    ){
+    ) {
 
       continue;
 
     }
 
-    if(
+    if (
       isImageFile(file)
-    ){
+    ) {
 
       const data =
         typeof file?.data ===
@@ -654,7 +661,7 @@ async function processFiles(
           ? file.data
           : "";
 
-      if(data){
+      if (data) {
 
         images.push({
           name,
@@ -672,16 +679,16 @@ async function processFiles(
 
     }
 
-    if(
+    if (
       isTextFile(file)
-    ){
+    ) {
 
       const buffer =
         dataUrlToBuffer(
           file?.data
         );
 
-      if(!buffer){
+      if (!buffer) {
 
         continue;
 
@@ -702,9 +709,9 @@ async function processFiles(
         MAX_TOTAL_CONTEXT_CHARS -
         totalContextChars;
 
-      if(
+      if (
         remaining <= 0
-      ){
+      ) {
 
         break;
 
@@ -731,9 +738,9 @@ async function processFiles(
 
     }
 
-    if(
+    if (
       isPdfFile(file)
-    ){
+    ) {
 
       analyzedFiles.pdf.push(
         name
@@ -745,13 +752,16 @@ async function processFiles(
 
   return {
     textContext:
-      textParts.join("\n"),
+      textParts.join(
+        "\n"
+      ),
+
     images,
+
     analyzedFiles
   };
 
 }
-
 
 /* =========================================================
    IMAGE CONTEXT
@@ -760,11 +770,11 @@ async function processFiles(
 function buildImageMessages(
   images,
   text
-){
+) {
 
-  if(
+  if (
     !images.length
-  ){
+  ) {
 
     return null;
 
@@ -772,27 +782,30 @@ function buildImageMessages(
 
   const content = [];
 
-  if(text){
+  if (text) {
 
     content.push({
-      type:"text",
+      type: "text",
       text
     });
 
   }
 
-  for(
+  for (
     const image of images.slice(
       0,
       3
     )
-  ){
+  ) {
 
     content.push({
-      type:"image_url",
-      image_url:{
-        url:image.data
+      type: "image_url",
+
+      image_url: {
+        url:
+          image.data
       }
+
     });
 
   }
@@ -800,7 +813,6 @@ function buildImageMessages(
   return content;
 
 }
-
 
 /* =========================================================
    SYSTEM PROMPT
@@ -810,14 +822,18 @@ function buildSystemPrompt(
   mode,
   fileContext,
   analyzedFiles
-){
+) {
 
   const modeConfig =
     getModeConfig(
       mode,
-      analyzedFiles.images.length > 0,
-      analyzedFiles.text.length > 0 ||
-      analyzedFiles.pdf.length > 0
+      analyzedFiles.images.length >
+        0,
+
+      analyzedFiles.text.length >
+          0 ||
+        analyzedFiles.pdf.length >
+          0
     );
 
   let prompt = `
@@ -833,7 +849,7 @@ function buildSystemPrompt(
 ${modeConfig.instruction}
 `;
 
-  if(fileContext){
+  if (fileContext) {
 
     prompt += `
 
@@ -843,9 +859,9 @@ ${fileContext}
 
   }
 
-  if(
+  if (
     analyzedFiles.pdf.length
-  ){
+  ) {
 
     prompt += `
 
@@ -861,7 +877,6 @@ ${analyzedFiles.pdf.join(", ")}
 
 }
 
-
 /* =========================================================
    TOOLS
 ========================================================= */
@@ -872,14 +887,11 @@ const ALL_TOOLS = [
   "code_interpreter"
 ];
 
+function getEnabledTools(mode) {
 
-function getEnabledTools(
-  mode
-){
-
-  if(
+  if (
     mode === "fast"
-  ){
+  ) {
 
     return [];
 
@@ -891,7 +903,6 @@ function getEnabledTools(
 
 }
 
-
 /* =========================================================
    GROQ REQUEST BUILDER
 ========================================================= */
@@ -901,7 +912,7 @@ function buildGroqMessages({
   text,
   history,
   processedFiles
-}){
+}) {
 
   const systemPrompt =
     buildSystemPrompt(
@@ -912,26 +923,28 @@ function buildGroqMessages({
 
   const messages = [
     {
-      role:"system",
-      content:systemPrompt
+      role: "system",
+      content:
+        systemPrompt
     }
   ];
 
-  for(
+  for (
     const item of history
-  ){
+  ) {
 
     messages.push({
-      role:item.role,
-      content:item.content
+      role: item.role,
+      content: item.content
     });
 
   }
 
   const hasImages =
-    processedFiles.images.length > 0;
+    processedFiles.images.length >
+    0;
 
-  if(hasImages){
+  if (hasImages) {
 
     const imageContent =
       buildImageMessages(
@@ -940,15 +953,16 @@ function buildGroqMessages({
       );
 
     messages.push({
-      role:"user",
-      content:imageContent
+      role: "user",
+      content:
+        imageContent
     });
 
-  }else{
+  } else {
 
     messages.push({
-      role:"user",
-      content:text
+      role: "user",
+      content: text
     });
 
   }
@@ -957,22 +971,21 @@ function buildGroqMessages({
 
 }
 
-
 /* =========================================================
    FIT REQUEST
 ========================================================= */
 
-function fitGroqRequest(
-  request
-){
+function fitGroqRequest(request) {
 
   let size =
-    safeJsonSize(request);
+    safeJsonSize(
+      request
+    );
 
-  if(
+  if (
     size <=
     MAX_GROQ_REQUEST_BYTES
-  ){
+  ) {
 
     return request;
 
@@ -988,16 +1001,16 @@ function fitGroqRequest(
       : [];
 
   /*
-    أولاً نحذف أقدم رسائل
-    المحادثة، مع الحفاظ على system
+    حذف أقدم رسائل المحادثة
+    مع الحفاظ على system
     وآخر user message.
   */
 
-  while(
+  while (
     size >
       MAX_GROQ_REQUEST_BYTES &&
     messages.length > 3
-  ){
+  ) {
 
     messages.splice(
       1,
@@ -1008,31 +1021,33 @@ function fitGroqRequest(
       messages;
 
     size =
-      safeJsonSize(request);
+      safeJsonSize(
+        request
+      );
 
   }
 
   /*
-    إذا بقي الحجم كبيراً،
-    نقلل محتوى الرسائل.
+    تقليل محتوى الرسائل
   */
 
-  if(
+  if (
     size >
-      MAX_GROQ_REQUEST_BYTES
-  ){
+    MAX_GROQ_REQUEST_BYTES
+  ) {
 
     request.messages =
       request.messages.map(
-        (message,index) => {
+        (message, index) => {
 
-          if(
+          if (
             message.role ===
             "system"
-          ){
+          ) {
 
             return {
               ...message,
+
               content:
                 clampText(
                   message.content,
@@ -1042,50 +1057,52 @@ function fitGroqRequest(
 
           }
 
-          if(
+          if (
             index ===
             request.messages.length - 1
-          ){
+          ) {
 
-            if(
+            if (
               Array.isArray(
                 message.content
               )
-            ){
+            ) {
 
               return {
                 ...message,
+
                 content:
-                  message.content
-                    .map(
-                      part => {
+                  message.content.map(
+                    part => {
 
-                        if(
-                          part.type ===
-                          "text"
-                        ){
+                      if (
+                        part.type ===
+                        "text"
+                      ) {
 
-                          return {
-                            ...part,
-                            text:
-                              clampText(
-                                part.text,
-                                5000
-                              )
-                          };
+                        return {
+                          ...part,
 
-                        }
-
-                        return part;
+                          text:
+                            clampText(
+                              part.text,
+                              5000
+                            )
+                        };
 
                       }
-                    )
-                };
+
+                      return part;
+
+                    }
+                  )
+              };
 
             }
 
             return {
               ...message,
+
               content:
                 clampText(
                   message.content,
@@ -1097,6 +1114,7 @@ function fitGroqRequest(
 
           return {
             ...message,
+
             content:
               clampText(
                 message.content,
@@ -1110,31 +1128,33 @@ function fitGroqRequest(
   }
 
   /*
-    إذا كانت الصور هي سبب
-    تضخم الطلب، نحتفظ بها
-    ولكن نقلل عددها.
+    إذا كانت الصور سبب تضخم الطلب،
+    نقلل عدد أجزاء المحتوى.
   */
 
   size =
-    safeJsonSize(request);
+    safeJsonSize(
+      request
+    );
 
-  if(
+  if (
     size >
-      MAX_GROQ_REQUEST_BYTES
-  ){
+    MAX_GROQ_REQUEST_BYTES
+  ) {
 
     request.messages =
       request.messages.map(
         message => {
 
-          if(
+          if (
             Array.isArray(
               message.content
             )
-          ){
+          ) {
 
             return {
               ...message,
+
               content:
                 message.content.slice(
                   0,
@@ -1155,7 +1175,6 @@ function fitGroqRequest(
 
 }
 
-
 /* =========================================================
    CREATE GROQ REQUEST
 ========================================================= */
@@ -1166,21 +1185,28 @@ function createGroqRequest({
   history,
   processedFiles,
   stream
-}){
+}) {
 
   const hasImages =
-    processedFiles.images.length > 0;
+    processedFiles.images.length >
+    0;
 
   const config =
     getModeConfig(
       mode,
       hasImages,
-      processedFiles.textContext.length > 0 ||
-      processedFiles.analyzedFiles.pdf.length > 0
+
+      processedFiles.textContext.length >
+          0 ||
+        processedFiles.analyzedFiles.pdf
+          .length >
+          0
     );
 
   const enabledTools =
-    getEnabledTools(mode);
+    getEnabledTools(
+      mode
+    );
 
   const messages =
     buildGroqMessages({
@@ -1191,7 +1217,8 @@ function createGroqRequest({
     });
 
   const request = {
-    model:config.model,
+    model:
+      config.model,
 
     messages,
 
@@ -1201,19 +1228,16 @@ function createGroqRequest({
     max_completion_tokens:
       config.maxTokens,
 
-    stream:!!stream
+    stream:
+      Boolean(stream)
   };
 
-  /*
-    Compound tools
-  */
-
-  if(
+  if (
     enabledTools.length
-  ){
+  ) {
 
     request.compound_custom = {
-      tools:{
+      tools: {
         enabled_tools:
           enabledTools
       }
@@ -1223,39 +1247,40 @@ function createGroqRequest({
 
   return {
     request:
-      fitGroqRequest(request),
+      fitGroqRequest(
+        request
+      ),
+
     config,
+
     enabledTools
   };
 
 }
 
-
 /* =========================================================
    RETRY
 ========================================================= */
 
-function shouldRetry(
-  error
-){
+function shouldRetry(error) {
 
   const status =
     error?.status ||
     error?.statusCode;
 
-  if(
+  if (
     status === 429
-  ){
+  ) {
 
     return true;
 
   }
 
-  if(
+  if (
     typeof status ===
-    "number" &&
+      "number" &&
     status >= 500
-  ){
+  ) {
 
     return true;
 
@@ -1274,15 +1299,15 @@ function shouldRetry(
     "timeout",
     "network"
   ].some(
-    item => code.includes(item)
+    item =>
+      code.includes(
+        item
+      )
   );
 
 }
 
-
-function sleep(
-  ms
-){
+function sleep(ms) {
 
   return new Promise(
     resolve =>
@@ -1294,12 +1319,11 @@ function sleep(
 
 }
 
-
 async function callGroq(
   request
-){
+) {
 
-  if(!groq){
+  if (!groq) {
 
     throw new Error(
       "GROQ_API_KEY غير مضبوط في Render."
@@ -1310,27 +1334,27 @@ async function callGroq(
   let lastError =
     null;
 
-  for(
+  for (
     let attempt = 1;
     attempt <= 3;
     attempt++
-  ){
+  ) {
 
-    try{
+    try {
 
       return await groq.chat.completions.create(
         request
       );
 
-    }catch(error){
+    } catch (error) {
 
       lastError =
         error;
 
-      if(
+      if (
         !shouldRetry(error) ||
         attempt === 3
-      ){
+      ) {
 
         throw error;
 
@@ -1348,46 +1372,45 @@ async function callGroq(
 
 }
 
-
 /* =========================================================
    ERROR MESSAGE
 ========================================================= */
 
 function friendlyError(
   error
-){
+) {
 
   const status =
     error?.status ||
     error?.statusCode;
 
-  if(
+  if (
     status === 401
-  ){
+  ) {
 
     return "مفتاح GROQ_API_KEY غير صالح أو غير مضبوط.";
 
   }
 
-  if(
+  if (
     status === 429
-  ){
+  ) {
 
     return "تم الوصول إلى حد الطلبات لدى مزود الذكاء الاصطناعي. حاول بعد قليل.";
 
   }
 
-  if(
+  if (
     status === 413
-  ){
+  ) {
 
     return "حجم الطلب كبير جداً. قلل حجم الملفات أو عددها.";
 
   }
 
-  if(
+  if (
     status === 400
-  ){
+  ) {
 
     return (
       error?.error?.message ||
@@ -1397,9 +1420,11 @@ function friendlyError(
 
   }
 
-  if(
+  if (
+    typeof status ===
+      "number" &&
     status >= 500
-  ){
+  ) {
 
     return "حدث خطأ مؤقت في خدمة الذكاء الاصطناعي. حاول مرة أخرى.";
 
@@ -1412,14 +1437,13 @@ function friendlyError(
 
 }
 
-
 /* =========================================================
    COMMON REQUEST VALIDATION
 ========================================================= */
 
 async function prepareRequest(
   body
-){
+) {
 
   const text =
     clampText(
@@ -1428,7 +1452,9 @@ async function prepareRequest(
     ).trim();
 
   const files =
-    Array.isArray(body?.files)
+    Array.isArray(
+      body?.files
+    )
       ? body.files.slice(
           0,
           MAX_FILES
@@ -1437,17 +1463,19 @@ async function prepareRequest(
 
   let totalFileSize = 0;
 
-  for(
+  for (
     const file of files
-  ){
+  ) {
 
     const size =
-      Number(file?.size) || 0;
+      Number(
+        file?.size
+      ) || 0;
 
-    if(
+    if (
       size >
       MAX_FILE_SIZE
-    ){
+    ) {
 
       throw new Error(
         `الملف ${file?.name || ""} أكبر من 20MB.`
@@ -1460,10 +1488,10 @@ async function prepareRequest(
 
   }
 
-  if(
+  if (
     totalFileSize >
     MAX_TOTAL_FILE_SIZE
-  ){
+  ) {
 
     throw new Error(
       "الحجم الإجمالي للملفات يتجاوز 45MB."
@@ -1471,10 +1499,10 @@ async function prepareRequest(
 
   }
 
-  if(
+  if (
     !text &&
     !files.length
-  ){
+  ) {
 
     throw new Error(
       "اكتب رسالة أو أرفق ملفاً."
@@ -1490,7 +1518,9 @@ async function prepareRequest(
   const mode =
     normalizeMode(
       body?.mode,
-      Boolean(body?.fastMode),
+      Boolean(
+        body?.fastMode
+      ),
       files
     );
 
@@ -1503,14 +1533,17 @@ async function prepareRequest(
     text:
       text ||
       "حلل الملفات المرفقة وقدم نتيجة مفيدة.",
+
     history,
+
     files,
+
     mode,
+
     processedFiles
   };
 
 }
-
 
 /* =========================================================
    API ROOT
@@ -1518,14 +1551,16 @@ async function prepareRequest(
 
 app.get(
   "/api",
-  (req,res) => {
+  (req, res) => {
 
     res.json({
-      success:true,
-      name:"Sultan AI",
-      version:SERVER_VERSION,
-      status:"online",
-      endpoints:[
+      success: true,
+      name: "Sultan AI",
+      version:
+        SERVER_VERSION,
+      status: "online",
+
+      endpoints: [
         "/api/chat",
         "/api/chat/stream",
         "/api/health",
@@ -1536,31 +1571,46 @@ app.get(
   }
 );
 
-
 /* =========================================================
    HEALTH
 ========================================================= */
 
 app.get(
   "/api/health",
-  (req,res) => {
+  (req, res) => {
 
     res.json({
-      success:true,
-      status:"online",
-      configured:Boolean(
-        GROQ_API_KEY
-      ),
-      version:SERVER_VERSION,
-      model:MAIN_MODEL,
-      fastModel:FAST_MODEL,
-      visionModel:VISION_MODEL,
-      timestamp:new Date().toISOString()
+      success: true,
+
+      status:
+        "online",
+
+      configured:
+        Boolean(
+          GROQ_API_KEY
+        ),
+
+      version:
+        SERVER_VERSION,
+
+      model:
+        MAIN_MODEL,
+
+      fastModel:
+        FAST_MODEL,
+
+      visionModel:
+        VISION_MODEL,
+
+      streaming:
+        true,
+
+      timestamp:
+        new Date().toISOString()
     });
 
   }
 );
-
 
 /* =========================================================
    CAPABILITIES
@@ -1568,16 +1618,23 @@ app.get(
 
 app.get(
   "/api/capabilities",
-  (req,res) => {
+  (req, res) => {
 
     res.json({
-      success:true,
-      version:SERVER_VERSION,
+      success: true,
 
-      capabilities:{
-        chat:true,
-        streaming:true,
-        aiModes:[
+      version:
+        SERVER_VERSION,
+
+      capabilities: {
+
+        chat:
+          true,
+
+        streaming:
+          true,
+
+        aiModes: [
           "fast",
           "smart",
           "deep",
@@ -1586,31 +1643,48 @@ app.get(
           "vision",
           "files"
         ],
-        webSearch:true,
-        websiteVisit:true,
-        codeInterpreter:true,
-        vision:true,
-        files:true,
-        pdf:true
+
+        webSearch:
+          true,
+
+        websiteVisit:
+          true,
+
+        codeInterpreter:
+          true,
+
+        vision:
+          true,
+
+        files:
+          true,
+
+        pdf:
+          true
+
       },
 
-      limits:{
-        maxFiles:MAX_FILES,
+      limits: {
+
+        maxFiles:
+          MAX_FILES,
+
         maxFileSizeMB:
           MAX_FILE_SIZE /
           1024 /
           1024,
+
         maxTotalFileSizeMB:
           MAX_TOTAL_FILE_SIZE /
           1024 /
           1024
+
       }
 
     });
 
   }
 );
-
 
 /* =========================================================
    NORMAL CHAT
@@ -1620,7 +1694,10 @@ app.get(
 app.post(
   "/api/chat",
   rateLimit,
-  async (req,res) => {
+  async (
+    req,
+    res
+  ) => {
 
     const started =
       Date.now();
@@ -1628,7 +1705,7 @@ app.post(
     const id =
       requestId();
 
-    try{
+    try {
 
       const prepared =
         await prepareRequest(
@@ -1638,7 +1715,6 @@ app.post(
       const {
         text,
         history,
-        files,
         mode,
         processedFiles
       } = prepared;
@@ -1653,11 +1729,13 @@ app.post(
           text,
           history,
           processedFiles,
-          stream:false
+          stream: false
         });
 
       const requestSizeBytes =
-        safeJsonSize(request);
+        safeJsonSize(
+          request
+        );
 
       const completion =
         await callGroq(
@@ -1670,9 +1748,7 @@ app.post(
           ?.message
           ?.content;
 
-      if(
-        !reply
-      ){
+      if (!reply) {
 
         throw new Error(
           "لم تصل إجابة من نموذج الذكاء الاصطناعي."
@@ -1681,62 +1757,89 @@ app.post(
       }
 
       res.json({
-        success:true,
 
-        reply:String(
-          reply
-        ),
+        success: true,
 
-        toolsUsed:[],
+        reply:
+          String(
+            reply
+          ),
+
+        toolsUsed: [],
 
         analyzedFiles:
           processedFiles.analyzedFiles,
 
-        meta:{
-          requestId:id,
-          model:config.model,
+        meta: {
+
+          requestId:
+            id,
+
+          model:
+            config.model,
+
           mode,
+
           fastMode:
             mode === "fast",
+
           responseTimeMs:
-            Date.now() - started,
+            Date.now() -
+            started,
+
           requestSizeBytes,
+
           tools:
             enabledTools,
+
           serverVersion:
             SERVER_VERSION
+
         }
 
       });
 
-    }catch(error){
+    } catch (error) {
 
       console.error(
         `[CHAT ${id}]`,
         error
       );
 
-      res.status(
+      const status =
         error?.status ||
-        500
+        error?.statusCode;
+
+      res.status(
+        typeof status ===
+          "number"
+          ? status
+          : 500
       ).json({
-        success:false,
+
+        success: false,
+
         error:
           friendlyError(
             error
           ),
-        meta:{
-          requestId:id,
+
+        meta: {
+
+          requestId:
+            id,
+
           serverVersion:
             SERVER_VERSION
+
         }
+
       });
 
     }
 
   }
 );
-
 
 /* =========================================================
    STREAMING CHAT
@@ -1745,7 +1848,10 @@ app.post(
 app.post(
   "/api/chat/stream",
   rateLimit,
-  async (req,res) => {
+  async (
+    req,
+    res
+  ) => {
 
     const started =
       Date.now();
@@ -1779,10 +1885,10 @@ app.post(
       "no"
     );
 
-    if(
+    if (
       typeof res.flushHeaders ===
       "function"
-    ){
+    ) {
 
       res.flushHeaders();
 
@@ -1804,12 +1910,12 @@ app.post(
     function sendEvent(
       event,
       data
-    ){
+    ) {
 
-      if(
+      if (
         clientClosed ||
         res.writableEnded
-      ){
+      ) {
 
         return;
 
@@ -1817,12 +1923,14 @@ app.post(
 
       res.write(
         `event: ${event}\n` +
-        `data: ${JSON.stringify(data)}\n\n`
+        `data: ${JSON.stringify(
+          data
+        )}\n\n`
       );
 
     }
 
-    try{
+    try {
 
       const prepared =
         await prepareRequest(
@@ -1846,22 +1954,33 @@ app.post(
           text,
           history,
           processedFiles,
-          stream:true
+          stream: true
         });
 
       const requestSizeBytes =
-        safeJsonSize(request);
+        safeJsonSize(
+          request
+        );
 
       sendEvent(
         "meta",
         {
-          requestId:id,
-          model:config.model,
+          requestId:
+            id,
+
+          model:
+            config.model,
+
           mode,
-          tools:enabledTools,
+
+          tools:
+            enabledTools,
+
           analyzedFiles:
             processedFiles.analyzedFiles,
+
           requestSizeBytes,
+
           serverVersion:
             SERVER_VERSION
         }
@@ -1870,7 +1989,10 @@ app.post(
       sendEvent(
         "status",
         {
-          status:"processing",
+
+          status:
+            "processing",
+
           text:
             mode === "web"
               ? "جاري تجهيز البحث على الويب..."
@@ -1883,6 +2005,7 @@ app.post(
                     : mode === "deep"
                       ? "جاري التحليل العميق..."
                       : "Sultan AI يفكر..."
+
         }
       );
 
@@ -1892,24 +2015,27 @@ app.post(
         );
 
       /*
-        إذا كانت الخدمة لم ترسل
-        stream object المتوقع،
-        نتعامل معه كاستجابة عادية.
+        في حال رجعت الاستجابة
+        بشكل عادي بدل stream.
       */
 
-      if(
+      if (
         completion &&
-        typeof completion[Symbol.asyncIterator] !==
-        "function"
-      ){
+        typeof completion[
+          Symbol.asyncIterator
+        ] !== "function"
+      ) {
 
         const fallbackReply =
           completion
             ?.choices?.[0]
             ?.message
-            ?.content || "";
+            ?.content ||
+          "";
 
-        if(fallbackReply){
+        if (
+          fallbackReply
+        ) {
 
           sendEvent(
             "token",
@@ -1926,19 +2052,28 @@ app.post(
         sendEvent(
           "done",
           {
-            success:true,
+
+            success:
+              true,
+
             reply:
               String(
                 fallbackReply
               ),
+
             responseTimeMs:
               Date.now() -
               started,
-            toolsUsed:[],
+
+            toolsUsed:
+              [],
+
             analyzedFiles:
               processedFiles.analyzedFiles,
+
             serverVersion:
               SERVER_VERSION
+
           }
         );
 
@@ -1954,18 +2089,21 @@ app.post(
       sendEvent(
         "status",
         {
-          status:"generating",
-          text:"جاري إنشاء الإجابة..."
+          status:
+            "generating",
+
+          text:
+            "جاري إنشاء الإجابة..."
         }
       );
 
-      for await(
+      for await (
         const chunk of completion
-      ){
+      ) {
 
-        if(
+        if (
           clientClosed
-        ){
+        ) {
 
           break;
 
@@ -1976,12 +2114,14 @@ app.post(
             ?.choices?.[0]
             ?.delta?.content;
 
-        if(
+        if (
           delta
-        ){
+        ) {
 
           const piece =
-            String(delta);
+            String(
+              delta
+            );
 
           fullReply +=
             piece;
@@ -1989,7 +2129,8 @@ app.post(
           sendEvent(
             "token",
             {
-              text:piece
+              text:
+                piece
             }
           );
 
@@ -1997,38 +2138,47 @@ app.post(
 
       }
 
-      if(
+      if (
         !clientClosed
-      ){
+      ) {
 
         sendEvent(
           "done",
           {
-            success:true,
+
+            success:
+              true,
+
             reply:
               fullReply,
+
             responseTimeMs:
               Date.now() -
               started,
-            toolsUsed:[],
+
+            toolsUsed:
+              [],
+
             analyzedFiles:
               processedFiles.analyzedFiles,
+
             serverVersion:
               SERVER_VERSION
+
           }
         );
 
       }
 
-      if(
+      if (
         !res.writableEnded
-      ){
+      ) {
 
         res.end();
 
       }
 
-    }catch(error){
+    } catch (error) {
 
       console.error(
         `[STREAM ${id}]`,
@@ -2038,20 +2188,27 @@ app.post(
       sendEvent(
         "error",
         {
-          success:false,
+
+          success:
+            false,
+
           error:
             friendlyError(
               error
             ),
-          requestId:id,
+
+          requestId:
+            id,
+
           serverVersion:
             SERVER_VERSION
+
         }
       );
 
-      if(
+      if (
         !res.writableEnded
-      ){
+      ) {
 
         res.end();
 
@@ -2061,7 +2218,6 @@ app.post(
 
   }
 );
-
 
 /* =========================================================
    STATIC FRONTEND
@@ -2073,21 +2229,23 @@ const indexPath =
     "index.html"
   );
 
-if(
-  fs.existsSync(indexPath)
-){
+if (
+  fs.existsSync(
+    indexPath
+  )
+) {
 
   app.use(
     express.static(
       __dirname,
       {
-        index:false,
-        maxAge:"1h"
+        index: false,
+        maxAge: "1h"
       }
     )
   );
 
-}else{
+} else {
 
   console.warn(
     "⚠️ index.html غير موجود حالياً."
@@ -2095,18 +2253,19 @@ if(
 
 }
 
-
 /* =========================================================
    ROOT
 ========================================================= */
 
 app.get(
   "/",
-  (req,res) => {
+  (req, res) => {
 
-    if(
-      fs.existsSync(indexPath)
-    ){
+    if (
+      fs.existsSync(
+        indexPath
+      )
+    ) {
 
       return res.sendFile(
         indexPath
@@ -2114,13 +2273,14 @@ app.get(
 
     }
 
-    return res.status(404).send(
-      "Sultan AI: index.html not found."
-    );
+    return res
+      .status(404)
+      .send(
+        "Sultan AI: index.html not found."
+      );
 
   }
 );
-
 
 /* =========================================================
    SPA FALLBACK
@@ -2129,21 +2289,23 @@ app.get(
 
 app.get(
   "/*splat",
-  (req,res,next) => {
+  (req, res, next) => {
 
-    if(
+    if (
       req.path.startsWith(
         "/api/"
       )
-    ){
+    ) {
 
       return next();
 
     }
 
-    if(
-      fs.existsSync(indexPath)
-    ){
+    if (
+      fs.existsSync(
+        indexPath
+      )
+    ) {
 
       return res.sendFile(
         indexPath
@@ -2156,23 +2318,28 @@ app.get(
   }
 );
 
-
 /* =========================================================
    404 API
 ========================================================= */
 
 app.use(
   "/api",
-  (req,res) => {
+  (req, res) => {
 
-    res.status(404).json({
-      success:false,
-      error:"API endpoint غير موجود."
-    });
+    res
+      .status(404)
+      .json({
+
+        success:
+          false,
+
+        error:
+          "API endpoint غير موجود."
+
+      });
 
   }
 );
-
 
 /* =========================================================
    GLOBAL ERROR HANDLER
@@ -2191,24 +2358,33 @@ app.use(
       error
     );
 
-    if(
+    if (
       res.headersSent
-    ){
+    ) {
 
-      return next(error);
+      return next(
+        error
+      );
 
     }
 
-    res.status(500).json({
-      success:false,
-      error:"حدث خطأ داخلي في الخادم.",
-      serverVersion:
-        SERVER_VERSION
-    });
+    res
+      .status(500)
+      .json({
+
+        success:
+          false,
+
+        error:
+          "حدث خطأ داخلي في الخادم.",
+
+        serverVersion:
+          SERVER_VERSION
+
+      });
 
   }
 );
-
 
 /* =========================================================
    CLEANUP
@@ -2220,19 +2396,21 @@ setInterval(
     const now =
       Date.now();
 
-    for(
+    for (
       const [
         ip,
         value
       ] of rateMap
-    ){
+    ) {
 
-      if(
+      if (
         now - value.start >
         RATE_WINDOW * 2
-      ){
+      ) {
 
-        rateMap.delete(ip);
+        rateMap.delete(
+          ip
+        );
 
       }
 
@@ -2241,7 +2419,6 @@ setInterval(
   },
   RATE_WINDOW
 );
-
 
 /* =========================================================
    START
