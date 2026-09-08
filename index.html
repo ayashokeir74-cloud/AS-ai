@@ -14,7 +14,7 @@
 
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent!important;
+  -webkit-tap-highlight-color:transparent !important;
 }
 
 html,
@@ -39,23 +39,27 @@ input{
 
 button{
   border:0;
-  outline:none!important;
+  outline:0 !important;
   cursor:pointer;
-  -webkit-appearance:none!important;
-  appearance:none!important;
-  -webkit-tap-highlight-color:transparent!important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  -webkit-tap-highlight-color:transparent !important;
   -webkit-touch-callout:none;
   -webkit-user-select:none;
   user-select:none;
   touch-action:manipulation;
+  -webkit-focus-ring-color:transparent !important;
 }
 
 button:focus,
-button:focus-visible,
+button:focus-visible{
+  outline:0 !important;
+  box-shadow:none !important;
+  -webkit-tap-highlight-color:transparent !important;
+}
+
 button:active{
-  outline:none!important;
-  box-shadow:none!important;
-  -webkit-tap-highlight-color:transparent!important;
+  -webkit-tap-highlight-color:transparent !important;
 }
 
 .app{
@@ -121,6 +125,7 @@ button:active{
   color:#fff;
   font-weight:800;
   margin-bottom:18px;
+  transition:transform .12s ease,background .12s ease;
 }
 
 .new-chat:active{
@@ -322,6 +327,18 @@ button:active{
   background:#111317;
   color:#fff;
   text-align:right;
+  transition:transform .12s ease,background .12s ease;
+}
+
+.quick strong,
+.quick span{
+  display:block;
+}
+
+.quick span{
+  margin-top:6px;
+  color:#777e88;
+  font-size:12px;
 }
 
 .quick:active{
@@ -418,6 +435,21 @@ button:active{
   margin-bottom:0;
 }
 
+.assistant-text h3,
+.assistant-text h4,
+.assistant-text h5{
+  margin:15px 0 8px;
+}
+
+.assistant-text strong{
+  color:#fff;
+}
+
+.assistant-text a{
+  color:#ff9a22;
+  text-decoration:none;
+}
+
 .assistant-text code{
   background:#171a1f;
   border:1px solid #292d34;
@@ -477,6 +509,11 @@ button:active{
   color:#9298a1;
 }
 
+.action-btn:active{
+  background:#22262c;
+  transform:scale(.95);
+}
+
 .typing{
   display:flex;
   align-items:center;
@@ -505,7 +542,6 @@ button:active{
     opacity:.25;
     transform:translateY(0);
   }
-
   30%{
     opacity:1;
     transform:translateY(-3px);
@@ -768,6 +804,11 @@ button:active{
   .assistant-text{
     font-size:14px;
   }
+
+  .message.user .bubble{
+    max-width:94%;
+  }
+
 }
 
 </style>
@@ -816,7 +857,6 @@ button:active{
 
     </div>
 
-
     <button
       type="button"
       class="new-chat"
@@ -824,7 +864,6 @@ button:active{
     >
       + محادثة جديدة
     </button>
-
 
     <nav class="nav">
 
@@ -884,19 +923,16 @@ button:active{
 
     </nav>
 
-
     <div class="sidebar-bottom">
       Sultan AI V7.2
     </div>
 
   </aside>
 
-
   <div
     class="overlay"
     id="overlay"
   ></div>
-
 
   <main class="main">
 
@@ -922,7 +958,6 @@ button:active{
       </div>
 
     </header>
-
 
     <div class="content">
 
@@ -967,16 +1002,13 @@ button:active{
 
             </div>
 
-
             <h1>
               أهلاً بك في <span>Sultan AI</span>
             </h1>
 
-
             <p>
               مساعدك الذكي للمحادثة، البرمجة، تحليل الملفات والبحث.
             </p>
-
 
             <div class="quick-grid">
 
@@ -989,7 +1021,6 @@ button:active{
                 <span>شرح مبسط لأي موضوع</span>
               </button>
 
-
               <button
                 type="button"
                 class="quick"
@@ -999,7 +1030,6 @@ button:active{
                 <span>اكتب وفسّر الكود</span>
               </button>
 
-
               <button
                 type="button"
                 class="quick"
@@ -1008,7 +1038,6 @@ button:active{
                 <strong>🔎 حلّل فكرة</strong>
                 <span>تحليل واقتراحات عملية</span>
               </button>
-
 
               <button
                 type="button"
@@ -1027,7 +1056,6 @@ button:active{
 
       </section>
 
-
       <div class="composer-area">
 
         <div class="composer">
@@ -1036,7 +1064,6 @@ button:active{
             class="file-list"
             id="fileList"
           ></div>
-
 
           <div class="composer-row">
 
@@ -1050,7 +1077,6 @@ button:active{
               📎
             </button>
 
-
             <textarea
               id="messageInput"
               class="message-input"
@@ -1059,7 +1085,6 @@ button:active{
               autocomplete="off"
               spellcheck="true"
             ></textarea>
-
 
             <button
               type="button"
@@ -1073,7 +1098,6 @@ button:active{
 
           </div>
 
-
           <div class="composer-bottom">
 
             <button
@@ -1084,7 +1108,6 @@ button:active{
             >
               ⚡ الوضع السريع
             </button>
-
 
             <input
               type="file"
@@ -1106,17 +1129,14 @@ button:active{
 
 </div>
 
-
 <div
   class="toast"
   id="toast"
 ></div>
 
-
 <script>
 
 "use strict";
-
 
 /* =====================================================
    CONFIG
@@ -1222,7 +1242,6 @@ window.addEventListener(
   }
 );
 
-
 window.addEventListener(
   "unhandledrejection",
   event => {
@@ -1238,7 +1257,9 @@ window.addEventListener(
 
 /* =====================================================
    BUTTON SYSTEM
-   Android + Chrome + Desktop
+   FIXED FOR ANDROID
+   NO pointerup
+   NO preventDefault
 ===================================================== */
 
 function bindPress(
@@ -1250,72 +1271,26 @@ function bindPress(
     return;
   }
 
-  let used = false;
-
-  const run = event => {
-
-    if(used){
-      return;
-    }
-
-    used = true;
-
-    if(event){
-
-      event.preventDefault();
-
-    }
-
-    try{
-
-      callback(event);
-
-    }catch(error){
-
-      console.error(
-        "Button error:",
-        error
-      );
-
-      showToast(
-        "حدث خطأ، حاول مرة أخرى."
-      );
-
-    }
-
-    setTimeout(
-      () => {
-        used = false;
-      },
-      350
-    );
-
-  };
-
-
-  element.addEventListener(
-    "pointerup",
-    run,
-    {
-      passive:false
-    }
-  );
-
-
   element.addEventListener(
     "click",
-    event => {
+    function(event){
 
-      /*
-        إذا كان pointerup اشتغل،
-        click يتم تجاهله.
-      */
+      try{
 
-      if(used){
-        return;
+        callback(event);
+
+      }catch(error){
+
+        console.error(
+          "Sultan AI button error:",
+          error
+        );
+
+        showToast(
+          "حدث خطأ، حاول مرة أخرى."
+        );
+
       }
-
-      run(event);
 
     },
     false
@@ -1474,6 +1449,11 @@ function newChat(){
   sendButton.title =
     "إرسال";
 
+  sendButton.setAttribute(
+    "aria-label",
+    "إرسال"
+  );
+
   closeSidebar();
 
   messageInput.focus();
@@ -1515,15 +1495,12 @@ document
 
           });
 
-
         button.classList.add(
           "active"
         );
 
-
         const mode =
           button.dataset.mode;
-
 
         if(mode === "chat"){
 
@@ -1533,7 +1510,6 @@ document
 
         }
 
-
         if(mode === "files"){
 
           showToast(
@@ -1541,7 +1517,6 @@ document
           );
 
         }
-
 
         if(mode === "fast"){
 
@@ -1553,7 +1528,6 @@ document
 
         }
 
-
         if(mode === "web"){
 
           showToast(
@@ -1561,7 +1535,6 @@ document
           );
 
         }
-
 
         if(mode === "code"){
 
@@ -1571,7 +1544,6 @@ document
 
         }
 
-
         if(mode === "analysis"){
 
           showToast(
@@ -1579,7 +1551,6 @@ document
           );
 
         }
-
 
         closeSidebar();
 
@@ -1613,8 +1584,6 @@ document
           prompt;
 
         autoResize();
-
-        messageInput.focus();
 
         sendMessage();
 
@@ -1779,7 +1748,6 @@ function addFiles(files){
 
     }
 
-
     if(
       file.size >
       MAX_FILE_SIZE
@@ -1793,14 +1761,12 @@ function addFiles(files){
 
     }
 
-
     const total =
       selectedFiles.reduce(
         (sum,item) =>
           sum + item.size,
         0
       ) + file.size;
-
 
     if(
       total >
@@ -1815,7 +1781,6 @@ function addFiles(files){
 
     }
 
-
     const duplicate =
       selectedFiles.some(
         item =>
@@ -1825,18 +1790,15 @@ function addFiles(files){
             file.lastModified
       );
 
-
     if(duplicate){
       continue;
     }
-
 
     selectedFiles.push(
       file
     );
 
   }
-
 
   renderSelectedFiles();
 
@@ -1859,7 +1821,6 @@ function renderSelectedFiles(){
       chip.className =
         "file-chip";
 
-
       const name =
         document.createElement(
           "span"
@@ -1867,7 +1828,6 @@ function renderSelectedFiles(){
 
       name.textContent =
         file.name;
-
 
       const remove =
         document.createElement(
@@ -1888,7 +1848,6 @@ function renderSelectedFiles(){
         "حذف الملف"
       );
 
-
       bindPress(
         remove,
         () => {
@@ -1902,7 +1861,6 @@ function renderSelectedFiles(){
 
         }
       );
-
 
       chip.appendChild(
         name
@@ -1934,7 +1892,6 @@ function readFile(file){
       const reader =
         new FileReader();
 
-
       reader.onload =
         () => {
 
@@ -1955,7 +1912,6 @@ function readFile(file){
 
         };
 
-
       reader.onerror =
         () => {
 
@@ -1966,7 +1922,6 @@ function readFile(file){
           );
 
         };
-
 
       reader.readAsDataURL(
         file
@@ -2047,13 +2002,11 @@ function inlineMarkdown(text){
   let result =
     escapeHTML(text);
 
-
   result =
     result.replace(
       /\*\*(.+?)\*\*/g,
       "<strong>$1</strong>"
     );
-
 
   result =
     result.replace(
@@ -2061,13 +2014,11 @@ function inlineMarkdown(text){
       "<code>$1</code>"
     );
 
-
   result =
     result.replace(
       /\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g,
       '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
     );
-
 
   return result;
 
@@ -2080,12 +2031,10 @@ function renderMarkdown(text){
     return "";
   }
 
-
   const blocks = [];
 
   let source =
     String(text);
-
 
   source =
     source.replace(
@@ -2097,7 +2046,6 @@ function renderMarkdown(text){
           Math.random()
             .toString(36)
             .slice(2);
-
 
         blocks.push({
 
@@ -2111,7 +2059,6 @@ function renderMarkdown(text){
 
         });
 
-
         return (
           `___CODE_BLOCK_${blocks.length-1}___`
         );
@@ -2119,10 +2066,8 @@ function renderMarkdown(text){
       }
     );
 
-
   const lines =
     source.split("\n");
-
 
   let html =
     "";
@@ -2130,13 +2075,11 @@ function renderMarkdown(text){
   let paragraph =
     [];
 
-
   function flushParagraph(){
 
     if(!paragraph.length){
       return;
     }
-
 
     html +=
       "<p>" +
@@ -2145,12 +2088,10 @@ function renderMarkdown(text){
         .join("<br>") +
       "</p>";
 
-
     paragraph =
       [];
 
   }
-
 
   for(
     const line of lines
@@ -2158,7 +2099,6 @@ function renderMarkdown(text){
 
     const trimmed =
       line.trim();
-
 
     if(!trimmed){
 
@@ -2168,7 +2108,6 @@ function renderMarkdown(text){
 
     }
 
-
     if(
       /^#{1,3}\s/.test(
         trimmed
@@ -2177,25 +2116,20 @@ function renderMarkdown(text){
 
       flushParagraph();
 
-
       const match =
         trimmed.match(
           /^(#{1,3})\s+(.*)$/
         );
 
-
       const level =
         match[1].length;
-
 
       html +=
         `<h${level+2}>${inlineMarkdown(match[2])}</h${level+2}>`;
 
-
       continue;
 
     }
-
 
     if(
       /^[*-]\s+/.test(
@@ -2205,7 +2139,6 @@ function renderMarkdown(text){
 
       flushParagraph();
 
-
       html +=
         `<div>• ${inlineMarkdown(
           trimmed.replace(
@@ -2214,11 +2147,9 @@ function renderMarkdown(text){
           )
         )}</div>`;
 
-
       continue;
 
     }
-
 
     paragraph.push(
       line
@@ -2226,9 +2157,7 @@ function renderMarkdown(text){
 
   }
 
-
   flushParagraph();
-
 
   blocks.forEach(
     (block,index) => {
@@ -2237,7 +2166,6 @@ function renderMarkdown(text){
         escapeHTML(
           block.code
         );
-
 
       const blockHTML = `
 
@@ -2270,7 +2198,6 @@ function renderMarkdown(text){
 
       `;
 
-
       html =
         html.replace(
           `___CODE_BLOCK_${index}___`,
@@ -2279,7 +2206,6 @@ function renderMarkdown(text){
 
     }
   );
-
 
   return html;
 
@@ -2330,7 +2256,6 @@ function addUserMessage(text){
 
   hideWelcome();
 
-
   const message =
     document.createElement(
       "div"
@@ -2338,7 +2263,6 @@ function addUserMessage(text){
 
   message.className =
     "message user";
-
 
   const bubble =
     document.createElement(
@@ -2351,16 +2275,13 @@ function addUserMessage(text){
   bubble.textContent =
     text;
 
-
   message.appendChild(
     bubble
   );
 
-
   chat.appendChild(
     message
   );
-
 
   scrollBottom();
 
@@ -2375,7 +2296,6 @@ function addTypingMessage(){
 
   hideWelcome();
 
-
   const message =
     document.createElement(
       "div"
@@ -2386,7 +2306,6 @@ function addTypingMessage(){
 
   message.id =
     "typingMessage";
-
 
   message.innerHTML = `
 
@@ -2417,13 +2336,11 @@ function addTypingMessage(){
 
       </div>
 
-
       <div class="assistant-content">
 
         <div class="assistant-name">
           Sultan AI
         </div>
-
 
         <div class="typing">
 
@@ -2439,14 +2356,11 @@ function addTypingMessage(){
 
   `;
 
-
   chat.appendChild(
     message
   );
 
-
   scrollBottom();
-
 
   return message;
 
@@ -2457,7 +2371,6 @@ function removeTyping(){
 
   const typing =
     $("typingMessage");
-
 
   if(typing){
 
@@ -2476,7 +2389,6 @@ function addAssistantMessage(text){
 
   removeTyping();
 
-
   const message =
     document.createElement(
       "div"
@@ -2484,7 +2396,6 @@ function addAssistantMessage(text){
 
   message.className =
     "message assistant";
-
 
   message.innerHTML = `
 
@@ -2522,18 +2433,15 @@ function addAssistantMessage(text){
 
       </div>
 
-
       <div class="assistant-content">
 
         <div class="assistant-name">
           Sultan AI
         </div>
 
-
         <div class="assistant-text">
           ${renderMarkdown(text)}
         </div>
-
 
         <div class="message-actions">
 
@@ -2545,7 +2453,6 @@ function addAssistantMessage(text){
           >
             📋
           </button>
-
 
           <button
             type="button"
@@ -2564,16 +2471,13 @@ function addAssistantMessage(text){
 
   `;
 
-
   chat.appendChild(
     message
   );
 
-
   bindMessageActions(
     message
   );
-
 
   scrollBottom();
 
@@ -2591,18 +2495,15 @@ function bindMessageActions(message){
       '[data-action="copy"]'
     );
 
-
   const regenerateButton =
     message.querySelector(
       '[data-action="regenerate"]'
     );
 
-
   const copyCodeButtons =
     message.querySelectorAll(
       "[data-copy-code]"
     );
-
 
   bindPress(
     copyButton,
@@ -2613,12 +2514,10 @@ function bindMessageActions(message){
           ".assistant-text"
         );
 
-
       const text =
         textElement
           ? textElement.innerText
           : "";
-
 
       try{
 
@@ -2645,7 +2544,6 @@ function bindMessageActions(message){
     }
   );
 
-
   bindPress(
     regenerateButton,
     () => {
@@ -2660,7 +2558,6 @@ function bindMessageActions(message){
 
       }
 
-
       if(sending){
 
         showToast(
@@ -2671,7 +2568,6 @@ function bindMessageActions(message){
 
       }
 
-
       sendMessage(
         lastUserText,
         true
@@ -2679,7 +2575,6 @@ function bindMessageActions(message){
 
     }
   );
-
 
   copyCodeButtons.forEach(
     button => {
@@ -2691,15 +2586,12 @@ function bindMessageActions(message){
           const id =
             button.dataset.copyCode;
 
-
           const codeElement =
             $(id);
-
 
           if(!codeElement){
             return;
           }
-
 
           try{
 
@@ -2707,10 +2599,8 @@ function bindMessageActions(message){
               codeElement.textContent
             );
 
-
             button.textContent =
               "تم النسخ";
-
 
             setTimeout(
               () => {
@@ -2721,7 +2611,6 @@ function bindMessageActions(message){
               },
               1200
             );
-
 
           }catch(error){
 
@@ -2759,16 +2648,13 @@ async function copyText(text){
 
   }
 
-
   const textarea =
     document.createElement(
       "textarea"
     );
 
-
   textarea.value =
     text;
-
 
   textarea.style.position =
     "fixed";
@@ -2776,25 +2662,26 @@ async function copyText(text){
   textarea.style.left =
     "-9999px";
 
+  textarea.style.top =
+    "0";
+
+  textarea.style.opacity =
+    "0";
 
   document.body.appendChild(
     textarea
   );
 
-
   textarea.focus();
 
   textarea.select();
-
 
   const success =
     document.execCommand(
       "copy"
     );
 
-
   textarea.remove();
-
 
   if(!success){
 
@@ -2842,12 +2729,10 @@ async function sendMessage(
     return;
   }
 
-
   const text =
     customText !== null
       ? String(customText).trim()
       : messageInput.value.trim();
-
 
   if(!text){
 
@@ -2861,38 +2746,37 @@ async function sendMessage(
 
   }
 
-
   lastUserText =
     text;
-
 
   let filesForRequest =
     [];
 
+  let historyForRequest =
+    [];
 
   if(!isRegenerate){
 
     filesForRequest =
       [...selectedFiles];
-
 
     lastRequestFiles =
       [...selectedFiles];
 
-  }else{
+    /*
+      نحفظ التاريخ قبل إضافة
+      السؤال الحالي حتى لا يتكرر
+      السؤال مرتين في الـAPI.
+    */
 
-    filesForRequest =
-      [...lastRequestFiles];
-
-  }
-
-
-  if(!isRegenerate){
+    historyForRequest =
+      conversation.slice(
+        -MAX_HISTORY
+      );
 
     addUserMessage(
       text
     );
-
 
     conversation.push({
 
@@ -2902,7 +2786,6 @@ async function sendMessage(
 
     });
 
-
     if(
       conversation.length >
       MAX_HISTORY
@@ -2915,12 +2798,10 @@ async function sendMessage(
 
     }
 
-
     messageInput.value =
       "";
 
     autoResize();
-
 
     selectedFiles =
       [];
@@ -2929,20 +2810,31 @@ async function sendMessage(
 
   }else{
 
+    filesForRequest =
+      [...lastRequestFiles];
+
+    /*
+      في إعادة التوليد نرسل
+      المحادثة الحالية كما هي،
+      ثم نضيف الطلب الحالي من السيرفر.
+    */
+
+    historyForRequest =
+      conversation.slice(
+        -MAX_HISTORY
+      );
+
     addUserMessage(
       text
     );
 
   }
 
-
   addTypingMessage();
-
 
   setSendingState(
     true
   );
-
 
   try{
 
@@ -2951,13 +2843,12 @@ async function sendMessage(
         filesForRequest
       );
 
-
     const answer =
       await requestAI(
         text,
-        preparedFiles
+        preparedFiles,
+        historyForRequest
       );
-
 
     if(!answer){
 
@@ -2967,11 +2858,9 @@ async function sendMessage(
 
     }
 
-
     addAssistantMessage(
       answer
     );
-
 
     conversation.push({
 
@@ -2980,7 +2869,6 @@ async function sendMessage(
       content:answer
 
     });
-
 
     if(
       conversation.length >
@@ -2994,20 +2882,16 @@ async function sendMessage(
 
     }
 
-
   }catch(error){
 
     console.error(
       error
     );
 
-
     removeTyping();
-
 
     let errorMessage =
       "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي.";
-
 
     if(
       error.name ===
@@ -3037,17 +2921,14 @@ async function sendMessage(
 
     }
 
-
     addAssistantMessage(
       "⚠️ " +
       errorMessage
     );
 
-
     showToast(
       errorMessage
     );
-
 
   }finally{
 
@@ -3066,36 +2947,32 @@ async function sendMessage(
 
 async function requestAI(
   text,
-  files
+  files,
+  history = []
 ){
 
   abortController =
     new AbortController();
 
+  const controller =
+    abortController;
 
   const timeout =
     setTimeout(
       () => {
 
-        if(
-          abortController
-        ){
-
-          abortController.abort();
-
-        }
+        controller.abort();
 
       },
       REQUEST_TIMEOUT
     );
-
 
   const payload = {
 
     message:text,
 
     messages:
-      conversation.slice(
+      history.slice(
         -MAX_HISTORY
       ),
 
@@ -3104,7 +2981,6 @@ async function requestAI(
     fastMode:fastMode
 
   };
-
 
   try{
 
@@ -3126,17 +3002,15 @@ async function requestAI(
             ),
 
           signal:
-            abortController.signal,
+            controller.signal,
 
           cache:"no-store"
 
         }
       );
 
-
     let data =
       null;
-
 
     try{
 
@@ -3151,7 +3025,6 @@ async function requestAI(
 
     }
 
-
     if(!response.ok){
 
       throw new Error(
@@ -3164,12 +3037,6 @@ async function requestAI(
 
     }
 
-
-    /*
-      مهم جداً:
-      server.js يرجع reply
-    */
-
     const answer =
       data?.reply ??
       data?.answer ??
@@ -3177,7 +3044,6 @@ async function requestAI(
       data?.message ??
       data?.content ??
       data?.text;
-
 
     if(
       typeof answer ===
@@ -3187,7 +3053,6 @@ async function requestAI(
       return answer;
 
     }
-
 
     if(
       answer &&
@@ -3203,11 +3068,9 @@ async function requestAI(
 
     }
 
-
     throw new Error(
       "لم يتم العثور على نص الرد من الخادم."
     );
-
 
   }finally{
 
@@ -3215,8 +3078,15 @@ async function requestAI(
       timeout
     );
 
-    abortController =
-      null;
+    if(
+      abortController ===
+      controller
+    ){
+
+      abortController =
+        null;
+
+    }
 
   }
 
@@ -3233,7 +3103,6 @@ function setSendingState(
 
   sending =
     Boolean(value);
-
 
   if(sending){
 
@@ -3288,14 +3157,11 @@ function stopRequest(){
 
   }
 
-
   setSendingState(
     false
   );
 
-
   removeTyping();
-
 
   showToast(
     "تم إيقاف الطلب."
@@ -3320,7 +3186,6 @@ async function checkHealth(){
         }
       );
 
-
     if(!response.ok){
 
       throw new Error(
@@ -3329,12 +3194,10 @@ async function checkHealth(){
 
     }
 
-
     const status =
       document.querySelector(
         ".status"
       );
-
 
     if(status){
 
@@ -3347,7 +3210,6 @@ async function checkHealth(){
 
     }
 
-
   }catch(error){
 
     console.warn(
@@ -3355,12 +3217,10 @@ async function checkHealth(){
       error
     );
 
-
     const status =
       document.querySelector(
         ".status"
       );
-
 
     if(status){
 
@@ -3395,7 +3255,6 @@ window.addEventListener(
         ".status"
       );
 
-
     if(status){
 
       status.innerHTML = `
@@ -3406,7 +3265,6 @@ window.addEventListener(
       `;
 
     }
-
 
     showToast(
       "عاد الاتصال بالإنترنت."
@@ -3425,7 +3283,6 @@ window.addEventListener(
         ".status"
       );
 
-
     if(status){
 
       status.innerHTML = `
@@ -3440,7 +3297,6 @@ window.addEventListener(
       `;
 
     }
-
 
     showToast(
       "لا يوجد اتصال بالإنترنت."
@@ -3486,7 +3342,7 @@ function init(){
   checkHealth();
 
   console.log(
-    "Sultan AI V7.2 frontend loaded."
+    "Sultan AI V7.2 frontend loaded - CLICK BUTTON SYSTEM ACTIVE."
   );
 
 }
