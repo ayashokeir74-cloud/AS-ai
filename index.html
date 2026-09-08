@@ -2,14 +2,17 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <title>Sultan AI — مساعد الذكاء الاصطناعي</title>
+  <title>Sultan AI — ذكاء اصطناعي متقدم</title>
+
   <meta
     name="description"
-    content="Sultan AI — مساعد ذكاء اصطناعي سريع للمحادثة، البرمجة، تحليل الملفات والصور والبحث على الويب."
+    content="Sultan AI — مساعد ذكاء اصطناعي متقدم للمحادثة، البرمجة، تحليل الصور والملفات، البحث على الويب والحسابات."
   />
+
   <meta name="theme-color" content="#08090c" />
+  <meta name="color-scheme" content="dark" />
 
   <style>
     * {
@@ -24,14 +27,21 @@
       --panel: #111318;
       --panel2: #151821;
       --panel3: #1b1f29;
+
       --border: rgba(255,255,255,.08);
       --border2: rgba(255,255,255,.13);
+
       --text: #f5f7fa;
       --muted: #969daa;
+      --muted2: #686e79;
+
       --orange: #ff7a18;
       --orange2: #ff9a3d;
-      --danger: #ff4d5e;
+      --orange3: #ffb15c;
+
       --success: #38d996;
+      --danger: #ff4d5e;
+
       --sidebar: 285px;
       --radius: 18px;
     }
@@ -53,6 +63,11 @@
         sans-serif;
     }
 
+    body {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
     button,
     textarea,
     input {
@@ -64,8 +79,13 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+    }
+
     ::selection {
-      background: rgba(255,122,24,.3);
+      background: rgba(255,122,24,.30);
     }
 
     /* =====================================================
@@ -81,6 +101,50 @@
     }
 
     /* =====================================================
+       LOGO
+    ===================================================== */
+
+    .sultan-logo {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    .sultan-logo svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .logo-glow {
+      filter: drop-shadow(
+        0 0 12px rgba(255,122,24,.28)
+      );
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+    }
+
+    .welcome-logo {
+      width: 84px;
+      height: 84px;
+      margin-bottom: 20px;
+      filter: drop-shadow(
+        0 18px 45px rgba(255,122,24,.18)
+      );
+    }
+
+    .avatar-logo {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* =====================================================
        SIDEBAR
     ===================================================== */
 
@@ -88,18 +152,26 @@
       width: var(--sidebar);
       height: 100%;
       flex-shrink: 0;
+
       background:
         linear-gradient(
           180deg,
           #0d0f13 0%,
           #0a0c10 100%
         );
+
       border-left: 1px solid var(--border);
+
       display: flex;
       flex-direction: column;
+
       padding: 16px;
+
       z-index: 50;
-      transition: transform .25s ease;
+
+      transition:
+        transform .25s ease,
+        box-shadow .25s ease;
     }
 
     .brand {
@@ -109,25 +181,10 @@
       padding: 7px 5px 18px;
     }
 
-    .brand-logo {
-      width: 45px;
-      height: 45px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-weight: 900;
-      font-size: 17px;
-      background:
-        linear-gradient(135deg, #ff6811, #ff9a3d);
-      box-shadow:
-        0 10px 30px rgba(255,122,24,.2);
-    }
-
     .brand-title {
       font-size: 18px;
-      font-weight: 850;
-      letter-spacing: -.3px;
+      font-weight: 900;
+      letter-spacing: -.4px;
     }
 
     .brand-sub {
@@ -139,31 +196,51 @@
     .new-chat {
       width: 100%;
       padding: 13px 14px;
+
       border-radius: 14px;
+
       color: white;
-      background: linear-gradient(
-        135deg,
-        #ff7117,
-        #ff9135
-      );
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff7117,
+          #ff9135
+        );
+
       font-weight: 800;
+
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 10px 30px rgba(255,122,24,.13);
-      transition: .2s;
+
+      box-shadow:
+        0 10px 30px rgba(255,122,24,.13);
+
+      transition:
+        transform .18s,
+        filter .18s,
+        box-shadow .18s;
     }
 
     .new-chat:hover {
       transform: translateY(-1px);
       filter: brightness(1.06);
+      box-shadow:
+        0 13px 35px rgba(255,122,24,.19);
+    }
+
+    .new-chat:active {
+      transform: scale(.98);
     }
 
     .nav {
       margin-top: 18px;
+
       display: flex;
       flex-direction: column;
+
       gap: 5px;
     }
 
@@ -176,19 +253,32 @@
 
     .nav-btn {
       width: 100%;
+
       color: #c5c9d1;
       background: transparent;
+
       border-radius: 12px;
+
       padding: 11px 12px;
+
       display: flex;
       align-items: center;
+
       gap: 11px;
+
       text-align: right;
-      transition: .18s;
-      font-size: 13px;
+
+      transition:
+        background .18s,
+        color .18s,
+        transform .18s;
     }
 
-    .nav-btn:hover,
+    .nav-btn:hover {
+      background: rgba(255,255,255,.045);
+      color: white;
+    }
+
     .nav-btn.active {
       background: rgba(255,255,255,.055);
       color: white;
@@ -197,11 +287,16 @@
     .nav-icon {
       width: 27px;
       height: 27px;
+
       border-radius: 8px;
+
       display: grid;
       place-items: center;
+
       background: rgba(255,255,255,.055);
+
       font-size: 13px;
+
       flex-shrink: 0;
     }
 
@@ -216,8 +311,12 @@
 
     .creator {
       padding: 13px;
+
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.025);
+
+      background:
+        rgba(255,255,255,.025);
+
       border-radius: 15px;
     }
 
@@ -246,9 +345,12 @@
       flex: 1;
       min-width: 0;
       height: 100%;
+
       display: flex;
       flex-direction: column;
+
       position: relative;
+
       background:
         radial-gradient(
           circle at 50% 20%,
@@ -258,43 +360,91 @@
         var(--bg);
     }
 
+    /* =====================================================
+       TOPBAR
+    ===================================================== */
+
     .topbar {
       height: 65px;
       flex-shrink: 0;
+
       border-bottom: 1px solid var(--border);
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       padding: 0 20px;
-      background: rgba(8,9,12,.82);
+
+      background:
+        rgba(8,9,12,.82);
+
       backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
       z-index: 20;
     }
 
     .top-left {
       display: flex;
       align-items: center;
+
       gap: 12px;
+
       min-width: 0;
     }
 
     .mobile-menu {
       width: 39px;
       height: 39px;
+
       border-radius: 11px;
+
       color: #d7d9de;
-      background: rgba(255,255,255,.045);
+
+      background:
+        rgba(255,255,255,.045);
+
       display: none;
       place-items: center;
+
       font-size: 18px;
+    }
+
+    .mobile-menu:hover {
+      background: rgba(255,255,255,.08);
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
+
       border-radius: 50%;
+
       background: var(--success);
-      box-shadow: 0 0 12px rgba(56,217,150,.6);
+
+      box-shadow:
+        0 0 12px rgba(56,217,150,.6);
+
+      flex-shrink: 0;
+
+      transition:
+        background .2s,
+        box-shadow .2s;
+    }
+
+    .status-dot.offline {
+      background: var(--danger);
+
+      box-shadow:
+        0 0 12px rgba(255,77,94,.5);
+    }
+
+    .status-dot.busy {
+      background: var(--orange2);
+
+      box-shadow:
+        0 0 12px rgba(255,154,61,.55);
     }
 
     .top-title {
@@ -307,19 +457,41 @@
       color: #7e8590;
       font-size: 10px;
       margin-top: 2px;
+
+      transition: color .2s;
     }
 
     .mode-badge {
       display: flex;
       align-items: center;
+
       gap: 7px;
+
       padding: 8px 11px;
+
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.035);
+
+      background:
+        rgba(255,255,255,.035);
+
       border-radius: 10px;
+
       color: #c6cad1;
+
       font-size: 11px;
       font-weight: 700;
+
+      transition:
+        border-color .2s,
+        background .2s;
+    }
+
+    .mode-badge.fast {
+      border-color:
+        rgba(255,122,24,.30);
+
+      background:
+        rgba(255,122,24,.07);
     }
 
     .mode-badge span {
@@ -333,8 +505,12 @@
     .chat-scroll {
       flex: 1;
       min-height: 0;
+
       overflow-y: auto;
+
       scroll-behavior: smooth;
+
+      overscroll-behavior: contain;
     }
 
     .chat-scroll::-webkit-scrollbar {
@@ -346,10 +522,17 @@
       border-radius: 20px;
     }
 
+    .chat-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
     .chat-container {
       width: min(980px, 100%);
+
       margin: 0 auto;
-      padding: 35px 20px 170px;
+
+      padding:
+        35px 20px 170px;
     }
 
     /* =====================================================
@@ -357,33 +540,26 @@
     ===================================================== */
 
     .welcome {
-      min-height: calc(100vh - 240px);
+      min-height:
+        calc(100vh - 240px);
+
       display: flex;
       flex-direction: column;
+
       justify-content: center;
       align-items: center;
+
       text-align: center;
+
       padding: 30px 0;
     }
 
-    .welcome-logo {
-      width: 76px;
-      height: 76px;
-      border-radius: 25px;
-      display: grid;
-      place-items: center;
-      font-size: 28px;
-      font-weight: 950;
-      background:
-        linear-gradient(135deg,#ff6811,#ff9c42);
-      box-shadow:
-        0 18px 55px rgba(255,122,24,.18);
-      margin-bottom: 20px;
-    }
-
     .welcome h1 {
-      font-size: clamp(27px, 5vw, 43px);
+      font-size:
+        clamp(27px, 5vw, 43px);
+
       font-weight: 900;
+
       letter-spacing: -1.6px;
     }
 
@@ -393,43 +569,104 @@
 
     .welcome p {
       color: var(--muted);
-      max-width: 570px;
+
+      max-width: 610px;
+
       line-height: 1.8;
+
       font-size: 13px;
+
       margin-top: 10px;
+    }
+
+    .welcome-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      margin-top: 15px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      border: 1px solid
+        rgba(255,122,24,.15);
+
+      background:
+        rgba(255,122,24,.045);
+
+      color: #b7bbc3;
+
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .welcome-badge span {
+      color: var(--orange2);
     }
 
     .quick-grid {
       width: min(760px, 100%);
+
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
       gap: 10px;
+
       margin-top: 30px;
     }
 
     .quick {
       text-align: right;
+
       padding: 15px;
+
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.025);
+
+      background:
+        rgba(255,255,255,.025);
+
       border-radius: 15px;
+
       color: white;
-      transition: .2s;
+
+      transition:
+        border-color .2s,
+        background .2s,
+        transform .2s;
     }
 
     .quick:hover {
-      border-color: rgba(255,122,24,.35);
-      background: rgba(255,122,24,.045);
+      border-color:
+        rgba(255,122,24,.35);
+
+      background:
+        rgba(255,122,24,.045);
+
       transform: translateY(-2px);
+    }
+
+    .quick:active {
+      transform: scale(.99);
     }
 
     .quick-icon {
       width: 31px;
       height: 31px;
+
       display: grid;
       place-items: center;
+
       border-radius: 9px;
-      background: rgba(255,122,24,.11);
+
+      background:
+        rgba(255,122,24,.11);
+
       margin-bottom: 9px;
     }
 
@@ -440,7 +677,9 @@
 
     .quick-desc {
       color: #777d88;
+
       font-size: 10px;
+
       margin-top: 4px;
     }
 
@@ -456,9 +695,13 @@
 
     .message {
       display: flex;
+
       gap: 12px;
+
       align-items: flex-start;
-      animation: messageIn .2s ease;
+
+      animation:
+        messageIn .20s ease;
     }
 
     @keyframes messageIn {
@@ -466,6 +709,7 @@
         opacity: 0;
         transform: translateY(7px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -479,25 +723,45 @@
     .avatar {
       width: 34px;
       height: 34px;
+
       flex-shrink: 0;
+
       border-radius: 11px;
+
       display: grid;
       place-items: center;
+
       font-size: 11px;
       font-weight: 900;
-      background: #1a1d24;
+
+      background:
+        #1a1d24;
+
       border: 1px solid var(--border);
+
+      overflow: hidden;
     }
 
     .message.assistant .avatar {
       color: white;
-      background: linear-gradient(135deg,#ff6811,#ff9a3d);
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff6811,
+          #ff9a3d
+        );
+
       border: 0;
+
+      padding: 5px;
     }
 
     .bubble-wrap {
       min-width: 0;
-      max-width: min(850px, calc(100% - 48px));
+
+      max-width:
+        min(850px, calc(100% - 48px));
     }
 
     .message.user .bubble-wrap {
@@ -508,15 +772,21 @@
 
     .bubble {
       line-height: 1.75;
+
       font-size: 13px;
+
       overflow-wrap: anywhere;
     }
 
     .message.user .bubble {
       background: #181b22;
+
       border: 1px solid var(--border);
+
       padding: 11px 14px;
-      border-radius: 17px 5px 17px 17px;
+
+      border-radius:
+        17px 5px 17px 17px;
     }
 
     .message.assistant .bubble {
@@ -529,6 +799,26 @@
 
     .bubble p:last-child {
       margin-bottom: 0;
+    }
+
+    .bubble h1,
+    .bubble h2,
+    .bubble h3 {
+      color: white;
+      margin: 14px 0 8px;
+      line-height: 1.35;
+    }
+
+    .bubble h1 {
+      font-size: 20px;
+    }
+
+    .bubble h2 {
+      font-size: 17px;
+    }
+
+    .bubble h3 {
+      font-size: 15px;
     }
 
     .bubble ul,
@@ -545,41 +835,21 @@
       color: white;
     }
 
-    .bubble a {
-      color: var(--orange2);
-    }
-
-    .code-wrap {
-      margin: 13px 0;
-      border: 1px solid var(--border2);
-      border-radius: 13px;
-      overflow: hidden;
-      background: #090b0f;
+    .bubble code:not(pre code) {
       direction: ltr;
-      text-align: left;
-    }
+      unicode-bidi: plaintext;
 
-    .code-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 11px;
-      border-bottom: 1px solid var(--border);
-      color: #818792;
-      font-size: 10px;
-    }
+      background:
+        rgba(255,255,255,.07);
 
-    .copy-code {
-      color: #bbbfc7;
-      background: rgba(255,255,255,.05);
-      border-radius: 7px;
-      padding: 5px 8px;
-      font-size: 10px;
-    }
+      border:
+        1px solid rgba(255,255,255,.08);
 
-    pre {
-      padding: 14px;
-      overflow-x: auto;
+      padding:
+        2px 5px;
+
+      border-radius: 5px;
+
       font-family:
         ui-monospace,
         SFMono-Regular,
@@ -587,45 +857,208 @@
         Monaco,
         Consolas,
         monospace;
+
       font-size: 11px;
-      line-height: 1.7;
-      white-space: pre-wrap;
     }
+
+    .bubble a {
+      color: var(--orange2);
+    }
+
+    /* =====================================================
+       CODE
+    ===================================================== */
+
+    .code-wrap {
+      margin: 13px 0;
+
+      border:
+        1px solid var(--border2);
+
+      border-radius: 13px;
+
+      overflow: hidden;
+
+      background: #090b0f;
+
+      direction: ltr;
+      text-align: left;
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+    }
+
+    .code-head {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 8px 11px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      color: #818792;
+
+      font-size: 10px;
+    }
+
+    .code-language {
+      color: #aeb3bd;
+      font-weight: 700;
+    }
+
+    .copy-code {
+      color: #bbbfc7;
+
+      background:
+        rgba(255,255,255,.05);
+
+      border-radius: 7px;
+
+      padding: 5px 8px;
+
+      font-size: 10px;
+
+      transition:
+        background .18s,
+        color .18s;
+    }
+
+    .copy-code:hover {
+      color: white;
+      background:
+        rgba(255,255,255,.09);
+    }
+
+    pre {
+      padding: 14px;
+
+      overflow-x: auto;
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+
+      font-size: 11px;
+
+      line-height: 1.7;
+
+      white-space: pre-wrap;
+
+      tab-size: 2;
+    }
+
+    /* =====================================================
+       MESSAGE ACTIONS
+    ===================================================== */
 
     .message-actions {
       display: flex;
+
       gap: 5px;
+
       margin-top: 8px;
+
       opacity: .75;
     }
 
     .action {
       color: #858b96;
+
       background: transparent;
+
       padding: 5px 7px;
+
       border-radius: 7px;
+
       font-size: 11px;
+
+      transition:
+        background .18s,
+        color .18s;
     }
 
     .action:hover {
       color: white;
-      background: rgba(255,255,255,.05);
+      background:
+        rgba(255,255,255,.05);
     }
+
+    /* =====================================================
+       FILES
+    ===================================================== */
 
     .files-in-message {
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 7px;
+
       margin-top: 8px;
     }
 
     .file-chip {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.035);
+      border:
+        1px solid var(--border);
+
+      background:
+        rgba(255,255,255,.035);
+
       border-radius: 9px;
+
       padding: 6px 9px;
+
       color: #aaaeb7;
+
       font-size: 10px;
+    }
+
+    /* =====================================================
+       TOOL STATUS
+    ===================================================== */
+
+    .tool-status {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      margin-top: 9px;
+
+      padding: 6px 9px;
+
+      border-radius: 8px;
+
+      color: #9298a3;
+
+      background:
+        rgba(255,255,255,.035);
+
+      border:
+        1px solid var(--border);
+
+      font-size: 9px;
+    }
+
+    .tool-status-dot {
+      width: 5px;
+      height: 5px;
+
+      border-radius: 50%;
+
+      background: var(--orange2);
+
+      box-shadow:
+        0 0 8px rgba(255,154,61,.45);
     }
 
     /* =====================================================
@@ -634,8 +1067,11 @@
 
     .typing {
       display: none;
+
       align-items: center;
+
       gap: 12px;
+
       margin-top: 4px;
     }
 
@@ -645,20 +1081,32 @@
 
     .typing-bubble {
       display: flex;
+
       align-items: center;
+
       gap: 5px;
+
       padding: 12px 15px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       border-radius: 15px;
-      background: rgba(255,255,255,.025);
+
+      background:
+        rgba(255,255,255,.025);
     }
 
     .typing-bubble i {
       width: 6px;
       height: 6px;
+
       background: #818792;
+
       border-radius: 50%;
-      animation: typing 1s infinite ease-in-out;
+
+      animation:
+        typing 1s infinite ease-in-out;
     }
 
     .typing-bubble i:nth-child(2) {
@@ -674,6 +1122,7 @@
         transform: translateY(0);
         opacity: .45;
       }
+
       30% {
         transform: translateY(-5px);
         opacity: 1;
@@ -686,10 +1135,14 @@
 
     .composer-area {
       position: absolute;
+
       bottom: 0;
       right: 0;
       left: 0;
-      padding: 15px 20px 18px;
+
+      padding:
+        15px 20px 18px;
+
       background:
         linear-gradient(
           180deg,
@@ -697,28 +1150,51 @@
           rgba(8,9,12,.93) 30%,
           #08090c 65%
         );
+
       z-index: 15;
     }
 
     .composer {
       width: min(920px, 100%);
+
       margin: 0 auto;
-      border: 1px solid var(--border2);
-      background: rgba(17,19,24,.96);
+
+      border:
+        1px solid var(--border2);
+
+      background:
+        rgba(17,19,24,.96);
+
       border-radius: 19px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+
+      box-shadow:
+        0 18px 60px rgba(0,0,0,.35);
+
       overflow: hidden;
-      transition: border-color .2s;
+
+      transition:
+        border-color .2s,
+        box-shadow .2s;
     }
 
     .composer:focus-within {
-      border-color: rgba(255,122,24,.38);
+      border-color:
+        rgba(255,122,24,.38);
+
+      box-shadow:
+        0 18px 60px rgba(0,0,0,.35),
+        0 0 0 1px
+          rgba(255,122,24,.035);
     }
 
     .selected-files {
       display: none;
-      padding: 9px 11px 0;
+
+      padding:
+        9px 11px 0;
+
       gap: 7px;
+
       flex-wrap: wrap;
     }
 
@@ -728,60 +1204,117 @@
 
     .selected-file {
       position: relative;
+
       display: flex;
+
       align-items: center;
+
       gap: 7px;
+
       padding: 7px 9px;
+
       border-radius: 10px;
+
       background: #1b1e26;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       font-size: 10px;
+
       color: #c4c8d0;
+
+      max-width: 100%;
+    }
+
+    .selected-file-name {
+      max-width: 210px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .remove-file {
       color: #858b96;
+
       background: transparent;
+
       font-size: 12px;
+
       padding: 0 2px;
+    }
+
+    .remove-file:hover {
+      color: #ff7180;
     }
 
     .input-row {
       display: flex;
+
       align-items: flex-end;
+
       gap: 9px;
+
       padding: 10px;
     }
 
     .attach {
       width: 39px;
       height: 39px;
+
       flex-shrink: 0;
+
       border-radius: 11px;
+
       color: #aeb3bd;
-      background: rgba(255,255,255,.045);
+
+      background:
+        rgba(255,255,255,.045);
+
       display: grid;
       place-items: center;
+
       font-size: 18px;
+
+      transition:
+        background .18s,
+        color .18s,
+        transform .18s;
     }
 
     .attach:hover {
       color: white;
-      background: rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.08);
+    }
+
+    .attach:active {
+      transform: scale(.95);
     }
 
     .textarea {
       flex: 1;
+
       min-width: 0;
+
       max-height: 190px;
+
       min-height: 39px;
+
       resize: none;
+
       border: 0;
       outline: 0;
+
       background: transparent;
+
       color: white;
+
       line-height: 1.6;
+
       padding: 8px 3px;
+
       font-size: 13px;
     }
 
@@ -792,18 +1325,38 @@
     .send {
       width: 39px;
       height: 39px;
+
       flex-shrink: 0;
+
       border-radius: 11px;
+
       display: grid;
       place-items: center;
+
       color: white;
-      background: linear-gradient(135deg,#ff6811,#ff9136);
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff6811,
+          #ff9136
+        );
+
       font-size: 17px;
-      transition: .18s;
+
+      transition:
+        transform .18s,
+        filter .18s,
+        background .18s;
     }
 
     .send:hover {
       transform: scale(1.03);
+      filter: brightness(1.06);
+    }
+
+    .send:active {
+      transform: scale(.95);
     }
 
     .send.stop {
@@ -813,8 +1366,11 @@
 
     .composer-bottom {
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       padding: 0 12px 10px;
     }
 
@@ -825,45 +1381,73 @@
 
     .fast-toggle {
       display: flex;
+
       align-items: center;
+
       gap: 7px;
+
       color: #777d88;
+
       font-size: 10px;
+
       cursor: pointer;
+
       user-select: none;
+    }
+
+    .fast-toggle.active {
+      color: #b5bac3;
     }
 
     .switch {
       width: 30px;
       height: 17px;
+
       padding: 2px;
+
       border-radius: 20px;
+
       background: #292d35;
-      transition: .2s;
+
+      transition:
+        background .2s;
     }
 
     .switch-dot {
       width: 13px;
       height: 13px;
+
       border-radius: 50%;
+
       background: #7d838e;
-      transition: .2s;
+
+      transition:
+        transform .2s,
+        background .2s;
     }
 
     .fast-toggle.active .switch {
-      background: rgba(255,122,24,.35);
+      background:
+        rgba(255,122,24,.35);
     }
 
     .fast-toggle.active .switch-dot {
-      transform: translateX(13px);
-      background: var(--orange2);
+      transform:
+        translateX(13px);
+
+      background:
+        var(--orange2);
     }
 
     .footer-note {
       width: min(920px,100%);
+
       margin: 7px auto 0;
+
       text-align: center;
+
       color: #505661;
+
       font-size: 9px;
     }
 
@@ -873,54 +1457,95 @@
 
     .toast {
       position: fixed;
+
       left: 50%;
+
       bottom: 95px;
-      transform: translate(-50%, 20px);
+
+      transform:
+        translate(-50%, 20px);
+
       opacity: 0;
+
       pointer-events: none;
+
       z-index: 100;
+
       background: #1b1e25;
-      border: 1px solid var(--border2);
+
+      border:
+        1px solid var(--border2);
+
       color: white;
+
       padding: 10px 15px;
+
       border-radius: 11px;
+
       font-size: 11px;
-      transition: .22s;
-      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+
+      transition:
+        opacity .22s,
+        transform .22s;
+
+      box-shadow:
+        0 12px 40px rgba(0,0,0,.35);
+
+      max-width:
+        min(90vw, 450px);
+
+      text-align: center;
     }
 
     .toast.show {
       opacity: 1;
-      transform: translate(-50%, 0);
+
+      transform:
+        translate(-50%, 0);
     }
 
     /* =====================================================
-       MOBILE
+       MOBILE OVERLAY
     ===================================================== */
 
     .overlay {
       display: none;
     }
 
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
     @media (max-width: 800px) {
 
       .sidebar {
         position: fixed;
+
         right: 0;
         top: 0;
-        transform: translateX(100%);
-        box-shadow: -20px 0 60px rgba(0,0,0,.4);
+
+        transform:
+          translateX(100%);
+
+        box-shadow:
+          -20px 0 60px rgba(0,0,0,.4);
       }
 
       .sidebar.open {
-        transform: translateX(0);
+        transform:
+          translateX(0);
       }
 
       .overlay.show {
         display: block;
+
         position: fixed;
+
         inset: 0;
-        background: rgba(0,0,0,.55);
+
+        background:
+          rgba(0,0,0,.55);
+
         z-index: 40;
       }
 
@@ -933,7 +1558,8 @@
       }
 
       .chat-container {
-        padding: 25px 12px 165px;
+        padding:
+          25px 12px 165px;
       }
 
       .quick-grid {
@@ -941,11 +1567,13 @@
       }
 
       .welcome {
-        min-height: calc(100vh - 220px);
+        min-height:
+          calc(100vh - 220px);
       }
 
       .composer-area {
-        padding: 10px 9px 12px;
+        padding:
+          10px 9px 12px;
       }
 
       .composer-hint {
@@ -953,7 +1581,13 @@
       }
 
       .bubble-wrap {
-        max-width: calc(100% - 45px);
+        max-width:
+          calc(100% - 45px);
+      }
+
+      .welcome-logo {
+        width: 72px;
+        height: 72px;
       }
     }
 
@@ -966,7 +1600,6 @@
       .welcome-logo {
         width: 65px;
         height: 65px;
-        border-radius: 21px;
       }
 
       .welcome h1 {
@@ -985,6 +1618,30 @@
         width: 31px;
         height: 31px;
       }
+
+      .bubble {
+        font-size: 12.5px;
+      }
+
+      .quick {
+        padding: 13px;
+      }
+    }
+
+    /* =====================================================
+       REDUCED MOTION
+    ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
     }
   </style>
 </head>
@@ -1000,49 +1657,164 @@
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
-      <div class="brand-logo">AS</div>
+
+      <div class="brand-logo">
+        <div class="sultan-logo logo-glow">
+          <svg
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Sultan AI"
+          >
+            <defs>
+              <linearGradient
+                id="brandOrange"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
+                <stop offset="0%" stop-color="#ff6811"/>
+                <stop offset="100%" stop-color="#ff9f45"/>
+              </linearGradient>
+            </defs>
+
+            <rect
+              x="8"
+              y="8"
+              width="84"
+              height="84"
+              rx="19"
+              fill="#090b0f"
+            />
+
+            <!-- orange geometric frame -->
+            <path
+              d="
+                M25 16
+                L84 16
+                L84 75
+                L68 91
+                L16 91
+                L16 32
+                Z
+              "
+              fill="none"
+              stroke="url(#brandOrange)"
+              stroke-width="8"
+              stroke-linejoin="round"
+            />
+
+            <!-- black inverted center -->
+            <path
+              d="
+                M37 29
+                L72 29
+                L72 64
+                L60 76
+                L29 76
+                L29 41
+                Z
+              "
+              fill="#08090c"
+              stroke="rgba(255,255,255,.06)"
+              stroke-width="2"
+              stroke-linejoin="round"
+            />
+
+            <!-- small orange accent -->
+            <path
+              d="
+                M37 29
+                L50 29
+                L29 50
+              "
+              fill="none"
+              stroke="#ff9a3d"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
 
       <div>
-        <div class="brand-title">Sultan AI</div>
-        <div class="brand-sub">ذكاء اصطناعي متقدم</div>
+        <div class="brand-title">
+          Sultan AI
+        </div>
+
+        <div class="brand-sub">
+          ذكاء اصطناعي متقدم
+        </div>
       </div>
+
     </div>
 
-    <button class="new-chat" id="newChat">
+    <button
+      class="new-chat"
+      id="newChat"
+      type="button"
+    >
       <span>＋</span>
       محادثة جديدة
     </button>
 
     <nav class="nav">
 
-      <div class="nav-title">المساحة</div>
+      <div class="nav-title">
+        المساحة
+      </div>
 
-      <button class="nav-btn active" data-mode="chat">
+      <button
+        class="nav-btn active"
+        data-mode="chat"
+        type="button"
+      >
         <span class="nav-icon">💬</span>
         <span>المحادثة</span>
       </button>
 
-      <button class="nav-btn" data-mode="files">
+      <button
+        class="nav-btn"
+        data-mode="files"
+        type="button"
+      >
         <span class="nav-icon">📎</span>
         <span>الملفات والصور</span>
       </button>
 
-      <button class="nav-btn" data-mode="fast">
+      <button
+        class="nav-btn"
+        data-mode="fast"
+        type="button"
+      >
         <span class="nav-icon">⚡</span>
         <span>الوضع السريع</span>
       </button>
 
-      <button class="nav-btn" data-mode="web">
+      <button
+        class="nav-btn"
+        data-mode="web"
+        type="button"
+      >
         <span class="nav-icon">🌐</span>
         <span>بحث الويب</span>
       </button>
 
-      <button class="nav-btn" data-mode="code">
+      <button
+        class="nav-btn"
+        data-mode="code"
+        type="button"
+      >
         <span class="nav-icon">⌘</span>
         <span>البرمجة</span>
       </button>
 
-      <button class="nav-btn" data-mode="analysis">
+      <button
+        class="nav-btn"
+        data-mode="analysis"
+        type="button"
+      >
         <span class="nav-icon">◈</span>
         <span>تحليل الملفات</span>
       </button>
@@ -1052,14 +1824,27 @@
     <div class="sidebar-spacer"></div>
 
     <div class="creator">
-      <div class="creator-label">تم التطوير بواسطة</div>
-      <div class="creator-name">علي حسين سلطان</div>
-      <div class="creator-as">AS · Sultan AI</div>
+
+      <div class="creator-label">
+        تم التطوير بواسطة
+      </div>
+
+      <div class="creator-name">
+        علي حسين سلطان
+      </div>
+
+      <div class="creator-as">
+        AS · Sultan AI
+      </div>
+
     </div>
 
   </aside>
 
-  <div class="overlay" id="overlay"></div>
+  <div
+    class="overlay"
+    id="overlay"
+  ></div>
 
   <!-- =====================================================
        MAIN
@@ -1071,41 +1856,155 @@
 
       <div class="top-left">
 
-        <button class="mobile-menu" id="mobileMenu">
+        <button
+          class="mobile-menu"
+          id="mobileMenu"
+          type="button"
+          aria-label="فتح القائمة"
+        >
           ☰
         </button>
 
-        <div class="status-dot"></div>
+        <div
+          class="status-dot"
+          id="statusDot"
+        ></div>
 
         <div>
-          <div class="top-title">Sultan AI Online</div>
-          <div class="top-status" id="topStatus">
+          <div class="top-title">
+            Sultan AI Online
+          </div>
+
+          <div
+            class="top-status"
+            id="topStatus"
+          >
             جاهز للمساعدة
           </div>
         </div>
 
       </div>
 
-      <div class="mode-badge">
+      <div
+        class="mode-badge"
+        id="modeBadge"
+      >
         <span>⚡</span>
-        Lightning Mode
+        <span id="modeBadgeText">
+          Sultan AI V7
+        </span>
       </div>
 
     </header>
 
     <!-- ===================================================
-         CHAT SCROLL
+         CHAT
     ==================================================== -->
 
-    <section class="chat-scroll" id="chatScroll">
+    <section
+      class="chat-scroll"
+      id="chatScroll"
+    >
 
       <div class="chat-container">
 
         <!-- WELCOME -->
 
-        <div class="welcome" id="welcome">
+        <div
+          class="welcome"
+          id="welcome"
+        >
 
-          <div class="welcome-logo">AS</div>
+          <div class="welcome-logo">
+
+            <div class="sultan-logo logo-glow">
+
+              <svg
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="Sultan AI"
+              >
+
+                <defs>
+
+                  <linearGradient
+                    id="welcomeOrange"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1"
+                  >
+                    <stop
+                      offset="0%"
+                      stop-color="#ff6811"
+                    />
+
+                    <stop
+                      offset="100%"
+                      stop-color="#ffab58"
+                    />
+                  </linearGradient>
+
+                </defs>
+
+                <rect
+                  x="7"
+                  y="7"
+                  width="86"
+                  height="86"
+                  rx="22"
+                  fill="#090b0f"
+                />
+
+                <path
+                  d="
+                    M24 15
+                    L85 15
+                    L85 75
+                    L68 92
+                    L15 92
+                    L15 31
+                    Z
+                  "
+                  fill="none"
+                  stroke="url(#welcomeOrange)"
+                  stroke-width="8"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="
+                    M37 29
+                    L72 29
+                    L72 64
+                    L60 76
+                    L29 76
+                    L29 41
+                    Z
+                  "
+                  fill="#08090c"
+                  stroke="rgba(255,255,255,.07)"
+                  stroke-width="2"
+                />
+
+                <path
+                  d="
+                    M37 29
+                    L50 29
+                    L29 50
+                  "
+                  fill="none"
+                  stroke="#ff9a3d"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+              </svg>
+
+            </div>
+
+          </div>
 
           <h1>
             أهلاً بك في
@@ -1113,18 +2012,30 @@
           </h1>
 
           <p>
-            مساعدك الذكي للمحادثة، البرمجة، تحليل الملفات والصور
-            والبحث عن المعلومات الحديثة.
+            مساعدك الذكي للمحادثة، البرمجة، تحليل الملفات والصور،
+            البحث على الويب، الحسابات والتحليل.
           </p>
+
+          <div class="welcome-badge">
+            <span>✦</span>
+            Sultan AI V7 · Advanced AI
+          </div>
 
           <div class="quick-grid">
 
             <button
               class="quick"
-              data-prompt="اشرح لي ما الذي تستطيع مساعدتي به؟"
+              data-prompt="اشرح لي ما الذي تستطيع مساعدتي به وما هي أدواتك؟"
+              type="button"
             >
-              <div class="quick-icon">✦</div>
-              <div class="quick-title">اسأل Sultan AI</div>
+              <div class="quick-icon">
+                ✦
+              </div>
+
+              <div class="quick-title">
+                اسأل Sultan AI
+              </div>
+
               <div class="quick-desc">
                 ابدأ محادثة مع المساعد
               </div>
@@ -1133,9 +2044,16 @@
             <button
               class="quick"
               data-prompt="ابحث على الويب عن أحدث المعلومات المهمة اليوم واذكر المصادر."
+              type="button"
             >
-              <div class="quick-icon">🌐</div>
-              <div class="quick-title">بحث الويب</div>
+              <div class="quick-icon">
+                🌐
+              </div>
+
+              <div class="quick-title">
+                بحث الويب
+              </div>
+
               <div class="quick-desc">
                 معلومات حديثة من الإنترنت
               </div>
@@ -1144,9 +2062,16 @@
             <button
               class="quick"
               data-prompt="ساعدني في كتابة برنامج واشرح لي الكود خطوة بخطوة."
+              type="button"
             >
-              <div class="quick-icon">⌘</div>
-              <div class="quick-title">البرمجة</div>
+              <div class="quick-icon">
+                ⌘
+              </div>
+
+              <div class="quick-title">
+                البرمجة
+              </div>
+
               <div class="quick-desc">
                 HTML · CSS · JS · Python وغيرها
               </div>
@@ -1155,9 +2080,16 @@
             <button
               class="quick"
               data-prompt="سأرسل لك ملفاً أو صورة. حلل المحتوى وأعطني أهم النتائج."
+              type="button"
             >
-              <div class="quick-icon">📁</div>
-              <div class="quick-title">الملفات والصور</div>
+              <div class="quick-icon">
+                📁
+              </div>
+
+              <div class="quick-title">
+                الملفات والصور
+              </div>
+
               <div class="quick-desc">
                 تحليل المحتوى المرفق
               </div>
@@ -1169,13 +2101,70 @@
 
         <!-- MESSAGES -->
 
-        <div class="messages" id="messages"></div>
+        <div
+          class="messages"
+          id="messages"
+        ></div>
 
         <!-- TYPING -->
 
-        <div class="typing" id="typing">
+        <div
+          class="typing"
+          id="typing"
+        >
 
-          <div class="avatar">AS</div>
+          <div class="avatar">
+
+            <div class="avatar-logo">
+
+              <svg
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+
+                <rect
+                  x="5"
+                  y="5"
+                  width="90"
+                  height="90"
+                  rx="20"
+                  fill="#090b0f"
+                />
+
+                <path
+                  d="
+                    M25 15
+                    L84 15
+                    L84 73
+                    L68 90
+                    L16 90
+                    L16 32
+                    Z
+                  "
+                  fill="none"
+                  stroke="#ff8b2b"
+                  stroke-width="9"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="
+                    M38 29
+                    L71 29
+                    L71 63
+                    L59 75
+                    L30 75
+                    L30 42
+                    Z
+                  "
+                  fill="#08090c"
+                />
+
+              </svg>
+
+            </div>
+
+          </div>
 
           <div class="typing-bubble">
             <i></i>
@@ -1209,6 +2198,7 @@
             id="attachButton"
             title="إرفاق ملف"
             type="button"
+            aria-label="إرفاق ملف"
           >
             ＋
           </button>
@@ -1249,6 +2239,8 @@
               .yaml,
               .yml,
               .toml,
+              .ini,
+              .conf,
               .pdf
             "
           />
@@ -1268,6 +2260,7 @@
             id="sendButton"
             type="button"
             title="إرسال"
+            aria-label="إرسال"
           >
             ↑
           </button>
@@ -1285,12 +2278,18 @@
             id="fastToggle"
             role="button"
             tabindex="0"
+            aria-label="Fast Mode"
+            aria-pressed="false"
           >
-            <span>Fast Mode</span>
+
+            <span>
+              Fast Mode
+            </span>
 
             <div class="switch">
               <div class="switch-dot"></div>
             </div>
+
           </div>
 
         </div>
@@ -1307,66 +2306,119 @@
 
 </div>
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast"
+  role="status"
+  aria-live="polite"
+></div>
 
 <script>
 "use strict";
 
 /* =========================================================
-   SULTAN AI V5 FRONTEND
-   ========================================================= */
+   SULTAN AI V7 FRONTEND
+========================================================= */
 
 const API_ENDPOINT = "/api/chat";
 
 const MAX_HISTORY = 24;
+
 const MAX_FILES = 5;
-const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const MAX_TOTAL_FILE_BYTES = 45 * 1024 * 1024;
+
+const MAX_FILE_SIZE =
+  20 * 1024 * 1024;
+
+const MAX_TOTAL_FILE_BYTES =
+  45 * 1024 * 1024;
+
+const REQUEST_TIMEOUT =
+  180000;
 
 /* =========================================================
    STATE
-   ========================================================= */
+========================================================= */
 
 let conversation = [];
+
 let selectedFiles = [];
+
 let sending = false;
+
 let abortController = null;
+
 let fastMode = false;
+
 let lastUserText = "";
+
 let lastRequestFiles = [];
+
+let toastTimer = null;
 
 /* =========================================================
    ELEMENTS
-   ========================================================= */
+========================================================= */
 
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-const mobileMenu = document.getElementById("mobileMenu");
+const sidebar =
+  document.getElementById("sidebar");
 
-const newChatButton = document.getElementById("newChat");
+const overlay =
+  document.getElementById("overlay");
 
-const welcome = document.getElementById("welcome");
-const messagesEl = document.getElementById("messages");
-const chatScroll = document.getElementById("chatScroll");
+const mobileMenu =
+  document.getElementById("mobileMenu");
 
-const messageInput = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
+const newChatButton =
+  document.getElementById("newChat");
 
-const attachButton = document.getElementById("attachButton");
-const fileInput = document.getElementById("fileInput");
-const selectedFilesEl = document.getElementById("selectedFiles");
+const welcome =
+  document.getElementById("welcome");
 
-const fastToggle = document.getElementById("fastToggle");
+const messagesEl =
+  document.getElementById("messages");
 
-const typing = document.getElementById("typing");
+const chatScroll =
+  document.getElementById("chatScroll");
 
-const topStatus = document.getElementById("topStatus");
+const messageInput =
+  document.getElementById("messageInput");
 
-const toast = document.getElementById("toast");
+const sendButton =
+  document.getElementById("sendButton");
+
+const attachButton =
+  document.getElementById("attachButton");
+
+const fileInput =
+  document.getElementById("fileInput");
+
+const selectedFilesEl =
+  document.getElementById("selectedFiles");
+
+const fastToggle =
+  document.getElementById("fastToggle");
+
+const typing =
+  document.getElementById("typing");
+
+const topStatus =
+  document.getElementById("topStatus");
+
+const statusDot =
+  document.getElementById("statusDot");
+
+const toast =
+  document.getElementById("toast");
+
+const modeBadge =
+  document.getElementById("modeBadge");
+
+const modeBadgeText =
+  document.getElementById("modeBadgeText");
 
 /* =========================================================
    UTILITIES
-   ========================================================= */
+========================================================= */
 
 function escapeHTML(value) {
   return String(value ?? "")
@@ -1378,193 +2430,384 @@ function escapeHTML(value) {
 }
 
 function showToast(message) {
-  toast.textContent = message;
+
+  toast.textContent =
+    String(message || "");
+
   toast.classList.add("show");
 
-  clearTimeout(showToast.timer);
+  clearTimeout(toastTimer);
 
-  showToast.timer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2600);
+  toastTimer =
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2800);
 }
 
 function scrollBottom(smooth = true) {
-  chatScroll.scrollTo({
-    top: chatScroll.scrollHeight,
-    behavior: smooth ? "smooth" : "auto"
+
+  requestAnimationFrame(() => {
+
+    chatScroll.scrollTo({
+      top:
+        chatScroll.scrollHeight,
+      behavior:
+        smooth
+          ? "smooth"
+          : "auto"
+    });
+
   });
 }
 
 function setStatus(text) {
-  topStatus.textContent = text;
+  topStatus.textContent =
+    String(text || "");
+}
+
+function setConnectionState(state) {
+
+  statusDot.classList.remove(
+    "offline",
+    "busy"
+  );
+
+  if (state === "offline") {
+    statusDot.classList.add(
+      "offline"
+    );
+  }
+
+  if (state === "busy") {
+    statusDot.classList.add(
+      "busy"
+    );
+  }
 }
 
 function fileSize(bytes) {
-  if (!bytes) return "0 B";
 
-  const units = ["B", "KB", "MB", "GB"];
-  let size = bytes;
+  if (!bytes) {
+    return "0 B";
+  }
+
+  const units = [
+    "B",
+    "KB",
+    "MB",
+    "GB"
+  ];
+
+  let size =
+    Number(bytes);
+
   let index = 0;
 
-  while (size >= 1024 && index < units.length - 1) {
+  while (
+    size >= 1024 &&
+    index <
+      units.length - 1
+  ) {
     size /= 1024;
     index++;
   }
 
-  return `${size.toFixed(index ? 1 : 0)} ${units[index]}`;
+  return `${size.toFixed(
+    index ? 1 : 0
+  )} ${units[index]}`;
 }
 
 /* =========================================================
    MOBILE SIDEBAR
-   ========================================================= */
+========================================================= */
 
 function openSidebar() {
+
   sidebar.classList.add("open");
+
   overlay.classList.add("show");
 }
 
 function closeSidebar() {
+
   sidebar.classList.remove("open");
+
   overlay.classList.remove("show");
 }
 
-mobileMenu.addEventListener("click", openSidebar);
-overlay.addEventListener("click", closeSidebar);
+mobileMenu.addEventListener(
+  "click",
+  openSidebar
+);
+
+overlay.addEventListener(
+  "click",
+  closeSidebar
+);
 
 /* =========================================================
    NEW CHAT
-   ========================================================= */
+========================================================= */
 
 function newChat() {
-  if (sending && abortController) {
+
+  if (
+    sending &&
+    abortController
+  ) {
     abortController.abort();
   }
 
   conversation = [];
+
   selectedFiles = [];
+
   sending = false;
+
+  abortController = null;
+
   lastUserText = "";
+
   lastRequestFiles = [];
 
   messagesEl.innerHTML = "";
 
-  welcome.style.display = "flex";
+  welcome.style.display =
+    "flex";
 
   renderSelectedFiles();
 
-  setStatus("جاهز للمساعدة");
+  setStatus(
+    "جاهز للمساعدة"
+  );
+
+  setConnectionState(
+    "online"
+  );
 
   setSendingUI(false);
 
   messageInput.value = "";
+
   autoResize();
 
   closeSidebar();
 
   messageInput.focus();
+
+  scrollBottom(false);
 }
 
-newChatButton.addEventListener("click", newChat);
+newChatButton.addEventListener(
+  "click",
+  newChat
+);
 
 /* =========================================================
    NAVIGATION
-   ========================================================= */
+========================================================= */
 
-document.querySelectorAll(".nav-btn").forEach(button => {
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
 
-  button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-    document.querySelectorAll(".nav-btn")
-      .forEach(item => item.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach(item => {
+            item.classList.remove(
+              "active"
+            );
+          });
 
-    button.classList.add("active");
+        button.classList.add(
+          "active"
+        );
 
-    const mode = button.dataset.mode;
+        const mode =
+          button.dataset.mode;
 
-    if (mode === "fast") {
-      fastMode = true;
-      updateFastToggle();
-      showToast("تم تفعيل Fast Mode");
-    }
+        if (mode === "chat") {
 
-    if (mode === "web") {
-      messageInput.value =
-        "ابحث على الويب عن ";
-      autoResize();
-      messageInput.focus();
-    }
+          messageInput.placeholder =
+            "اكتب رسالتك إلى Sultan AI...";
 
-    if (mode === "code") {
-      messageInput.value =
-        "ساعدني في البرمجة: ";
-      autoResize();
-      messageInput.focus();
-    }
+          messageInput.focus();
+        }
 
-    if (mode === "files" || mode === "analysis") {
-      fileInput.click();
-    }
+        if (mode === "fast") {
 
-    closeSidebar();
+          fastMode = true;
+
+          updateFastToggle();
+
+          updateModeBadge();
+
+          showToast(
+            "تم تفعيل Fast Mode ⚡"
+          );
+
+          messageInput.focus();
+        }
+
+        if (mode === "web") {
+
+          messageInput.value =
+            "ابحث على الويب عن ";
+
+          autoResize();
+
+          messageInput.focus();
+
+          showToast(
+            "اكتب موضوع البحث ثم أرسل"
+          );
+        }
+
+        if (mode === "code") {
+
+          messageInput.value =
+            "ساعدني في البرمجة: ";
+
+          autoResize();
+
+          messageInput.focus();
+
+          showToast(
+            "جاهز لمساعدتك بالبرمجة"
+          );
+        }
+
+        if (
+          mode === "files" ||
+          mode === "analysis"
+        ) {
+
+          fileInput.click();
+        }
+
+        closeSidebar();
+      }
+    );
+
   });
-
-});
 
 /* =========================================================
    QUICK PROMPTS
-   ========================================================= */
+========================================================= */
 
-document.querySelectorAll(".quick").forEach(button => {
+document
+  .querySelectorAll(".quick")
+  .forEach(button => {
 
-  button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-    const prompt = button.dataset.prompt || "";
+        const prompt =
+          button.dataset.prompt ||
+          "";
 
-    messageInput.value = prompt;
+        messageInput.value =
+          prompt;
 
-    autoResize();
+        autoResize();
 
-    messageInput.focus();
+        messageInput.focus();
 
-    sendMessage();
+        sendMessage();
+      }
+    );
+
   });
-
-});
 
 /* =========================================================
    FAST MODE
-   ========================================================= */
+========================================================= */
 
 function updateFastToggle() {
-  fastToggle.classList.toggle("active", fastMode);
+
+  fastToggle.classList.toggle(
+    "active",
+    fastMode
+  );
+
+  fastToggle.setAttribute(
+    "aria-pressed",
+    String(fastMode)
+  );
 }
 
-fastToggle.addEventListener("click", () => {
-  fastMode = !fastMode;
-  updateFastToggle();
-});
+function updateModeBadge() {
 
-fastToggle.addEventListener("keydown", event => {
+  if (fastMode) {
 
-  if (
-    event.key === "Enter" ||
-    event.key === " "
-  ) {
-    event.preventDefault();
+    modeBadge.classList.add(
+      "fast"
+    );
 
-    fastMode = !fastMode;
-    updateFastToggle();
+    modeBadgeText.textContent =
+      "Lightning Mode";
+  } else {
+
+    modeBadge.classList.remove(
+      "fast"
+    );
+
+    modeBadgeText.textContent =
+      "Sultan AI V7";
   }
+}
 
-});
+function toggleFastMode() {
+
+  fastMode =
+    !fastMode;
+
+  updateFastToggle();
+
+  updateModeBadge();
+
+  showToast(
+    fastMode
+      ? "Fast Mode مفعّل ⚡"
+      : "Fast Mode متوقف"
+  );
+}
+
+fastToggle.addEventListener(
+  "click",
+  toggleFastMode
+);
+
+fastToggle.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+
+      event.preventDefault();
+
+      toggleFastMode();
+    }
+
+  }
+);
 
 /* =========================================================
    TEXTAREA
-   ========================================================= */
+========================================================= */
 
 function autoResize() {
 
-  messageInput.style.height = "auto";
+  messageInput.style.height =
+    "auto";
 
   const height =
     Math.min(
@@ -1573,7 +2816,10 @@ function autoResize() {
     );
 
   messageInput.style.height =
-    `${Math.max(height, 39)}px`;
+    `${Math.max(
+      height,
+      39
+    )}px`;
 }
 
 messageInput.addEventListener(
@@ -1589,6 +2835,7 @@ messageInput.addEventListener(
       event.key === "Enter" &&
       !event.shiftKey
     ) {
+
       event.preventDefault();
 
       sendMessage();
@@ -1599,11 +2846,13 @@ messageInput.addEventListener(
 
 /* =========================================================
    FILE INPUT
-   ========================================================= */
+========================================================= */
 
 attachButton.addEventListener(
   "click",
-  () => fileInput.click()
+  () => {
+    fileInput.click();
+  }
 );
 
 fileInput.addEventListener(
@@ -1611,7 +2860,9 @@ fileInput.addEventListener(
   event => {
 
     const files =
-      Array.from(event.target.files || []);
+      Array.from(
+        event.target.files || []
+      );
 
     addFiles(files);
 
@@ -1621,29 +2872,46 @@ fileInput.addEventListener(
 
 function addFiles(files) {
 
-  if (!files.length) return;
+  if (!files.length) {
+    return;
+  }
 
   if (
-    selectedFiles.length + files.length >
+    selectedFiles.length +
+      files.length >
     MAX_FILES
   ) {
+
     showToast(
       `الحد الأقصى ${MAX_FILES} ملفات`
     );
 
-    return;
+    files =
+      files.slice(
+        0,
+        MAX_FILES -
+          selectedFiles.length
+      );
   }
 
   let total =
     selectedFiles.reduce(
       (sum, file) =>
-        sum + Number(file.size || 0),
+        sum +
+        Number(
+          file.size || 0
+        ),
       0
     );
 
-  for (const file of files) {
+  for (
+    const file of files
+  ) {
 
-    if (file.size > MAX_FILE_SIZE) {
+    if (
+      file.size >
+      MAX_FILE_SIZE
+    ) {
 
       showToast(
         `${file.name} أكبر من 20MB`
@@ -1653,7 +2921,8 @@ function addFiles(files) {
     }
 
     if (
-      total + file.size >
+      total +
+        file.size >
       MAX_TOTAL_FILE_BYTES
     ) {
 
@@ -1667,15 +2936,24 @@ function addFiles(files) {
     const duplicate =
       selectedFiles.some(
         existing =>
-          existing.name === file.name &&
-          existing.size === file.size
+          existing.name ===
+            file.name &&
+          existing.size ===
+            file.size &&
+          existing.lastModified ===
+            file.lastModified
       );
 
-    if (duplicate) continue;
+    if (duplicate) {
+      continue;
+    }
 
-    selectedFiles.push(file);
+    selectedFiles.push(
+      file
+    );
 
-    total += file.size;
+    total +=
+      file.size;
 
     if (
       selectedFiles.length >=
@@ -1690,890 +2968,18 @@ function addFiles(files) {
 
 function removeFile(index) {
 
-  selectedFiles.splice(index, 1);
+  selectedFiles.splice(
+    index,
+    1
+  );
 
   renderSelectedFiles();
 }
 
 function renderSelectedFiles() {
 
-  selectedFilesEl.innerHTML = "";
-
-  if (!selectedFiles.length) {
-
-    selectedFilesEl.classList.remove("show");
-
-    return;
-  }
-
-  selectedFilesEl.classList.add("show");
-
-  selectedFiles.forEach(
-    (file, index) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "selected-file";
-
-      item.innerHTML = `
-        <span>📎</span>
-        <span>${escapeHTML(file.name)}</span>
-        <span>${fileSize(file.size)}</span>
-        <button
-          class="remove-file"
-          type="button"
-          aria-label="حذف الملف"
-        >×</button>
-      `;
-
-      item
-        .querySelector(".remove-file")
-        .addEventListener(
-          "click",
-          () => removeFile(index)
-        );
-
-      selectedFilesEl.appendChild(item);
-    }
-  );
-}
-
-/* =========================================================
-   FILE → DATA URL
-   ========================================================= */
-
-function readFileAsDataURL(file) {
-
-  return new Promise(
-    (resolve, reject) => {
-
-      const reader =
-        new FileReader();
-
-      reader.onload = () =>
-        resolve(reader.result);
-
-      reader.onerror = () =>
-        reject(
-          new Error(
-            `تعذر قراءة ${file.name}`
-          )
-        );
-
-      reader.readAsDataURL(file);
-    }
-  );
-}
-
-async function prepareFiles(files) {
-
-  const result = [];
-
-  for (const file of files) {
-
-    try {
-
-      const data =
-        await readFileAsDataURL(file);
-
-      result.push({
-        name: file.name,
-        type: file.type || "application/octet-stream",
-        size: file.size,
-        data
-      });
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast(
-        `تعذر قراءة الملف: ${file.name}`
-      );
-    }
-  }
-
-  return result;
-}
-
-/* =========================================================
-   MARKDOWN RENDERER
-   ========================================================= */
-
-function renderMarkdown(text) {
-
-  let source =
-    String(text || "")
-      .replace(/\r\n/g, "\n")
-      .replace(/\r/g, "\n");
-
-  const codeBlocks = [];
-
-  source =
-    source.replace(
-      /```([\w#+.-]*)\n?([\s\S]*?)```/g,
-      (_, language, code) => {
-
-        const id =
-          codeBlocks.length;
-
-        codeBlocks.push({
-          language:
-            language || "code",
-          code
-        });
-
-        return `@@CODE_BLOCK_${id}@@`;
-      }
-    );
-
-  let html =
-    escapeHTML(source);
-
-  html =
-    html.replace(
-      /^### (.+)$/gm,
-      "<h3>$1</h3>"
-    );
-
-  html =
-    html.replace(
-      /^## (.+)$/gm,
-      "<h2>$1</h2>"
-    );
-
-  html =
-    html.replace(
-      /^# (.+)$/gm,
-      "<h1>$1</h1>"
-    );
-
-  html =
-    html.replace(
-      /\*\*(.+?)\*\*/g,
-      "<strong>$1</strong>"
-    );
-
-  html =
-    html.replace(
-      /`([^`\n]+)`/g,
-      "<code>$1</code>"
-    );
-
-  html =
-    html.replace(
-      /^[-•] (.+)$/gm,
-      "<li>$1</li>"
-    );
-
-  html =
-    html.replace(
-      /(<li>.*<\/li>)/gs,
-      "<ul>$1</ul>"
-    );
-
-  html =
-    html.replace(
-      /\n{2,}/g,
-      "</p><p>"
-    );
-
-  html =
-    html.replace(
-      /\n/g,
-      "<br>"
-    );
-
-  html =
-    "<p>" + html + "</p>";
-
-  html =
-    html.replace(
-      /@@CODE_BLOCK_(\d+)@@/g,
-      (_, index) => {
-
-        const block =
-          codeBlocks[
-            Number(index)
-          ];
-
-        const safeCode =
-          escapeHTML(block.code);
-
-        return `
-          <div class="code-wrap">
-
-            <div class="code-head">
-
-              <span>
-                ${escapeHTML(block.language)}
-              </span>
-
-              <button
-                class="copy-code"
-                type="button"
-                data-code="${encodeURIComponent(block.code)}"
-              >
-                نسخ
-              </button>
-
-            </div>
-
-            <pre><code>${safeCode}</code></pre>
-
-          </div>
-        `;
-      }
-    );
-
-  return html;
-}
-
-/* =========================================================
-   MESSAGE RENDERING
-   ========================================================= */
-
-function createMessageElement(
-  role,
-  content,
-  files = []
-) {
-
-  const message =
-    document.createElement("div");
-
-  message.className =
-    `message ${role}`;
-
-  const avatar =
-    role === "assistant"
-      ? "AS"
-      : "أنت";
-
-  let fileHTML = "";
-
-  if (files.length) {
-
-    fileHTML = `
-      <div class="files-in-message">
-        ${files.map(file => `
-          <div class="file-chip">
-            📎 ${escapeHTML(file.name)}
-          </div>
-        `).join("")}
-      </div>
-    `;
-  }
-
-  message.innerHTML = `
-    <div class="avatar">${avatar}</div>
-
-    <div class="bubble-wrap">
-
-      <div class="bubble">
-        ${
-          role === "assistant"
-            ? renderMarkdown(content)
-            : `<p>${escapeHTML(content).replace(/\n/g,"<br>")}</p>`
-        }
-
-        ${fileHTML}
-      </div>
-
-      ${
-        role === "assistant"
-          ? `
-            <div class="message-actions">
-
-              <button
-                class="action copy-answer"
-                type="button"
-              >
-                نسخ
-              </button>
-
-              <button
-                class="action regenerate"
-                type="button"
-              >
-                إعادة التوليد
-              </button>
-
-            </div>
-          `
-          : ""
-      }
-
-    </div>
-  `;
-
-  if (role === "assistant") {
-
-    const copy =
-      message.querySelector(
-        ".copy-answer"
-      );
-
-    copy.addEventListener(
-      "click",
-      async () => {
-
-        try {
-
-          await navigator.clipboard.writeText(
-            content
-          );
-
-          showToast("تم نسخ الرد");
-
-        } catch {
-
-          showToast(
-            "تعذر نسخ الرد"
-          );
-        }
-      }
-    );
-
-    const regenerate =
-      message.querySelector(
-        ".regenerate"
-      );
-
-    regenerate.addEventListener(
-      "click",
-      () => {
-
-        if (!sending && lastUserText) {
-          requestAI(
-            lastUserText,
-            lastRequestFiles
-          );
-        }
-      }
-    );
-
-    message
-      .querySelectorAll(".copy-code")
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          async () => {
-
-            try {
-
-              const code =
-                decodeURIComponent(
-                  button.dataset.code
-                );
-
-              await navigator.clipboard
-                .writeText(code);
-
-              button.textContent =
-                "تم النسخ";
-
-              setTimeout(() => {
-                button.textContent =
-                  "نسخ";
-              }, 1300);
-
-            } catch {
-
-              showToast(
-                "تعذر نسخ الكود"
-              );
-            }
-          }
-        );
-
-      });
-  }
-
-  return message;
-}
-
-function addMessage(
-  role,
-  content,
-  files = []
-) {
-
-  const element =
-    createMessageElement(
-      role,
-      content,
-      files
-    );
-
-  messagesEl.appendChild(element);
-
-  welcome.style.display = "none";
-
-  scrollBottom();
-
-  return element;
-}
-
-/* =========================================================
-   SERVER CONVERSATION
-   ========================================================= */
-
-function getServerConversation() {
-
-  return conversation
-    .slice(-MAX_HISTORY)
-    .map(item => ({
-      role: item.role,
-      content: item.content
-    }));
-}
-
-/* =========================================================
-   SENDING UI
-   ========================================================= */
-
-function setSendingUI(value) {
-
-  sending = value;
-
-  typing.classList.toggle(
-    "show",
-    value
-  );
-
-  if (value) {
-
-    sendButton.classList.add("stop");
-
-    sendButton.textContent = "■";
-
-    sendButton.title =
-      "إيقاف الطلب";
-
-    setStatus(
-      "Sultan AI يعالج طلبك..."
-    );
-
-  } else {
-
-    sendButton.classList.remove(
-      "stop"
-    );
-
-    sendButton.textContent = "↑";
-
-    sendButton.title =
-      "إرسال";
-
-    setStatus(
-      "جاهز للمساعدة"
-    );
-  }
-}
-
-/* =========================================================
-   STOP
-   ========================================================= */
-
-function stopRequest() {
+  selectedFilesEl.innerHTML =
+    "";
 
   if (
-    abortController &&
-    sending
-  ) {
-
-    abortController.abort();
-
-    abortController = null;
-
-    setSendingUI(false);
-
-    showToast(
-      "تم إيقاف الطلب"
-    );
-  }
-}
-
-/* =========================================================
-   SEND
-   ========================================================= */
-
-sendButton.addEventListener(
-  "click",
-  () => {
-
-    if (sending) {
-      stopRequest();
-      return;
-    }
-
-    sendMessage();
-  }
-);
-
-async function sendMessage() {
-
-  if (sending) return;
-
-  const text =
-    messageInput.value.trim();
-
-  if (
-    !text &&
     !selectedFiles.length
-  ) {
-
-    showToast(
-      "اكتب رسالة أو أرفق ملفاً أولاً"
-    );
-
-    messageInput.focus();
-
-    return;
-  }
-
-  const filesForRequest =
-    [...selectedFiles];
-
-  const requestText =
-    text ||
-    "حلل الملفات المرفقة وأعطني النتائج المهمة.";
-
-  lastUserText = requestText;
-
-  lastRequestFiles =
-    filesForRequest;
-
-  const fileLabels =
-    filesForRequest.map(
-      file => ({
-        name: file.name,
-        size: file.size,
-        type: file.type
-      })
-    );
-
-  addMessage(
-    "user",
-    requestText,
-    fileLabels
-  );
-
-  conversation.push({
-    role: "user",
-    content: requestText
-  });
-
-  conversation =
-    conversation.slice(
-      -MAX_HISTORY
-    );
-
-  messageInput.value = "";
-
-  autoResize();
-
-  selectedFiles = [];
-
-  renderSelectedFiles();
-
-  await requestAI(
-    requestText,
-    filesForRequest
-  );
-}
-
-/* =========================================================
-   API REQUEST
-   ========================================================= */
-
-async function requestAI(
-  text,
-  files = []
-) {
-
-  if (sending) return;
-
-  setSendingUI(true);
-
-  abortController =
-    new AbortController();
-
-  const timeout =
-    setTimeout(() => {
-
-      if (abortController) {
-        abortController.abort();
-      }
-
-    }, 180000);
-
-  try {
-
-    setStatus(
-      fastMode
-        ? "Fast Mode يعمل..."
-        : "Sultan AI يفكر..."
-    );
-
-    const encodedFiles =
-      await prepareFiles(files);
-
-    const payload = {
-
-      message: text,
-
-      messages:
-        getServerConversation(),
-
-      files:
-        encodedFiles,
-
-      fastMode:
-        Boolean(fastMode)
-
-    };
-
-    const response =
-      await fetch(
-        API_ENDPOINT,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(payload),
-
-          signal:
-            abortController.signal
-        }
-      );
-
-    let data = null;
-
-    try {
-      data =
-        await response.json();
-    } catch {
-      data = null;
-    }
-
-    if (!response.ok) {
-
-      const errorMessage =
-        data?.error ||
-        data?.message ||
-        `HTTP ${response.status}`;
-
-      throw new Error(
-        errorMessage
-      );
-    }
-
-    const reply =
-      String(
-        data?.reply ||
-        data?.message ||
-        ""
-      ).trim();
-
-    if (!reply) {
-      throw new Error(
-        "وصل رد فارغ من الخادم."
-      );
-    }
-
-    conversation.push({
-      role: "assistant",
-      content: reply
-    });
-
-    conversation =
-      conversation.slice(
-        -MAX_HISTORY
-      );
-
-    addMessage(
-      "assistant",
-      reply
-    );
-
-    /* -----------------------------------------------
-       TOOL INFORMATION
-    ------------------------------------------------ */
-
-    if (
-      Array.isArray(
-        data?.toolsUsed
-      ) &&
-      data.toolsUsed.length
-    ) {
-
-      const toolNames =
-        data.toolsUsed.map(
-          tool => {
-
-            const labels = {
-              web_search:
-                "بحث الويب",
-              visit_website:
-                "قراءة موقع",
-              code_interpreter:
-                "تنفيذ كود",
-              wolfram_alpha:
-                "Wolfram Alpha"
-            };
-
-            return (
-              labels[tool] ||
-              tool
-            );
-          }
-        );
-
-      setStatus(
-        `تم استخدام: ${toolNames.join(" · ")}`
-      );
-
-      setTimeout(() => {
-
-        if (!sending) {
-          setStatus(
-            "جاهز للمساعدة"
-          );
-        }
-
-      }, 2500);
-    }
-
-  } catch (error) {
-
-    if (
-      error?.name ===
-      "AbortError"
-    ) {
-      return;
-    }
-
-    console.error(
-      "Sultan AI request error:",
-      error
-    );
-
-    const errorText =
-      error?.message ||
-      "حدث خطأ أثناء الاتصال بالخادم.";
-
-    addMessage(
-      "assistant",
-      `تعذر إكمال الطلب حالياً.\n\n${errorText}`
-    );
-
-    showToast(
-      "حدث خطأ في الاتصال بـ Sultan AI"
-    );
-
-  } finally {
-
-    clearTimeout(timeout);
-
-    abortController = null;
-
-    setSendingUI(false);
-
-    messageInput.focus();
-  }
-}
-
-/* =========================================================
-   HEALTH CHECK
-   ========================================================= */
-
-async function checkServer() {
-
-  try {
-
-    const response =
-      await fetch(
-        "/api/health",
-        {
-          method: "GET",
-          cache: "no-store"
-        }
-      );
-
-    if (!response.ok) {
-      throw new Error();
-    }
-
-    const data =
-      await response.json();
-
-    if (data?.ok) {
-
-      setStatus(
-        "متصل · Sultan AI جاهز"
-      );
-
-      setTimeout(() => {
-
-        if (!sending) {
-          setStatus(
-            "جاهز للمساعدة"
-          );
-        }
-
-      }, 2500);
-    }
-
-  } catch {
-
-    setStatus(
-      "تعذر التحقق من الخادم"
-    );
-  }
-}
-
-/* =========================================================
-   INITIALIZATION
-   ========================================================= */
-
-updateFastToggle();
-
-autoResize();
-
-checkServer();
-
-window.addEventListener(
-  "load",
-  () => {
-    messageInput.focus();
-  }
-);
-
-/* =========================================================
-   PREVENT ACCIDENTAL PAGE LEAVE WHILE SENDING
-   ========================================================= */
-
-window.addEventListener(
-  "beforeunload",
-  event => {
-
-    if (!sending) return;
-
-    event.preventDefault();
-    event.returnValue = "";
-  }
-);
-</script>
-
-</body>
-</html>
