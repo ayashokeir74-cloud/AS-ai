@@ -1,2109 +1,2488 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#07080d">
-  <meta name="color-scheme" content="dark">
-  <title>A S AI — علي سلطان</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070812" />
+  <meta name="description" content="A S AI — مساعد ذكاء اصطناعي متطور" />
+
+  <title>A S AI — AI Assistant</title>
 
   <style>
-    *{box-sizing:border-box}
-
-    :root{
-      --bg:#07080d;
-      --bg2:#0b0d14;
-      --panel:#0f121b;
-      --panel2:#141824;
-      --panel3:#1a1f2d;
-      --line:#242a39;
-      --line2:#32394b;
-      --text:#f6f7fb;
-      --muted:#929bad;
-      --muted2:#687185;
-      --purple:#8b5cf6;
-      --purple2:#a78bfa;
-      --cyan:#22d3ee;
-      --green:#4ade80;
-      --red:#fb7185;
-      --shadow:0 25px 80px rgba(0,0,0,.45);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html,body{
-      margin:0;
-      width:100%;
-      height:100%;
-      background:var(--bg);
-      color:var(--text);
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
+    :root {
+      --bg: #070812;
+      --bg2: #0b0d19;
+      --panel: rgba(17, 20, 35, .82);
+      --panel2: rgba(24, 27, 45, .72);
+      --border: rgba(255,255,255,.08);
+      --text: #f5f7ff;
+      --muted: #8e94aa;
+      --purple: #8b5cf6;
+      --purple2: #6d28d9;
+      --cyan: #22d3ee;
+      --green: #34d399;
+      --danger: #fb7185;
+      --radius: 22px;
+      --sidebar: 285px;
     }
 
-    body{
-      overflow:hidden;
-    }
-
-    button,input,textarea{
-      font:inherit;
-    }
-
-    button{
-      cursor:pointer;
-    }
-
-    button:disabled{
-      cursor:not-allowed;
-      opacity:.5;
-    }
-
-    /* BACKGROUND */
-
-    .background{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      overflow:hidden;
-      z-index:0;
-    }
-
-    .orb{
-      position:absolute;
-      border-radius:50%;
-      filter:blur(80px);
-      opacity:.15;
-    }
-
-    .orb.one{
-      width:360px;
-      height:360px;
-      background:#7c3aed;
-      top:-180px;
-      right:15%;
-    }
-
-    .orb.two{
-      width:300px;
-      height:300px;
-      background:#06b6d4;
-      bottom:-160px;
-      left:5%;
-    }
-
-    /* APP */
-
-    .app{
-      width:100%;
-      height:100dvh;
-      display:flex;
-      position:relative;
-      z-index:1;
-    }
-
-    /* SIDEBAR */
-
-    .sidebar{
-      width:285px;
-      flex:0 0 285px;
-      height:100%;
-      background:rgba(10,12,18,.94);
-      border-left:1px solid var(--line);
-      display:flex;
-      flex-direction:column;
-      padding:18px 14px;
-      z-index:30;
-      transition:.25s ease;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:4px 6px 20px;
-    }
-
-    .brand-logo{
-      width:47px;
-      height:47px;
-      border-radius:16px;
-      display:grid;
-      place-items:center;
-      font-weight:950;
-      font-size:14px;
-      letter-spacing:-1px;
-      color:white;
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       background:
-        linear-gradient(135deg,var(--purple),#6d5ce7 55%,var(--cyan));
-      box-shadow:0 12px 35px rgba(139,92,246,.28);
+        radial-gradient(circle at 15% 15%, rgba(124,58,237,.16), transparent 28%),
+        radial-gradient(circle at 85% 10%, rgba(34,211,238,.10), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(124,58,237,.08), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
     }
 
-    .brand-name{
-      font-size:18px;
-      font-weight:900;
+    button,
+    textarea,
+    input {
+      font: inherit;
     }
 
-    .brand-sub{
-      color:var(--muted);
-      font-size:10px;
-      margin-top:3px;
+    button {
+      border: 0;
+      cursor: pointer;
     }
 
-    .new-chat{
-      height:49px;
-      width:100%;
-      border:1px solid var(--line2);
-      border-radius:15px;
-      background:linear-gradient(135deg,#171325,#111520);
-      color:white;
-      font-weight:800;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:8px;
-      transition:.2s;
+    ::selection {
+      background: rgba(139,92,246,.35);
     }
 
-    .new-chat:hover{
-      transform:translateY(-1px);
-      border-color:#554b78;
-      background:#1a1e2b;
+    ::-webkit-scrollbar {
+      width: 7px;
     }
 
-    .side-label{
-      color:var(--muted2);
-      font-size:10px;
-      font-weight:800;
-      margin:22px 7px 9px;
+    ::-webkit-scrollbar-track {
+      background: transparent;
     }
 
-    .history{
-      flex:1;
-      overflow:auto;
-      padding-right:2px;
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,.10);
+      border-radius: 20px;
     }
 
-    .history-item{
-      width:100%;
-      border:1px solid transparent;
-      background:transparent;
-      color:#cdd2df;
-      border-radius:12px;
-      padding:11px;
-      text-align:right;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      margin-bottom:4px;
-      transition:.15s;
+    /* =========================
+       APP
+    ========================= */
+
+    .app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: relative;
+      overflow: hidden;
     }
 
-    .history-item:hover{
-      background:#151924;
-      border-color:var(--line);
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      width: var(--sidebar);
+      height: 100%;
+      flex-shrink: 0;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      background: rgba(8, 10, 20, .82);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      z-index: 30;
     }
 
-    .side-bottom{
-      border-top:1px solid var(--line);
-      margin-top:12px;
-      padding:14px 6px 2px;
-      color:var(--muted2);
-      font-size:10px;
-      line-height:1.8;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 4px 16px;
     }
 
-    /* MAIN */
-
-    .main{
-      min-width:0;
-      flex:1;
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      position:relative;
-    }
-
-    .topbar{
-      height:68px;
-      flex:none;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 22px;
-      border-bottom:1px solid rgba(36,42,57,.8);
-      background:rgba(7,8,13,.72);
-      backdrop-filter:blur(18px);
-      z-index:10;
-    }
-
-    .top-left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .menu{
-      display:none;
-      width:40px;
-      height:40px;
-      border:1px solid var(--line);
-      border-radius:12px;
-      background:#11141d;
-      color:white;
-    }
-
-    .top-title{
-      font-weight:900;
-      font-size:16px;
-    }
-
-    .online{
-      display:flex;
-      align-items:center;
-      gap:7px;
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .online-dot{
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      background:var(--green);
-      box-shadow:0 0 12px rgba(74,222,128,.8);
-    }
-
-    /* CHAT */
-
-    .messages{
-      flex:1;
-      overflow:auto;
-      padding:35px 20px 180px;
-      scroll-behavior:smooth;
-    }
-
-    .welcome{
-      width:min(950px,100%);
-      margin:7vh auto 0;
-      text-align:center;
-    }
-
-    .hero-logo{
-      width:74px;
-      height:74px;
-      margin:0 auto 20px;
-      border-radius:25px;
-      display:grid;
-      place-items:center;
-      font-size:22px;
-      font-weight:950;
-      background:linear-gradient(135deg,var(--purple),#6d5ce7,var(--cyan));
+    .brand-logo {
+      width: 47px;
+      height: 47px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: -1px;
+      background:
+        linear-gradient(135deg, #9b6cff, #6d28d9 55%, #22d3ee);
       box-shadow:
-        0 20px 55px rgba(139,92,246,.28),
-        inset 0 1px 0 rgba(255,255,255,.25);
+        0 10px 35px rgba(124,58,237,.28),
+        inset 0 1px rgba(255,255,255,.3);
     }
 
-    .welcome h1{
-      margin:0;
-      font-size:clamp(32px,5vw,58px);
-      letter-spacing:-2px;
-      line-height:1.05;
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 850;
+      letter-spacing: -.4px;
     }
 
-    .gradient-text{
-      background:linear-gradient(90deg,#fff,var(--purple2),var(--cyan));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+    .brand-text p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
     }
 
-    .welcome p{
-      max-width:650px;
-      margin:17px auto 30px;
-      color:var(--muted);
-      line-height:1.9;
-      font-size:14px;
+    .new-chat {
+      height: 48px;
+      border-radius: 15px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      box-shadow: 0 10px 30px rgba(109,40,217,.22);
+      transition: .2s;
+      font-weight: 750;
     }
 
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:13px;
-      text-align:right;
+    .new-chat:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 13px 35px rgba(109,40,217,.32);
     }
 
-    .card{
-      min-height:150px;
-      padding:20px;
-      border:1px solid var(--line);
-      border-radius:20px;
-      color:white;
+    .sidebar-title {
+      color: #696f86;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      margin: 5px 4px 0;
+    }
+
+    .history {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .history-empty {
+      color: #676d82;
+      font-size: 12px;
+      text-align: center;
+      padding: 25px 10px;
+      line-height: 1.8;
+    }
+
+    .history-item {
+      width: 100%;
+      min-height: 43px;
+      padding: 9px 11px;
+      border-radius: 12px;
+      background: transparent;
+      color: #b9bfd1;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-align: right;
+      transition: .18s;
+      overflow: hidden;
+    }
+
+    .history-item:hover {
+      background: rgba(255,255,255,.055);
+      color: white;
+    }
+
+    .history-item.active {
+      background: rgba(139,92,246,.13);
+      color: white;
+    }
+
+    .history-icon {
+      opacity: .65;
+      flex-shrink: 0;
+    }
+
+    .history-name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+
+    .sidebar-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
+    }
+
+    .creator {
+      padding: 13px;
+      border-radius: 15px;
+      background: linear-gradient(
+        135deg,
+        rgba(139,92,246,.10),
+        rgba(34,211,238,.04)
+      );
+      border: 1px solid rgba(139,92,246,.10);
+    }
+
+    .creator-label {
+      color: #777d93;
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+
+    .creator-name {
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.7;
+      color: #e8eaff;
+    }
+
+    .copyright {
+      text-align: center;
+      color: #555b70;
+      font-size: 9px;
+      margin-top: 11px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .topbar {
+      height: 72px;
+      flex-shrink: 0;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,8,18,.56);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 10;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .model-pill {
+      height: 38px;
+      padding: 0 13px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #cdd1df;
+      font-size: 11px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(52,211,153,.7);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+      color: #adb3c7;
+      display: grid;
+      place-items: center;
+      transition: .18s;
+    }
+
+    .icon-button:hover {
+      color: white;
+      background: rgba(255,255,255,.07);
+    }
+
+    /* =========================
+       CHAT
+    ========================= */
+
+    .chat-area {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 34px 22px 150px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-inner {
+      width: min(940px, 100%);
+      margin: 0 auto;
+    }
+
+    .welcome {
+      min-height: calc(100vh - 245px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0 70px;
+    }
+
+    .hero-badge {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: 100px;
+      border: 1px solid rgba(139,92,246,.18);
+      background: rgba(139,92,246,.08);
+      color: #bda8ff;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .hero-badge span {
+      width: 6px;
+      height: 6px;
+      background: #a78bfa;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #8b5cf6;
+    }
+
+    .hero h2 {
+      max-width: 700px;
+      font-size: clamp(34px, 6vw, 62px);
+      line-height: 1.03;
+      letter-spacing: -2.8px;
+      font-weight: 900;
+      margin-bottom: 17px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        100deg,
+        #ffffff 5%,
+        #c4b5fd 43%,
+        #67e8f9 95%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      color: #8d93a8;
+      font-size: 14px;
+      line-height: 1.9;
+      margin-bottom: 30px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 850px;
+    }
+
+    .feature {
+      padding: 17px;
+      border-radius: 18px;
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.055),
+        rgba(255,255,255,.018)
+      );
+      border: 1px solid var(--border);
+      transition: .2s;
+    }
+
+    .feature:hover {
+      transform: translateY(-2px);
+      border-color: rgba(139,92,246,.22);
+      background: rgba(255,255,255,.065);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: rgba(139,92,246,.12);
+      color: #b9a0ff;
+      margin-bottom: 12px;
+    }
+
+    .feature h3 {
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .feature p {
+      color: #777e93;
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       MESSAGES
+    ========================= */
+
+    .messages {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      animation: messageIn .25s ease;
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(7px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    .assistant .avatar {
+      background: linear-gradient(135deg,#8b5cf6,#22d3ee);
+      color: white;
+    }
+
+    .user .avatar {
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--border);
+      color: #c9cde0;
+    }
+
+    .message-content {
+      max-width: min(78%, 760px);
+      min-width: 0;
+    }
+
+    .message-name {
+      color: #737a91;
+      font-size: 9px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .user .message-name {
+      text-align: right;
+    }
+
+    .bubble {
+      color: #e5e8f1;
+      font-size: 13px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .user .bubble {
+      padding: 12px 15px;
+      border-radius: 17px 17px 4px 17px;
+      background: linear-gradient(
+        135deg,
+        rgba(139,92,246,.18),
+        rgba(109,40,217,.11)
+      );
+      border: 1px solid rgba(139,92,246,.13);
+    }
+
+    .assistant .bubble {
+      padding-top: 1px;
+    }
+
+    .bubble pre {
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 13px 0;
+      padding: 15px;
+      border-radius: 13px;
+      background: #05060d;
+      border: 1px solid rgba(255,255,255,.07);
+      color: #d9def0;
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .bubble code {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    .typing {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 0;
+    }
+
+    .typing span {
+      width: 5px;
+      height: 5px;
+      background: #8b5cf6;
+      border-radius: 50%;
+      animation: typing .9s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: .3s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        opacity: .25;
+        transform: translateY(0);
+      }
+      30% {
+        opacity: 1;
+        transform: translateY(-3px);
+      }
+    }
+
+    /* =========================
+       IMAGE RESULTS
+    ========================= */
+
+    .generated-image {
+      margin-top: 9px;
+      max-width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #0a0b14;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 60px rgba(0,0,0,.3);
+    }
+
+    .generated-image img {
+      display: block;
+      width: 100%;
+      max-height: 650px;
+      object-fit: contain;
+      background: #05060c;
+    }
+
+    .image-actions {
+      padding: 9px;
+      display: flex;
+      gap: 7px;
+      background: rgba(10,11,20,.92);
+    }
+
+    .image-action {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid var(--border);
+      color: #c4c8d8;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .image-action:hover {
+      background: rgba(255,255,255,.09);
+      color: white;
+    }
+
+    /* =========================
+       COMPOSER
+    ========================= */
+
+    .composer-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 16px 20px 19px;
       background:
-        linear-gradient(145deg,rgba(23,27,39,.95),rgba(12,14,21,.95));
-      box-shadow:0 15px 45px rgba(0,0,0,.15);
-      transition:.2s;
+        linear-gradient(
+          to top,
+          rgba(7,8,18,1) 25%,
+          rgba(7,8,18,.94) 70%,
+          transparent
+        );
+      z-index: 15;
     }
 
-    .card:hover{
-      transform:translateY(-3px);
-      border-color:#464d61;
-      background:#151925;
+    .composer-inner {
+      width: min(940px, 100%);
+      margin: 0 auto;
     }
 
-    .card-icon{
-      width:42px;
-      height:42px;
-      border-radius:13px;
-      display:grid;
-      place-items:center;
-      background:#1e1a31;
-      margin-bottom:18px;
-      font-size:19px;
+    .mode-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
 
-    .card b{
-      display:block;
-      margin-bottom:7px;
-      font-size:15px;
+    .mode-bar::-webkit-scrollbar {
+      display: none;
     }
 
-    .card span{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.7;
+    .mode {
+      height: 31px;
+      padding: 0 10px;
+      border-radius: 9px;
+      color: #747b91;
+      background: transparent;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      font-size: 10px;
+      font-weight: 750;
+      transition: .18s;
     }
 
-    /* MESSAGE */
-
-    .message{
-      width:min(900px,100%);
-      margin:0 auto 24px;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
+    .mode:hover {
+      color: #b9bed0;
     }
 
-    .message.user{
-      flex-direction:row-reverse;
+    .mode.active {
+      color: #dcd5ff;
+      background: rgba(139,92,246,.11);
+      border-color: rgba(139,92,246,.15);
     }
 
-    .avatar{
-      width:38px;
-      height:38px;
-      flex:0 0 38px;
-      border-radius:13px;
-      display:grid;
-      place-items:center;
-      font-size:11px;
-      font-weight:950;
+    .composer {
+      position: relative;
+      border-radius: 20px;
+      padding: 10px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(25,28,45,.94),
+          rgba(13,15,27,.97)
+        );
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow:
+        0 18px 55px rgba(0,0,0,.32),
+        inset 0 1px rgba(255,255,255,.035);
     }
 
-    .assistant .avatar{
-      color:white;
-      background:linear-gradient(135deg,var(--purple),#5b4dc4);
-      box-shadow:0 8px 25px rgba(139,92,246,.2);
+    .upload-preview {
+      display: none;
+      margin: 3px 3px 8px;
+      position: relative;
+      width: 76px;
+      height: 76px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
     }
 
-    .user .avatar{
-      background:#202532;
-      color:#dbe1ef;
-      border:1px solid #303748;
+    .upload-preview.show {
+      display: block;
     }
 
-    .message-body{
-      min-width:0;
-      max-width:calc(100% - 52px);
+    .upload-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .message-name{
-      color:var(--muted);
-      font-size:10px;
-      margin:2px 5px 7px;
+    .remove-upload {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.72);
+      color: white;
+      font-size: 12px;
     }
 
-    .bubble{
-      padding:14px 16px;
-      border-radius:17px;
-      line-height:1.9;
-      white-space:pre-wrap;
-      overflow-wrap:anywhere;
-      font-size:14px;
+    .textarea-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
     }
 
-    .assistant .bubble{
-      background:transparent;
+    #prompt {
+      width: 100%;
+      min-height: 46px;
+      max-height: 180px;
+      resize: none;
+      outline: none;
+      border: 0;
+      background: transparent;
+      color: #eef0f7;
+      padding: 10px 9px;
+      font-size: 13px;
+      line-height: 1.7;
     }
 
-    .user .bubble{
-      background:linear-gradient(135deg,#21193a,#171526);
-      border:1px solid #332b4d;
+    #prompt::placeholder {
+      color: #62697d;
     }
 
-    .tools{
-      display:flex;
-      gap:6px;
-      margin-top:8px;
+    .composer-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-bottom: 2px;
     }
 
-    .tool{
-      border:1px solid var(--line);
-      background:#11141c;
-      color:var(--muted);
-      border-radius:9px;
-      padding:6px 9px;
-      font-size:10px;
+    .tool-btn {
+      width: 37px;
+      height: 37px;
+      border-radius: 11px;
+      color: #81889d;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.055);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: .18s;
     }
 
-    .tool:hover{
-      color:white;
-      background:#191d27;
+    .tool-btn:hover {
+      color: white;
+      background: rgba(255,255,255,.08);
     }
 
-    /* IMAGES */
-
-    .generated{
-      width:min(720px,100%);
-      margin-top:12px;
-      overflow:hidden;
-      border-radius:20px;
-      border:1px solid var(--line2);
-      background:#090b11;
-      box-shadow:var(--shadow);
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg,#8b5cf6,#6d28d9);
+      box-shadow: 0 7px 25px rgba(109,40,217,.25);
+      transition: .18s;
+      flex-shrink: 0;
     }
 
-    .generated img{
-      display:block;
-      width:100%;
-      max-height:70vh;
-      object-fit:contain;
-      background:#05060a;
+    .send-btn:hover {
+      transform: translateY(-1px);
     }
 
-    .image-actions{
-      display:flex;
-      gap:8px;
-      padding:10px;
-      background:#0e1118;
+    .send-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    .primary,.secondary{
-      border-radius:11px;
-      padding:9px 13px;
-      font-size:11px;
-      font-weight:800;
+    .composer-hint {
+      color: #4e5569;
+      text-align: center;
+      font-size: 8px;
+      margin-top: 7px;
     }
 
-    .primary{
-      border:0;
-      color:white;
-      background:linear-gradient(135deg,var(--purple),#6d5ce7);
+    #fileInput {
+      display: none;
     }
 
-    .secondary{
-      border:1px solid var(--line2);
-      color:#e6e9f1;
-      background:#151923;
+    /* =========================
+       OVERLAY / MOBILE
+    ========================= */
+
+    .overlay {
+      display: none;
     }
 
-    /* COMPOSER */
-
-    .composer-area{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      padding:20px 20px 17px;
-      background:linear-gradient(transparent,rgba(7,8,13,.96) 27%);
-      z-index:8;
-    }
-
-    .composer{
-      width:min(900px,100%);
-      margin:auto;
-      border:1px solid #303747;
-      border-radius:22px;
-      background:rgba(14,17,25,.96);
-      box-shadow:0 20px 70px rgba(0,0,0,.45);
-      overflow:hidden;
-    }
-
-    .preview{
-      display:none;
-      padding:11px;
-      border-bottom:1px solid var(--line);
-      position:relative;
-    }
-
-    .preview.show{
-      display:block;
-    }
-
-    .preview img{
-      width:82px;
-      height:82px;
-      object-fit:cover;
-      border-radius:13px;
-      border:1px solid var(--line2);
-    }
-
-    .remove-preview{
-      position:absolute;
-      top:10px;
-      right:10px;
-      width:28px;
-      height:28px;
-      border:1px solid #4a2730;
-      border-radius:50%;
-      background:#170d12;
-      color:#ff9aaa;
-    }
-
-    .modebar{
-      display:flex;
-      gap:7px;
-      padding:10px 10px 0;
-      overflow:auto;
-    }
-
-    .mode{
-      flex:0 0 auto;
-      border:1px solid var(--line);
-      background:#11141c;
-      color:var(--muted);
-      border-radius:10px;
-      padding:7px 11px;
-      font-size:10px;
-      transition:.15s;
-    }
-
-    .mode.active{
-      color:#fff;
-      border-color:#594a8e;
-      background:#211b36;
-    }
-
-    .input-row{
-      display:flex;
-      align-items:flex-end;
-      gap:9px;
-      padding:10px;
-    }
-
-    .icon-btn{
-      width:43px;
-      height:43px;
-      flex:0 0 43px;
-      border:1px solid var(--line);
-      border-radius:13px;
-      background:#171a23;
-      color:#dfe3ed;
-    }
-
-    .icon-btn:hover{
-      background:#202532;
-    }
-
-    textarea{
-      width:100%;
-      min-height:43px;
-      max-height:150px;
-      resize:none;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:white;
-      padding:10px 3px;
-      line-height:1.65;
-    }
-
-    textarea::placeholder{
-      color:#697286;
-    }
-
-    .send{
-      width:45px;
-      height:45px;
-      flex:0 0 45px;
-      border:0;
-      border-radius:14px;
-      color:white;
-      font-size:18px;
-      background:linear-gradient(135deg,var(--purple),#6755db);
-      box-shadow:0 8px 25px rgba(139,92,246,.25);
-    }
-
-    .send:hover{
-      transform:translateY(-1px);
-    }
-
-    .hint{
-      text-align:center;
-      color:#555e70;
-      font-size:9px;
-      margin-top:8px;
-    }
-
-    /* LOADING */
-
-    .loading{
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      color:var(--muted);
-    }
-
-    .loading i{
-      width:6px;
-      height:6px;
-      border-radius:50%;
-      background:var(--purple2);
-      animation:pulse 1s infinite;
-    }
-
-    .loading i:nth-child(2){animation-delay:.15s}
-    .loading i:nth-child(3){animation-delay:.3s}
-
-    @keyframes pulse{
-      50%{opacity:.2;transform:translateY(-3px)}
-    }
-
-    /* TOAST */
-
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:105px;
-      transform:translate(-50%,20px);
-      opacity:0;
-      pointer-events:none;
-      z-index:100;
-      padding:11px 16px;
-      border:1px solid var(--line2);
-      border-radius:13px;
-      background:#171b25;
-      color:white;
-      font-size:11px;
-      box-shadow:var(--shadow);
-      transition:.2s;
-    }
-
-    .toast.show{
-      opacity:1;
-      transform:translate(-50%,0);
-    }
-
-    /* MOBILE */
-
-    .overlay{
-      display:none;
-    }
-
-    @media(max-width:850px){
-      .sidebar{
-        position:fixed;
-        top:0;
-        right:0;
-        bottom:0;
-        transform:translateX(105%);
-        box-shadow:-25px 0 70px rgba(0,0,0,.55);
+    @media (max-width: 850px) {
+      :root {
+        --sidebar: 285px;
       }
 
-      .sidebar.open{
-        transform:translateX(0);
+      .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        transform: translateX(105%);
+        transition: transform .25s ease;
+        box-shadow: -20px 0 60px rgba(0,0,0,.45);
       }
 
-      .overlay.show{
-        display:block;
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,.55);
-        z-index:20;
+      .sidebar.open {
+        transform: translateX(0);
       }
 
-      .menu{
-        display:block;
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.52);
+        z-index: 25;
+        backdrop-filter: blur(3px);
       }
 
-      .topbar{
-        padding:0 12px;
+      .overlay.show {
+        display: block;
       }
 
-      .messages{
-        padding:25px 11px 175px;
+      .mobile-menu {
+        display: grid;
       }
 
-      .welcome{
-        margin-top:4vh;
+      .topbar {
+        padding: 10px 12px;
       }
 
-      .welcome h1{
-        letter-spacing:-1px;
+      .chat-area {
+        padding: 25px 13px 145px;
       }
 
-      .cards{
-        grid-template-columns:1fr;
+      .composer-wrap {
+        padding: 11px 10px 13px;
       }
 
-      .card{
-        min-height:auto;
-        padding:16px;
+      .hero h2 {
+        font-size: clamp(33px, 10vw, 49px);
+        letter-spacing: -2px;
       }
 
-      .message-body{
-        max-width:calc(100% - 45px);
+      .feature-grid {
+        grid-template-columns: 1fr;
       }
 
-      .composer-area{
-        padding:13px 10px 12px;
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
       }
 
-      .composer{
-        border-radius:18px;
+      .feature-icon {
+        flex-shrink: 0;
+        margin: 0;
+      }
+
+      .feature h3 {
+        margin-bottom: 3px;
+      }
+
+      .welcome {
+        min-height: auto;
+        padding: 20px 0 35px;
+      }
+
+      .message-content {
+        max-width: 87%;
+      }
+
+      .model-pill {
+        max-width: 180px;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
 
-    @media(max-width:430px){
-      .brand-logo{
-        width:43px;
-        height:43px;
+    @media (max-width: 470px) {
+      .top-actions .icon-button:nth-child(2) {
+        display: none;
       }
 
-      .hero-logo{
-        width:64px;
-        height:64px;
+      .hero-description {
+        font-size: 12px;
       }
 
-      .welcome p{
-        font-size:12px;
-        padding:0 10px;
+      .hero h2 {
+        font-size: 36px;
       }
 
-      .bubble{
-        font-size:13px;
+      .avatar {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+        border-radius: 9px;
       }
 
-      .online{
-        display:none;
+      .message {
+        gap: 8px;
       }
+
+      .bubble {
+        font-size: 12px;
+      }
+
+      .mode {
+        padding: 0 8px;
+      }
+
+      .composer {
+        border-radius: 17px;
+      }
+
+      #prompt {
+        font-size: 12px;
+      }
+    }
+
+    /* =========================
+       UTILITY
+    ========================= */
+
+    .hidden {
+      display: none !important;
+    }
+
+    .error-box {
+      color: #fda4af;
+      background: rgba(244,63,94,.07);
+      border: 1px solid rgba(244,63,94,.13);
+      border-radius: 13px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .search-note {
+      margin-top: 8px;
+      color: #777e94;
+      font-size: 9px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="background">
-  <div class="orb one"></div>
-  <div class="orb two"></div>
-</div>
-
 <div class="app">
 
-  <div class="overlay" id="overlay"></div>
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
 
   <aside class="sidebar" id="sidebar">
 
     <div class="brand">
       <div class="brand-logo">AS</div>
-      <div>
-        <div class="brand-name">A S AI</div>
-        <div class="brand-sub">ذكاء اصطناعي بواسطة علي سلطان</div>
+
+      <div class="brand-text">
+        <h1>A S AI</h1>
+        <p>AI Assistant</p>
       </div>
     </div>
 
-    <button class="new-chat" id="newChat">
-      ＋ محادثة جديدة
+    <button class="new-chat" id="newChatBtn">
+      <span>＋</span>
+      محادثة جديدة
     </button>
 
-    <div class="side-label">المحادثات الأخيرة</div>
+    <div class="sidebar-title">المحادثات</div>
 
-    <div class="history" id="historyList"></div>
+    <div class="history" id="history">
+      <div class="history-empty">
+        لا توجد محادثات محفوظة بعد.
+        <br>
+        ابدأ محادثة جديدة.
+      </div>
+    </div>
 
-    <div class="side-bottom">
-      تم إنشاء هذا الذكاء الاصطناعي بواسطة <b>علي سلطان</b><br>
-      وبمساعدة <b>علي عرندس</b><br><br>
-      A S AI © 2026
+    <div class="sidebar-bottom">
+
+      <div class="creator">
+        <div class="creator-label">صُنِع بواسطة</div>
+
+        <div class="creator-name">
+          تم إنشاء هذا الذكاء الاصطناعي بواسطة علي سلطان
+          <br>
+          وبمساعدة علي عرندس
+        </div>
+      </div>
+
+      <div class="copyright">
+        © 2026 A S AI — جميع الحقوق محفوظة.
+      </div>
+
     </div>
 
   </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
 
   <main class="main">
 
     <header class="topbar">
 
       <div class="top-left">
-        <button class="menu" id="menuBtn">☰</button>
-        <div class="top-title">A S AI</div>
+
+        <button
+          class="icon-button mobile-menu"
+          id="menuBtn"
+          aria-label="القائمة"
+        >
+          ☰
+        </button>
+
+        <div class="model-pill">
+          <span class="status-dot"></span>
+          <span>A S AI</span>
+          <span style="color:#5d6478;">•</span>
+          <span id="modeLabel">محادثة ذكية</span>
+        </div>
+
       </div>
 
-      <div class="online">
-        <span class="online-dot"></span>
-        النظام متصل
+      <div class="top-actions">
+
+        <button
+          class="icon-button"
+          id="clearBtn"
+          title="مسح المحادثة"
+        >
+          ⌫
+        </button>
+
+        <button
+          class="icon-button"
+          id="newTopBtn"
+          title="محادثة جديدة"
+        >
+          ＋
+        </button>
+
       </div>
 
     </header>
 
-    <section class="messages" id="messages">
+    <!-- =========================
+         CHAT AREA
+    ========================== -->
 
-      <div class="welcome" id="welcome">
+    <section class="chat-area" id="chatArea">
 
-        <div class="hero-logo">AS</div>
+      <div class="chat-inner">
 
-        <h1>
-          أهلاً بك في
-          <span class="gradient-text">A S AI</span>
-        </h1>
+        <div class="welcome" id="welcome">
 
-        <p>
-          مساعدك الذكي للمحادثة، البرمجة، فهم الصور،
-          وإنشاء وتعديل الصور — بتصميم جديد وسريع.
-        </p>
+          <div class="hero">
 
-        <div class="cards">
+            <div class="hero-badge">
+              <span></span>
+              A S AI — الجيل الجديد
+            </div>
 
-          <button class="card"
-            data-mode="chat"
-            data-prompt="اشرح لي هذا الموضوع بطريقة سهلة ومبسطة">
-            <div class="card-icon">✦</div>
-            <b>اسأل A S AI</b>
-            <span>
-              أسئلة عامة، دراسة، أفكار، برمجة وشرح.
-            </span>
-          </button>
+            <h2>
+              <span class="gradient-text">
+                أهلاً بك في
+                <br>
+                A S AI
+              </span>
+            </h2>
 
-          <button class="card"
-            data-mode="image"
-            data-prompt="أنشئ صورة سينمائية فائقة الجودة لمدينة مستقبلية في لبنان وقت الغروب">
-            <div class="card-icon">✧</div>
-            <b>إنشاء صورة</b>
-            <span>
-              اكتب وصف الصورة وسيقوم الذكاء الاصطناعي بإنشائها.
-            </span>
-          </button>
+            <p class="hero-description">
+              مساعدك الذكي للمحادثة، البرمجة، البحث، إنشاء الصور
+              وتعديلها. اكتب طلبك واترك الباقي على A S AI.
+            </p>
 
-          <button class="card"
-            data-mode="image"
-            data-prompt="حسّن جودة هذه الصورة وحافظ على تفاصيلها الطبيعية">
-            <div class="card-icon">◈</div>
-            <b>تعديل صورة</b>
-            <span>
-              ارفع صورة واكتب التعديل الذي تريده.
-            </span>
-          </button>
+            <div class="feature-grid">
+
+              <div class="feature">
+
+                <div class="feature-icon">
+                  ✦
+                </div>
+
+                <div>
+                  <h3>ذكاء متطور</h3>
+                  <p>
+                    إجابات سريعة ومناسبة لسؤالك.
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="feature">
+
+                <div class="feature-icon">
+                  ◈
+                </div>
+
+                <div>
+                  <h3>إنشاء الصور</h3>
+                  <p>
+                    أنشئ صورًا جديدة أو عدّل صورة موجودة.
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="feature">
+
+                <div class="feature-icon">
+                  &lt;/&gt;
+                </div>
+
+                <div>
+                  <h3>البرمجة</h3>
+                  <p>
+                    ساعدك في كتابة وفهم وتصحيح الأكواد.
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
+
+        <div class="messages" id="messages"></div>
 
       </div>
 
     </section>
 
-    <div class="composer-area">
+    <!-- =========================
+         COMPOSER
+    ========================== -->
 
-      <div class="composer">
+    <div class="composer-wrap">
 
-        <div class="preview" id="preview">
-          <button class="remove-preview" id="removeImage">×</button>
-          <img id="previewImg" alt="الصورة المرفوعة">
-        </div>
+      <div class="composer-inner">
 
-        <div class="modebar">
+        <div class="mode-bar">
 
-          <button class="mode active" data-mode="chat">
-            💬 محادثة
-          </button>
-
-          <button class="mode" data-mode="image">
-            ✦ إنشاء / تعديل صورة
-          </button>
-
-        </div>
-
-        <div class="input-row">
-
-          <input
-            type="file"
-            id="fileInput"
-            accept="image/*"
-            hidden
+          <button
+            class="mode active"
+            data-mode="chat"
           >
-
-          <button
-            class="icon-btn"
-            id="uploadBtn"
-            title="رفع صورة">
-            📎
+            ✦ محادثة
           </button>
 
-          <textarea
-            id="prompt"
-            rows="1"
-            placeholder="اكتب رسالتك إلى A S AI..."
-          ></textarea>
+          <button
+            class="mode"
+            data-mode="search"
+          >
+            ⌕ بحث
+          </button>
 
           <button
-            class="send"
-            id="sendBtn"
-            title="إرسال">
-            ↑
+            class="mode"
+            data-mode="code"
+          >
+            &lt;/&gt; برمجة
+          </button>
+
+          <button
+            class="mode"
+            data-mode="image"
+          >
+            ◈ إنشاء صورة
           </button>
 
         </div>
 
-      </div>
+        <div class="composer">
 
-      <div class="hint">
-        A S AI قد يخطئ أحياناً، راجع المعلومات المهمة.
+          <div
+            class="upload-preview"
+            id="uploadPreview"
+          >
+            <img id="previewImage" alt="الصورة المرفوعة">
+
+            <button
+              class="remove-upload"
+              id="removeUpload"
+              title="إزالة الصورة"
+            >
+              ×
+            </button>
+          </div>
+
+          <div class="textarea-row">
+
+            <textarea
+              id="prompt"
+              rows="1"
+              autocomplete="off"
+              placeholder="اكتب رسالتك إلى A S AI..."
+            ></textarea>
+
+            <div class="composer-actions">
+
+              <button
+                class="tool-btn"
+                id="uploadBtn"
+                title="رفع صورة"
+              >
+                ⊕
+              </button>
+
+              <button
+                class="send-btn"
+                id="sendBtn"
+                title="إرسال"
+              >
+                ➤
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="composer-hint">
+          A S AI قد يخطئ أحيانًا — راجع المعلومات المهمة.
+        </div>
+
       </div>
 
     </div>
 
   </main>
+
 </div>
 
-<div class="toast" id="toast"></div>
+<input
+  type="file"
+  id="fileInput"
+  accept="image/*"
+/>
 
 <script>
-"use strict";
+  /*
+   * ============================================
+   * A S AI — NEW FRONTEND
+   * ============================================
+   *
+   * متوافق مع:
+   * /api/chat
+   * /api/images
+   *
+   * لا يوجد API KEY هنا.
+   * المفتاح يبقى على السيرفر.
+   */
 
-/* =========================
-   A S AI FRONTEND
-   Compatible with:
-   /api/chat
-   /api/images
-========================= */
+  const state = {
+    mode: "chat",
+    messages: [],
+    image: null,
+    imageData: null,
+    busy: false
+  };
 
-const $ = selector => document.querySelector(selector);
+  const els = {
+    sidebar: document.getElementById("sidebar"),
+    overlay: document.getElementById("overlay"),
+    menuBtn: document.getElementById("menuBtn"),
+    newChatBtn: document.getElementById("newChatBtn"),
+    newTopBtn: document.getElementById("newTopBtn"),
+    clearBtn: document.getElementById("clearBtn"),
+    history: document.getElementById("history"),
+    welcome: document.getElementById("welcome"),
+    messages: document.getElementById("messages"),
+    chatArea: document.getElementById("chatArea"),
+    prompt: document.getElementById("prompt"),
+    sendBtn: document.getElementById("sendBtn"),
+    uploadBtn: document.getElementById("uploadBtn"),
+    fileInput: document.getElementById("fileInput"),
+    uploadPreview: document.getElementById("uploadPreview"),
+    previewImage: document.getElementById("previewImage"),
+    removeUpload: document.getElementById("removeUpload"),
+    modeLabel: document.getElementById("modeLabel")
+  };
 
-const messagesEl = $("#messages");
-const welcome = $("#welcome");
-const promptEl = $("#prompt");
-const sendBtn = $("#sendBtn");
-const fileInput = $("#fileInput");
-const preview = $("#preview");
-const previewImg = $("#previewImg");
-const toast = $("#toast");
-const sidebar = $("#sidebar");
-const overlay = $("#overlay");
+  const STORAGE_KEY = "as_ai_new_chats_v1";
 
-let history = [];
-let currentImage = null;
-let mode = "chat";
-let busy = false;
+  let chats = loadChats();
 
-try{
-  history = JSON.parse(localStorage.getItem("asai_history") || "[]");
+  /* =========================
+     STORAGE
+  ========================== */
 
-  if(!Array.isArray(history)){
-    history = [];
+  function loadChats() {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+
+      if (!data) {
+        return [];
+      }
+
+      const parsed = JSON.parse(data);
+
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
-}catch{
-  history = [];
-}
 
-/* =========================
-   STORAGE
-========================= */
+  function saveChats() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(chats.slice(0, 30))
+      );
+    } catch {}
+  }
 
-function saveHistory(){
-  try{
-    localStorage.setItem(
-      "asai_history",
-      JSON.stringify(history.slice(-40))
+  /* =========================
+     SIDEBAR
+  ========================== */
+
+  function renderHistory() {
+    els.history.innerHTML = "";
+
+    if (!chats.length) {
+      els.history.innerHTML = `
+        <div class="history-empty">
+          لا توجد محادثات محفوظة بعد.
+          <br>
+          ابدأ محادثة جديدة.
+        </div>
+      `;
+
+      return;
+    }
+
+    chats.forEach((chat, index) => {
+
+      const button = document.createElement("button");
+
+      button.className = "history-item";
+
+      button.innerHTML = `
+        <span class="history-icon">◌</span>
+        <span class="history-name"></span>
+      `;
+
+      button.querySelector(".history-name").textContent =
+        chat.title || "محادثة جديدة";
+
+      button.addEventListener("click", () => {
+        loadChat(index);
+        closeSidebar();
+      });
+
+      els.history.appendChild(button);
+    });
+  }
+
+  function createChat() {
+
+    if (state.messages.length) {
+      saveCurrentChat();
+    }
+
+    state.messages = [];
+    state.image = null;
+    state.imageData = null;
+    state.busy = false;
+
+    removeUploadedImage();
+
+    els.messages.innerHTML = "";
+    els.welcome.classList.remove("hidden");
+
+    els.prompt.value = "";
+
+    autoResize();
+
+    scrollToBottom();
+
+    closeSidebar();
+  }
+
+  function saveCurrentChat() {
+
+    if (!state.messages.length) {
+      return;
+    }
+
+    const firstUser = state.messages.find(
+      m => m.role === "user"
     );
-  }catch{}
-}
 
-/* =========================
-   TOAST
-========================= */
+    const title =
+      firstUser?.content?.slice(0, 45) ||
+      "محادثة جديدة";
 
-function showToast(text){
-  toast.textContent = text;
-  toast.classList.add("show");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },2500);
-}
-
-/* =========================
-   HTML ESCAPE
-========================= */
-
-function escapeHtml(text){
-  return String(text).replace(
-    /[&<>"']/g,
-    char => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[char])
-  );
-}
-
-/* =========================
-   HISTORY SIDEBAR
-========================= */
-
-function renderHistory(){
-
-  const list = $("#historyList");
-
-  list.innerHTML = "";
-
-  const items = history
-    .filter(item => item.role === "user")
-    .slice(-15)
-    .reverse();
-
-  if(!items.length){
-
-    const empty = document.createElement("div");
-
-    empty.style.cssText =
-      "color:#687185;font-size:11px;padding:10px";
-
-    empty.textContent = "لا توجد محادثات بعد.";
-
-    list.appendChild(empty);
-
-    return;
-  }
-
-  items.forEach(item => {
-
-    const button = document.createElement("button");
-
-    button.className = "history-item";
-
-    button.textContent =
-      item.content || "محادثة جديدة";
-
-    button.onclick = ()=>{
-
-      closeSidebar();
-
-      showToast("المحادثة محفوظة محلياً");
+    const record = {
+      title,
+      messages: state.messages,
+      updatedAt: Date.now()
     };
 
-    list.appendChild(button);
+    chats.unshift(record);
 
-  });
-}
+    chats = chats
+      .filter((chat, i, arr) =>
+        i === arr.findIndex(x =>
+          x.updatedAt === chat.updatedAt
+        )
+      )
+      .slice(0, 30);
 
-/* =========================
-   SCROLL
-========================= */
-
-function scrollBottom(){
-
-  requestAnimationFrame(()=>{
-    messagesEl.scrollTop =
-      messagesEl.scrollHeight;
-  });
-
-}
-
-/* =========================
-   ADD MESSAGE
-========================= */
-
-function addMessage(
-  role,
-  text = "",
-  imageUrl = null
-){
-
-  welcome.style.display = "none";
-
-  const row =
-    document.createElement("div");
-
-  row.className =
-    "message " + role;
-
-  const avatar =
-    document.createElement("div");
-
-  avatar.className = "avatar";
-
-  avatar.textContent =
-    role === "assistant" ? "AS" : "أنت";
-
-  const body =
-    document.createElement("div");
-
-  body.className = "message-body";
-
-  const name =
-    document.createElement("div");
-
-  name.className = "message-name";
-
-  name.textContent =
-    role === "assistant"
-      ? "A S AI"
-      : "أنت";
-
-  const bubble =
-    document.createElement("div");
-
-  bubble.className = "bubble";
-
-  if(text){
-    bubble.textContent = text;
+    saveChats();
+    renderHistory();
   }
 
-  body.appendChild(name);
-  body.appendChild(bubble);
+  function loadChat(index) {
 
-  if(imageUrl){
+    const chat = chats[index];
 
-    const box =
+    if (!chat) {
+      return;
+    }
+
+    state.messages = Array.isArray(chat.messages)
+      ? chat.messages
+      : [];
+
+    state.image = null;
+    state.imageData = null;
+
+    removeUploadedImage();
+
+    els.messages.innerHTML = "";
+
+    els.welcome.classList.toggle(
+      "hidden",
+      state.messages.length > 0
+    );
+
+    state.messages.forEach(message => {
+      addMessageToUI(
+        message.role,
+        message.content,
+        message.image
+      );
+    });
+
+    scrollToBottom();
+  }
+
+  /* =========================
+     SIDEBAR MOBILE
+  ========================== */
+
+  function openSidebar() {
+    els.sidebar.classList.add("open");
+    els.overlay.classList.add("show");
+  }
+
+  function closeSidebar() {
+    els.sidebar.classList.remove("open");
+    els.overlay.classList.remove("show");
+  }
+
+  els.menuBtn.addEventListener("click", openSidebar);
+  els.overlay.addEventListener("click", closeSidebar);
+
+  /* =========================
+     MODES
+  ========================== */
+
+  document.querySelectorAll(".mode").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".mode")
+        .forEach(x => x.classList.remove("active"));
+
+      button.classList.add("active");
+
+      state.mode = button.dataset.mode;
+
+      updateModeUI();
+    });
+
+  });
+
+  function updateModeUI() {
+
+    const labels = {
+      chat: "محادثة ذكية",
+      search: "بحث ذكي",
+      code: "وضع البرمجة",
+      image: "إنشاء الصور"
+    };
+
+    els.modeLabel.textContent =
+      labels[state.mode] || labels.chat;
+
+    if (state.mode === "image") {
+
+      els.prompt.placeholder =
+        "اكتب وصف الصورة التي تريد إنشاءها أو تعديلها...";
+
+    } else if (state.mode === "code") {
+
+      els.prompt.placeholder =
+        "اكتب سؤالًا أو اطلب كودًا...";
+
+    } else if (state.mode === "search") {
+
+      els.prompt.placeholder =
+        "ما الذي تريد البحث عنه؟";
+
+    } else {
+
+      els.prompt.placeholder =
+        "اكتب رسالتك إلى A S AI...";
+    }
+  }
+
+  /* =========================
+     TEXTAREA
+  ========================== */
+
+  function autoResize() {
+
+    els.prompt.style.height = "auto";
+
+    els.prompt.style.height =
+      Math.min(els.prompt.scrollHeight, 180) + "px";
+  }
+
+  els.prompt.addEventListener("input", autoResize);
+
+  els.prompt.addEventListener("keydown", event => {
+
+    if (event.key === "Enter" && !event.shiftKey) {
+
+      event.preventDefault();
+
+      sendMessage();
+    }
+  });
+
+  /* =========================
+     IMAGE UPLOAD
+  ========================== */
+
+  els.uploadBtn.addEventListener(
+    "click",
+    () => els.fileInput.click()
+  );
+
+  els.fileInput.addEventListener(
+    "change",
+    handleImageUpload
+  );
+
+  els.removeUpload.addEventListener(
+    "click",
+    removeUploadedImage
+  );
+
+  function handleImageUpload(event) {
+
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+
+      state.imageData = reader.result;
+      state.image = reader.result;
+
+      els.previewImage.src = reader.result;
+
+      els.uploadPreview.classList.add("show");
+
+      if (state.mode !== "image") {
+        state.mode = "image";
+
+        document
+          .querySelectorAll(".mode")
+          .forEach(x => x.classList.remove("active"));
+
+        document
+          .querySelector('[data-mode="image"]')
+          ?.classList.add("active");
+
+        updateModeUI();
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  function removeUploadedImage() {
+
+    state.image = null;
+    state.imageData = null;
+
+    els.previewImage.removeAttribute("src");
+
+    els.uploadPreview.classList.remove("show");
+
+    els.fileInput.value = "";
+  }
+
+  /* =========================
+     SEND
+  ========================== */
+
+  els.sendBtn.addEventListener(
+    "click",
+    sendMessage
+  );
+
+  async function sendMessage() {
+
+    if (state.busy) {
+      return;
+    }
+
+    const text = els.prompt.value.trim();
+
+    if (!text && !state.imageData) {
+      return;
+    }
+
+    if (state.mode === "image") {
+
+      await generateImage(text);
+      return;
+    }
+
+    const userText = text || "حلّل هذه الصورة.";
+
+    state.busy = true;
+
+    els.sendBtn.disabled = true;
+
+    els.welcome.classList.add("hidden");
+
+    addMessageToUI(
+      "user",
+      userText,
+      state.imageData
+    );
+
+    state.messages.push({
+      role: "user",
+      content: userText,
+      image: state.imageData || null
+    });
+
+    els.prompt.value = "";
+
+    autoResize();
+
+    const attachedImage = state.imageData;
+
+    removeUploadedImage();
+
+    const assistantBubble =
+      addStreamingAssistant();
+
+    try {
+
+      await streamChat(
+        assistantBubble,
+        attachedImage
+      );
+
+    } catch (error) {
+
+      assistantBubble.innerHTML = `
+        <div class="error-box">
+          ${escapeHTML(
+            friendlyError(error)
+          )}
+        </div>
+      `;
+    }
+
+    state.busy = false;
+
+    els.sendBtn.disabled = false;
+
+    saveCurrentChat();
+
+    scrollToBottom();
+  }
+
+  /* =========================
+     STREAM CHAT
+  ========================== */
+
+  async function streamChat(
+    bubble,
+    attachedImage
+  ) {
+
+    const payload = {
+      messages: state.messages.map(message => ({
+        role: message.role,
+        content: message.content,
+        ...(message.image
+          ? { image: message.image }
+          : {})
+      })),
+
+      mode: state.mode
+    };
+
+    if (attachedImage) {
+      payload.image = attachedImage;
+    }
+
+    const response = await fetch(
+      "/api/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!response.ok) {
+
+      const text = await response.text();
+
+      throw new Error(
+        text || `HTTP ${response.status}`
+      );
+    }
+
+    if (!response.body) {
+      throw new Error(
+        "السيرفر لم يُرجع Stream."
+      );
+    }
+
+    const reader =
+      response.body.getReader();
+
+    const decoder =
+      new TextDecoder();
+
+    let buffer = "";
+    let fullText = "";
+
+    while (true) {
+
+      const { value, done } =
+        await reader.read();
+
+      if (done) {
+        break;
+      }
+
+      buffer += decoder.decode(
+        value,
+        { stream: true }
+      );
+
+      const parts =
+        buffer.split("\n");
+
+      buffer = parts.pop() || "";
+
+      for (const line of parts) {
+
+        if (!line.startsWith("data:")) {
+          continue;
+        }
+
+        const raw =
+          line.slice(5).trim();
+
+        if (!raw) {
+          continue;
+        }
+
+        if (raw === "[DONE]") {
+          continue;
+        }
+
+        let data;
+
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          data = {
+            text: raw
+          };
+        }
+
+        const chunk =
+          data.text ??
+          data.delta ??
+          data.content ??
+          "";
+
+        if (chunk) {
+
+          fullText += chunk;
+
+          bubble.innerHTML =
+            formatText(fullText);
+
+          scrollToBottom();
+        }
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+      }
+    }
+
+    if (!fullText.trim()) {
+
+      fullText =
+        "لم يصل رد من النموذج.";
+
+      bubble.textContent = fullText;
+    }
+
+    state.messages.push({
+      role: "assistant",
+      content: fullText
+    });
+  }
+
+  /* =========================
+     IMAGE GENERATION
+  ========================== */
+
+  async function generateImage(prompt) {
+
+    if (!prompt.trim() && !state.imageData) {
+      return;
+    }
+
+    state.busy = true;
+
+    els.sendBtn.disabled = true;
+
+    els.welcome.classList.add("hidden");
+
+    addMessageToUI(
+      "user",
+      prompt || "تعديل الصورة",
+      state.imageData
+    );
+
+    state.messages.push({
+      role: "user",
+      content: prompt || "تعديل الصورة",
+      image: state.imageData || null
+    });
+
+    els.prompt.value = "";
+
+    autoResize();
+
+    const sourceImage = state.imageData;
+
+    removeUploadedImage();
+
+    const loadingMessage =
+      createAssistantMessage();
+
+    loadingMessage.bubble.innerHTML = `
+      <div class="typing">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div style="color:#747b91;font-size:10px;">
+        A S AI يعمل على إنشاء الصورة...
+      </div>
+    `;
+
+    try {
+
+      const response = await fetch(
+        "/api/images",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            prompt:
+              prompt ||
+              "حسّن الصورة المرفقة مع الحفاظ على محتواها.",
+
+            image:
+              sourceImage || null,
+
+            imageSize: "1K",
+
+            aspectRatio: "1:1"
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          data.message ||
+          `HTTP ${response.status}`
+        );
+      }
+
+      const imageUrl =
+        data.image ||
+        data.imageUrl ||
+        data.url ||
+        data.data?.image ||
+        data.data?.imageUrl;
+
+      const text =
+        data.text ||
+        data.message ||
+        "";
+
+      if (!imageUrl) {
+
+        loadingMessage.bubble.innerHTML =
+          formatText(
+            text ||
+            "تمت معالجة الطلب، لكن السيرفر لم يُرجع صورة."
+          );
+
+        return;
+      }
+
+      loadingMessage.bubble.innerHTML =
+        formatText(
+          text ||
+          "تم إنشاء الصورة بنجاح."
+        );
+
+      addImageResult(
+        loadingMessage.container,
+        imageUrl
+      );
+
+      state.messages.push({
+        role: "assistant",
+        content:
+          text ||
+          "تم إنشاء الصورة بنجاح.",
+        image:
+          imageUrl
+      });
+
+    } catch (error) {
+
+      loadingMessage.bubble.innerHTML = `
+        <div class="error-box">
+          ${escapeHTML(
+            friendlyError(error)
+          )}
+        </div>
+      `;
+    }
+
+    state.busy = false;
+
+    els.sendBtn.disabled = false;
+
+    saveCurrentChat();
+
+    scrollToBottom();
+  }
+
+  /* =========================
+     UI MESSAGES
+  ========================== */
+
+  function addMessageToUI(
+    role,
+    text,
+    image
+  ) {
+
+    const message =
       document.createElement("div");
 
-    box.className = "generated";
+    message.className =
+      `message ${role}`;
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className = "avatar";
+
+    avatar.textContent =
+      role === "user"
+        ? "أنت"
+        : "AS";
+
+    const content =
+      document.createElement("div");
+
+    content.className =
+      "message-content";
+
+    const name =
+      document.createElement("div");
+
+    name.className =
+      "message-name";
+
+    name.textContent =
+      role === "user"
+        ? "أنت"
+        : "A S AI";
+
+    const bubble =
+      document.createElement("div");
+
+    bubble.className = "bubble";
+
+    bubble.innerHTML =
+      formatText(text || "");
+
+    content.appendChild(name);
+    content.appendChild(bubble);
+
+    if (image) {
+
+      const imageBox =
+        createImageElement(image);
+
+      content.appendChild(imageBox);
+    }
+
+    message.appendChild(avatar);
+    message.appendChild(content);
+
+    els.messages.appendChild(message);
+
+    scrollToBottom();
+
+    return message;
+  }
+
+  function createAssistantMessage() {
+
+    const message =
+      document.createElement("div");
+
+    message.className =
+      "message assistant";
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className = "avatar";
+    avatar.textContent = "AS";
+
+    const content =
+      document.createElement("div");
+
+    content.className =
+      "message-content";
+
+    const name =
+      document.createElement("div");
+
+    name.className =
+      "message-name";
+
+    name.textContent = "A S AI";
+
+    const bubble =
+      document.createElement("div");
+
+    bubble.className = "bubble";
+
+    content.appendChild(name);
+    content.appendChild(bubble);
+
+    message.appendChild(avatar);
+    message.appendChild(content);
+
+    els.messages.appendChild(message);
+
+    scrollToBottom();
+
+    return {
+      container: content,
+      bubble
+    };
+  }
+
+  function addStreamingAssistant() {
+
+    return createAssistantMessage().bubble;
+  }
+
+  /* =========================
+     IMAGE UI
+  ========================== */
+
+  function addImageResult(
+    container,
+    src
+  ) {
+
+    const box =
+      createImageElement(src);
+
+    container.appendChild(box);
+  }
+
+  function createImageElement(src) {
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "generated-image";
 
     const img =
       document.createElement("img");
 
-    img.src = imageUrl;
-    img.alt = "صورة من A S AI";
+    img.src = src;
+
+    img.alt =
+      "صورة تم إنشاؤها بواسطة A S AI";
+
     img.loading = "lazy";
-
-    img.onclick = ()=>{
-      window.open(imageUrl,"_blank");
-    };
-
-    box.appendChild(img);
 
     const actions =
       document.createElement("div");
 
-    actions.className = "image-actions";
+    actions.className =
+      "image-actions";
 
     const download =
       document.createElement("button");
 
-    download.className = "primary";
+    download.className =
+      "image-action";
 
     download.textContent =
-      "⬇ تحميل الصورة";
+      "↓ تنزيل الصورة";
 
-    download.onclick =
-      ()=>downloadImage(imageUrl);
+    download.addEventListener(
+      "click",
+      () => downloadImage(src)
+    );
 
     const open =
       document.createElement("button");
 
-    open.className = "secondary";
+    open.className =
+      "image-action";
 
     open.textContent =
-      "🔍 تكبير";
-
-    open.onclick = ()=>{
-      window.open(imageUrl,"_blank");
-    };
-
-    actions.append(download,open);
-
-    box.appendChild(actions);
-
-    body.appendChild(box);
-  }
-
-  if(role === "assistant"){
-
-    const tools =
-      document.createElement("div");
-
-    tools.className = "tools";
-
-    const copy =
-      document.createElement("button");
-
-    copy.className = "tool";
-
-    copy.textContent = "نسخ";
-
-    copy.onclick = async ()=>{
-
-      try{
-
-        await navigator.clipboard.writeText(
-          bubble.textContent || ""
-        );
-
-        showToast("تم نسخ الرد");
-
-      }catch{
-
-        showToast("تعذر النسخ");
-
-      }
-
-    };
-
-    tools.appendChild(copy);
-
-    body.appendChild(tools);
-  }
-
-  row.append(avatar,body);
-
-  messagesEl.appendChild(row);
-
-  scrollBottom();
-
-  return {
-    row,
-    bubble,
-    body
-  };
-}
-
-/* =========================
-   IMAGE DOWNLOAD
-========================= */
-
-async function downloadImage(url){
-
-  try{
-
-    const response =
-      await fetch(url);
-
-    if(!response.ok){
-      throw new Error();
-    }
-
-    const blob =
-      await response.blob();
-
-    const objectUrl =
-      URL.createObjectURL(blob);
-
-    const a =
-      document.createElement("a");
-
-    a.href = objectUrl;
-    a.download = "as-ai-image.png";
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-    setTimeout(()=>{
-      URL.revokeObjectURL(objectUrl);
-    },1000);
-
-    showToast("بدأ تحميل الصورة");
-
-  }catch{
-
-    window.open(url,"_blank");
-
-  }
-}
-
-/* =========================
-   MODE
-========================= */
-
-function setMode(next){
-
-  mode = next;
-
-  document
-    .querySelectorAll(".mode")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.mode === next
-      );
-    });
-
-  if(next === "image"){
-
-    promptEl.placeholder =
-      currentImage
-        ? "اكتب التعديل الذي تريده للصورة..."
-        : "اكتب وصف الصورة التي تريد إنشاءها...";
-
-  }else{
-
-    promptEl.placeholder =
-      "اكتب رسالتك إلى A S AI...";
-
-  }
-}
-
-/* =========================
-   IMAGE CLEAR
-========================= */
-
-function clearImage(){
-
-  currentImage = null;
-
-  fileInput.value = "";
-
-  preview.classList.remove("show");
-
-  previewImg.removeAttribute("src");
-
-  setMode(mode);
-}
-
-/* =========================
-   IMAGE RESIZE
-========================= */
-
-function resizeImage(
-  file,
-  maxSide = 1800
-){
-
-  return new Promise((resolve,reject)=>{
-
-    const reader =
-      new FileReader();
-
-    reader.onload = ()=>{
-
-      const img =
-        new Image();
-
-      img.onload = ()=>{
-
-        const scale =
-          Math.min(
-            1,
-            maxSide /
-            Math.max(
-              img.width,
-              img.height
-            )
-          );
-
-        const canvas =
-          document.createElement("canvas");
-
-        canvas.width =
-          Math.max(
-            1,
-            Math.round(img.width * scale)
-          );
-
-        canvas.height =
-          Math.max(
-            1,
-            Math.round(img.height * scale)
-          );
-
-        const ctx =
-          canvas.getContext("2d");
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-
-        resolve(
-          canvas.toDataURL(
-            "image/jpeg",
-            .9
-          )
-        );
-
-      };
-
-      img.onerror = reject;
-
-      img.src = reader.result;
-    };
-
-    reader.onerror = reject;
-
-    reader.readAsDataURL(file);
-
-  });
-}
-
-/* =========================
-   FILE UPLOAD
-========================= */
-
-fileInput.addEventListener(
-  "change",
-  async ()=>{
-
-    const file =
-      fileInput.files?.[0];
-
-    if(!file){
-      return;
-    }
-
-    if(!file.type.startsWith("image/")){
-
-      showToast("الملف ليس صورة");
-
-      return;
-    }
-
-    try{
-
-      currentImage =
-        await resizeImage(file);
-
-      previewImg.src =
-        currentImage;
-
-      preview.classList.add("show");
-
-      setMode("image");
-
-      showToast("تم تجهيز الصورة");
-
-    }catch{
-
-      showToast("تعذر قراءة الصورة");
-
-      clearImage();
-    }
-
-  }
-);
-
-/* =========================
-   UI EVENTS
-========================= */
-
-$("#uploadBtn").onclick = ()=>{
-  fileInput.click();
-};
-
-$("#removeImage").onclick =
-  clearImage;
-
-document
-  .querySelectorAll(".mode")
-  .forEach(button=>{
-    button.onclick = ()=>{
-      setMode(button.dataset.mode);
-    };
-  });
-
-document
-  .querySelectorAll(".card")
-  .forEach(card=>{
-
-    card.onclick = ()=>{
-
-      setMode(
-        card.dataset.mode || "chat"
-      );
-
-      promptEl.value =
-        card.dataset.prompt || "";
-
-      autoGrow();
-
-      promptEl.focus();
-
-      closeSidebar();
-    };
-
-  });
-
-/* =========================
-   NEW CHAT
-========================= */
-
-$("#newChat").onclick = ()=>{
-
-  history = [];
-
-  saveHistory();
-
-  messagesEl.innerHTML = "";
-
-  messagesEl.appendChild(welcome);
-
-  welcome.style.display = "";
-
-  clearImage();
-
-  setMode("chat");
-
-  renderHistory();
-
-  closeSidebar();
-
-  showToast("تم إنشاء محادثة جديدة");
-};
-
-/* =========================
-   SIDEBAR
-========================= */
-
-function openSidebar(){
-
-  sidebar.classList.add("open");
-
-  overlay.classList.add("show");
-}
-
-function closeSidebar(){
-
-  sidebar.classList.remove("open");
-
-  overlay.classList.remove("show");
-}
-
-$("#menuBtn").onclick =
-  openSidebar;
-
-overlay.onclick =
-  closeSidebar;
-
-/* =========================
-   TEXTAREA
-========================= */
-
-function autoGrow(){
-
-  promptEl.style.height = "auto";
-
-  promptEl.style.height =
-    Math.min(
-      promptEl.scrollHeight,
-      150
-    ) + "px";
-}
-
-promptEl.addEventListener(
-  "input",
-  autoGrow
-);
-
-promptEl.addEventListener(
-  "keydown",
-  event=>{
-
-    if(
-      event.key === "Enter" &&
-      !event.shiftKey
-    ){
-
-      event.preventDefault();
-
-      send();
-    }
-
-  }
-);
-
-/* =========================
-   BUSY
-========================= */
-
-function setBusy(value){
-
-  busy = value;
-
-  sendBtn.disabled = value;
-
-  sendBtn.textContent =
-    value ? "…" : "↑";
-}
-
-/* =========================
-   SEND
-========================= */
-
-async function send(){
-
-  if(busy){
-    return;
-  }
-
-  const text =
-    promptEl.value.trim();
-
-  if(!text && !currentImage){
-    return;
-  }
-
-  const sentImage =
-    currentImage;
-
-  const userText =
-    text ||
-    (
-      sentImage
-        ? "حلل هذه الصورة."
-        : ""
+      "↗ فتح";
+
+    open.addEventListener(
+      "click",
+      () => window.open(src, "_blank")
     );
 
-  addMessage(
-    "user",
-    userText,
-    sentImage && mode === "chat"
-      ? sentImage
-      : null
-  );
+    actions.appendChild(download);
+    actions.appendChild(open);
 
-  promptEl.value = "";
+    wrapper.appendChild(img);
+    wrapper.appendChild(actions);
 
-  autoGrow();
+    return wrapper;
+  }
 
-  setBusy(true);
+  async function downloadImage(src) {
 
-  try{
+    try {
 
-    if(mode === "image"){
+      const response =
+        await fetch(src);
 
-      await generateImage(
-        userText,
-        sentImage
-      );
+      const blob =
+        await response.blob();
 
-    }else{
+      const url =
+        URL.createObjectURL(blob);
 
-      await chat(
-        userText,
-        sentImage
-      );
+      const a =
+        document.createElement("a");
 
+      a.href = url;
+
+      a.download =
+        `AS-AI-${Date.now()}.png`;
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      a.remove();
+
+      URL.revokeObjectURL(url);
+
+    } catch {
+
+      window.open(src, "_blank");
     }
+  }
 
-  }catch(error){
+  /* =========================
+     FORMAT TEXT
+  ========================== */
 
-    addMessage(
-      "assistant",
+  function formatText(text) {
+
+    let safe =
+      escapeHTML(String(text));
+
+    /*
+     * Code blocks
+     */
+
+    safe = safe.replace(
+      /```([\s\S]*?)```/g,
+      (_, code) => `
+        <pre><code>${code.trim()}</code></pre>
+      `
+    );
+
+    /*
+     * Inline code
+     */
+
+    safe = safe.replace(
+      /`([^`]+)`/g,
+      "<code>$1</code>"
+    );
+
+    /*
+     * Bold
+     */
+
+    safe = safe.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+    /*
+     * Line breaks
+     */
+
+    safe = safe.replace(
+      /\n/g,
+      "<br>"
+    );
+
+    return safe;
+  }
+
+  function escapeHTML(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  /* =========================
+     ERRORS
+  ========================== */
+
+  function friendlyError(error) {
+
+    const message =
       error?.message ||
-      "حدث خطأ غير متوقع."
-    );
+      String(error);
 
-  }finally{
+    if (
+      message.includes("429") ||
+      message.toLowerCase().includes("quota")
+    ) {
 
-    setBusy(false);
-
-    clearImage();
-
-    renderHistory();
-
-  }
-}
-
-/* =========================
-   CHAT API
-   Compatible with server.js
-========================= */
-
-async function chat(
-  userText,
-  image
-){
-
-  history.push({
-    role:"user",
-    content:userText
-  });
-
-  saveHistory();
-
-  const placeholder =
-    addMessage(
-      "assistant",
-      ""
-    );
-
-  placeholder.bubble.innerHTML =
-    `
-      <span class="loading">
-        <i></i><i></i><i></i>
-        جاري التفكير...
-      </span>
-    `;
-
-  let response;
-
-  try{
-
-    response =
-      await fetch(
-        "/api/chat",
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-          body:JSON.stringify({
-            messages:history,
-            image:image || null
-          })
-        }
-      );
-
-  }catch{
-
-    throw new Error(
-      "تعذر الاتصال بالخادم."
-    );
-
-  }
-
-  if(!response.ok){
-
-    let data = {};
-
-    try{
-      data = await response.json();
-    }catch{}
-
-    throw new Error(
-      data.error ||
-      "حدث خطأ من الخادم."
-    );
-  }
-
-  if(!response.body){
-
-    throw new Error(
-      "المتصفح لا يدعم الرد المتدفق."
-    );
-  }
-
-  placeholder.bubble.textContent = "";
-
-  const reader =
-    response.body.getReader();
-
-  const decoder =
-    new TextDecoder();
-
-  let buffer = "";
-
-  let finalText = "";
-
-  while(true){
-
-    const {
-      value,
-      done
-    } = await reader.read();
-
-    if(done){
-      break;
+      return "وصلنا إلى حد الطلبات المؤقت من Gemini. جرّب مرة ثانية بعد قليل.";
     }
 
-    buffer +=
-      decoder.decode(
-        value,
-        {stream:true}
-      );
+    if (
+      message.includes("500") ||
+      message.includes("502") ||
+      message.includes("503") ||
+      message.includes("504")
+    ) {
 
-    const events =
-      buffer.split("\n\n");
-
-    buffer =
-      events.pop() || "";
-
-    for(const event of events){
-
-      const line =
-        event
-          .split("\n")
-          .find(
-            item =>
-              item.startsWith("data: ")
-          );
-
-      if(!line){
-        continue;
-      }
-
-      try{
-
-        const data =
-          JSON.parse(
-            line.slice(6)
-          );
-
-        if(data.type === "text"){
-
-          finalText +=
-            data.text || "";
-
-          placeholder
-            .bubble
-            .textContent =
-              finalText;
-
-          scrollBottom();
-        }
-
-        if(data.type === "error"){
-
-          throw new Error(
-            data.error ||
-            "حدث خطأ."
-          );
-        }
-
-      }catch(error){
-
-        if(
-          error.message &&
-          error.message !==
-          "Unexpected end of JSON input"
-        ){
-
-          throw error;
-        }
-
-      }
+      return "السيرفر مشغول حاليًا. جرّب مرة ثانية بعد لحظات.";
     }
+
+    if (
+      message.includes("Failed to fetch")
+    ) {
+
+      return "تعذر الاتصال بالسيرفر. تأكد أن الموقع يعمل ثم جرّب مرة ثانية.";
+    }
+
+    return message;
   }
 
-  if(!finalText){
+  /* =========================
+     CLEAR
+  ========================== */
 
-    finalText =
-      "لم يصلني رد من الذكاء الاصطناعي.";
+  els.clearBtn.addEventListener(
+    "click",
+    () => {
 
-    placeholder
-      .bubble
-      .textContent =
-        finalText;
-  }
+      if (!state.messages.length) {
+        return;
+      }
 
-  history.push({
-    role:"assistant",
-    content:finalText
-  });
+      state.messages = [];
 
-  saveHistory();
-}
+      els.messages.innerHTML = "";
 
-/* =========================
-   IMAGE API
-   Compatible with server.js
-========================= */
-
-async function generateImage(
-  prompt,
-  image
-){
-
-  const placeholder =
-    addMessage(
-      "assistant",
-      ""
-    );
-
-  placeholder.bubble.innerHTML =
-    `
-      <span class="loading">
-        <i></i><i></i><i></i>
-        جاري إنشاء الصورة...
-      </span>
-    `;
-
-  let response;
-
-  try{
-
-    response =
-      await fetch(
-        "/api/images",
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-          body:JSON.stringify({
-            prompt:prompt,
-            image:image || null,
-            imageSize:"1K",
-            aspectRatio:"1:1"
-          })
-        }
+      els.welcome.classList.remove(
+        "hidden"
       );
 
-  }catch{
+      removeUploadedImage();
 
-    throw new Error(
-      "تعذر الاتصال بخادم الصور."
-    );
-  }
+      els.prompt.value = "";
 
-  let data = {};
+      autoResize();
 
-  try{
-
-    data =
-      await response.json();
-
-  }catch{
-
-    throw new Error(
-      "لم يصل رد صحيح من الخادم."
-    );
-  }
-
-  if(!response.ok){
-
-    throw new Error(
-      data.error ||
-      "تعذر إنشاء الصورة."
-    );
-  }
-
-  if(!data.image){
-
-    throw new Error(
-      "لم تصل الصورة من Gemini."
-    );
-  }
-
-  placeholder.bubble.textContent = "";
-
-  const box =
-    document.createElement("div");
-
-  box.className =
-    "generated";
-
-  const img =
-    document.createElement("img");
-
-  img.src =
-    data.image;
-
-  img.alt =
-    "صورة مولدة من A S AI";
-
-  img.onclick = ()=>{
-    window.open(
-      data.image,
-      "_blank"
-    );
-  };
-
-  box.appendChild(img);
-
-  const actions =
-    document.createElement("div");
-
-  actions.className =
-    "image-actions";
-
-  const download =
-    document.createElement("button");
-
-  download.className =
-    "primary";
-
-  download.textContent =
-    "⬇ تحميل الصورة";
-
-  download.onclick =
-    ()=>downloadImage(data.image);
-
-  const open =
-    document.createElement("button");
-
-  open.className =
-    "secondary";
-
-  open.textContent =
-    "🔍 تكبير";
-
-  open.onclick = ()=>{
-    window.open(
-      data.image,
-      "_blank"
-    );
-  };
-
-  actions.append(
-    download,
-    open
+      scrollToBottom();
+    }
   );
 
-  box.appendChild(actions);
+  els.newChatBtn.addEventListener(
+    "click",
+    createChat
+  );
 
-  placeholder.body.appendChild(box);
+  els.newTopBtn.addEventListener(
+    "click",
+    createChat
+  );
 
-  history.push({
-    role:"assistant",
-    content:"[تم إنشاء صورة]"
-  });
+  /* =========================
+     SCROLL
+  ========================== */
 
-  saveHistory();
+  function scrollToBottom() {
 
-  scrollBottom();
-}
+    requestAnimationFrame(() => {
 
-/* =========================
-   RESTORE
-========================= */
+      els.chatArea.scrollTop =
+        els.chatArea.scrollHeight;
 
-function restore(){
+    });
+  }
+
+  /* =========================
+     INIT
+  ========================== */
 
   renderHistory();
 
-  const recent =
-    history.slice(-12);
+  updateModeUI();
 
-  if(!recent.length){
-    return;
-  }
+  autoResize();
 
-  welcome.style.display = "none";
+  /*
+   * منع السحب الغريب على الهاتف
+   * مع إبقاء التمرير داخل المحادثة.
+   */
 
-  recent.forEach(item=>{
-
-    addMessage(
-      item.role,
-      item.content || ""
-    );
-
-  });
-
-}
-
-/* =========================
-   START
-========================= */
-
-restore();
-
-setMode("chat");
-
-autoGrow();
+  document.addEventListener(
+    "gesturestart",
+    event => event.preventDefault()
+  );
 
 </script>
 
 </body>
 </html>
-'''
-
-path = Path("/mnt/data/index.html")
-path.write_text(html, encoding="utf-8")
-print(path)
-print(f"Created complete index.html: {len(html):,} characters")
-print("Compatible endpoints: /api/chat and /api/images")
-print("Credits included: علي سلطان + علي عرندس")
-print("No API key is exposed in the HTML.")
-print("Full source is also shown below in the assistant response.")
