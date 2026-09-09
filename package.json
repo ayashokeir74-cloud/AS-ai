@@ -1,7 +1,7 @@
 {
   "name": "sultan-ai",
-  "version": "8.1.0",
-  "description": "Sultan AI V8.1 - Advanced AI Assistant with Smart Context, Streaming, Web Search, Website Reading, Code Execution, Vision and File Analysis",
+  "version": "8.3.0",
+  "description": "Sultan AI V8.3 - Advanced AI Assistant with Smart Routing, Smart Context, Streaming, Web Search, Website Reading, Code Execution, Vision and File Analysis",
   "type": "module",
   "main": "server.js",
   "scripts": {
