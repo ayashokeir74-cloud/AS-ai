@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#08090c">
+<meta name="theme-color" content="#07080b">
 <meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي متقدم وسريع للبرمجة والبحث والصور والملفات.">
 <meta name="robots" content="index,follow">
-<title>Sultan AI V8.3 Premium</title>
+<title>Sultan AI V8.3.1 Premium Ultra</title>
 
 <style>
 *{
@@ -15,44 +15,55 @@
 }
 
 :root{
-  --bg:#08090c;
-  --bg2:#0d0f13;
-  --panel:#11141a;
-  --panel2:#171b22;
-  --panel3:#1d222b;
-  --border:rgba(255,255,255,.08);
-  --border2:rgba(255,125,20,.22);
-  --text:#f7f8fa;
-  --muted:#8e96a3;
+  --bg:#07080b;
+  --bg2:#0b0d11;
+  --panel:#101319;
+  --panel2:#161a21;
+  --panel3:#1c222b;
 
-  --orange:#ff7a18;
-  --orange2:#ff9b4a;
-  --orangeSoft:rgba(255,122,24,.13);
-  --orangeGlow:rgba(255,122,24,.28);
+  --border:rgba(255,255,255,.075);
+  --borderStrong:rgba(255,126,28,.28);
 
-  --danger:#ff5b61;
+  --text:#f8f9fb;
+  --muted:#8d96a4;
+
+  --orange:#ff7414;
+  --orange2:#ff9d50;
+  --orange3:#ffbd82;
+
+  --orangeSoft:rgba(255,116,20,.10);
+  --orangeGlow:rgba(255,116,20,.24);
+
   --success:#32d583;
   --warning:#ffc857;
+  --danger:#ff5b61;
 
-  --shadow:0 20px 70px rgba(0,0,0,.42);
+  --shadow:0 25px 80px rgba(0,0,0,.45);
+
   --radius:20px;
 }
 
 body.light{
-  --bg:#f4f5f7;
+  --bg:#f3f4f6;
   --bg2:#ffffff;
   --panel:#ffffff;
-  --panel2:#f1f3f6;
-  --panel3:#e8ebef;
-  --border:rgba(0,0,0,.09);
-  --border2:rgba(235,103,0,.25);
+  --panel2:#f0f2f5;
+  --panel3:#e6e9ee;
+
+  --border:rgba(0,0,0,.08);
+  --borderStrong:rgba(236,101,8,.27);
+
   --text:#111318;
-  --muted:#69717d;
-  --orange:#ec6508;
-  --orange2:#ff7a18;
-  --orangeSoft:rgba(236,101,8,.09);
+  --muted:#68717d;
+
+  --orange:#e96308;
+  --orange2:#ff791d;
+  --orange3:#ff9a54;
+
+  --orangeSoft:rgba(236,101,8,.08);
   --orangeGlow:rgba(236,101,8,.18);
-  --shadow:0 20px 60px rgba(0,0,0,.10);
+
+  --shadow:0 25px 70px rgba(0,0,0,.12);
 }
 
 html,
@@ -71,9 +82,13 @@ body{
     "Segoe UI",
     Arial,
     sans-serif;
+
   background:var(--bg);
   color:var(--text);
-  transition:background .25s ease,color .25s ease;
+
+  transition:
+    background .3s ease,
+    color .3s ease;
 }
 
 button,
@@ -100,36 +115,62 @@ button{
 }
 
 /* =====================================================
-   BACKGROUND
+   PREMIUM AMBIENT BACKGROUND
 ===================================================== */
 
-.main{
-  position:relative;
-  flex:1;
-  min-width:0;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  background:
-    radial-gradient(
-      circle at 50% -20%,
-      rgba(255,122,24,.11),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 100% 70%,
-      rgba(255,122,24,.035),
-      transparent 28%
-    ),
-    var(--bg);
-}
-
-.main::before{
-  content:"";
-  position:absolute;
+.ambient{
+  position:fixed;
   inset:0;
   pointer-events:none;
-  opacity:.25;
+  overflow:hidden;
+  z-index:0;
+}
+
+.ambientGlow{
+  position:absolute;
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,116,20,.105),
+      rgba(255,116,20,.035) 34%,
+      transparent 70%
+    );
+  filter:blur(15px);
+  transform:translate3d(0,0,0);
+  animation:ambientMove 14s ease-in-out infinite alternate;
+}
+
+.ambientGlow.one{
+  top:-300px;
+  right:15%;
+}
+
+.ambientGlow.two{
+  bottom:-360px;
+  left:8%;
+  width:430px;
+  height:430px;
+  opacity:.55;
+  animation-duration:18s;
+  animation-delay:-4s;
+}
+
+@keyframes ambientMove{
+  from{
+    transform:translate3d(-20px,-5px,0) scale(1);
+  }
+  to{
+    transform:translate3d(25px,18px,0) scale(1.06);
+  }
+}
+
+.ambientGrid{
+  position:absolute;
+  inset:0;
+  opacity:.17;
   background-image:
     linear-gradient(
       rgba(255,255,255,.018) 1px,
@@ -140,8 +181,67 @@ button{
       rgba(255,255,255,.018) 1px,
       transparent 1px
     );
-  background-size:42px 42px;
-  mask-image:linear-gradient(to bottom,black,transparent 80%);
+  background-size:44px 44px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 78%
+    );
+}
+
+.ambientSweep{
+  position:absolute;
+  top:-30%;
+  left:-15%;
+  width:70%;
+  height:160%;
+  opacity:.035;
+  background:
+    linear-gradient(
+      100deg,
+      transparent 35%,
+      rgba(255,255,255,.8) 50%,
+      transparent 65%
+    );
+  transform:rotate(12deg);
+  animation:sweep 12s linear infinite;
+}
+
+@keyframes sweep{
+  from{
+    transform:translateX(-80%) rotate(12deg);
+  }
+  to{
+    transform:translateX(230%) rotate(12deg);
+  }
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+  position:relative;
+  flex:1;
+  min-width:0;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(255,116,20,.10),
+      transparent 33%
+    ),
+    radial-gradient(
+      circle at 100% 70%,
+      rgba(255,116,20,.035),
+      transparent 28%
+    ),
+    var(--bg);
 }
 
 /* =====================================================
@@ -153,18 +253,25 @@ button{
   min-width:285px;
   height:100%;
   padding:16px;
+
   display:flex;
   flex-direction:column;
+
   background:
     linear-gradient(
       145deg,
-      rgba(255,122,24,.025),
-      transparent 35%
+      rgba(255,116,20,.025),
+      transparent 38%
     ),
     var(--bg2);
+
   border-left:1px solid var(--border);
+
   position:relative;
   z-index:50;
+
+  box-shadow:
+    12px 0 50px rgba(0,0,0,.08);
 }
 
 .brand{
@@ -175,45 +282,70 @@ button{
 }
 
 .logo{
-  width:45px;
-  height:45px;
-  border-radius:15px;
+  width:47px;
+  height:47px;
+
+  border-radius:16px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   flex:none;
+
   color:#fff;
-  font-size:21px;
+  font-size:22px;
   font-weight:950;
+
   background:
-    linear-gradient(
-      145deg,
-      var(--orange2),
-      var(--orange)
+    radial-gradient(
+      circle at 30% 20%,
+      var(--orange3),
+      var(--orange2) 28%,
+      var(--orange) 65%,
+      #b53b00 100%
     );
+
   box-shadow:
-    0 8px 30px var(--orangeGlow),
-    inset 0 1px 0 rgba(255,255,255,.3);
+    0 9px 30px var(--orangeGlow),
+    inset 0 1px 0 rgba(255,255,255,.38);
+
   position:relative;
+}
+
+.logo::before{
+  content:"";
+  position:absolute;
+  inset:-4px;
+  border-radius:19px;
+  border:1px solid rgba(255,143,65,.24);
 }
 
 .logo::after{
   content:"";
   position:absolute;
-  inset:-5px;
-  border-radius:18px;
-  border:1px solid rgba(255,122,24,.14);
-  animation:logoPulse 2.8s infinite ease-in-out;
+  inset:-8px;
+  border-radius:21px;
+  border:1px solid rgba(255,116,20,.09);
+
+  animation:logoPulse 3s ease-in-out infinite;
 }
 
 @keyframes logoPulse{
-  0%,100%{opacity:.25;transform:scale(.96)}
-  50%{opacity:.8;transform:scale(1.04)}
+  0%,100%{
+    opacity:.25;
+    transform:scale(.97);
+  }
+  50%{
+    opacity:.9;
+    transform:scale(1.04);
+  }
 }
 
 .brandTitle{
   font-size:17px;
   font-weight:900;
+  letter-spacing:-.2px;
 }
 
 .brandVersion{
@@ -224,33 +356,56 @@ button{
 
 .premiumBadge{
   margin-top:5px;
+
   display:inline-flex;
-  padding:2px 7px;
+
+  padding:3px 8px;
+
   border-radius:999px;
-  background:var(--orangeSoft);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,116,20,.13),
+      rgba(255,157,80,.07)
+    );
+
   color:var(--orange2);
+
+  border:1px solid rgba(255,116,20,.13);
+
   font-size:8px;
   font-weight:900;
-  letter-spacing:.5px;
+
+  letter-spacing:.7px;
 }
 
 .newChat{
-  min-height:48px;
+  min-height:49px;
   width:100%;
+
   border-radius:15px;
+
   color:#fff;
   font-weight:850;
+
   display:flex;
   align-items:center;
   justify-content:center;
   gap:8px;
+
   background:
     linear-gradient(
       135deg,
-      var(--orange2),
-      var(--orange)
+      var(--orange3),
+      var(--orange2) 35%,
+      var(--orange) 100%
     );
-  box-shadow:0 9px 28px var(--orangeGlow);
+
+  box-shadow:
+    0 10px 30px var(--orangeGlow),
+    inset 0 1px 0 rgba(255,255,255,.25);
+
   transition:
     transform .16s ease,
     box-shadow .16s ease,
@@ -259,7 +414,9 @@ button{
 
 .newChat:hover{
   filter:brightness(1.06);
-  box-shadow:0 12px 34px var(--orangeGlow);
+  box-shadow:
+    0 13px 38px var(--orangeGlow),
+    inset 0 1px 0 rgba(255,255,255,.28);
   transform:translateY(-1px);
 }
 
@@ -291,27 +448,41 @@ button{
 .history::-webkit-scrollbar-thumb,
 .chat::-webkit-scrollbar-thumb,
 .codeBlock pre::-webkit-scrollbar-thumb{
-  background:var(--panel3);
+  background:
+    linear-gradient(
+      var(--orange),
+      var(--orange2)
+    );
   border-radius:20px;
 }
 
 .historyItem{
   width:100%;
+
   padding:10px 11px;
   margin-bottom:4px;
+
   border-radius:12px;
+
   text-align:right;
+
   background:transparent;
   color:var(--text);
+
   overflow:hidden;
   white-space:nowrap;
   text-overflow:ellipsis;
+
   font-size:11px;
-  transition:.15s ease;
+
+  transition:
+    background .16s ease,
+    transform .16s ease;
 }
 
 .historyItem:hover{
   background:var(--orangeSoft);
+  transform:translateX(-2px);
 }
 
 .historyEmpty{
@@ -325,24 +496,36 @@ button{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
+
   padding-top:12px;
+
   border-top:1px solid var(--border);
 }
 
 .sideBtn{
   min-height:43px;
+
   border-radius:13px;
+
   background:var(--panel);
+
   color:var(--text);
+
   border:1px solid var(--border);
+
   font-size:11px;
   font-weight:750;
-  transition:.15s ease;
+
+  transition:
+    border-color .16s ease,
+    background .16s ease,
+    transform .16s ease;
 }
 
 .sideBtn:hover{
-  border-color:var(--border2);
+  border-color:var(--borderStrong);
   background:var(--orangeSoft);
+  transform:translateY(-1px);
 }
 
 /* =====================================================
@@ -352,32 +535,74 @@ button{
 .topbar{
   height:68px;
   min-height:68px;
+
   padding:10px 17px;
+
   display:flex;
   align-items:center;
   gap:10px;
-  background:rgba(8,9,12,.72);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8,9,12,.88),
+      rgba(8,9,12,.66)
+    );
+
   border-bottom:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+
   position:relative;
   z-index:20;
 }
 
+.topbar::after{
+  content:"";
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:-1px;
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,116,20,.25),
+      transparent
+    );
+
+  pointer-events:none;
+}
+
 body.light .topbar{
-  background:rgba(255,255,255,.78);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.92),
+      rgba(255,255,255,.74)
+    );
 }
 
 .menuBtn{
   display:none;
+
   width:42px;
   height:42px;
+
   border-radius:13px;
+
   color:var(--text);
+
   background:var(--panel);
+
   border:1px solid var(--border);
+
   align-items:center;
   justify-content:center;
+
   font-size:19px;
 }
 
@@ -395,20 +620,39 @@ body.light .topbar{
 .modeSelect{
   min-width:170px;
   height:42px;
+
   padding:0 12px;
+
   border-radius:13px;
+
   outline:none;
+
   border:1px solid var(--border);
-  background:var(--panel);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,116,20,.025),
+      var(--panel)
+    );
+
   color:var(--text);
+
   font-size:11px;
   font-weight:750;
+
   cursor:pointer;
-  transition:.15s ease;
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease;
 }
 
 .modeSelect:hover{
-  border-color:var(--border2);
+  border-color:var(--borderStrong);
+
+  box-shadow:
+    0 0 18px rgba(255,116,20,.04);
 }
 
 .topSpacer{
@@ -419,6 +663,7 @@ body.light .topbar{
   display:flex;
   align-items:center;
   gap:7px;
+
   color:var(--muted);
   font-size:10px;
 }
@@ -427,8 +672,13 @@ body.light .topbar{
   width:8px;
   height:8px;
   border-radius:50%;
+
   background:var(--warning);
-  box-shadow:0 0 10px currentColor;
+
+  box-shadow:
+    0 0 10px currentColor;
+
+  animation:healthPulse 2s ease-in-out infinite;
 }
 
 .healthDot.ok{
@@ -439,15 +689,38 @@ body.light .topbar{
   background:var(--danger);
 }
 
+@keyframes healthPulse{
+  0%,100%{
+    opacity:.55;
+  }
+  50%{
+    opacity:1;
+  }
+}
+
 .topBtn{
   height:42px;
   padding:0 14px;
+
   border-radius:13px;
+
   background:var(--orangeSoft);
+
   color:var(--orange2);
-  border:1px solid var(--border2);
+
+  border:1px solid var(--borderStrong);
+
   font-size:11px;
   font-weight:850;
+
+  transition:
+    transform .16s ease,
+    background .16s ease;
+}
+
+.topBtn:hover{
+  background:rgba(255,116,20,.15);
+  transform:translateY(-1px);
 }
 
 /* =====================================================
@@ -457,10 +730,14 @@ body.light .topbar{
 .chat{
   flex:1;
   min-height:0;
+
   overflow-y:auto;
   overflow-x:hidden;
+
   padding:28px 20px 160px;
+
   scroll-behavior:smooth;
+
   position:relative;
   z-index:2;
 }
@@ -471,24 +748,48 @@ body.light .topbar{
 }
 
 /* =====================================================
-   WELCOME
+   COMMAND CENTER
 ===================================================== */
 
-.welcome{
-  min-height:calc(100vh - 270px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  text-align:center;
-  padding:30px 10px;
-  animation:welcomeIn .5s ease both;
+.commandCenter{
+  width:min(950px,100%);
+
+  margin:0 auto 18px;
+
+  padding:9px;
+
+  display:none;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:8px;
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,116,20,.045),
+      rgba(255,255,255,.012)
+    );
+
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.10);
+
+  animation:commandIn .25s ease;
 }
 
-@keyframes welcomeIn{
+.commandCenter.show{
+  display:grid;
+}
+
+@keyframes commandIn{
   from{
     opacity:0;
-    transform:translateY(12px);
+    transform:translateY(-5px);
   }
   to{
     opacity:1;
@@ -496,71 +797,273 @@ body.light .topbar{
   }
 }
 
-.orb{
-  width:100px;
-  height:100px;
-  margin-bottom:23px;
-  border-radius:32px;
+.commandCard{
+  min-height:58px;
+
+  padding:9px 11px;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.025),
+      var(--panel)
+    );
+
+  border:1px solid var(--border);
+
+  position:relative;
+  overflow:hidden;
+}
+
+.commandCard::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-80%;
+  width:55%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.035),
+      transparent
+    );
+
+  transform:skewX(-20deg);
+
+  animation:cardShine 7s linear infinite;
+}
+
+@keyframes cardShine{
+  0%,75%{
+    left:-80%;
+  }
+  100%{
+    left:150%;
+  }
+}
+
+.commandLabel{
+  color:var(--muted);
+  font-size:8px;
+  letter-spacing:.6px;
+}
+
+.commandValue{
+  margin-top:4px;
+  font-size:11px;
+  font-weight:850;
+}
+
+.commandValue.orange{
+  color:var(--orange2);
+}
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+.welcome{
+  min-height:calc(100vh - 270px);
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  flex-direction:column;
+
+  text-align:center;
+
+  padding:30px 10px;
+
+  animation:welcomeIn .55s ease both;
+}
+
+@keyframes welcomeIn{
+  from{
+    opacity:0;
+    transform:translateY(13px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.welcomeMini{
+  margin-bottom:14px;
+
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+
+  padding:6px 10px;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,116,20,.08),
+      rgba(255,157,80,.035)
+    );
+
+  border:1px solid rgba(255,116,20,.13);
+
+  color:var(--muted);
+
+  font-size:9px;
+  font-weight:750;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.07);
+}
+
+.welcomeMiniDot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+
+  background:var(--success);
+
+  box-shadow:
+    0 0 10px rgba(50,213,131,.5);
+}
+
+.orb{
+  width:108px;
+  height:108px;
+
+  margin-bottom:23px;
+
+  border-radius:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
   position:relative;
+
   background:
     radial-gradient(
-      circle at 35% 30%,
-      #ffbd85,
-      var(--orange) 42%,
-      #b63d00 100%
+      circle at 32% 24%,
+      #ffd0a7,
+      var(--orange3) 18%,
+      var(--orange2) 38%,
+      var(--orange) 67%,
+      #9e3000 100%
     );
+
   box-shadow:
-    0 0 0 1px rgba(255,122,24,.3),
-    0 0 35px rgba(255,122,24,.27),
-    0 25px 70px rgba(0,0,0,.35);
-  animation:orbFloat 4s ease-in-out infinite;
+    0 0 0 1px rgba(255,122,24,.35),
+    0 0 38px rgba(255,122,24,.28),
+    0 25px 75px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.32);
+
+  animation:orbFloat 4.2s ease-in-out infinite;
+
+  transform:translateZ(0);
 }
 
 .orb::before,
 .orb::after{
   content:"";
   position:absolute;
+
   border-radius:50%;
+
   pointer-events:none;
 }
 
 .orb::before{
-  inset:-13px;
-  border:1px solid rgba(255,122,24,.17);
-  animation:orbRing 3s infinite ease-in-out;
+  inset:-14px;
+
+  border:1px solid rgba(255,122,24,.18);
+
+  box-shadow:
+    0 0 25px rgba(255,122,24,.06);
+
+  animation:orbRing 3.2s infinite ease-in-out;
 }
 
 .orb::after{
-  inset:-28px;
-  border:1px solid rgba(255,122,24,.06);
-  animation:orbRing 4.5s infinite reverse ease-in-out;
+  inset:-29px;
+
+  border:1px solid rgba(255,122,24,.065);
+
+  animation:
+    orbRing 5s infinite reverse ease-in-out;
 }
 
 @keyframes orbFloat{
-  0%,100%{transform:translateY(0) rotate(0)}
-  50%{transform:translateY(-7px) rotate(1deg)}
+  0%,100%{
+    transform:translateY(0) rotate(0deg);
+  }
+
+  50%{
+    transform:translateY(-8px) rotate(1deg);
+  }
 }
 
 @keyframes orbRing{
-  0%,100%{transform:scale(.96);opacity:.35}
-  50%{transform:scale(1.04);opacity:.9}
+  0%,100%{
+    transform:scale(.96);
+    opacity:.3;
+  }
+
+  50%{
+    transform:scale(1.045);
+    opacity:.95;
+  }
+}
+
+.orbLight{
+  position:absolute;
+
+  width:30px;
+  height:30px;
+
+  top:13px;
+  left:17px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.12) 55%,
+      transparent 72%
+    );
+
+  filter:blur(1px);
 }
 
 .orbCore{
   color:#fff;
-  font-size:38px;
+
+  font-size:41px;
   font-weight:950;
-  text-shadow:0 3px 15px rgba(0,0,0,.25);
+
+  text-shadow:
+    0 3px 18px rgba(0,0,0,.27);
+
+  position:relative;
+  z-index:2;
 }
 
 .welcome h1{
   margin:0;
-  font-size:31px;
-  font-weight:900;
-  letter-spacing:-.8px;
+
+  font-size:32px;
+
+  font-weight:950;
+
+  letter-spacing:-1px;
 }
 
 .gradientText{
@@ -568,59 +1071,102 @@ body.light .topbar{
     linear-gradient(
       90deg,
       var(--text),
+      var(--orange3),
       var(--orange2)
     );
+
   -webkit-background-clip:text;
   background-clip:text;
+
   color:transparent;
 }
 
 .welcome p{
-  max-width:620px;
+  max-width:650px;
+
   margin:10px 0 0;
+
   color:var(--muted);
+
   font-size:13px;
-  line-height:1.8;
+
+  line-height:1.85;
 }
 
 .capabilities{
   display:flex;
   justify-content:center;
   flex-wrap:wrap;
+
   gap:7px;
+
   margin-top:17px;
 }
 
 .capability{
-  padding:6px 10px;
+  padding:7px 10px;
+
   border-radius:999px;
+
   border:1px solid var(--border);
-  background:rgba(255,255,255,.025);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,116,20,.035),
+      rgba(255,255,255,.018)
+    );
+
   color:var(--muted);
+
   font-size:9px;
+
+  transition:
+    border-color .16s ease,
+    transform .16s ease;
+}
+
+.capability:hover{
+  border-color:var(--borderStrong);
+  transform:translateY(-1px);
 }
 
 .suggestions{
   width:min(720px,100%);
+
   margin-top:25px;
+
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
   gap:10px;
 }
 
 .suggestion{
-  min-height:68px;
+  min-height:70px;
+
   padding:14px;
+
   text-align:right;
-  border-radius:16px;
+
+  border-radius:17px;
+
   border:1px solid var(--border);
+
   background:
     linear-gradient(
       145deg,
-      rgba(255,122,24,.035),
+      rgba(255,116,20,.045),
       var(--panel)
     );
+
   color:var(--text);
+
+  position:relative;
+  overflow:hidden;
+
   transition:
     transform .18s ease,
     border-color .18s ease,
@@ -628,11 +1174,41 @@ body.light .topbar{
     box-shadow .18s ease;
 }
 
+.suggestion::before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  right:0;
+
+  width:45%;
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,157,80,.28)
+    );
+
+  opacity:.7;
+}
+
 .suggestion:hover{
-  transform:translateY(-2px);
-  border-color:var(--border2);
-  background:var(--orangeSoft);
-  box-shadow:0 12px 35px rgba(0,0,0,.15);
+  transform:translateY(-3px);
+
+  border-color:var(--borderStrong);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,116,20,.10),
+      var(--panel)
+    );
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.16);
 }
 
 .suggestionTitle{
@@ -652,9 +1228,13 @@ body.light .topbar{
 
 .message{
   width:100%;
+
   display:flex;
+
   gap:11px;
+
   margin:0 auto 22px;
+
   animation:messageIn .22s ease both;
 }
 
@@ -665,7 +1245,7 @@ body.light .topbar{
 @keyframes messageIn{
   from{
     opacity:0;
-    transform:translateY(6px);
+    transform:translateY(7px);
   }
   to{
     opacity:1;
@@ -677,27 +1257,38 @@ body.light .topbar{
   width:39px;
   min-width:39px;
   height:39px;
+
   border-radius:13px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   background:var(--panel2);
+
   border:1px solid var(--border);
+
   color:var(--muted);
+
   font-size:10px;
   font-weight:950;
 }
 
 .message.assistant .avatar{
   color:#fff;
+
   background:
     linear-gradient(
       145deg,
+      var(--orange3),
       var(--orange2),
       var(--orange)
     );
+
   border-color:rgba(255,122,24,.35);
-  box-shadow:0 5px 20px var(--orangeGlow);
+
+  box-shadow:
+    0 6px 22px var(--orangeGlow);
 }
 
 .messageBody{
@@ -713,57 +1304,82 @@ body.light .topbar{
 
 .bubble{
   padding:13px 16px;
+
   border-radius:18px;
+
   line-height:1.78;
+
   font-size:13px;
+
   overflow-wrap:anywhere;
 }
 
 .message.user .bubble{
   color:#fff;
+
   background:
     linear-gradient(
       135deg,
-      var(--orange2),
+      var(--orange3),
+      var(--orange2) 35%,
       var(--orange)
     );
+
   border-bottom-right-radius:5px;
-  box-shadow:0 7px 25px rgba(255,122,24,.14);
+
+  box-shadow:
+    0 8px 27px rgba(255,122,24,.15),
+    inset 0 1px 0 rgba(255,255,255,.18);
 }
 
 .message.assistant .bubble{
   background:
     linear-gradient(
       145deg,
-      rgba(255,255,255,.025),
+      rgba(255,255,255,.027),
       var(--panel)
     );
+
   border:1px solid var(--border);
+
   border-bottom-left-radius:5px;
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.055);
 }
 
 .messageActions{
   display:flex;
+
   gap:5px;
+
   margin-top:6px;
+
   opacity:.7;
 }
 
 .actionBtn{
   min-width:31px;
   height:29px;
+
   padding:0 8px;
+
   border-radius:9px;
+
   background:var(--panel2);
+
   border:1px solid var(--border);
+
   color:var(--muted);
+
   font-size:9px;
+
   transition:.15s ease;
 }
 
 .actionBtn:hover{
   color:var(--orange2);
-  border-color:var(--border2);
+  border-color:var(--borderStrong);
 }
 
 /* =====================================================
@@ -794,60 +1410,93 @@ body.light .topbar{
 
 .inlineCode{
   padding:1px 5px;
+
   border-radius:6px;
+
   background:rgba(255,122,24,.08);
+
   border:1px solid rgba(255,122,24,.12);
+
   font-family:
     ui-monospace,
     SFMono-Regular,
     Menlo,
     Consolas,
     monospace;
+
   font-size:.9em;
+
   direction:ltr;
   unicode-bidi:plaintext;
 }
 
 .codeBlock{
   margin:12px 0 2px;
+
   overflow:hidden;
+
   border-radius:14px;
+
   border:1px solid var(--border);
-  background:#08090c;
+
+  background:#07080a;
+
   direction:ltr;
   text-align:left;
-  box-shadow:0 10px 30px rgba(0,0,0,.18);
+
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.20);
 }
 
 .codeHeader{
   height:39px;
+
   padding:0 10px;
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   border-bottom:1px solid var(--border);
+
   color:var(--muted);
+
   font-size:9px;
 }
 
 .copyCode{
   height:27px;
+
   padding:0 9px;
+
   border-radius:8px;
+
   background:var(--panel2);
+
   color:var(--text);
+
   border:1px solid var(--border);
+
   font-size:9px;
 }
 
 .codeBlock pre{
   margin:0;
+
   padding:13px;
+
   overflow:auto;
+
   white-space:pre-wrap;
+
   word-break:break-word;
+
   font-size:11px;
+
   line-height:1.65;
+
   font-family:
     ui-monospace,
     SFMono-Regular,
@@ -857,66 +1506,28 @@ body.light .topbar{
 }
 
 /* =====================================================
-   COMMAND CENTER
-===================================================== */
-
-.commandCenter{
-  width:min(950px,100%);
-  margin:0 auto 18px;
-  padding:10px;
-  display:none;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  border:1px solid var(--border);
-  border-radius:17px;
-  background:rgba(255,255,255,.018);
-  animation:messageIn .2s ease;
-}
-
-.commandCenter.show{
-  display:grid;
-}
-
-.commandCard{
-  min-height:55px;
-  padding:9px 11px;
-  border-radius:12px;
-  background:var(--panel);
-  border:1px solid var(--border);
-}
-
-.commandLabel{
-  color:var(--muted);
-  font-size:8px;
-}
-
-.commandValue{
-  margin-top:4px;
-  font-size:11px;
-  font-weight:850;
-}
-
-.commandValue.orange{
-  color:var(--orange2);
-}
-
-/* =====================================================
-   TYPING / TOOL ACTIVITY
+   TYPING
 ===================================================== */
 
 .typing{
   min-height:25px;
+
   display:flex;
   align-items:center;
+
   gap:5px;
 }
 
 .typing span{
   width:6px;
   height:6px;
+
   border-radius:50%;
+
   background:var(--orange2);
-  animation:typing 1s infinite ease-in-out;
+
+  animation:
+    typing 1s infinite ease-in-out;
 }
 
 .typing span:nth-child(2){
@@ -932,6 +1543,7 @@ body.light .topbar{
     opacity:.25;
     transform:translateY(0);
   }
+
   35%{
     opacity:1;
     transform:translateY(-4px);
@@ -940,19 +1552,28 @@ body.light .topbar{
 
 .toolStatus{
   margin-top:8px;
+
   display:flex;
   align-items:center;
+
   gap:7px;
+
   color:var(--muted);
+
   font-size:9px;
 }
 
 .toolPulse{
   width:7px;
   height:7px;
+
   border-radius:50%;
+
   background:var(--orange);
-  box-shadow:0 0 12px var(--orange);
+
+  box-shadow:
+    0 0 12px var(--orange);
+
   animation:pulse 1.2s infinite;
 }
 
@@ -961,6 +1582,7 @@ body.light .topbar{
     opacity:.3;
     transform:scale(.75);
   }
+
   50%{
     opacity:1;
     transform:scale(1);
@@ -973,12 +1595,20 @@ body.light .topbar{
 
 .composerArea{
   position:absolute;
+
   left:0;
   right:0;
   bottom:0;
-  padding:13px 18px calc(13px + env(safe-area-inset-bottom));
+
+  padding:
+    13px
+    18px
+    calc(13px + env(safe-area-inset-bottom));
+
   pointer-events:none;
+
   z-index:15;
+
   background:
     linear-gradient(
       to top,
@@ -989,36 +1619,72 @@ body.light .topbar{
 
 .composer{
   width:min(950px,100%);
+
   margin:auto;
+
   overflow:hidden;
+
   pointer-events:auto;
+
   border:1px solid var(--border);
-  border-radius:20px;
+
+  border-radius:21px;
+
   background:
     linear-gradient(
       145deg,
-      rgba(255,122,24,.025),
+      rgba(255,116,20,.035),
       var(--panel)
     );
+
   box-shadow:
-    0 20px 60px rgba(0,0,0,.35),
-    0 0 0 1px rgba(255,255,255,.015);
+    0 22px 65px rgba(0,0,0,.38),
+    0 0 0 1px rgba(255,255,255,.012);
+
+  position:relative;
+
   transition:
     border-color .2s ease,
     box-shadow .2s ease;
 }
 
+.composer::before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:8%;
+  right:8%;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,157,80,.35),
+      transparent
+    );
+
+  pointer-events:none;
+}
+
 .composer:focus-within{
   border-color:rgba(255,122,24,.32);
+
   box-shadow:
-    0 20px 65px rgba(0,0,0,.38),
-    0 0 35px rgba(255,122,24,.055);
+    0 22px 70px rgba(0,0,0,.40),
+    0 0 38px rgba(255,122,24,.055);
 }
 
 .attachments{
   display:none;
+
   gap:7px;
+
   flex-wrap:wrap;
+
   padding:9px 11px 0;
 }
 
@@ -1029,14 +1695,22 @@ body.light .topbar{
 .fileChip{
   max-width:220px;
   height:31px;
+
   padding:0 8px;
+
   display:flex;
   align-items:center;
+
   gap:6px;
+
   border-radius:9px;
+
   background:var(--panel2);
+
   border:1px solid var(--border);
+
   color:var(--text);
+
   font-size:9px;
 }
 
@@ -1049,8 +1723,11 @@ body.light .topbar{
 .removeFile{
   width:19px;
   height:19px;
+
   border-radius:6px;
+
   background:transparent;
+
   color:var(--muted);
 }
 
@@ -1061,8 +1738,11 @@ body.light .topbar{
 
 .inputRow{
   display:flex;
+
   align-items:flex-end;
+
   gap:8px;
+
   padding:10px;
 }
 
@@ -1071,7 +1751,9 @@ body.light .topbar{
   width:44px;
   min-width:44px;
   height:44px;
+
   border-radius:14px;
+
   display:flex;
   align-items:center;
   justify-content:center;
@@ -1079,34 +1761,56 @@ body.light .topbar{
 
 .attachBtn{
   color:var(--text);
+
   background:var(--panel2);
+
   border:1px solid var(--border);
+
   font-size:17px;
-  transition:.15s ease;
+
+  transition:
+    color .15s ease,
+    border-color .15s ease,
+    transform .15s ease;
 }
 
 .attachBtn:hover{
   color:var(--orange2);
-  border-color:var(--border2);
+  border-color:var(--borderStrong);
+  transform:translateY(-1px);
 }
 
 .sendBtn{
   color:#fff;
+
   background:
     linear-gradient(
       145deg,
+      var(--orange3),
       var(--orange2),
       var(--orange)
     );
-  box-shadow:0 7px 25px var(--orangeGlow);
+
+  box-shadow:
+    0 8px 27px var(--orangeGlow),
+    inset 0 1px 0 rgba(255,255,255,.22);
+
   font-size:17px;
   font-weight:950;
-  transition:.15s ease;
+
+  transition:
+    transform .15s ease,
+    filter .15s ease,
+    box-shadow .15s ease;
 }
 
 .sendBtn:hover{
   transform:translateY(-1px);
+
   filter:brightness(1.07);
+
+  box-shadow:
+    0 11px 34px var(--orangeGlow);
 }
 
 .sendBtn:active{
@@ -1115,21 +1819,33 @@ body.light .topbar{
 
 .sendBtn.stop{
   background:var(--danger);
-  box-shadow:0 7px 25px rgba(255,91,97,.2);
+
+  box-shadow:
+    0 7px 25px rgba(255,91,97,.20);
 }
 
 .textarea{
   flex:1;
+
   min-width:0;
+
   min-height:44px;
   max-height:180px;
+
   padding:11px 12px;
+
   resize:none;
+
   outline:none;
+
   border:0;
+
   background:transparent;
+
   color:var(--text);
+
   font-size:13px;
+
   line-height:1.6;
 }
 
@@ -1139,30 +1855,117 @@ body.light .topbar{
 
 .composerFooter{
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   gap:10px;
+
   padding:0 13px 9px;
+
   color:var(--muted);
+
   font-size:9px;
 }
 
 .statusText{
   display:flex;
   align-items:center;
+
   gap:6px;
 }
 
 .statusDot{
   width:6px;
   height:6px;
+
   border-radius:50%;
+
   background:var(--success);
-  box-shadow:0 0 8px currentColor;
+
+  box-shadow:
+    0 0 8px currentColor;
 }
 
 .charCount{
   white-space:nowrap;
+}
+
+/* =====================================================
+   CREATOR SIGNATURE
+===================================================== */
+
+.creatorCredit{
+  position:fixed;
+
+  right:15px;
+
+  bottom:
+    calc(
+      91px +
+      env(safe-area-inset-bottom)
+    );
+
+  z-index:30;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:6px 9px;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,116,20,.045),
+      rgba(255,255,255,.012)
+    );
+
+  border:1px solid rgba(255,116,20,.10);
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  pointer-events:none;
+
+  opacity:.68;
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+.creatorCredit::before{
+  content:"";
+
+  width:3px;
+  height:16px;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      var(--orange2),
+      var(--orange)
+    );
+
+  box-shadow:
+    0 0 10px rgba(255,116,20,.35);
+}
+
+.creatorCredit strong{
+  color:var(--orange2);
+  font-size:9px;
+}
+
+.creatorCredit small{
+  opacity:.55;
+  font-size:7px;
 }
 
 /* =====================================================
@@ -1171,10 +1974,14 @@ body.light .topbar{
 
 .overlay{
   display:none;
+
   position:fixed;
   inset:0;
+
   background:rgba(0,0,0,.58);
-  backdrop-filter:blur(3px);
+
+  backdrop-filter:blur(4px);
+
   z-index:40;
 }
 
@@ -1188,26 +1995,42 @@ body.light .topbar{
 
 .toast{
   position:fixed;
+
   left:50%;
+
   bottom:108px;
+
   z-index:100;
+
   max-width:90%;
+
   padding:10px 15px;
+
   border-radius:12px;
+
   background:var(--panel3);
+
   color:var(--text);
-  border:1px solid var(--border);
+
+  border:1px solid var(--borderStrong);
+
   box-shadow:var(--shadow);
+
   font-size:10px;
+
   opacity:0;
   pointer-events:none;
+
   transform:translate(-50%,15px);
+
   transition:.2s ease;
 }
 
 .toast.show{
   opacity:1;
-  transform:translate(-50%,0);
+
+  transform:
+    translate(-50%,0);
 }
 
 /* =====================================================
@@ -1218,14 +2041,21 @@ body.light .topbar{
 
   .sidebar{
     position:fixed;
+
     right:0;
     top:0;
     bottom:0;
+
     width:285px;
     min-width:285px;
+
     transform:translateX(105%);
-    transition:transform .23s ease;
-    box-shadow:-25px 0 60px rgba(0,0,0,.45);
+
+    transition:
+      transform .23s ease;
+
+    box-shadow:
+      -25px 0 60px rgba(0,0,0,.45);
   }
 
   .sidebar.open{
@@ -1239,6 +2069,7 @@ body.light .topbar{
   .topbar{
     height:62px;
     min-height:62px;
+
     padding:9px 10px;
   }
 
@@ -1257,7 +2088,10 @@ body.light .topbar{
   }
 
   .chat{
-    padding:18px 10px 148px;
+    padding:
+      18px
+      10px
+      148px;
   }
 
   .welcome{
@@ -1265,14 +2099,24 @@ body.light .topbar{
     padding:20px 4px;
   }
 
+  .welcomeMini{
+    font-size:8px;
+  }
+
   .orb{
-    width:78px;
-    height:78px;
-    border-radius:25px;
+    width:82px;
+    height:82px;
+
+    border-radius:27px;
   }
 
   .orbCore{
-    font-size:30px;
+    font-size:31px;
+  }
+
+  .orbLight{
+    width:23px;
+    height:23px;
   }
 
   .welcome h1{
@@ -1287,9 +2131,15 @@ body.light .topbar{
     gap:5px;
   }
 
+  .capability{
+    padding:6px 9px;
+  }
+
   .suggestions{
     grid-template-columns:1fr;
+
     gap:8px;
+
     margin-top:19px;
   }
 
@@ -1307,7 +2157,9 @@ body.light .topbar{
     width:33px;
     min-width:33px;
     height:33px;
+
     border-radius:11px;
+
     font-size:8px;
   }
 
@@ -1344,6 +2196,32 @@ body.light .topbar{
   .commandCenter{
     grid-template-columns:1fr 1fr;
   }
+
+  .creatorCredit{
+    right:9px;
+
+    bottom:
+      calc(
+        88px +
+        env(safe-area-inset-bottom)
+      );
+
+    padding:5px 7px;
+
+    opacity:.52;
+  }
+
+  .creatorCredit small{
+    display:none;
+  }
+
+  .ambientGrid{
+    opacity:.10;
+  }
+
+  .ambientSweep{
+    display:none;
+  }
 }
 
 @media(max-width:390px){
@@ -1360,7 +2238,15 @@ body.light .topbar{
   .messageBody{
     max-width:84%;
   }
+
+  .creatorCredit{
+    display:none;
+  }
 }
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
 
 @media(prefers-reduced-motion:reduce){
 
@@ -1378,18 +2264,27 @@ body.light .topbar{
 
 <body>
 
+<div class="ambient">
+  <div class="ambientGlow one"></div>
+  <div class="ambientGlow two"></div>
+  <div class="ambientGrid"></div>
+  <div class="ambientSweep"></div>
+</div>
+
 <div class="app">
 
 <aside class="sidebar" id="sidebar">
 
   <div class="brand">
+
     <div class="logo">S</div>
 
     <div>
       <div class="brandTitle">Sultan AI</div>
-      <div class="brandVersion">V8.3 • Advanced AI</div>
-      <span class="premiumBadge">PREMIUM</span>
+      <div class="brandVersion">V8.3.1 • Advanced AI</div>
+      <span class="premiumBadge">PREMIUM ULTRA</span>
     </div>
+
   </div>
 
   <button class="newChat" id="newChatBtn">
@@ -1397,17 +2292,28 @@ body.light .topbar{
     <span>محادثة جديدة</span>
   </button>
 
-  <div class="sectionTitle">المحادثات الأخيرة</div>
+  <div class="sectionTitle">
+    المحادثات الأخيرة
+  </div>
 
   <div class="history" id="history">
+
     <div class="historyEmpty">
       لا توجد محادثات محفوظة
     </div>
+
   </div>
 
   <div class="sidebarBottom">
-    <button class="sideBtn" id="themeBtn">☀️ الوضع</button>
-    <button class="sideBtn" id="clearBtn">🗑️ مسح</button>
+
+    <button class="sideBtn" id="themeBtn">
+      ☀️ الوضع
+    </button>
+
+    <button class="sideBtn" id="clearBtn">
+      🗑️ مسح
+    </button>
+
   </div>
 
 </aside>
@@ -1418,34 +2324,76 @@ body.light .topbar{
 
 <header class="topbar">
 
-  <button class="menuBtn" id="menuBtn" aria-label="فتح القائمة">
+  <button
+    class="menuBtn"
+    id="menuBtn"
+    aria-label="فتح القائمة"
+  >
     ☰
   </button>
 
   <div class="modeWrap">
-    <span class="modeLabel">الوضع</span>
 
-    <select class="modeSelect" id="modeSelect">
+    <span class="modeLabel">
+      الوضع
+    </span>
 
-      <option value="smart">🧠 Smart — ذكي</option>
-      <option value="fast">⚡ Fast — سريع</option>
-      <option value="deep">🔬 Deep — عميق</option>
-      <option value="code">💻 Code — برمجة</option>
-      <option value="web">🌐 Web — بحث</option>
-      <option value="vision">👁️ Vision — صور</option>
-      <option value="files">📁 Files — ملفات</option>
+    <select
+      class="modeSelect"
+      id="modeSelect"
+    >
+
+      <option value="smart">
+        🧠 Smart — ذكي
+      </option>
+
+      <option value="fast">
+        ⚡ Fast — سريع
+      </option>
+
+      <option value="deep">
+        🔬 Deep — عميق
+      </option>
+
+      <option value="code">
+        💻 Code — برمجة
+      </option>
+
+      <option value="web">
+        🌐 Web — بحث
+      </option>
+
+      <option value="vision">
+        👁️ Vision — صور
+      </option>
+
+      <option value="files">
+        📁 Files — ملفات
+      </option>
 
     </select>
+
   </div>
 
   <div class="topSpacer"></div>
 
   <div class="health">
-    <span class="healthDot" id="healthDot"></span>
-    <span id="healthText">جاري الفحص...</span>
+
+    <span
+      class="healthDot"
+      id="healthDot"
+    ></span>
+
+    <span id="healthText">
+      جاري الفحص...
+    </span>
+
   </div>
 
-  <button class="topBtn" id="topNewBtn">
+  <button
+    class="topBtn"
+    id="topNewBtn"
+  >
     ＋ جديد
   </button>
 
@@ -1455,48 +2403,120 @@ body.light .topbar{
 
 <div class="chatInner" id="chatInner">
 
-  <div class="commandCenter" id="commandCenter">
+  <div
+    class="commandCenter"
+    id="commandCenter"
+  >
 
     <div class="commandCard">
-      <div class="commandLabel">AI MODE</div>
-      <div class="commandValue orange" id="commandMode">SMART</div>
+
+      <div class="commandLabel">
+        AI MODE
+      </div>
+
+      <div
+        class="commandValue orange"
+        id="commandMode"
+      >
+        SMART
+      </div>
+
     </div>
 
     <div class="commandCard">
-      <div class="commandLabel">STATUS</div>
-      <div class="commandValue" id="commandStatus">READY</div>
+
+      <div class="commandLabel">
+        STATUS
+      </div>
+
+      <div
+        class="commandValue"
+        id="commandStatus"
+      >
+        READY
+      </div>
+
     </div>
 
     <div class="commandCard">
-      <div class="commandLabel">ENGINE</div>
-      <div class="commandValue">SULTAN CORE</div>
+
+      <div class="commandLabel">
+        ENGINE
+      </div>
+
+      <div class="commandValue">
+        SULTAN CORE
+      </div>
+
     </div>
 
   </div>
 
-  <div class="welcome" id="welcome">
+  <div
+    class="welcome"
+    id="welcome"
+  >
+
+    <div class="welcomeMini">
+
+      <span class="welcomeMiniDot"></span>
+
+      <span>
+        SULTAN AI SYSTEM • ONLINE
+      </span>
+
+    </div>
 
     <div class="orb">
-      <div class="orbCore">S</div>
+
+      <div class="orbLight"></div>
+
+      <div class="orbCore">
+        S
+      </div>
+
     </div>
 
     <h1>
+
       أهلاً بك في
-      <span class="gradientText">Sultan AI</span>
+
+      <span class="gradientText">
+        Sultan AI
+      </span>
+
     </h1>
 
     <p>
-      مساعدك الذكي المتقدم للبرمجة، المعرفة،
-      البحث، الصور والملفات — بواجهة Premium
-      مصممة لتكون سريعة ونظيفة.
+
+      مساعدك الذكي المتقدم للبرمجة،
+      المعرفة، البحث، الصور والملفات —
+      بتجربة Premium Ultra سريعة وأنيقة.
+
     </p>
 
     <div class="capabilities">
-      <span class="capability">🧠 Smart AI</span>
-      <span class="capability">⚡ Streaming</span>
-      <span class="capability">💻 Coding</span>
-      <span class="capability">🌐 Web</span>
-      <span class="capability">📁 Files</span>
+
+      <span class="capability">
+        🧠 Smart AI
+      </span>
+
+      <span class="capability">
+        ⚡ Streaming
+      </span>
+
+      <span class="capability">
+        💻 Coding
+      </span>
+
+      <span class="capability">
+        🌐 Web
+      </span>
+
+      <span class="capability">
+        📁 Files
+      </span>
+
     </div>
 
     <div class="suggestions">
@@ -1505,48 +2525,60 @@ body.light .topbar{
         class="suggestion"
         data-prompt="اشرح لي هذا الموضوع بطريقة بسيطة وواضحة مع أمثلة."
       >
+
         <div class="suggestionTitle">
           🧠 شرح أي موضوع
         </div>
+
         <div class="suggestionDesc">
           شرح مبسط ومنظم مع أمثلة
         </div>
+
       </button>
 
       <button
         class="suggestion"
         data-prompt="ساعدني في كتابة كود احترافي واشرح لي كيف أستخدمه."
       >
+
         <div class="suggestionTitle">
           💻 البرمجة
         </div>
+
         <div class="suggestionDesc">
           كتابة وتصحيح وتحسين الأكواد
         </div>
+
       </button>
 
       <button
         class="suggestion"
         data-prompt="ابحث عن أحدث المعلومات المتعلقة بهذا الموضوع وأعطني خلاصة دقيقة."
       >
+
         <div class="suggestionTitle">
           🌐 أحدث المعلومات
         </div>
+
         <div class="suggestionDesc">
           البحث عن المعلومات الحديثة
         </div>
+
       </button>
 
       <button
         class="suggestion"
         data-prompt="حلل سؤالي بدقة وأعطني أفضل جواب ممكن بشكل مختصر ومفيد."
       >
+
         <div class="suggestionTitle">
           ⚡ حل سريع وذكي
         </div>
+
         <div class="suggestionDesc">
           جواب مباشر بدون تعقيد
         </div>
+
       </button>
 
     </div>
@@ -1561,7 +2593,10 @@ body.light .topbar{
 
 <div class="composer">
 
-  <div class="attachments" id="attachments"></div>
+  <div
+    class="attachments"
+    id="attachments"
+  ></div>
 
   <div class="inputRow">
 
@@ -1604,11 +2639,22 @@ body.light .topbar{
   <div class="composerFooter">
 
     <div class="statusText">
-      <span class="statusDot" id="statusDot"></span>
-      <span id="statusText">Sultan AI جاهز</span>
+
+      <span
+        class="statusDot"
+        id="statusDot"
+      ></span>
+
+      <span id="statusText">
+        Sultan AI جاهز
+      </span>
+
     </div>
 
-    <div class="charCount" id="charCount">
+    <div
+      class="charCount"
+      id="charCount"
+    >
       0 / 12000
     </div>
 
@@ -1622,13 +2668,30 @@ body.light .topbar{
 
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="creatorCredit">
+
+  <span>صنع بواسطة</span>
+
+  <strong>
+    علي سلطان
+  </strong>
+
+  <small>
+    © Sultan AI
+  </small>
+
+</div>
+
+<div
+  class="toast"
+  id="toast"
+></div>
 
 <script>
 "use strict";
 
 /* =====================================================
-   API
+   API — PRESERVED
 ===================================================== */
 
 const STREAM_API="/api/chat/stream";
@@ -1636,7 +2699,7 @@ const NORMAL_API="/api/chat";
 const HEALTH_API="/api/health";
 
 /* =====================================================
-   STORAGE
+   STORAGE — PRESERVED
 ===================================================== */
 
 const STORAGE_MESSAGES="sultan_ai_messages_v83";
@@ -1708,11 +2771,13 @@ let toastTimer=null;
 ===================================================== */
 
 function safeParse(value,fallback){
+
   try{
     return JSON.parse(value);
   }catch{
     return fallback;
   }
+
 }
 
 function loadState(){
@@ -1723,17 +2788,21 @@ function loadState(){
   );
 
   if(Array.isArray(saved)){
+
     messages=saved
       .filter(
         x =>
           x &&
-          (x.role==="user" || x.role==="assistant") &&
+          (x.role==="user" ||
+           x.role==="assistant") &&
           typeof x.content==="string"
       )
       .slice(-60);
+
   }
 
-  const mode=localStorage.getItem(STORAGE_MODE);
+  const mode=
+    localStorage.getItem(STORAGE_MODE);
 
   if([
     "smart",
@@ -1744,13 +2813,17 @@ function loadState(){
     "vision",
     "files"
   ].includes(mode)){
+
     currentMode=mode;
+
   }
 
   if(
     localStorage.getItem(STORAGE_THEME)==="light"
   ){
+
     document.body.classList.add("light");
+
   }
 
   modeSelect.value=currentMode;
@@ -1758,38 +2831,48 @@ function loadState(){
   renderMessages();
   renderHistory();
   updateCommandCenter();
+
 }
 
 function saveMessages(){
 
   try{
+
     localStorage.setItem(
       STORAGE_MESSAGES,
       JSON.stringify(messages.slice(-60))
     );
+
   }catch{}
+
 }
 
 function saveMode(){
 
   try{
+
     localStorage.setItem(
       STORAGE_MODE,
       currentMode
     );
+
   }catch{}
+
 }
 
 function saveTheme(){
 
   try{
+
     localStorage.setItem(
       STORAGE_THEME,
       document.body.classList.contains("light")
         ? "light"
         : "dark"
     );
+
   }catch{}
+
 }
 
 /* =====================================================
@@ -1804,6 +2887,7 @@ function escapeHTML(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 function showToast(text){
@@ -1820,9 +2904,13 @@ function showToast(text){
     },
     2600
   );
+
 }
 
-function setStatus(text,type="ok"){
+function setStatus(
+  text,
+  type="ok"
+){
 
   statusText.textContent=text;
 
@@ -1839,22 +2927,34 @@ function setStatus(text,type="ok"){
       :type==="busy"
         ?"WORKING"
         :"READY";
+
 }
 
 function updateCommandCenter(){
 
   commandMode.textContent=
     currentMode.toUpperCase();
+
 }
 
-function scrollToBottom(smooth=true){
+function scrollToBottom(
+  smooth=true
+){
 
-  requestAnimationFrame(()=>{
-    chat.scrollTo({
-      top:chat.scrollHeight,
-      behavior:smooth?"smooth":"auto"
-    });
-  });
+  requestAnimationFrame(
+    ()=>{
+
+      chat.scrollTo({
+        top:chat.scrollHeight,
+        behavior:
+          smooth
+            ?"smooth"
+            :"auto"
+      });
+
+    }
+  );
+
 }
 
 function updateWelcome(){
@@ -1865,10 +2965,19 @@ function updateWelcome(){
       :"flex";
 
   if(messages.length){
-    commandCenter.classList.add("show");
+
+    commandCenter.classList.add(
+      "show"
+    );
+
   }else{
-    commandCenter.classList.remove("show");
+
+    commandCenter.classList.remove(
+      "show"
+    );
+
   }
+
 }
 
 /* =====================================================
@@ -1886,6 +2995,7 @@ function renderMarkdown(text){
   source=source.replace(
     /```([\w+-]*)\n?([\s\S]*?)```/g,
     (_,lang,code)=>{
+
       const id=codeBlocks.length;
 
       codeBlocks.push({
@@ -1894,6 +3004,7 @@ function renderMarkdown(text){
       });
 
       return `@@CODEBLOCK_${id}@@`;
+
     }
   );
 
@@ -1933,22 +3044,32 @@ function renderMarkdown(text){
     /@@CODEBLOCK_(\d+)@@/g,
     (_,index)=>{
 
-      const item=codeBlocks[Number(index)];
+      const item=
+        codeBlocks[Number(index)];
 
       return `
         <div class="codeBlock">
+
           <div class="codeHeader">
-            <span>${escapeHTML(item.lang)}</span>
+
+            <span>
+              ${escapeHTML(item.lang)}
+            </span>
+
             <button
               class="copyCode"
               data-code="${encodeURIComponent(item.code)}"
             >
               نسخ
             </button>
+
           </div>
+
           <pre>${escapeHTML(item.code)}</pre>
+
         </div>
       `;
+
     }
   );
 
@@ -1963,27 +3084,45 @@ function renderMarkdown(text){
       if(
         trimmed.startsWith("<ul>") ||
         trimmed.startsWith("<ol>") ||
-        trimmed.startsWith("<div class=\"codeBlock\">")
+        trimmed.startsWith(
+          '<div class="codeBlock">'
+        )
       ){
+
         return trimmed;
+
       }
 
-      return `<p>${trimmed.replace(/\n/g,"<br>")}</p>`;
+      return `
+        <p>
+          ${trimmed.replace(
+            /\n/g,
+            "<br>"
+          )}
+        </p>
+      `;
+
     })
     .join("");
+
 }
 
 /* =====================================================
    MESSAGES
 ===================================================== */
 
-function createMessageElement(message,index){
+function createMessageElement(
+  message,
+  index
+){
 
   const row=document.createElement("div");
 
-  row.className=`message ${message.role}`;
+  row.className=
+    `message ${message.role}`;
 
-  const avatar=document.createElement("div");
+  const avatar=
+    document.createElement("div");
 
   avatar.className="avatar";
 
@@ -1992,29 +3131,43 @@ function createMessageElement(message,index){
       ?"أنت"
       :"S";
 
-  const body=document.createElement("div");
+  const body=
+    document.createElement("div");
 
   body.className="messageBody";
 
-  const bubble=document.createElement("div");
+  const bubble=
+    document.createElement("div");
 
   bubble.className="bubble";
 
   if(message.role==="assistant"){
-    bubble.innerHTML=renderMarkdown(message.content);
+
+    bubble.innerHTML=
+      renderMarkdown(
+        message.content
+      );
+
   }else{
-    bubble.textContent=message.content;
+
+    bubble.textContent=
+      message.content;
+
   }
 
   body.appendChild(bubble);
 
-  const actions=document.createElement("div");
+  const actions=
+    document.createElement("div");
 
-  actions.className="messageActions";
+  actions.className=
+    "messageActions";
 
-  const action=document.createElement("button");
+  const action=
+    document.createElement("button");
 
-  action.className="actionBtn";
+  action.className=
+    "actionBtn";
 
   if(message.role==="assistant"){
 
@@ -2022,7 +3175,11 @@ function createMessageElement(message,index){
 
     action.addEventListener(
       "click",
-      ()=>copyText(message.content)
+      ()=>{
+        copyText(
+          message.content
+        );
+      }
     );
 
   }else{
@@ -2031,39 +3188,59 @@ function createMessageElement(message,index){
 
     action.addEventListener(
       "click",
-      ()=>editMessage(index)
+      ()=>{
+        editMessage(index);
+      }
     );
+
   }
 
   actions.appendChild(action);
+
   body.appendChild(actions);
 
   row.appendChild(avatar);
+
   row.appendChild(body);
 
   return row;
+
 }
 
 function renderMessages(){
 
   chatInner.innerHTML="";
 
-  chatInner.appendChild(commandCenter);
-  chatInner.appendChild(welcome);
+  chatInner.appendChild(
+    commandCenter
+  );
+
+  chatInner.appendChild(
+    welcome
+  );
 
   messages.forEach(
     (message,index)=>{
+
       chatInner.appendChild(
-        createMessageElement(message,index)
+        createMessageElement(
+          message,
+          index
+        )
       );
+
     }
   );
 
   updateWelcome();
 
-  requestAnimationFrame(()=>{
-    chat.scrollTop=chat.scrollHeight;
-  });
+  requestAnimationFrame(
+    ()=>{
+      chat.scrollTop=
+        chat.scrollHeight;
+    }
+  );
+
 }
 
 /* =====================================================
@@ -2072,44 +3249,64 @@ function renderMessages(){
 
 function createTypingElement(){
 
-  const row=document.createElement("div");
+  const row=
+    document.createElement("div");
 
-  row.className="message assistant";
-  row.id="typingMessage";
+  row.className=
+    "message assistant";
+
+  row.id=
+    "typingMessage";
 
   row.innerHTML=`
-    <div class="avatar">S</div>
+
+    <div class="avatar">
+      S
+    </div>
 
     <div class="messageBody">
 
       <div class="bubble">
+
         <div class="typing">
+
           <span></span>
           <span></span>
           <span></span>
+
         </div>
+
       </div>
 
       <div class="toolStatus">
+
         <span class="toolPulse"></span>
+
         <span id="liveStatus">
           Sultan AI يحلل طلبك...
         </span>
+
       </div>
 
     </div>
+
   `;
 
   return row;
+
 }
 
 function setLiveStatus(text){
 
-  const el=document.getElementById("liveStatus");
+  const el=
+    document.getElementById(
+      "liveStatus"
+    );
 
   if(el){
     el.textContent=text;
   }
+
 }
 
 /* =====================================================
@@ -2128,9 +3325,11 @@ async function copyText(text){
 
   }catch{
 
-    const area=document.createElement("textarea");
+    const area=
+      document.createElement("textarea");
 
-    area.value=String(text||"");
+    area.value=
+      String(text||"");
 
     document.body.appendChild(area);
 
@@ -2141,22 +3340,32 @@ async function copyText(text){
     area.remove();
 
     showToast("تم النسخ ✓");
+
   }
+
 }
 
 document.addEventListener(
   "click",
   event=>{
 
-    const btn=event.target.closest(".copyCode");
+    const btn=
+      event.target.closest(
+        ".copyCode"
+      );
 
     if(!btn)return;
 
     try{
+
       copyText(
-        decodeURIComponent(btn.dataset.code)
+        decodeURIComponent(
+          btn.dataset.code
+        )
       );
+
     }catch{}
+
   }
 );
 
@@ -2166,35 +3375,45 @@ document.addEventListener(
 
 function editMessage(index){
 
-  const item=messages[index];
+  const item=
+    messages[index];
 
-  if(!item || item.role!=="user"){
+  if(
+    !item ||
+    item.role!=="user"
+  ){
     return;
   }
 
-  const newText=prompt(
-    "عدّل رسالتك:",
-    item.content
-  );
+  const newText=
+    prompt(
+      "عدّل رسالتك:",
+      item.content
+    );
 
   if(newText===null)return;
 
-  const clean=newText.trim();
+  const clean=
+    newText.trim();
 
   if(!clean)return;
 
-  messages=messages.slice(0,index);
+  messages=
+    messages.slice(0,index);
 
   saveMessages();
 
   renderMessages();
 
-  messageInput.value=clean;
+  messageInput.value=
+    clean;
 
   autoResize();
+
   updateCharCount();
 
   messageInput.focus();
+
 }
 
 /* =====================================================
@@ -2205,19 +3424,25 @@ function renderHistory(){
 
   historyEl.innerHTML="";
 
-  const users=messages.filter(
-    item=>item.role==="user"
-  );
+  const users=
+    messages.filter(
+      item=>item.role==="user"
+    );
 
   if(!users.length){
 
-    const empty=document.createElement("div");
+    const empty=
+      document.createElement("div");
 
-    empty.className="historyEmpty";
+    empty.className=
+      "historyEmpty";
 
-    empty.textContent="لا توجد محادثات محفوظة";
+    empty.textContent=
+      "لا توجد محادثات محفوظة";
 
-    historyEl.appendChild(empty);
+    historyEl.appendChild(
+      empty
+    );
 
     return;
   }
@@ -2227,27 +3452,41 @@ function renderHistory(){
     .reverse()
     .forEach(item=>{
 
-      const button=document.createElement("button");
+      const button=
+        document.createElement("button");
 
-      button.className="historyItem";
+      button.className=
+        "historyItem";
 
-      button.textContent=item.content
-        .replace(/\s+/g," ")
-        .slice(0,70);
+      button.textContent=
+        item.content
+          .replace(/\s+/g," ")
+          .slice(0,70);
 
       button.addEventListener(
         "click",
         ()=>{
-          messageInput.value=item.content;
+
+          messageInput.value=
+            item.content;
+
           autoResize();
+
           updateCharCount();
+
           messageInput.focus();
+
           closeSidebar();
+
         }
       );
 
-      historyEl.appendChild(button);
+      historyEl.appendChild(
+        button
+      );
+
     });
+
 }
 
 /* =====================================================
@@ -2266,22 +3505,34 @@ function newChat(){
   saveMessages();
 
   renderMessages();
+
   renderFiles();
 
   messageInput.value="";
 
   autoResize();
+
   updateCharCount();
 
-  setStatus("Sultan AI جاهز");
+  setStatus(
+    "Sultan AI جاهز"
+  );
 
   closeSidebar();
 
   messageInput.focus();
+
 }
 
-newChatBtn.addEventListener("click",newChat);
-topNewBtn.addEventListener("click",newChat);
+newChatBtn.addEventListener(
+  "click",
+  newChat
+);
+
+topNewBtn.addEventListener(
+  "click",
+  newChat
+);
 
 /* =====================================================
    CLEAR
@@ -2290,15 +3541,23 @@ topNewBtn.addEventListener("click",newChat);
 clearBtn.addEventListener(
   "click",
   ()=>{
+
     if(
-      !confirm("هل تريد مسح المحادثة الحالية؟")
+      !confirm(
+        "هل تريد مسح المحادثة الحالية؟"
+      )
     ){
+
       return;
+
     }
 
     newChat();
 
-    showToast("تم مسح المحادثة");
+    showToast(
+      "تم مسح المحادثة"
+    );
+
   }
 );
 
@@ -2310,15 +3569,20 @@ themeBtn.addEventListener(
   "click",
   ()=>{
 
-    document.body.classList.toggle("light");
+    document.body.classList.toggle(
+      "light"
+    );
 
     saveTheme();
 
     showToast(
-      document.body.classList.contains("light")
+      document.body.classList.contains(
+        "light"
+      )
         ?"تم تفعيل الوضع الفاتح"
         :"تم تفعيل الوضع الداكن"
     );
+
   }
 );
 
@@ -2329,17 +3593,32 @@ themeBtn.addEventListener(
 function openSidebar(){
 
   sidebar.classList.add("open");
+
   overlay.classList.add("show");
+
 }
 
 function closeSidebar(){
 
-  sidebar.classList.remove("open");
-  overlay.classList.remove("show");
+  sidebar.classList.remove(
+    "open"
+  );
+
+  overlay.classList.remove(
+    "show"
+  );
+
 }
 
-menuBtn.addEventListener("click",openSidebar);
-overlay.addEventListener("click",closeSidebar);
+menuBtn.addEventListener(
+  "click",
+  openSidebar
+);
+
+overlay.addEventListener(
+  "click",
+  closeSidebar
+);
 
 /* =====================================================
    MODES
@@ -2349,25 +3628,35 @@ modeSelect.addEventListener(
   "change",
   ()=>{
 
-    currentMode=modeSelect.value;
+    currentMode=
+      modeSelect.value;
 
     saveMode();
 
     updateCommandCenter();
 
     const labels={
+
       fast:"الوضع السريع",
+
       smart:"الوضع الذكي",
+
       deep:"الوضع العميق",
+
       code:"وضع البرمجة",
+
       web:"وضع البحث",
+
       vision:"وضع الصور",
+
       files:"وضع الملفات"
+
     };
 
     setStatus(
       `${labels[currentMode]} جاهز`
     );
+
   }
 );
 
@@ -2386,9 +3675,11 @@ attachBtn.addEventListener(
       );
 
       return;
+
     }
 
     fileInput.click();
+
   }
 );
 
@@ -2397,10 +3688,13 @@ fileInput.addEventListener(
   async event=>{
 
     await addFiles(
-      Array.from(event.target.files||[])
+      Array.from(
+        event.target.files||[]
+      )
     );
 
     fileInput.value="";
+
   }
 );
 
@@ -2409,7 +3703,9 @@ async function addFiles(files){
   if(!files.length)return;
 
   if(
-    selectedFiles.length+files.length>MAX_FILES
+    selectedFiles.length+
+    files.length>
+    MAX_FILES
   ){
 
     showToast(
@@ -2417,26 +3713,36 @@ async function addFiles(files){
     );
 
     return;
+
   }
 
-  let total=selectedFiles.reduce(
-    (sum,file)=>sum+Number(file.size||0),
-    0
-  );
+  let total=
+    selectedFiles.reduce(
+      (sum,file)=>
+        sum+
+        Number(file.size||0),
+      0
+    );
 
   for(const file of files){
 
-    if(file.size>MAX_FILE_SIZE){
+    if(
+      file.size>
+      MAX_FILE_SIZE
+    ){
 
       showToast(
         `${file.name} أكبر من 20MB`
       );
 
       continue;
+
     }
 
     if(
-      total+file.size>MAX_TOTAL_FILE_SIZE
+      total+
+      file.size>
+      MAX_TOTAL_FILE_SIZE
     ){
 
       showToast(
@@ -2444,19 +3750,28 @@ async function addFiles(files){
       );
 
       break;
+
     }
 
     total+=file.size;
 
     try{
 
-      const data=await fileToDataURL(file);
+      const data=
+        await fileToDataURL(
+          file
+        );
 
       selectedFiles.push({
+
         name:file.name,
+
         type:file.type,
+
         size:file.size,
+
         data
+
       });
 
     }catch{
@@ -2464,10 +3779,13 @@ async function addFiles(files){
       showToast(
         `تعذر قراءة ${file.name}`
       );
+
     }
+
   }
 
   renderFiles();
+
 }
 
 function fileToDataURL(file){
@@ -2475,17 +3793,24 @@ function fileToDataURL(file){
   return new Promise(
     (resolve,reject)=>{
 
-      const reader=new FileReader();
+      const reader=
+        new FileReader();
 
       reader.onload=()=>{
-        resolve(reader.result);
+        resolve(
+          reader.result
+        );
       };
 
       reader.onerror=reject;
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(
+        file
+      );
+
     }
   );
+
 }
 
 function renderFiles(){
@@ -2494,57 +3819,89 @@ function renderFiles(){
 
   if(!selectedFiles.length){
 
-    attachments.classList.remove("hasFiles");
+    attachments.classList.remove(
+      "hasFiles"
+    );
 
     return;
+
   }
 
-  attachments.classList.add("hasFiles");
+  attachments.classList.add(
+    "hasFiles"
+  );
 
   selectedFiles.forEach(
     (file,index)=>{
 
-      const chip=document.createElement("div");
+      const chip=
+        document.createElement("div");
 
-      chip.className="fileChip";
+      chip.className=
+        "fileChip";
 
       const icon=
-        String(file.type||"").startsWith("image/")
+        String(file.type||"")
+          .startsWith("image/")
           ?"🖼️"
-          :file.name.toLowerCase().endsWith(".pdf")
+          :file.name
+            .toLowerCase()
+            .endsWith(".pdf")
             ?"📕"
             :"📄";
 
       chip.innerHTML=`
-        <span>${icon}</span>
+
+        <span>
+          ${icon}
+        </span>
+
         <span class="fileChipName">
           ${escapeHTML(file.name)}
         </span>
+
         <button
           class="removeFile"
           type="button"
           data-index="${index}"
-        >×</button>
+        >
+          ×
+        </button>
+
       `;
 
-      attachments.appendChild(chip);
+      attachments.appendChild(
+        chip
+      );
+
     }
   );
+
 }
 
 attachments.addEventListener(
   "click",
   event=>{
 
-    const button=event.target.closest(".removeFile");
+    const button=
+      event.target.closest(
+        ".removeFile"
+      );
 
     if(!button)return;
 
-    const index=Number(button.dataset.index);
+    const index=
+      Number(
+        button.dataset.index
+      );
 
-    selectedFiles.splice(index,1);
+    selectedFiles.splice(
+      index,
+      1
+    );
 
     renderFiles();
+
   }
 );
 
@@ -2554,28 +3911,35 @@ attachments.addEventListener(
 
 function autoResize(){
 
-  messageInput.style.height="auto";
+  messageInput.style.height=
+    "auto";
 
   messageInput.style.height=
     Math.min(
       messageInput.scrollHeight,
       180
     )+"px";
+
 }
 
 function updateCharCount(){
 
-  const length=messageInput.value.length;
+  const length=
+    messageInput.value.length;
 
   charCount.textContent=
     `${length} / ${MAX_MESSAGE_CHARS}`;
+
 }
 
 messageInput.addEventListener(
   "input",
   ()=>{
+
     autoResize();
+
     updateCharCount();
+
   }
 );
 
@@ -2593,7 +3957,9 @@ messageInput.addEventListener(
       if(!isGenerating){
         generateResponse();
       }
+
     }
+
   }
 );
 
@@ -2613,58 +3979,86 @@ document
           button.dataset.prompt||"";
 
         autoResize();
+
         updateCharCount();
 
         messageInput.focus();
+
       }
     );
+
   });
 
 /* =====================================================
    SSE
 ===================================================== */
 
-async function readSSE(response,onEvent){
+async function readSSE(
+  response,
+  onEvent
+){
 
   if(!response.body){
+
     throw new Error(
       "Streaming غير متاح."
     );
+
   }
 
-  const reader=response.body.getReader();
+  const reader=
+    response.body.getReader();
 
-  const decoder=new TextDecoder("utf-8");
+  const decoder=
+    new TextDecoder(
+      "utf-8"
+    );
 
   let buffer="";
 
   while(true){
 
-    const {value,done}=await reader.read();
+    const {
+      value,
+      done
+    }=
+      await reader.read();
 
     if(done)break;
 
-    buffer+=decoder.decode(
-      value,
-      {stream:true}
-    );
+    buffer+=
+      decoder.decode(
+        value,
+        {stream:true}
+      );
 
-    buffer=buffer.replace(/\r\n/g,"\n");
+    buffer=
+      buffer.replace(
+        /\r\n/g,
+        "\n"
+      );
 
-    const events=buffer.split("\n\n");
+    const events=
+      buffer.split("\n\n");
 
-    buffer=events.pop()||"";
+    buffer=
+      events.pop()||"";
 
-    for(const block of events){
+    for(
+      const block of events
+    ){
 
       parseSSEBlock(
         block,
         onEvent
       );
+
     }
+
   }
 
-  buffer+=decoder.decode();
+  buffer+=
+    decoder.decode();
 
   if(buffer.trim()){
 
@@ -2672,24 +4066,35 @@ async function readSSE(response,onEvent){
       buffer,
       onEvent
     );
+
   }
+
 }
 
-function parseSSEBlock(block,onEvent){
+function parseSSEBlock(
+  block,
+  onEvent
+){
 
-  const lines=block.split("\n");
+  const lines=
+    block.split("\n");
 
-  let eventName="message";
+  let eventName=
+    "message";
 
   const dataLines=[];
 
-  for(const line of lines){
+  for(
+    const line of lines
+  ){
 
     if(line.startsWith("event:")){
 
-      eventName=line.slice(6).trim();
+      eventName=
+        line.slice(6).trim();
 
       continue;
+
     }
 
     if(line.startsWith("data:")){
@@ -2697,27 +4102,39 @@ function parseSSEBlock(block,onEvent){
       dataLines.push(
         line.slice(5).trim()
       );
+
     }
+
   }
 
   if(!dataLines.length)return;
 
-  const raw=dataLines.join("\n");
+  const raw=
+    dataLines.join("\n");
 
   if(raw==="[DONE]"){
 
-    onEvent("done",{success:true});
+    onEvent(
+      "done",
+      {success:true}
+    );
 
     return;
+
   }
 
   try{
 
-    const data=JSON.parse(raw);
+    const data=
+      JSON.parse(raw);
 
-    onEvent(eventName,data);
+    onEvent(
+      eventName,
+      data
+    );
 
   }catch{}
+
 }
 
 /* =====================================================
@@ -2728,9 +4145,13 @@ async function generateResponse(){
 
   if(isGenerating)return;
 
-  const text=messageInput.value.trim();
+  const text=
+    messageInput.value.trim();
 
-  if(!text && !selectedFiles.length){
+  if(
+    !text &&
+    !selectedFiles.length
+  ){
 
     showToast(
       "اكتب رسالة أو أرفق ملفاً"
@@ -2739,67 +4160,97 @@ async function generateResponse(){
     messageInput.focus();
 
     return;
+
   }
 
-  const cleanText=text.slice(
-    0,
-    MAX_MESSAGE_CHARS
-  );
+  const cleanText=
+    text.slice(
+      0,
+      MAX_MESSAGE_CHARS
+    );
 
-  const filesForRequest=selectedFiles.map(
-    file=>({
-      name:file.name,
-      type:file.type,
-      size:file.size,
-      data:file.data
-    })
-  );
+  const filesForRequest=
+    selectedFiles.map(
+      file=>({
+
+        name:file.name,
+
+        type:file.type,
+
+        size:file.size,
+
+        data:file.data
+
+      })
+    );
 
   const userMessage={
+
     role:"user",
+
     content:
       cleanText ||
       "حلل الملفات المرفقة وقدم نتيجة مفيدة."
+
   };
 
-  messages.push(userMessage);
+  messages.push(
+    userMessage
+  );
 
   saveMessages();
 
   renderMessages();
 
-  const historyForRequest=messages
-    .slice(-12)
-    .map(
-      item=>({
-        role:item.role,
-        content:String(item.content||"")
-      })
-    );
+  const historyForRequest=
+    messages
+      .slice(-12)
+      .map(
+        item=>({
+
+          role:item.role,
+
+          content:
+            String(
+              item.content||""
+            )
+
+        })
+      );
 
   messageInput.value="";
+
   selectedFiles=[];
 
   renderFiles();
 
   autoResize();
+
   updateCharCount();
 
   isGenerating=true;
 
-  controller=new AbortController();
+  controller=
+    new AbortController();
 
-  sendBtn.classList.add("stop");
-  sendBtn.textContent="■";
+  sendBtn.classList.add(
+    "stop"
+  );
+
+  sendBtn.textContent=
+    "■";
 
   setStatus(
     "Sultan AI يعمل...",
     "busy"
   );
 
-  const typing=createTypingElement();
+  const typing=
+    createTypingElement();
 
-  chatInner.appendChild(typing);
+  chatInner.appendChild(
+    typing
+  );
 
   scrollToBottom();
 
@@ -2807,30 +4258,55 @@ async function generateResponse(){
   let gotStreamResponse=false;
   let finished=false;
 
+  /*
+    IMPORTANT:
+    Same backend payload as V8.3
+  */
+
   const payload={
+
     message:cleanText,
-    messages:historyForRequest,
-    files:filesForRequest,
-    fastMode:currentMode==="fast",
-    mode:currentMode
+
+    messages:
+      historyForRequest,
+
+    files:
+      filesForRequest,
+
+    fastMode:
+      currentMode==="fast",
+
+    mode:
+      currentMode
+
   };
 
   try{
 
     try{
 
-      const response=await fetch(
-        STREAM_API,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-          body:JSON.stringify(payload),
-          signal:controller.signal
-        }
-      );
+      const response=
+        await fetch(
+          STREAM_API,
+          {
+
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(
+                payload
+              ),
+
+            signal:
+              controller.signal
+
+          }
+        );
 
       if(!response.ok){
 
@@ -2839,7 +4315,8 @@ async function generateResponse(){
 
         try{
 
-          const data=await response.json();
+          const data=
+            await response.json();
 
           errorText=
             data.error||
@@ -2847,7 +4324,10 @@ async function generateResponse(){
 
         }catch{}
 
-        throw new Error(errorText);
+        throw new Error(
+          errorText
+        );
+
       }
 
       await readSSE(
@@ -2863,6 +4343,7 @@ async function generateResponse(){
             );
 
             return;
+
           }
 
           if(event==="status"){
@@ -2873,6 +4354,7 @@ async function generateResponse(){
             );
 
             return;
+
           }
 
           if(event==="tool"){
@@ -2883,14 +4365,18 @@ async function generateResponse(){
             );
 
             return;
+
           }
 
           if(event==="token"){
 
-            gotStreamResponse=true;
+            gotStreamResponse=
+              true;
 
             assistantText+=
-              String(data.text||"");
+              String(
+                data.text||""
+              );
 
             updateTypingMessage(
               assistantText
@@ -2899,6 +4385,7 @@ async function generateResponse(){
             scrollToBottom();
 
             return;
+
           }
 
           if(event==="done"){
@@ -2911,14 +4398,18 @@ async function generateResponse(){
             ){
 
               assistantText=
-                String(data.reply);
+                String(
+                  data.reply
+                );
 
               updateTypingMessage(
                 assistantText
               );
+
             }
 
             return;
+
           }
 
           if(event==="error"){
@@ -2927,7 +4418,9 @@ async function generateResponse(){
               data.error||
               "حدث خطأ أثناء التوليد."
             );
+
           }
+
         }
       );
 
@@ -2941,6 +4434,7 @@ async function generateResponse(){
         );
 
         return;
+
       }
 
       if(
@@ -2953,6 +4447,7 @@ async function generateResponse(){
         );
 
         return;
+
       }
 
       throw new Error(
@@ -2961,30 +4456,47 @@ async function generateResponse(){
 
     }catch(streamError){
 
-      if(controller.signal.aborted){
+      if(
+        controller.signal.aborted
+      ){
+
         throw streamError;
+
       }
 
       setLiveStatus(
         "نحاول الاتصال بالطريقة البديلة..."
       );
 
-      const normalResponse=await fetch(
-        NORMAL_API,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-          body:JSON.stringify(payload),
-          signal:controller.signal
-        }
-      );
+      const normalResponse=
+        await fetch(
+          NORMAL_API,
+          {
 
-      const data=await normalResponse
-        .json()
-        .catch(()=>({}));
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(
+                payload
+              ),
+
+            signal:
+              controller.signal
+
+          }
+        );
+
+      const data=
+        await normalResponse
+          .json()
+          .catch(
+            ()=>({})
+          );
 
       if(
         !normalResponse.ok ||
@@ -2996,30 +4508,40 @@ async function generateResponse(){
           streamError.message||
           "تعذر الحصول على إجابة."
         );
+
       }
 
-      const reply=String(
-        data.reply||
-        data.text||
-        data.message||
-        ""
-      ).trim();
+      const reply=
+        String(
+          data.reply||
+          data.text||
+          data.message||
+          ""
+        ).trim();
 
       if(!reply){
 
         throw new Error(
           "لم تصل إجابة من الخادم."
         );
+
       }
 
-      updateTypingMessage(reply);
+      updateTypingMessage(
+        reply
+      );
 
-      finishAssistantMessage(reply);
+      finishAssistantMessage(
+        reply
+      );
+
     }
 
   }catch(error){
 
-    if(error?.name==="AbortError"){
+    if(
+      error?.name==="AbortError"
+    ){
 
       removeTypingMessage();
 
@@ -3028,6 +4550,7 @@ async function generateResponse(){
       );
 
       return;
+
     }
 
     removeTypingMessage();
@@ -3037,8 +4560,12 @@ async function generateResponse(){
       "حدث خطأ غير متوقع.";
 
     messages.push({
+
       role:"assistant",
-      content:`⚠️ ${errorMessage}`
+
+      content:
+        `⚠️ ${errorMessage}`
+
     });
 
     saveMessages();
@@ -3050,7 +4577,9 @@ async function generateResponse(){
       "error"
     );
 
-    showToast(errorMessage);
+    showToast(
+      errorMessage
+    );
 
   }finally{
 
@@ -3058,64 +4587,94 @@ async function generateResponse(){
 
     controller=null;
 
-    sendBtn.classList.remove("stop");
+    sendBtn.classList.remove(
+      "stop"
+    );
 
-    sendBtn.textContent="➤";
+    sendBtn.textContent=
+      "➤";
 
     if(
-      statusText.textContent==="Sultan AI يعمل..."
+      statusText.textContent===
+      "Sultan AI يعمل..."
     ){
 
       setStatus(
         "Sultan AI جاهز"
       );
+
     }
+
   }
+
 }
 
 /* =====================================================
    STREAM UI
 ===================================================== */
 
-function updateTypingMessage(text){
+function updateTypingMessage(
+  text
+){
 
-  let row=document.getElementById(
-    "typingMessage"
-  );
+  let row=
+    document.getElementById(
+      "typingMessage"
+    );
 
   if(!row){
 
-    row=createTypingElement();
+    row=
+      createTypingElement();
 
-    chatInner.appendChild(row);
+    chatInner.appendChild(
+      row
+    );
+
   }
 
-  const bubble=row.querySelector(".bubble");
+  const bubble=
+    row.querySelector(
+      ".bubble"
+    );
 
   if(bubble){
 
     bubble.innerHTML=
-      renderMarkdown(text);
+      renderMarkdown(
+        text
+      );
+
   }
 
-  const typing=row.querySelector(".typing");
+  const typing=
+    row.querySelector(
+      ".typing"
+    );
 
   if(typing){
     typing.remove();
   }
+
 }
 
-function finishAssistantMessage(text){
+function finishAssistantMessage(
+  text
+){
 
   removeTypingMessage();
 
-  const clean=String(text||"").trim();
+  const clean=
+    String(text||"").trim();
 
   if(!clean)return;
 
   messages.push({
+
     role:"assistant",
+
     content:clean
+
   });
 
   saveMessages();
@@ -3129,17 +4688,20 @@ function finishAssistantMessage(text){
   );
 
   scrollToBottom();
+
 }
 
 function removeTypingMessage(){
 
-  const row=document.getElementById(
-    "typingMessage"
-  );
+  const row=
+    document.getElementById(
+      "typingMessage"
+    );
 
   if(row){
     row.remove();
   }
+
 }
 
 /* =====================================================
@@ -3153,29 +4715,40 @@ function stopGeneration(){
     controller.abort();
 
     controller=null;
+
   }
 
   isGenerating=false;
 
-  sendBtn.classList.remove("stop");
+  sendBtn.classList.remove(
+    "stop"
+  );
 
-  sendBtn.textContent="➤";
+  sendBtn.textContent=
+    "➤";
 
   removeTypingMessage();
 
   setStatus(
     "تم إيقاف التوليد"
   );
+
 }
 
 sendBtn.addEventListener(
   "click",
   ()=>{
+
     if(isGenerating){
+
       stopGeneration();
+
     }else{
+
       generateResponse();
+
     }
+
   }
 );
 
@@ -3187,41 +4760,67 @@ async function checkHealth(){
 
   try{
 
-    const response=await fetch(
-      HEALTH_API,
-      {
-        method:"GET",
-        cache:"no-store"
-      }
-    );
+    const response=
+      await fetch(
+        HEALTH_API,
+        {
 
-    const data=await response.json();
+          method:"GET",
+
+          cache:"no-store"
+
+        }
+      );
+
+    const data=
+      await response.json();
 
     if(
       response.ok &&
       data.configured
     ){
 
-      healthDot.classList.add("ok");
-      healthDot.classList.remove("bad");
+      healthDot.classList.add(
+        "ok"
+      );
 
-      healthText.textContent="متصل";
+      healthDot.classList.remove(
+        "bad"
+      );
+
+      healthText.textContent=
+        "متصل";
 
     }else{
 
-      healthDot.classList.remove("ok");
-      healthDot.classList.add("bad");
+      healthDot.classList.remove(
+        "ok"
+      );
 
-      healthText.textContent="غير جاهز";
+      healthDot.classList.add(
+        "bad"
+      );
+
+      healthText.textContent=
+        "غير جاهز";
+
     }
 
   }catch{
 
-    healthDot.classList.remove("ok");
-    healthDot.classList.add("bad");
+    healthDot.classList.remove(
+      "ok"
+    );
 
-    healthText.textContent="غير متصل";
+    healthDot.classList.add(
+      "bad"
+    );
+
+    healthText.textContent=
+      "غير متصل";
+
   }
+
 }
 
 /* =====================================================
@@ -3231,18 +4830,25 @@ async function checkHealth(){
 window.addEventListener(
   "online",
   ()=>{
-    setStatus("تم الاتصال بالإنترنت");
+
+    setStatus(
+      "تم الاتصال بالإنترنت"
+    );
+
     checkHealth();
+
   }
 );
 
 window.addEventListener(
   "offline",
   ()=>{
+
     setStatus(
       "لا يوجد اتصال بالإنترنت",
       "error"
     );
+
   }
 );
 
@@ -3253,9 +4859,13 @@ window.addEventListener(
 document.addEventListener(
   "visibilitychange",
   ()=>{
+
     if(!document.hidden){
+
       checkHealth();
+
     }
+
   }
 );
 
