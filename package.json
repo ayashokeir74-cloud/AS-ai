@@ -1,7 +1,7 @@
 {
   "name": "sultan-ai",
-  "version": "8.2.0",
-  "description": "Sultan AI V8.2 - Advanced AI Assistant powered by Groq Compound with Smart Context, Deep Mode, Streaming, Web Search, Website Reading, Code Execution, Vision and File Analysis",
+  "version": "8.1.0",
+  "description": "Sultan AI V8.1 - Advanced AI Assistant with Smart Context, Streaming, Web Search, Website Reading, Code Execution, Vision and File Analysis",
   "type": "module",
   "main": "server.js",
   "scripts": {
