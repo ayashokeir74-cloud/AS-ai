@@ -1419,4 +1419,1426 @@ function fitGroqRequest(messages) {
         clampText(
           result[1].content,
           12000
-       
+        );
+    }
+  }
+
+  return result;
+}
+
+/* =========================================================
+   GROQ CALL
+========================================================= */
+
+async function callGroq({
+  messages,
+  config,
+  stream = false
+}) {
+
+  if (!groq) {
+
+    const error =
+      new Error(
+        "GROQ_API_KEY غير مضبوط على الخادم."
+      );
+
+    error.status = 503;
+
+    throw error;
+  }
+
+  const fittedMessages =
+    fitGroqRequest(
+      messages
+    );
+
+  const request = {
+    model:
+      config.model,
+
+    messages:
+      fittedMessages,
+
+    temperature:
+      config.temperature,
+
+    max_completion_tokens:
+      config.maxTokens,
+
+    stream
+  };
+
+  /*
+    أدوات انتقائية.
+    
+    مهم:
+    لا نستخدم citation_options
+    لأن Compound قد يرجع 400 معه.
+  */
+
+  if (
+    Array.isArray(config.tools) &&
+    config.tools.length
+  ) {
+
+    request.compound_custom = {
+      tools: {
+        enabled_tools:
+          config.tools
+      }
+    };
+  }
+
+  let lastError = null;
+
+  for (
+    let attempt = 1;
+    attempt <= 3;
+    attempt++
+  ) {
+
+    try {
+
+      return await groq.chat.completions.create(
+        request
+      );
+
+    } catch (error) {
+
+      lastError =
+        error;
+
+      const status =
+        Number(
+          error?.status ||
+          error?.response?.status ||
+          0
+        );
+
+      const message =
+        String(
+          error?.message || ""
+        ).toLowerCase();
+
+      const networkError =
+        status === 0 ||
+        message.includes("timeout") ||
+        message.includes("network") ||
+        message.includes("socket") ||
+        message.includes("econnreset");
+
+      const retryable =
+        status === 429 ||
+        status >= 500 ||
+        networkError;
+
+      if (
+        !retryable ||
+        attempt === 3
+      ) {
+
+        throw error;
+      }
+
+      /*
+        Backoff:
+        700ms → 1400ms → 2100ms
+      */
+
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            700 * attempt
+          )
+      );
+    }
+  }
+
+  throw lastError;
+}
+
+/* =========================================================
+   RESPONSE TEXT
+========================================================= */
+
+function extractReply(result) {
+
+  const choice =
+    result?.choices?.[0];
+
+  const content =
+    choice?.message?.content;
+
+  if (
+    typeof content === "string"
+  ) {
+    return content.trim();
+  }
+
+  if (
+    Array.isArray(content)
+  ) {
+
+    return content
+      .map(item =>
+        typeof item === "string"
+          ? item
+          : item?.text || ""
+      )
+      .join("")
+      .trim();
+  }
+
+  return "";
+}
+
+/* =========================================================
+   FRIENDLY ERRORS
+========================================================= */
+
+function friendlyError(error) {
+
+  const status =
+    Number(
+      error?.status ||
+      error?.response?.status ||
+      0
+    );
+
+  if (status === 401) {
+
+    return {
+      status: 401,
+      message:
+        "مفتاح GROQ_API_KEY غير صالح أو غير مضبوط."
+    };
+  }
+
+  if (status === 429) {
+
+    return {
+      status: 429,
+      message:
+        "تم تجاوز حد الطلبات لدى مزود الذكاء الاصطناعي. حاول بعد قليل."
+    };
+  }
+
+  if (status === 413) {
+
+    return {
+      status: 413,
+      message:
+        "حجم الطلب كبير جداً. حاول إرسال نص أو ملفات أقل."
+    };
+  }
+
+  if (status === 400) {
+
+    return {
+      status: 400,
+      message:
+        error?.message ||
+        "الطلب غير صالح. تحقق من الرسالة أو الملفات."
+    };
+  }
+
+  if (status === 408) {
+
+    return {
+      status: 504,
+      message:
+        "انتهت مهلة الطلب. حاول مرة أخرى."
+    };
+  }
+
+  if (status >= 500) {
+
+    return {
+      status: 502,
+      message:
+        "مزود الذكاء الاصطناعي غير متاح حالياً. حاول مرة أخرى."
+    };
+  }
+
+  return {
+    status: 500,
+    message:
+      error?.message ||
+      "حدث خطأ غير متوقع في الخادم."
+  };
+}
+
+/* =========================================================
+   PREPARE REQUEST
+========================================================= */
+
+function prepareRequest(body) {
+
+  const message =
+    clampText(
+      body?.message ??
+      body?.text ??
+      "",
+      MAX_MESSAGE_CHARS
+    );
+
+  const rawHistory =
+    Array.isArray(body?.messages)
+      ? body.messages
+      : [];
+
+  /*
+    تنظيف history
+    ثم إزالة تكرار الرسالة الحالية.
+  */
+
+  let history =
+    cleanHistory(
+      rawHistory
+    );
+
+  history =
+    removeDuplicateCurrentMessage(
+      history,
+      message
+    );
+
+  const files =
+    Array.isArray(body?.files)
+      ? body.files
+      : [];
+
+  if (
+    files.length >
+    MAX_FILES
+  ) {
+
+    throw Object.assign(
+      new Error(
+        "الحد الأقصى هو 5 ملفات."
+      ),
+      {
+        status: 400
+      }
+    );
+  }
+
+  if (
+    !message &&
+    !files.length
+  ) {
+
+    throw Object.assign(
+      new Error(
+        "اكتب رسالة أو أرفق ملفاً."
+      ),
+      {
+        status: 400
+      }
+    );
+  }
+
+  const normalizedFiles =
+    files.map(
+      normalizeFile
+    );
+
+  const processedFiles =
+    processFiles(
+      normalizedFiles
+    );
+
+  const requestedMode =
+    normalizeMode(
+      body?.mode,
+      Boolean(body?.fastMode),
+      normalizedFiles
+    );
+
+  const hasImages =
+    processedFiles.imageFiles.length >
+    0;
+
+  const hasFiles =
+    normalizedFiles.length >
+    0;
+
+  const routeInfo =
+    smartRoute({
+      mode:
+        requestedMode,
+
+      message,
+
+      hasImages,
+
+      hasFiles
+    });
+
+  const effectiveRoute =
+    routeInfo.route;
+
+  const config =
+    getModeConfig(
+      effectiveRoute,
+      hasImages
+    );
+
+  /*
+    في Smart + fast route:
+    نستخدم Fast model.
+    
+    في Smart + web/code/deep:
+    نستخدم المسار المناسب.
+  */
+
+  return {
+
+    requestId:
+      requestId(),
+
+    message:
+      message ||
+      "حلل الملفات المرفقة وقدم نتيجة مفيدة.",
+
+    history,
+
+    processedFiles,
+
+    mode:
+      requestedMode,
+
+    route:
+      effectiveRoute,
+
+    routeReason:
+      routeInfo.reason,
+
+    config,
+
+    hasImages,
+
+    hasFiles,
+
+    fastMode:
+      effectiveRoute === "fast"
+  };
+}
+
+/* =========================================================
+   API ROOT
+========================================================= */
+
+app.get(
+  "/api",
+  (req, res) => {
+
+    res.json({
+
+      success: true,
+
+      name:
+        "Sultan AI",
+
+      version:
+        SERVER_VERSION,
+
+      status:
+        groq
+          ? "ready"
+          : "not_configured"
+    });
+  }
+);
+
+/* =========================================================
+   HEALTH
+========================================================= */
+
+app.get(
+  "/api/health",
+  (req, res) => {
+
+    const configured =
+      Boolean(GROQ_API_KEY);
+
+    res.status(
+      configured ? 200 : 503
+    ).json({
+
+      success:
+        true,
+
+      configured,
+
+      server:
+        "Sultan AI",
+
+      version:
+        SERVER_VERSION,
+
+      model:
+        MAIN_MODEL,
+
+      fastModel:
+        FAST_MODEL,
+
+      visionModel:
+        VISION_MODEL,
+
+      modes: [
+        "fast",
+        "smart",
+        "deep",
+        "code",
+        "web",
+        "vision",
+        "files"
+      ],
+
+      smartRouting:
+        true,
+
+      selectiveTools:
+        true,
+
+      streaming:
+        true,
+
+      requestProtection:
+        MAX_GROQ_REQUEST_BYTES,
+
+      tools: [
+        "web_search",
+        "visit_website",
+        "code_interpreter"
+      ]
+    });
+  }
+);
+
+/* =========================================================
+   CAPABILITIES
+========================================================= */
+
+app.get(
+  "/api/capabilities",
+  (req, res) => {
+
+    res.json({
+
+      success:
+        true,
+
+      name:
+        "Sultan AI",
+
+      version:
+        SERVER_VERSION,
+
+      modes: {
+
+        fast: true,
+        smart: true,
+        deep: true,
+        code: true,
+        web: true,
+        vision: true,
+        files: true
+
+      },
+
+      smartRouting:
+        true,
+
+      selectiveTools:
+        true,
+
+      streaming:
+        true,
+
+      files: {
+
+        maxFiles:
+          MAX_FILES,
+
+        maxFileSize:
+          MAX_FILE_SIZE,
+
+        maxTotalSize:
+          MAX_TOTAL_FILE_SIZE,
+
+        textFileChars:
+          MAX_TEXT_FILE_CHARS
+      },
+
+      tools: {
+
+        webSearch:
+          true,
+
+        visitWebsite:
+          true,
+
+        codeInterpreter:
+          true
+      }
+    });
+  }
+);
+
+/* =========================================================
+   NORMAL CHAT
+   POST /api/chat
+========================================================= */
+
+app.post(
+  "/api/chat",
+  async (req, res) => {
+
+    const started =
+      Date.now();
+
+    let prepared;
+
+    try {
+
+      prepared =
+        prepareRequest(
+          req.body || {}
+        );
+
+      const messages =
+        buildGroqMessages({
+
+          mode:
+            prepared.mode,
+
+          route:
+            prepared.route,
+
+          history:
+            prepared.history,
+
+          message:
+            prepared.message,
+
+          processedFiles:
+            prepared.processedFiles
+
+        });
+
+      const result =
+        await callGroq({
+
+          messages,
+
+          config:
+            prepared.config,
+
+          stream:
+            false
+
+        });
+
+      const reply =
+        extractReply(
+          result
+        );
+
+      if (!reply) {
+
+        throw Object.assign(
+          new Error(
+            "لم تصل إجابة من نموذج الذكاء الاصطناعي."
+          ),
+          {
+            status: 502
+          }
+        );
+      }
+
+      const fitted =
+        fitGroqRequest(
+          messages
+        );
+
+      const requestSizeBytes =
+        jsonByteSize(
+          fitted
+        );
+
+      res.json({
+
+        success:
+          true,
+
+        reply,
+
+        toolsUsed:
+          prepared.config.tools,
+
+        analyzedFiles:
+          prepared
+            .processedFiles
+            .analyzedFiles,
+
+        meta: {
+
+          requestId:
+            prepared.requestId,
+
+          model:
+            prepared.config.model,
+
+          mode:
+            prepared.mode,
+
+          route:
+            prepared.route,
+
+          routeReason:
+            prepared.routeReason,
+
+          fastMode:
+            prepared.fastMode,
+
+          smartContext:
+            historySize(
+              prepared.history
+            ) >
+            SMART_CONTEXT_THRESHOLD,
+
+          responseTimeMs:
+            Date.now() -
+            started,
+
+          requestSizeBytes,
+
+          tools:
+            prepared.config.tools,
+
+          serverVersion:
+            SERVER_VERSION
+
+        }
+      });
+
+    } catch (error) {
+
+      console.error(
+        "[Sultan AI]",
+        error
+      );
+
+      const friendly =
+        friendlyError(
+          error
+        );
+
+      res.status(
+        friendly.status
+      ).json({
+
+        success:
+          false,
+
+        error:
+          friendly.message,
+
+        requestId:
+          prepared?.requestId ||
+          requestId(),
+
+        serverVersion:
+          SERVER_VERSION
+
+      });
+    }
+  }
+);
+
+/* =========================================================
+   SSE
+========================================================= */
+
+function setupSSE(res) {
+
+  res.status(200);
+
+  res.setHeader(
+    "Content-Type",
+    "text/event-stream; charset=utf-8"
+  );
+
+  res.setHeader(
+    "Cache-Control",
+    "no-cache, no-transform"
+  );
+
+  res.setHeader(
+    "Connection",
+    "keep-alive"
+  );
+
+  res.setHeader(
+    "X-Accel-Buffering",
+    "no"
+  );
+
+  if (
+    typeof res.flushHeaders ===
+    "function"
+  ) {
+
+    res.flushHeaders();
+  }
+}
+
+function sendSSE(
+  res,
+  event,
+  data
+) {
+
+  if (
+    res.writableEnded ||
+    res.destroyed
+  ) {
+    return false;
+  }
+
+  try {
+
+    res.write(
+      `event: ${event}\n`
+    );
+
+    res.write(
+      `data: ${JSON.stringify(data)}\n\n`
+    );
+
+    return true;
+
+  } catch {
+
+    return false;
+  }
+}
+
+/* =========================================================
+   STREAM CHAT
+========================================================= */
+
+app.post(
+  "/api/chat/stream",
+  async (req, res) => {
+
+    const started =
+      Date.now();
+
+    let prepared;
+
+    try {
+
+      prepared =
+        prepareRequest(
+          req.body || {}
+        );
+
+    } catch (error) {
+
+      const friendly =
+        friendlyError(
+          error
+        );
+
+      return res.status(
+        friendly.status
+      ).json({
+
+        success:
+          false,
+
+        error:
+          friendly.message,
+
+        serverVersion:
+          SERVER_VERSION
+
+      });
+    }
+
+    setupSSE(res);
+
+    let clientClosed =
+      false;
+
+    res.on(
+      "close",
+      () => {
+
+        if (
+          !res.writableEnded
+        ) {
+          clientClosed = true;
+        }
+
+      }
+    );
+
+    try {
+
+      const messages =
+        buildGroqMessages({
+
+          mode:
+            prepared.mode,
+
+          route:
+            prepared.route,
+
+          history:
+            prepared.history,
+
+          message:
+            prepared.message,
+
+          processedFiles:
+            prepared.processedFiles
+
+        });
+
+      const requestSizeBytes =
+        jsonByteSize(
+          fitGroqRequest(
+            messages
+          )
+        );
+
+      sendSSE(
+        res,
+        "meta",
+        {
+
+          requestId:
+            prepared.requestId,
+
+          model:
+            prepared.config.model,
+
+          mode:
+            prepared.mode,
+
+          route:
+            prepared.route,
+
+          routeReason:
+            prepared.routeReason,
+
+          fastMode:
+            prepared.fastMode,
+
+          requestSizeBytes,
+
+          tools:
+            prepared.config.tools,
+
+          serverVersion:
+            SERVER_VERSION
+
+        }
+      );
+
+      sendSSE(
+        res,
+        "status",
+        {
+
+          text:
+            prepared.route === "fast"
+              ? "Sultan AI يجيب بسرعة..."
+              : prepared.route === "web"
+                ? "Sultan AI يبحث عن المعلومات..."
+                : prepared.route === "code"
+                  ? "Sultan AI يعالج المهمة البرمجية..."
+                  : prepared.route === "deep"
+                    ? "Sultan AI يحلل طلبك بعمق..."
+                    : "Sultan AI يحلل طلبك..."
+
+        }
+      );
+
+      if (
+        prepared.hasImages
+      ) {
+
+        sendSSE(
+          res,
+          "tool",
+          {
+
+            text:
+              "Sultan AI يحلل الصور المرفقة..."
+
+          }
+        );
+      }
+
+      if (
+        prepared.processedFiles
+          .analyzedFiles
+          .length
+      ) {
+
+        sendSSE(
+          res,
+          "tool",
+          {
+
+            text:
+              `تم تجهيز ${prepared.processedFiles.analyzedFiles.length} ملف للتحليل.`
+
+          }
+        );
+      }
+
+      /*
+        استدعاء Groq غير متدفق
+        للحفاظ على التوافق مع Compound.
+      */
+
+      const result =
+        await callGroq({
+
+          messages,
+
+          config:
+            prepared.config,
+
+          stream:
+            false
+
+        });
+
+      if (
+        clientClosed
+      ) {
+        return;
+      }
+
+      const reply =
+        extractReply(
+          result
+        );
+
+      if (!reply) {
+
+        throw Object.assign(
+          new Error(
+            "لم تصل إجابة من نموذج الذكاء الاصطناعي."
+          ),
+          {
+            status: 502
+          }
+        );
+      }
+
+      sendSSE(
+        res,
+        "status",
+        {
+
+          text:
+            "Sultan AI يجهّز الإجابة..."
+
+        }
+      );
+
+      const chunks =
+        splitForStream(
+          reply
+        );
+
+      /*
+        أسرع من V8.2:
+        لا نستخدم 8ms لكل chunk.
+      */
+
+      for (
+        const chunk of chunks
+      ) {
+
+        if (
+          clientClosed ||
+          res.destroyed ||
+          res.writableEnded
+        ) {
+          break;
+        }
+
+        sendSSE(
+          res,
+          "token",
+          {
+            text:
+              chunk
+          }
+        );
+
+        /*
+          2ms فقط حتى لا يبدو
+          الرد كتلة واحدة.
+        */
+
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              2
+            )
+        );
+      }
+
+      if (
+        !clientClosed &&
+        !res.destroyed &&
+        !res.writableEnded
+      ) {
+
+        sendSSE(
+          res,
+          "status",
+          {
+
+            text:
+              "اكتملت الإجابة."
+
+          }
+        );
+
+        sendSSE(
+          res,
+          "done",
+          {
+
+            success:
+              true,
+
+            reply,
+
+            requestId:
+              prepared.requestId,
+
+            model:
+              prepared.config.model,
+
+            mode:
+              prepared.mode,
+
+            route:
+              prepared.route,
+
+            routeReason:
+              prepared.routeReason,
+
+            fastMode:
+              prepared.fastMode,
+
+            analyzedFiles:
+              prepared
+                .processedFiles
+                .analyzedFiles,
+
+            responseTimeMs:
+              Date.now() -
+              started,
+
+            requestSizeBytes,
+
+            tools:
+              prepared.config.tools,
+
+            serverVersion:
+              SERVER_VERSION
+
+          }
+        );
+
+        res.write(
+          "data: [DONE]\n\n"
+        );
+
+        res.end();
+      }
+
+    } catch (error) {
+
+      console.error(
+        "[Sultan AI Stream]",
+        error
+      );
+
+      const friendly =
+        friendlyError(
+          error
+        );
+
+      if (
+        !clientClosed &&
+        !res.destroyed &&
+        !res.writableEnded
+      ) {
+
+        sendSSE(
+          res,
+          "error",
+          {
+
+            error:
+              friendly.message,
+
+            status:
+              friendly.status,
+
+            requestId:
+              prepared.requestId,
+
+            serverVersion:
+              SERVER_VERSION
+
+          }
+        );
+
+        res.write(
+          "data: [DONE]\n\n"
+        );
+
+        res.end();
+      }
+    }
+  }
+);
+
+/* =========================================================
+   STREAM CHUNKER
+========================================================= */
+
+function splitForStream(text) {
+
+  const value =
+    String(text || "");
+
+  if (!value) {
+    return [];
+  }
+
+  /*
+    chunks أكبر = وقت أقل.
+  */
+
+  return (
+    value.match(
+      /[\s\S]{1,70}/g
+    ) || []
+  );
+}
+
+/* =========================================================
+   STATIC FRONTEND
+========================================================= */
+
+const indexPath =
+  path.join(
+    __dirname,
+    "index.html"
+  );
+
+app.use(
+  express.static(
+    __dirname,
+    {
+      index: false
+    }
+  )
+);
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+app.get(
+  "/",
+  (req, res) => {
+
+    if (
+      fs.existsSync(indexPath)
+    ) {
+
+      return res.sendFile(
+        indexPath
+      );
+    }
+
+    return res.status(404).send(
+      "Sultan AI index.html not found."
+    );
+  }
+);
+
+/* =========================================================
+   SPA FALLBACK
+========================================================= */
+
+app.get(
+  "/*splat",
+  (req, res, next) => {
+
+    if (
+      req.path.startsWith("/api/")
+    ) {
+
+      return next();
+    }
+
+    if (
+      fs.existsSync(indexPath)
+    ) {
+
+      return res.sendFile(
+        indexPath
+      );
+    }
+
+    next();
+  }
+);
+
+/* =========================================================
+   API 404
+========================================================= */
+
+app.use(
+  "/api",
+  (req, res) => {
+
+    res.status(404).json({
+
+      success:
+        false,
+
+      error:
+        "API endpoint غير موجود.",
+
+      serverVersion:
+        SERVER_VERSION
+
+    });
+  }
+);
+
+/* =========================================================
+   GLOBAL ERROR
+========================================================= */
+
+app.use(
+  (error, req, res, next) => {
+
+    console.error(
+      "[Sultan AI Error]",
+      error
+    );
+
+    if (
+      res.headersSent
+    ) {
+
+      return next(error);
+    }
+
+    const friendly =
+      friendlyError(
+        error
+      );
+
+    res.status(
+      friendly.status
+    ).json({
+
+      success:
+        false,
+
+      error:
+        friendly.message,
+
+      serverVersion:
+        SERVER_VERSION
+
+    });
+  }
+);
+
+/* =========================================================
+   START
+========================================================= */
+
+app.listen(
+  PORT,
+  "0.0.0.0",
+  () => {
+
+    console.log(
+      "========================================"
+    );
+
+    console.log(
+      `Sultan AI V${SERVER_VERSION}`
+    );
+
+    console.log(
+      `Server running on port ${PORT}`
+    );
+
+    console.log(
+      `Groq configured: ${Boolean(GROQ_API_KEY)}`
+    );
+
+    console.log(
+      `Main model: ${MAIN_MODEL}`
+    );
+
+    console.log(
+      `Fast model: ${FAST_MODEL}`
+    );
+
+    console.log(
+      `Vision model: ${VISION_MODEL}`
+    );
+
+    console.log(
+      "Smart Routing: enabled"
+    );
+
+    console.log(
+      "Selective Tools: enabled"
+    );
+
+    console.log(
+      "Request protection: 450KB"
+    );
+
+    console.log(
+      "Modes: fast, smart, deep, code, web, vision, files"
+    );
+
+    console.log(
+      "Streaming: enabled"
+    );
+
+    console.log(
+      "========================================"
+    );
+  }
+);
