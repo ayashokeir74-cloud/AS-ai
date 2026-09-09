@@ -2,196 +2,169 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#0b0d10">
-<meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي متقدم">
-<title>Sultan AI</title>
+<meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي سريع ومتطور">
+<title>Sultan AI V8.1</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box}
 
 :root{
   --bg:#0b0d10;
-  --panel:#11151b;
-  --panel2:#171c23;
-  --border:#252c35;
-  --text:#f5f7fa;
-  --muted:#8e98a6;
+  --bg2:#101318;
+  --panel:#151920;
+  --panel2:#1b2028;
+  --panel3:#222832;
+  --border:#2a3039;
+  --text:#f4f6f8;
+  --muted:#9299a5;
   --accent:#ffffff;
   --accentText:#0b0d10;
-  --user:#1d2630;
-  --danger:#ff5c5c;
-  --success:#50d890;
-  --shadow:0 15px 45px rgba(0,0,0,.35);
-}
-
-body.light{
-  --bg:#f3f5f7;
-  --panel:#ffffff;
-  --panel2:#eef1f4;
-  --border:#dce1e6;
-  --text:#11151a;
-  --muted:#68717d;
-  --accent:#11151a;
-  --accentText:#ffffff;
-  --user:#e7ebef;
-  --shadow:0 15px 40px rgba(0,0,0,.12);
+  --danger:#ff5f56;
+  --success:#35d07f;
+  --shadow:0 12px 40px rgba(0,0,0,.28);
+  --radius:18px;
 }
 
 html,body{
+  margin:0;
+  padding:0;
   width:100%;
   height:100%;
   overflow:hidden;
-}
-
-body{
-  font-family:
-    Arial,
-    "Segoe UI",
-    sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:.25s;
+  font-family:Arial,"Noto Sans Arabic",sans-serif;
 }
 
-button,
-textarea,
-input{
+button,input,textarea{
   font:inherit;
 }
 
 button{
-  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
-
-/* APP */
 
 .app{
   width:100%;
-  height:100vh;
+  height:100dvh;
   display:flex;
-  overflow:hidden;
+  background:var(--bg);
 }
 
 /* SIDEBAR */
 
 .sidebar{
-  width:285px;
+  width:270px;
   height:100%;
-  background:var(--panel);
+  background:#0d1014;
   border-left:1px solid var(--border);
   display:flex;
   flex-direction:column;
-  transition:.3s;
-  z-index:20;
+  padding:16px;
+  transition:.25s ease;
+  z-index:30;
 }
 
-.logo{
-  padding:24px 20px;
-  border-bottom:1px solid var(--border);
-}
-
-.logo-title{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:-1px;
-}
-
-.logo-title span{
-  opacity:.45;
-}
-
-.logo-sub{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:6px;
-}
-
-.sidebar-content{
-  flex:1;
-  overflow:auto;
-  padding:14px;
-}
-
-.section-title{
-  font-size:11px;
-  color:var(--muted);
-  margin:12px 8px 8px;
-  text-transform:uppercase;
-}
-
-.mode{
-  width:100%;
-  border:1px solid transparent;
-  background:transparent;
-  color:var(--text);
-  padding:12px;
-  border-radius:13px;
+.brand{
   display:flex;
   align-items:center;
   gap:11px;
-  margin-bottom:5px;
-  text-align:right;
-  transition:.2s;
+  padding:7px 4px 20px;
 }
 
-.mode:hover{
-  background:var(--panel2);
-}
-
-.mode.active{
-  background:var(--panel2);
-  border-color:var(--border);
-  box-shadow:inset 3px 0 var(--accent);
-}
-
-.mode-icon{
-  width:32px;
-  height:32px;
-  border-radius:10px;
+.brand-logo{
+  width:42px;
+  height:42px;
+  border-radius:13px;
   display:grid;
   place-items:center;
-  background:rgba(255,255,255,.06);
-  font-size:16px;
+  background:#fff;
+  color:#0b0d10;
+  font-size:19px;
+  font-weight:900;
+  box-shadow:0 6px 22px rgba(255,255,255,.08);
 }
 
-.mode-info{
-  flex:1;
+.brand-text strong{
+  display:block;
+  font-size:17px;
 }
 
-.mode-name{
-  font-size:13px;
-  font-weight:700;
-}
-
-.mode-desc{
-  font-size:10px;
+.brand-text span{
+  display:block;
   color:var(--muted);
+  font-size:11px;
   margin-top:3px;
 }
 
-.sidebar-bottom{
-  padding:14px;
-  border-top:1px solid var(--border);
-}
-
-.small-btn{
+.new-chat{
   width:100%;
   border:1px solid var(--border);
-  background:transparent;
+  background:var(--panel);
   color:var(--text);
-  border-radius:11px;
-  padding:10px;
-  margin-top:7px;
-  transition:.2s;
+  border-radius:13px;
+  padding:12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.18s;
 }
 
-.small-btn:hover{
+.new-chat:hover{
   background:var(--panel2);
+  border-color:#3a424e;
+}
+
+.side-title{
+  color:#727985;
+  font-size:11px;
+  margin:24px 5px 9px;
+}
+
+.chat-history{
+  flex:1;
+  overflow:auto;
+}
+
+.history-item{
+  padding:10px 11px;
+  border-radius:10px;
+  color:#c6cad0;
+  font-size:13px;
+  cursor:pointer;
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.history-item:hover{
+  background:#171b21;
+}
+
+.side-bottom{
+  border-top:1px solid var(--border);
+  padding-top:12px;
+  margin-top:10px;
+}
+
+.side-action{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#b7bcc5;
+  padding:10px;
+  text-align:right;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.side-action:hover{
+  background:#171b21;
 }
 
 /* MAIN */
@@ -205,164 +178,205 @@ button{
   position:relative;
 }
 
-/* TOPBAR */
-
 .topbar{
-  height:68px;
-  min-height:68px;
+  height:62px;
+  min-height:62px;
   border-bottom:1px solid var(--border);
-  background:rgba(11,13,16,.75);
-  backdrop-filter:blur(15px);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 22px;
+  padding:0 20px;
+  background:rgba(11,13,16,.88);
+  backdrop-filter:blur(15px);
   z-index:10;
 }
 
-body.light .topbar{
-  background:rgba(255,255,255,.78);
-}
-
-.top-left{
+.top-left,
+.top-right{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:9px;
 }
 
-.menu-btn{
-  width:40px;
-  height:40px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--text);
-  border-radius:11px;
+.mobile-menu{
   display:none;
 }
 
-.status{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
-  font-size:12px;
+.mode-select{
+  position:relative;
 }
 
-.status-dot{
-  width:8px;
-  height:8px;
-  background:var(--success);
-  border-radius:50%;
-  box-shadow:0 0 12px var(--success);
-}
-
-.top-actions{
-  display:flex;
-  gap:7px;
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
+.mode-button{
   border:1px solid var(--border);
   background:var(--panel);
   color:var(--text);
-  border-radius:11px;
+  border-radius:10px;
+  padding:8px 12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+}
+
+.mode-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#fff;
+}
+
+.mode-menu{
+  position:absolute;
+  top:46px;
+  right:0;
+  width:210px;
+  background:#151920;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:7px;
+  box-shadow:var(--shadow);
+  display:none;
+  z-index:50;
+}
+
+.mode-menu.open{
+  display:block;
+  animation:pop .14s ease;
+}
+
+@keyframes pop{
+  from{opacity:0;transform:translateY(-5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.mode-option{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#dce0e5;
+  padding:10px;
+  border-radius:9px;
+  text-align:right;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.mode-option:hover,
+.mode-option.active{
+  background:#222832;
+}
+
+.mode-info{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.mode-icon{
+  width:25px;
+  text-align:center;
+}
+
+.icon-button{
+  width:38px;
+  height:38px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--panel);
+  color:#dce0e5;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+}
+
+.icon-button:hover{
+  background:var(--panel2);
 }
 
 /* CHAT */
 
 .chat{
   flex:1;
-  overflow-y:auto;
+  overflow:auto;
   scroll-behavior:smooth;
-  padding:30px 18px 170px;
+  padding:30px 20px 160px;
 }
 
 .chat-inner{
-  width:min(950px,100%);
+  max-width:850px;
   margin:auto;
 }
 
-/* WELCOME */
-
 .welcome{
-  min-height:58vh;
+  min-height:calc(100dvh - 260px);
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-  animation:fadeUp .5s ease;
 }
 
 .welcome-logo{
-  width:75px;
-  height:75px;
-  border-radius:23px;
-  background:var(--accent);
-  color:var(--accentText);
+  width:70px;
+  height:70px;
+  border-radius:22px;
   display:grid;
   place-items:center;
+  background:#fff;
+  color:#0b0d10;
   font-size:27px;
   font-weight:900;
   margin-bottom:20px;
-  box-shadow:var(--shadow);
+  box-shadow:0 15px 45px rgba(255,255,255,.08);
 }
 
 .welcome h1{
-  font-size:clamp(28px,5vw,48px);
-  font-weight:900;
-  letter-spacing:-2px;
+  margin:0;
+  font-size:32px;
+  letter-spacing:-.5px;
 }
 
 .welcome p{
   color:var(--muted);
-  margin-top:10px;
-  max-width:600px;
-  line-height:1.8;
+  margin:10px 0 24px;
+  font-size:14px;
 }
 
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  width:min(700px,100%);
-  margin-top:30px;
+.suggestions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  max-width:650px;
 }
 
-.quick{
-  border:1px solid var(--border);
+.suggestion{
   background:var(--panel);
-  color:var(--text);
-  border-radius:15px;
-  padding:15px;
-  text-align:right;
-  transition:.2s;
+  border:1px solid var(--border);
+  color:#cdd2d8;
+  border-radius:12px;
+  padding:10px 13px;
+  cursor:pointer;
+  font-size:12px;
 }
 
-.quick:hover{
-  transform:translateY(-2px);
+.suggestion:hover{
   background:var(--panel2);
 }
 
-.quick b{
-  display:block;
-  margin-bottom:5px;
-}
-
-.quick span{
-  color:var(--muted);
-  font-size:11px;
-}
-
-/* MESSAGE */
-
 .message{
   display:flex;
-  gap:13px;
-  margin:20px 0;
-  animation:fadeUp .25s ease;
+  gap:12px;
+  margin:0 0 25px;
+  animation:messageIn .18s ease;
+}
+
+@keyframes messageIn{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 .message.user{
@@ -370,123 +384,128 @@ body.light .topbar{
 }
 
 .avatar{
-  width:36px;
-  height:36px;
-  min-width:36px;
-  border-radius:12px;
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border-radius:10px;
   display:grid;
   place-items:center;
-  background:var(--panel2);
-  border:1px solid var(--border);
-  font-size:13px;
-  font-weight:800;
+  font-size:12px;
+  font-weight:bold;
 }
 
 .message.user .avatar{
-  background:var(--accent);
-  color:var(--accentText);
+  background:#303640;
+  color:#fff;
 }
 
-.bubble-wrap{
-  max-width:82%;
+.message.assistant .avatar{
+  background:#fff;
+  color:#0b0d10;
 }
 
 .bubble{
-  padding:14px 16px;
-  border-radius:17px;
-  background:var(--panel);
-  border:1px solid var(--border);
+  max-width:min(760px,85%);
   line-height:1.75;
+  font-size:14px;
   white-space:pre-wrap;
-  word-break:break-word;
+  overflow-wrap:anywhere;
 }
 
 .message.user .bubble{
-  background:var(--user);
+  background:#1c2128;
+  border:1px solid #272d36;
+  padding:11px 14px;
+  border-radius:16px 5px 16px 16px;
 }
 
-.message-actions{
+.message.assistant .bubble{
+  padding-top:2px;
+}
+
+.message-tools{
   display:flex;
   gap:5px;
-  margin-top:6px;
-  opacity:.55;
+  margin-top:7px;
+  opacity:.7;
 }
 
-.message-actions button{
+.message-tools button{
   border:0;
   background:transparent;
-  color:var(--muted);
-  font-size:11px;
-  padding:3px 6px;
+  color:#888f9a;
+  cursor:pointer;
+  padding:5px;
+  border-radius:6px;
+  font-size:12px;
 }
 
-.message-actions button:hover{
-  color:var(--text);
+.message-tools button:hover{
+  background:#1b2027;
+  color:#fff;
 }
-
-/* TYPING */
 
 .typing{
   display:inline-flex;
   gap:4px;
-  padding:5px;
+  padding:8px 0;
 }
 
 .typing i{
-  width:6px;
-  height:6px;
+  width:5px;
+  height:5px;
   border-radius:50%;
-  background:var(--muted);
+  background:#8f96a0;
   animation:typing 1s infinite;
 }
 
-.typing i:nth-child(2){
-  animation-delay:.15s;
-}
+.typing i:nth-child(2){animation-delay:.15s}
+.typing i:nth-child(3){animation-delay:.3s}
 
-.typing i:nth-child(3){
-  animation-delay:.3s;
+@keyframes typing{
+  0%,60%,100%{opacity:.3;transform:translateY(0)}
+  30%{opacity:1;transform:translateY(-3px)}
 }
 
 /* INPUT */
 
-.composer-area{
+.composer-wrap{
   position:absolute;
-  bottom:0;
   left:0;
   right:0;
-  padding:16px 18px 20px;
-  background:
-    linear-gradient(
-      to top,
-      var(--bg) 70%,
-      transparent
-    );
+  bottom:0;
+  padding:16px 20px 18px;
+  background:linear-gradient(transparent,var(--bg) 27%);
 }
 
 .composer{
-  width:min(950px,100%);
+  max-width:850px;
   margin:auto;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:20px;
-  box-shadow:var(--shadow);
+  background:#151920;
+  border:1px solid #303640;
+  border-radius:18px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
   overflow:hidden;
 }
 
-.attachments{
-  display:flex;
-  flex-wrap:wrap;
+.file-preview{
+  display:none;
   gap:7px;
-  padding:9px 12px 0;
+  flex-wrap:wrap;
+  padding:9px 11px 0;
+}
+
+.file-preview.show{
+  display:flex;
 }
 
 .file-chip{
-  background:var(--panel2);
-  border:1px solid var(--border);
+  background:#222832;
+  border:1px solid #303743;
   border-radius:9px;
-  padding:6px 9px;
+  padding:6px 8px;
   font-size:11px;
+  color:#cbd0d7;
   display:flex;
   align-items:center;
   gap:6px;
@@ -494,384 +513,381 @@ body.light .topbar{
 
 .file-chip button{
   border:0;
-  background:none;
-  color:var(--muted);
+  background:transparent;
+  color:#9097a1;
+  cursor:pointer;
 }
 
-textarea{
-  width:100%;
-  min-height:58px;
-  max-height:180px;
+.input-row{
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  padding:10px;
+}
+
+.attach-btn,
+.send-btn{
+  flex:0 0 39px;
+  width:39px;
+  height:39px;
+  border-radius:11px;
+  border:1px solid var(--border);
+  background:#1c2128;
+  color:#dfe3e8;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+}
+
+.attach-btn:hover{
+  background:#252b34;
+}
+
+.send-btn{
+  background:#fff;
+  color:#0b0d10;
+  border-color:#fff;
+  font-weight:bold;
+}
+
+.send-btn:hover{
+  background:#e5e7ea;
+}
+
+.send-btn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+#messageInput{
+  flex:1;
+  min-height:39px;
+  max-height:160px;
   resize:none;
   border:0;
   outline:0;
   background:transparent;
-  color:var(--text);
-  padding:16px;
-  line-height:1.6;
+  color:#f4f6f8;
+  padding:9px 4px;
+  line-height:1.5;
+  font-size:14px;
 }
 
-textarea::placeholder{
-  color:var(--muted);
+#messageInput::placeholder{
+  color:#717883;
 }
 
-.composer-bottom{
+.composer-footer{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:8px 10px 10px;
+  padding:0 13px 8px;
+  color:#6f7680;
+  font-size:10px;
 }
 
-.composer-left,
-.composer-right{
+.status{
   display:flex;
   align-items:center;
   gap:6px;
 }
 
-.tool-btn{
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-  border-radius:10px;
+.status-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--success);
 }
 
-.send-btn{
-  width:42px;
-  height:42px;
-  border:0;
-  background:var(--accent);
-  color:var(--accentText);
-  border-radius:12px;
-  font-weight:900;
-  transition:.2s;
+.status-dot.offline{
+  background:var(--danger);
 }
 
-.send-btn:hover{
-  transform:scale(1.04);
-}
-
-.send-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-/* MODE BADGE */
-
-.current-mode{
-  border:1px solid var(--border);
-  background:var(--panel2);
-  border-radius:9px;
-  color:var(--muted);
-  padding:6px 9px;
-  font-size:10px;
-}
-
-/* OVERLAY */
-
-.overlay{
+#fileInput{
   display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  z-index:15;
 }
 
-/* TOAST */
+/* CODE */
 
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:105px;
-  transform:translateX(-50%) translateY(20px);
-  background:var(--panel2);
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:11px 17px;
+pre{
+  direction:ltr;
+  text-align:left;
+  background:#0b0d10;
+  border:1px solid #2b3139;
   border-radius:12px;
+  padding:14px;
+  overflow:auto;
+  white-space:pre;
+}
+
+code{
+  font-family:Consolas,Monaco,monospace;
   font-size:12px;
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-  z-index:100;
 }
 
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
+/* MOBILE */
 
-/* ANIMATIONS */
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-@keyframes typing{
-  0%,100%{
-    opacity:.25;
-    transform:translateY(0);
-  }
-  50%{
-    opacity:1;
-    transform:translateY(-3px);
-  }
-}
-
-/* RESPONSIVE */
-
-@media(max-width:800px){
+@media(max-width:760px){
 
   .sidebar{
     position:fixed;
-    right:-300px;
+    right:-290px;
     top:0;
     bottom:0;
-    box-shadow:var(--shadow);
+    width:280px;
+    transition:right .25s ease;
+    box-shadow:-20px 0 50px rgba(0,0,0,.45);
   }
 
   .sidebar.open{
     right:0;
   }
 
-  .overlay.show{
-    display:block;
-  }
-
-  .menu-btn{
-    display:block;
+  .mobile-menu{
+    display:grid;
   }
 
   .topbar{
-    padding:0 12px;
+    padding:0 11px;
+  }
+
+  .top-left{
+    gap:6px;
+  }
+
+  .top-right .icon-button:not(:last-child){
+    display:none;
+  }
+
+  .mode-button{
+    max-width:125px;
+    font-size:11px;
   }
 
   .chat{
-    padding:20px 10px 160px;
-  }
-
-  .bubble-wrap{
-    max-width:88%;
-  }
-
-  .quick-grid{
-    grid-template-columns:1fr;
+    padding:22px 12px 145px;
   }
 
   .welcome{
-    min-height:55vh;
+    min-height:calc(100dvh - 245px);
   }
 
-}
-
-@media(max-width:480px){
-
-  .status{
-    display:none;
+  .welcome h1{
+    font-size:26px;
   }
 
-  .top-actions .icon-btn:nth-child(1){
-    display:none;
-  }
-
-  .composer-area{
-    padding:10px 8px 12px;
+  .welcome-logo{
+    width:60px;
+    height:60px;
   }
 
   .bubble{
-    font-size:14px;
+    max-width:87%;
+    font-size:13px;
   }
 
+  .composer-wrap{
+    padding:10px 9px 11px;
+  }
+
+  .composer{
+    border-radius:16px;
+  }
+
+  .composer-footer{
+    display:none;
+  }
+}
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:20;
+}
+
+.overlay.show{
+  display:block;
+}
+
+/* LIGHT */
+
+body.light{
+  --bg:#f6f7f9;
+  --bg2:#fff;
+  --panel:#fff;
+  --panel2:#f0f2f5;
+  --border:#dfe3e8;
+  --text:#15181d;
+  --muted:#69717c;
+  --accent:#15181d;
+  --accentText:#fff;
+}
+
+body.light .sidebar{
+  background:#fff;
+}
+
+body.light .topbar{
+  background:rgba(246,247,249,.88);
+}
+
+body.light .message.user .bubble{
+  background:#e9edf2;
+  border-color:#dce1e7;
+}
+
+body.light .composer{
+  background:#fff;
+  border-color:#d7dce2;
+}
+
+body.light .welcome-logo,
+body.light .brand-logo{
+  background:#15181d;
+  color:#fff;
+}
+
+body.light .send-btn{
+  background:#15181d;
+  color:#fff;
+  border-color:#15181d;
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
-  <!-- SIDEBAR -->
+  <div class="overlay" id="overlay"></div>
+
   <aside class="sidebar" id="sidebar">
 
-    <div class="logo">
-      <div class="logo-title">
-        Sultan <span>AI</span>
-      </div>
-      <div class="logo-sub">
-        مساعد ذكاء اصطناعي متقدم
+    <div class="brand">
+      <div class="brand-logo">S</div>
+      <div class="brand-text">
+        <strong>Sultan AI</strong>
+        <span>V8.1 • AI Assistant</span>
       </div>
     </div>
 
-    <div class="sidebar-content">
+    <button class="new-chat" id="newChatBtn">
+      ＋ محادثة جديدة
+    </button>
 
-      <div class="section-title">
-        أوضاع الذكاء
-      </div>
+    <div class="side-title">المحادثات</div>
 
-      <button class="mode active" data-mode="smart">
-        <div class="mode-icon">🧠</div>
-        <div class="mode-info">
-          <div class="mode-name">Smart</div>
-          <div class="mode-desc">إجابة ذكية ومتوازنة</div>
-        </div>
-      </button>
+    <div class="chat-history" id="chatHistory"></div>
 
-      <button class="mode" data-mode="fast">
-        <div class="mode-icon">⚡</div>
-        <div class="mode-info">
-          <div class="mode-name">Fast</div>
-          <div class="mode-desc">إجابة سريعة</div>
-        </div>
-      </button>
-
-      <button class="mode" data-mode="deep">
-        <div class="mode-icon">🔬</div>
-        <div class="mode-info">
-          <div class="mode-name">Deep</div>
-          <div class="mode-desc">تحليل أعمق</div>
-        </div>
-      </button>
-
-      <button class="mode" data-mode="code">
-        <div class="mode-icon">💻</div>
-        <div class="mode-info">
-          <div class="mode-name">Code</div>
-          <div class="mode-desc">برمجة ومساعدة تقنية</div>
-        </div>
-      </button>
-
-      <button class="mode" data-mode="web">
-        <div class="mode-icon">🌐</div>
-        <div class="mode-info">
-          <div class="mode-name">Web</div>
-          <div class="mode-desc">بحث ومعلومات حديثة</div>
-        </div>
-      </button>
-
-      <button class="mode" data-mode="vision">
-        <div class="mode-icon">👁️</div>
-        <div class="mode-info">
-          <div class="mode-name">Vision</div>
-          <div class="mode-desc">تحليل الصور</div>
-        </div>
-      </button>
-
-      <button class="mode" data-mode="files">
-        <div class="mode-icon">📁</div>
-        <div class="mode-info">
-          <div class="mode-name">Files</div>
-          <div class="mode-desc">تحليل الملفات</div>
-        </div>
-      </button>
-
-    </div>
-
-    <div class="sidebar-bottom">
-      <button class="small-btn" id="newChat">
-        ＋ محادثة جديدة
-      </button>
-
-      <button class="small-btn" id="clearChat">
-        🗑️ مسح المحادثة
-      </button>
+    <div class="side-bottom">
+      <button class="side-action" id="themeBtn">◐ المظهر</button>
+      <button class="side-action" id="clearBtn">⌫ مسح المحادثة</button>
     </div>
 
   </aside>
 
-  <div class="overlay" id="overlay"></div>
-
-  <!-- MAIN -->
   <main class="main">
 
     <header class="topbar">
 
       <div class="top-left">
 
-        <button
-          class="menu-btn"
-          id="menuBtn"
-          aria-label="فتح القائمة"
-        >
-          ☰
-        </button>
+        <button class="icon-button mobile-menu" id="menuBtn">☰</button>
 
-        <div class="status">
-          <span class="status-dot"></span>
-          <span id="statusText">
-            Sultan AI Online
-          </span>
+        <div class="mode-select">
+
+          <button class="mode-button" id="modeButton">
+            <span class="mode-dot"></span>
+            <span id="modeLabel">Smart</span>
+            <span>⌄</span>
+          </button>
+
+          <div class="mode-menu" id="modeMenu">
+
+            <button class="mode-option active" data-mode="smart">
+              <span class="mode-info">
+                <span class="mode-icon">✦</span>
+                Smart
+              </span>
+            </button>
+
+            <button class="mode-option" data-mode="fast">
+              <span class="mode-info">
+                <span class="mode-icon">⚡</span>
+                Fast
+              </span>
+            </button>
+
+            <button class="mode-option" data-mode="deep">
+              <span class="mode-info">
+                <span class="mode-icon">◉</span>
+                Deep
+              </span>
+            </button>
+
+            <button class="mode-option" data-mode="code">
+              <span class="mode-info">
+                <span class="mode-icon">&lt;/&gt;</span>
+                Code
+              </span>
+            </button>
+
+            <button class="mode-option" data-mode="web">
+              <span class="mode-info">
+                <span class="mode-icon">⌕</span>
+                Web
+              </span>
+            </button>
+
+            <button class="mode-option" data-mode="vision">
+              <span class="mode-info">
+                <span class="mode-icon">◉</span>
+                Vision
+              </span>
+            </button>
+
+            <button class="mode-option" data-mode="files">
+              <span class="mode-info">
+                <span class="mode-icon">▧</span>
+                Files
+              </span>
+            </button>
+
+          </div>
+
         </div>
 
       </div>
 
-      <div class="top-actions">
+      <div class="top-right">
 
-        <button
-          class="icon-btn"
-          id="themeBtn"
-          title="الوضع الليلي/الفاتح"
-        >
-          ☀️
-        </button>
+        <button class="icon-button" id="healthBtn" title="حالة النظام">●</button>
+
+        <button class="icon-button" id="newTopBtn" title="محادثة جديدة">＋</button>
 
       </div>
 
     </header>
 
-    <!-- CHAT -->
     <section class="chat" id="chat">
 
       <div class="chat-inner" id="chatInner">
 
         <div class="welcome" id="welcome">
 
-          <div class="welcome-logo">
-            SA
-          </div>
+          <div class="welcome-logo">S</div>
 
-          <h1>
-            Sultan AI
-          </h1>
+          <h1>كيف فيني ساعدك؟</h1>
 
-          <p>
-            مساعدك الذكي للبرمجة، التحليل، البحث،
-            الصور والملفات.
-          </p>
+          <p>Sultan AI V8.1 — مساعدك الذكي للمحادثة، البرمجة وتحليل الملفات.</p>
 
-          <div class="quick-grid">
+          <div class="suggestions">
 
-            <button class="quick"
-              data-prompt="اشرح لي كيف يعمل الذكاء الاصطناعي بطريقة بسيطة">
-              <b>🧠 تعلّم</b>
-              <span>اشرح لي موضوعاً بطريقة سهلة</span>
-            </button>
-
-            <button class="quick"
-              data-prompt="ساعدني في كتابة كود HTML احترافي">
-              <b>💻 برمجة</b>
-              <span>ساعدني في مشروع برمجي</span>
-            </button>
-
-            <button class="quick"
-              data-prompt="حلل هذا السؤال وأعطني أفضل إجابة">
-              <b>🔬 تحليل</b>
-              <span>حلّل سؤالاً أو مشكلة</span>
-            </button>
-
-            <button class="quick"
-              data-prompt="أعطني فكرة مشروع ذكاء اصطناعي مميزة">
-              <b>💡 أفكار</b>
-              <span>ابتكر فكرة جديدة</span>
-            </button>
+            <button class="suggestion">اشرحلي فكرة بطريقة بسيطة</button>
+            <button class="suggestion">ساعدني بكتابة كود</button>
+            <button class="suggestion">حلللي هالمشكلة</button>
+            <button class="suggestion">شو فيني أعمل اليوم؟</button>
 
           </div>
 
@@ -881,62 +897,42 @@ textarea::placeholder{
 
     </section>
 
-    <!-- COMPOSER -->
-    <div class="composer-area">
+    <div class="composer-wrap">
 
       <div class="composer">
 
-        <div
-          class="attachments"
-          id="attachments"
-        ></div>
+        <div class="file-preview" id="filePreview"></div>
 
-        <textarea
-          id="messageInput"
-          placeholder="اكتب رسالتك إلى Sultan AI..."
-          rows="1"
-          autocomplete="off"
-        ></textarea>
+        <div class="input-row">
 
-        <div class="composer-bottom">
+          <input
+            type="file"
+            id="fileInput"
+            multiple
+            accept="image/*,.txt,.json,.js,.ts,.html,.css,.xml,.md,.csv,.jsx,.tsx,.py,.java,.c,.cpp,.h,.sql,.pdf"
+          >
 
-          <div class="composer-left">
+          <button class="attach-btn" id="attachBtn" title="إرفاق ملف">＋</button>
 
-            <button
-              class="tool-btn"
-              id="fileBtn"
-              title="إرفاق ملف"
-            >
-              📎
-            </button>
+          <textarea
+            id="messageInput"
+            rows="1"
+            maxlength="10000"
+            placeholder="اكتب رسالتك..."
+          ></textarea>
 
-            <input
-              type="file"
-              id="fileInput"
-              hidden
-              multiple
-            >
+          <button class="send-btn" id="sendBtn" title="إرسال">➤</button>
 
-            <span
-              class="current-mode"
-              id="currentMode"
-            >
-              Smart
-            </span>
+        </div>
 
+        <div class="composer-footer">
+
+          <div class="status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Sultan AI متصل</span>
           </div>
 
-          <div class="composer-right">
-
-            <button
-              class="send-btn"
-              id="sendBtn"
-              title="إرسال"
-            >
-              ↑
-            </button>
-
-          </div>
+          <span>Enter للإرسال • Shift+Enter لسطر جديد</span>
 
         </div>
 
@@ -948,1565 +944,1191 @@ textarea::placeholder{
 
 </div>
 
-<div class="toast" id="toast"></div>
-
 <script>
-/* =========================================================
-   SULTAN AI FRONTEND
-========================================================= */
+"use strict";
+
+/* =========================
+   API
+========================= */
 
 const STREAM_API = "/api/chat/stream";
 const NORMAL_API = "/api/chat";
 const HEALTH_API = "/api/health";
 
+/* =========================
+   STATE
+========================= */
+
 let messages = [];
-
-let currentMode = "smart";
-
 let selectedFiles = [];
-
+let currentMode = "smart";
 let isGenerating = false;
+let controller = null;
 
-let currentAssistantBubble = null;
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
-/* =========================================================
+/* =========================
    ELEMENTS
-========================================================= */
+========================= */
 
-const chat =
-  document.getElementById("chat");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const menuBtn = document.getElementById("menuBtn");
+const newChatBtn = document.getElementById("newChatBtn");
+const newTopBtn = document.getElementById("newTopBtn");
+const clearBtn = document.getElementById("clearBtn");
+const themeBtn = document.getElementById("themeBtn");
 
-const chatInner =
-  document.getElementById("chatInner");
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chatInner");
+const welcome = document.getElementById("welcome");
 
-const welcome =
-  document.getElementById("welcome");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
 
-const input =
-  document.getElementById("messageInput");
+const attachBtn = document.getElementById("attachBtn");
+const fileInput = document.getElementById("fileInput");
+const filePreview = document.getElementById("filePreview");
 
-const sendBtn =
-  document.getElementById("sendBtn");
+const modeButton = document.getElementById("modeButton");
+const modeMenu = document.getElementById("modeMenu");
+const modeLabel = document.getElementById("modeLabel");
 
-const fileBtn =
-  document.getElementById("fileBtn");
+const healthBtn = document.getElementById("healthBtn");
+const statusDot = document.getElementById("statusDot");
+const statusText = document.getElementById("statusText");
 
-const fileInput =
-  document.getElementById("fileInput");
+const chatHistory = document.getElementById("chatHistory");
 
-const attachments =
-  document.getElementById("attachments");
+/* =========================
+   STORAGE
+========================= */
 
-const currentModeEl =
-  document.getElementById("currentMode");
-
-const toast =
-  document.getElementById("toast");
-
-const sidebar =
-  document.getElementById("sidebar");
-
-const overlay =
-  document.getElementById("overlay");
-
-const menuBtn =
-  document.getElementById("menuBtn");
-
-const themeBtn =
-  document.getElementById("themeBtn");
-
-const statusText =
-  document.getElementById("statusText");
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-function showToast(text){
-
-  toast.textContent =
-    text;
-
-  toast.classList.add(
-    "show"
-  );
-
-  clearTimeout(
-    toastTimer
-  );
-
-  toastTimer =
-    setTimeout(
-      () => {
-        toast.classList.remove(
-          "show"
-        );
-      },
-      2600
-    );
-
-}
-
-/* =========================================================
-   THEME
-========================================================= */
-
-const savedTheme =
-  localStorage.getItem(
-    "sultan-theme"
-  );
-
-if(
-  savedTheme === "light"
-){
-  document.body.classList.add(
-    "light"
-  );
-
-  themeBtn.textContent =
-    "🌙";
-}
-
-themeBtn.addEventListener(
-  "click",
-  () => {
-
-    document.body.classList.toggle(
-      "light"
-    );
-
-    const light =
-      document.body.classList.contains(
-        "light"
-      );
-
+function saveMessages(){
+  try{
     localStorage.setItem(
-      "sultan-theme",
-      light
-        ? "light"
-        : "dark"
+      "sultan_ai_messages_v81",
+      JSON.stringify(messages.slice(-40))
     );
-
-    themeBtn.textContent =
-      light
-        ? "🌙"
-        : "☀️";
-
-  }
-);
-
-/* =========================================================
-   SIDEBAR MOBILE
-========================================================= */
-
-function closeSidebar(){
-
-  sidebar.classList.remove(
-    "open"
-  );
-
-  overlay.classList.remove(
-    "show"
-  );
-
+  }catch(e){}
 }
 
-menuBtn.addEventListener(
-  "click",
-  () => {
-
-    sidebar.classList.add(
-      "open"
-    );
-
-    overlay.classList.add(
-      "show"
-    );
-
-  }
-);
-
-overlay.addEventListener(
-  "click",
-  closeSidebar
-);
-
-/* =========================================================
-   MODES
-========================================================= */
-
-document
-  .querySelectorAll(".mode")
-  .forEach(
-    button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          document
-            .querySelectorAll(
-              ".mode"
-            )
-            .forEach(
-              x =>
-                x.classList.remove(
-                  "active"
-                )
-            );
-
-          button.classList.add(
-            "active"
-          );
-
-          currentMode =
-            button.dataset.mode;
-
-          currentModeEl.textContent =
-            button
-              .querySelector(
-                ".mode-name"
-              )
-              .textContent;
-
-          closeSidebar();
-
-        }
-      );
-
-    }
-  );
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-input.addEventListener(
-  "input",
-  () => {
-
-    input.style.height =
-      "auto";
-
-    input.style.height =
-      Math.min(
-        input.scrollHeight,
-        180
-      ) + "px";
-
-  }
-);
-
-input.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key === "Enter" &&
-      !event.shiftKey
-    ){
-
-      event.preventDefault();
-
-      generateResponse();
-
-    }
-
-  }
-);
-
-/* =========================================================
-   FILES
-========================================================= */
-
-fileBtn.addEventListener(
-  "click",
-  () => {
-
-    fileInput.click();
-
-  }
-);
-
-fileInput.addEventListener(
-  "change",
-  () => {
-
-    const incoming =
-      Array.from(
-        fileInput.files || []
-      );
-
-    for(
-      const file of incoming
-    ){
-
-      if(
-        selectedFiles.length >= 5
-      ){
-
-        showToast(
-          "الحد الأقصى 5 ملفات."
-        );
-
-        break;
-
-      }
-
-      if(
-        file.size >
-        20 * 1024 * 1024
-      ){
-
-        showToast(
-          `${file.name} أكبر من 20MB`
-        );
-
-        continue;
-
-      }
-
-      selectedFiles.push(
-        file
-      );
-
-    }
-
-    renderFiles();
-
-    fileInput.value = "";
-
-  }
-);
-
-function renderFiles(){
-
-  attachments.innerHTML =
-    "";
-
-  selectedFiles.forEach(
-    (file,index) => {
-
-      const chip =
-        document.createElement(
-          "div"
-        );
-
-      chip.className =
-        "file-chip";
-
-      chip.innerHTML =
-        `
-        <span>📄 ${escapeHtml(
-          file.name
-        )}</span>
-        <button
-          type="button"
-          data-index="${index}"
-        >×</button>
-        `;
-
-      chip
-        .querySelector(
-          "button"
-        )
-        .addEventListener(
-          "click",
-          () => {
-
-            selectedFiles.splice(
-              index,
-              1
-            );
-
-            renderFiles();
-
-          }
-        );
-
-      attachments.appendChild(
-        chip
-      );
-
-    }
-  );
-
-}
-
-function escapeHtml(text){
-
-  return String(text)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-/* =========================================================
-   FILE DATA
-========================================================= */
-
-function fileToDataURL(file){
-
-  return new Promise(
-    (resolve,reject) => {
-
-      const reader =
-        new FileReader();
-
-      reader.onload =
-        () =>
-          resolve(
-            reader.result
-          );
-
-      reader.onerror =
-        reject;
-
-      reader.readAsDataURL(
-        file
-      );
-
-    }
-  );
-
-}
-
-async function prepareFiles(){
-
-  const result = [];
-
-  for(
-    const file of selectedFiles
-  ){
-
-    try{
-
-      const data =
-        await fileToDataURL(
-          file
-        );
-
-      result.push({
-
-        name:
-          file.name,
-
-        type:
-          file.type ||
-          "application/octet-stream",
-
-        size:
-          file.size,
-
-        data
-
-      });
-
-    }catch{
-
-      showToast(
-        `تعذر قراءة ${file.name}`
-      );
-
-    }
-
-  }
-
-  return result;
-
-}
-
-/* =========================================================
-   PAYLOAD
-========================================================= */
-
-async function buildPayload(
-  userText = ""
-){
-
-  const files =
-    await prepareFiles();
-
-  const cleanText =
-    String(
-      userText || ""
-    ).trim();
-
-  return {
-
-    message:
-      cleanText,
-
-    messages:
-      messages.slice(
-        -12
-      ),
-
-    files,
-
-    fastMode:
-      currentMode === "fast",
-
-    mode:
-      currentMode
-
-  };
-
-}
-
-/* =========================================================
-   ADD MESSAGE
-========================================================= */
-
-function addMessage(
-  role,
-  content
-){
-
-  const message =
-    document.createElement(
-      "div"
-    );
-
-  message.className =
-    "message " +
-    role;
-
-  const avatar =
-    document.createElement(
-      "div"
-    );
-
-  avatar.className =
-    "avatar";
-
-  avatar.textContent =
-    role === "user"
-      ? "أنت"
-      : "SA";
-
-  const wrap =
-    document.createElement(
-      "div"
-    );
-
-  wrap.className =
-    "bubble-wrap";
-
-  const bubble =
-    document.createElement(
-      "div"
-    );
-
-  bubble.className =
-    "bubble";
-
-  bubble.textContent =
-    content || "";
-
-  wrap.appendChild(
-    bubble
-  );
-
-  if(
-    role === "user"
-  ){
-
-    const actions =
-      document.createElement(
-        "div"
-      );
-
-    actions.className =
-      "message-actions";
-
-    const edit =
-      document.createElement(
-        "button"
-      );
-
-    edit.textContent =
-      "تعديل";
-
-    edit.addEventListener(
-      "click",
-      () => editMessage(
-        message
-      )
-    );
-
-    actions.appendChild(
-      edit
-    );
-
-    wrap.appendChild(
-      actions
-    );
-
-  }
-
-  message.appendChild(
-    avatar
-  );
-
-  message.appendChild(
-    wrap
-  );
-
-  chatInner.appendChild(
-    message
-  );
-
-  scrollBottom();
-
-  return {
-    element: message,
-    bubble
-  };
-
-}
-
-/* =========================================================
-   EDIT
-========================================================= */
-
-function editMessage(
-  messageElement
-){
-
-  const index =
-    Array.from(
-      chatInner.children
-    ).indexOf(
-      messageElement
-    );
-
-  const userMessages =
-    Array.from(
-      chatInner.querySelectorAll(
-        ".message.user"
-      )
-    );
-
-  const userIndex =
-    userMessages.indexOf(
-      messageElement
-    );
-
-  if(
-    userIndex < 0 ||
-    !messages.length
-  ){
-
-    return;
-
-  }
-
-  const userMessage =
-    messages.find(
-      (item,index) =>
-        item.role === "user" &&
-        index === userIndex
-    );
-
-  if(
-    !userMessage
-  ){
-
-    return;
-
-  }
-
-  input.value =
-    userMessage.content;
-
-  input.focus();
-
-  showToast(
-    "عدّل الرسالة ثم اضغط إرسال."
-  );
-
-}
-
-/* =========================================================
-   TYPING
-========================================================= */
-
-function createTyping(){
-
-  const message =
-    document.createElement(
-      "div"
-    );
-
-  message.className =
-    "message assistant";
-
-  message.innerHTML =
-    `
-    <div class="avatar">SA</div>
-    <div class="bubble-wrap">
-      <div class="bubble">
-        <span class="typing">
-          <i></i><i></i><i></i>
-        </span>
-      </div>
-    </div>
-    `;
-
-  chatInner.appendChild(
-    message
-  );
-
-  scrollBottom();
-
-  return message;
-
-}
-
-/* =========================================================
-   STREAM PARSER
-========================================================= */
-
-function parseSSEEvent(
-  raw
-){
-
-  const lines =
-    raw
-      .replace(/\r/g,"")
-      .split("\n");
-
-  let event =
-    "message";
-
-  const dataLines =
-    [];
-
-  for(
-    const line of lines
-  ){
-
-    if(
-      line.startsWith(
-        "event:"
-      )
-    ){
-
-      event =
-        line
-          .slice(6)
-          .trim();
-
-    }
-
-    if(
-      line.startsWith(
-        "data:"
-      )
-    ){
-
-      dataLines.push(
-        line.slice(5).trim()
-      );
-
-    }
-
-  }
-
-  if(
-    !dataLines.length
-  ){
-
-    return null;
-
-  }
-
-  const rawData =
-    dataLines.join("\n");
-
-  if(
-    rawData === "[DONE]"
-  ){
-
-    return {
-      event,
-      data:
-        "[DONE]"
-    };
-
-  }
-
-  let data =
-    rawData;
-
+function loadMessages(){
   try{
+    const raw = localStorage.getItem("sultan_ai_messages_v81");
+    if(!raw)return;
 
-    data =
-      JSON.parse(
-        rawData
-      );
+    const data = JSON.parse(raw);
 
-  }catch{
-
-    /* plain text */
-
+    if(Array.isArray(data)){
+      messages = data;
+      renderMessages();
+    }
+  }catch(e){
+    messages = [];
   }
-
-  return {
-    event,
-    data
-  };
-
 }
 
-/* =========================================================
-   STREAM REQUEST
-========================================================= */
-
-async function streamRequest(
-  payload,
-  assistantBubble,
-  typingElement
-){
-
-  const response =
-    await fetch(
-      STREAM_API,
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-        body:
-          JSON.stringify(
-            payload
-          )
-      }
-    );
-
-  if(
-    !response.ok
-  ){
-
-    let message =
-      `HTTP ${response.status}`;
-
-    try{
-
-      const error =
-        await response.json();
-
-      message =
-        error.error ||
-        message;
-
-    }catch{}
-
-    throw new Error(
-      message
-    );
-
-  }
-
-  if(
-    !response.body
-  ){
-
-    throw new Error(
-      "Streaming غير متاح."
-    );
-
-  }
-
-  const reader =
-    response.body.getReader();
-
-  const decoder =
-    new TextDecoder();
-
-  let buffer =
-    "";
-
-  let fullReply =
-    "";
-
-  while(true){
-
-    const {
-      value,
-      done
-    } =
-      await reader.read();
-
-    if(
-      done
-    ){
-
-      break;
-
-    }
-
-    buffer +=
-      decoder.decode(
-        value,
-        {
-          stream:true
-        }
-      );
-
-    buffer =
-      buffer.replace(
-        /\r\n/g,
-        "\n"
-      );
-
-    let separator;
-
-    while(
-      (separator =
-        buffer.indexOf(
-          "\n\n"
-        )) !== -1
-    ){
-
-      const raw =
-        buffer.slice(
-          0,
-          separator
-        );
-
-      buffer =
-        buffer.slice(
-          separator + 2
-        );
-
-      const parsed =
-        parseSSEEvent(
-          raw
-        );
-
-      if(
-        !parsed
-      ){
-
-        continue;
-
-      }
-
-      const data =
-        parsed.data;
-
-      if(
-        parsed.event ===
-        "token"
-      ){
-
-        const text =
-          typeof data === "string"
-            ? data
-            : data?.text ||
-              data?.token ||
-              data?.content ||
-              "";
-
-        if(text){
-
-          fullReply +=
-            text;
-
-          assistantBubble.textContent =
-            fullReply;
-
-          scrollBottom();
-
-        }
-
-      }
-
-      if(
-        parsed.event ===
-        "done"
-      ){
-
-        if(
-          data?.reply &&
-          !fullReply
-        ){
-
-          fullReply =
-            String(
-              data.reply
-            );
-
-          assistantBubble.textContent =
-            fullReply;
-
-        }
-
-      }
-
-      if(
-        parsed.event ===
-        "error"
-      ){
-
-        throw new Error(
-          data?.error ||
-          "حدث خطأ أثناء البث."
-        );
-
-      }
-
-      if(
-        parsed.event ===
-        "status"
-      ){
-
-        statusText.textContent =
-          data?.text ||
-          "Sultan AI يعمل...";
-
-      }
-
-    }
-
-  }
-
-  return fullReply.trim();
-
-}
-
-/* =========================================================
-   NORMAL REQUEST
-========================================================= */
-
-async function normalRequest(
-  payload
-){
-
-  const response =
-    await fetch(
-      NORMAL_API,
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-        body:
-          JSON.stringify(
-            payload
-          )
-      }
-    );
-
-  let data = {};
-
+function saveMode(){
   try{
-
-    data =
-      await response.json();
-
-  }catch{
-
-    throw new Error(
-      "الخادم لم يرجع JSON صالح."
-    );
-
-  }
-
-  if(
-    !response.ok ||
-    !data.success
-  ){
-
-    throw new Error(
-      data.error ||
-      `HTTP ${response.status}`
-    );
-
-  }
-
-  return String(
-    data.reply || ""
-  ).trim();
-
+    localStorage.setItem("sultan_ai_mode_v81",currentMode);
+  }catch(e){}
 }
 
-/* =========================================================
-   GENERATE
-========================================================= */
+function loadMode(){
+  try{
+    const mode = localStorage.getItem("sultan_ai_mode_v81");
+    if(mode){
+      setMode(mode);
+    }
+  }catch(e){}
+}
 
-async function generateResponse(
-  forcedText = null
-){
+/* =========================
+   NEW CHAT
+========================= */
 
-  if(
-    isGenerating
-  ){
-
-    return;
-
+function newChat(){
+  if(isGenerating && controller){
+    try{controller.abort()}catch(e){}
   }
 
-  const userText =
-    forcedText !== null
-      ? String(
-          forcedText
-        ).trim()
-      : input.value.trim();
+  messages = [];
+  selectedFiles = [];
 
-  if(
-    !userText &&
-    !selectedFiles.length
-  ){
+  saveMessages();
 
-    showToast(
-      "اكتب رسالة أو أرفق ملفاً."
-    );
-
-    return;
-
-  }
-
-  isGenerating =
-    true;
-
-  sendBtn.disabled =
-    true;
-
-  if(
-    welcome
-  ){
-
-    welcome.remove();
-
-  }
-
-  const finalText =
-    userText ||
-    "حلل الملفات المرفقة وقدم نتيجة مفيدة.";
-
-  messages.push({
-    role:"user",
-    content:
-      finalText
-  });
-
-  addMessage(
-    "user",
-    finalText
-  );
-
-  if(
-    forcedText === null
-  ){
-
-    input.value =
-      "";
-
-    input.style.height =
-      "auto";
-
-  }
-
-  const typing =
-    createTyping();
-
-  const assistantBubble =
-    typing.querySelector(
-      ".bubble"
-    );
-
-  assistantBubble.innerHTML =
-    "";
-
-  currentAssistantBubble =
-    assistantBubble;
-
-  const payload =
-    await buildPayload(
-      finalText
-    );
-
-  /*
-    بعد بناء الـpayload،
-    نفضّي الملفات من الواجهة.
-  */
-
-  selectedFiles =
-    [];
-
+  renderMessages();
   renderFiles();
 
-  statusText.textContent =
-    "Sultan AI يعمل...";
+  messageInput.value = "";
+  autoResize();
 
-  let reply = "";
+  closeSidebar();
 
-  try{
+  messageInput.focus();
+}
 
-    reply =
-      await streamRequest(
-        payload,
-        assistantBubble,
-        typing
-      );
+newChatBtn.addEventListener("click",newChat);
+newTopBtn.addEventListener("click",newChat);
 
-  }catch(
-    streamError
-  ){
+/* =========================
+   RENDER
+========================= */
 
-    console.warn(
-      "Streaming failed:",
-      streamError
-    );
+function escapeHTML(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
-    assistantBubble.textContent =
-      "";
+function formatText(text){
 
-    try{
+  let safe = escapeHTML(text || "");
 
-      reply =
-        await normalRequest(
-          payload
-        );
-
-      assistantBubble.textContent =
-        reply;
-
-    }catch(
-      normalError
-    ){
-
-      typing.remove();
-
-      messages.pop();
-
-      showToast(
-        normalError.message ||
-        "حدث خطأ أثناء الاتصال."
-      );
-
-      statusText.textContent =
-        "Sultan AI Offline";
-
-      isGenerating =
-        false;
-
-      sendBtn.disabled =
-        false;
-
-      return;
-
+  safe = safe.replace(
+    /```([\s\S]*?)```/g,
+    function(_,code){
+      return "<pre><code>"+code.trim()+"</code></pre>";
     }
-
-  }
-
-  typing.classList.remove(
-    "typing-message"
   );
 
-  if(
-    !reply
-  ){
+  safe = safe.replace(
+    /\*\*(.*?)\*\*/g,
+    "<strong>$1</strong>"
+  );
 
-    typing.remove();
+  safe = safe.replace(
+    /`([^`]+)`/g,
+    "<code>$1</code>"
+  );
 
-    messages.pop();
+  return safe;
+}
 
-    showToast(
-      "لم تصل إجابة من Sultan AI."
-    );
+function renderMessages(){
 
-    statusText.textContent =
-      "Sultan AI Online";
+  chatInner.innerHTML = "";
 
-    isGenerating =
-      false;
-
-    sendBtn.disabled =
-      false;
-
+  if(messages.length === 0){
+    chatInner.appendChild(welcome);
+    updateHistory();
+    scrollBottom();
     return;
-
   }
 
-  messages.push({
-    role:"assistant",
-    content:
-      reply
-  });
+  messages.forEach((msg,index)=>{
 
-  assistantBubble.textContent =
-    reply;
+    const wrapper = document.createElement("div");
+    wrapper.className = "message " +
+      (msg.role === "user" ? "user" : "assistant");
 
-  statusText.textContent =
-    "Sultan AI Online";
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = msg.role === "user" ? "أنت" : "S";
 
-  isGenerating =
-    false;
+    const body = document.createElement("div");
+    body.style.minWidth = "0";
 
-  sendBtn.disabled =
-    false;
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
 
-  scrollBottom();
+    bubble.innerHTML = formatText(msg.content || "");
 
-}
+    const tools = document.createElement("div");
+    tools.className = "message-tools";
 
-/* =========================================================
-   SEND
-========================================================= */
+    if(msg.role === "assistant"){
 
-sendBtn.addEventListener(
-  "click",
-  () =>
-    generateResponse()
-);
+      const copy = document.createElement("button");
+      copy.textContent = "نسخ";
+      copy.onclick = ()=>{
+        navigator.clipboard?.writeText(msg.content || "");
+        copy.textContent = "تم النسخ";
+        setTimeout(()=>copy.textContent="نسخ",1200);
+      };
 
-/* =========================================================
-   QUICK PROMPTS
-========================================================= */
-
-document
-  .querySelectorAll(
-    ".quick"
-  )
-  .forEach(
-    button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const prompt =
-            button.dataset.prompt ||
-            "";
-
-          input.value =
-            prompt;
-
-          input.focus();
-
-          generateResponse();
-
-        }
-      );
-
-    }
-  );
-
-/* =========================================================
-   NEW CHAT
-========================================================= */
-
-document
-  .getElementById(
-    "newChat"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      messages =
-        [];
-
-      chatInner.innerHTML =
-        "";
-
-      const newWelcome =
-        document.createElement(
-          "div"
-        );
-
-      newWelcome.className =
-        "welcome";
-
-      newWelcome.innerHTML =
-        `
-        <div class="welcome-logo">SA</div>
-        <h1>Sultan AI</h1>
-        <p>
-          كيف فيني ساعدك اليوم؟
-        </p>
-        `;
-
-      chatInner.appendChild(
-        newWelcome
-      );
-
-      input.value =
-        "";
-
-      closeSidebar();
-
-      showToast(
-        "تم إنشاء محادثة جديدة."
-      );
-
-    }
-  );
-
-/* =========================================================
-   CLEAR CHAT
-========================================================= */
-
-document
-  .getElementById(
-    "clearChat"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      messages =
-        [];
-
-      chatInner.innerHTML =
-        "";
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "welcome";
-
-      empty.innerHTML =
-        `
-        <div class="welcome-logo">SA</div>
-        <h1>Sultan AI</h1>
-        <p>
-          المحادثة جاهزة.
-        </p>
-        `;
-
-      chatInner.appendChild(
-        empty
-      );
-
-      showToast(
-        "تم مسح المحادثة."
-      );
-
-      closeSidebar();
-
-    }
-  );
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-function scrollBottom(){
-
-  requestAnimationFrame(
-    () => {
-
-      chat.scrollTop =
-        chat.scrollHeight;
-
-    }
-  );
-
-}
-
-/* =========================================================
-   HEALTH CHECK
-========================================================= */
-
-async function healthCheck(){
-
-  try{
-
-    const response =
-      await fetch(
-        HEALTH_API,
-        {
-          cache:"no-store"
-        }
-      );
-
-    if(
-      response.ok
-    ){
-
-      const data =
-        await response.json();
-
-      if(
-        data.configured === false
-      ){
-
-        statusText.textContent =
-          "API غير مضبوط";
-
-      }else{
-
-        statusText.textContent =
-          "Sultan AI Online";
-
-      }
+      tools.appendChild(copy);
 
     }else{
 
-      statusText.textContent =
-        "Sultan AI Offline";
+      const edit = document.createElement("button");
+      edit.textContent = "تعديل";
+      edit.onclick = ()=>{
+        editMessage(index);
+      };
 
+      tools.appendChild(edit);
     }
 
-  }catch{
+    body.appendChild(bubble);
+    body.appendChild(tools);
 
-    statusText.textContent =
-      "Sultan AI Offline";
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(body);
 
-  }
+    chatInner.appendChild(wrapper);
+  });
 
+  updateHistory();
+  scrollBottom();
 }
 
-healthCheck();
+function addMessageToDOM(role,content){
 
-/* =========================================================
-   START
-========================================================= */
+  if(welcome.parentNode === chatInner){
+    welcome.remove();
+  }
 
-console.log(
-  "👑 Sultan AI Frontend loaded"
+  const wrapper = document.createElement("div");
+  wrapper.className = "message "+role;
+
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = role === "user" ? "أنت" : "S";
+
+  const body = document.createElement("div");
+  body.style.minWidth = "0";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerHTML = formatText(content || "");
+
+  body.appendChild(bubble);
+
+  wrapper.appendChild(avatar);
+  wrapper.appendChild(body);
+
+  chatInner.appendChild(wrapper);
+
+  scrollBottom();
+
+  return bubble;
+}
+
+function scrollBottom(){
+  requestAnimationFrame(()=>{
+    chat.scrollTop = chat.scrollHeight;
+  });
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+function updateHistory(){
+
+  chatHistory.innerHTML = "";
+
+  const userMessages = messages
+    .filter(m=>m.role==="user")
+    .slice(-12)
+    .reverse();
+
+  if(userMessages.length===0){
+
+    const empty = document.createElement("div");
+    empty.style.color="#656c76";
+    empty.style.fontSize="12px";
+    empty.style.padding="10px";
+    empty.textContent="لا توجد محادثات بعد";
+
+    chatHistory.appendChild(empty);
+    return;
+  }
+
+  userMessages.forEach((msg)=>{
+
+    const item = document.createElement("div");
+    item.className = "history-item";
+
+    item.textContent =
+      String(msg.content || "").slice(0,45);
+
+    item.onclick = ()=>{
+      scrollBottom();
+    };
+
+    chatHistory.appendChild(item);
+  });
+}
+
+/* =========================
+   MODE
+========================= */
+
+const modeNames = {
+  smart:"Smart",
+  fast:"Fast",
+  deep:"Deep",
+  code:"Code",
+  web:"Web",
+  vision:"Vision",
+  files:"Files"
+};
+
+function setMode(mode){
+
+  if(!modeNames[mode]) mode="smart";
+
+  currentMode = mode;
+  modeLabel.textContent = modeNames[mode];
+
+  document.querySelectorAll(".mode-option")
+    .forEach(btn=>{
+      btn.classList.toggle(
+        "active",
+        btn.dataset.mode===mode
+      );
+    });
+
+  saveMode();
+}
+
+modeButton.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  modeMenu.classList.toggle("open");
+});
+
+document.querySelectorAll(".mode-option")
+.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    setMode(btn.dataset.mode);
+    modeMenu.classList.remove("open");
+  });
+});
+
+document.addEventListener("click",()=>{
+  modeMenu.classList.remove("open");
+});
+
+/* =========================
+   FILES
+========================= */
+
+attachBtn.addEventListener("click",()=>{
+  fileInput.click();
+});
+
+fileInput.addEventListener("change",async()=>{
+
+  const incoming = Array.from(fileInput.files || []);
+
+  for(const file of incoming){
+
+    if(selectedFiles.length >= MAX_FILES) break;
+
+    if(file.size > MAX_FILE_SIZE){
+      alert("الملف "+file.name+" أكبر من 20MB.");
+      continue;
+    }
+
+    if(selectedFiles.some(
+      f=>f.name===file.name && f.size===file.size
+    )){
+      continue;
+    }
+
+    try{
+
+      const data = await fileToDataURL(file);
+
+      selectedFiles.push({
+        name:file.name,
+        type:file.type || "application/octet-stream",
+        size:file.size,
+        data
+      });
+
+    }catch(e){
+      console.error(e);
+    }
+  }
+
+  renderFiles();
+
+  fileInput.value="";
+});
+
+function fileToDataURL(file){
+
+  return new Promise((resolve,reject)=>{
+
+    const reader = new FileReader();
+
+    reader.onload = ()=>resolve(reader.result);
+    reader.onerror = reject;
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderFiles(){
+
+  filePreview.innerHTML = "";
+
+  if(selectedFiles.length===0){
+    filePreview.classList.remove("show");
+    return;
+  }
+
+  filePreview.classList.add("show");
+
+  selectedFiles.forEach((file,index)=>{
+
+    const chip = document.createElement("div");
+    chip.className="file-chip";
+
+    const name = document.createElement("span");
+
+    name.textContent =
+      file.name.length>24
+        ? file.name.slice(0,21)+"..."
+        : file.name;
+
+    const remove = document.createElement("button");
+    remove.textContent="×";
+
+    remove.onclick=()=>{
+      selectedFiles.splice(index,1);
+      renderFiles();
+    };
+
+    chip.appendChild(name);
+    chip.appendChild(remove);
+
+    filePreview.appendChild(chip);
+  });
+}
+
+/* =========================
+   PAYLOAD
+========================= */
+
+function buildPayload(userText=""){
+
+  const cleanText = String(userText || "").trim();
+
+  return {
+    message:cleanText,
+
+    messages:messages
+      .slice(-12)
+      .map(m=>({
+        role:m.role,
+        content:String(m.content || "")
+      })),
+
+    files:selectedFiles,
+
+    fastMode:currentMode==="fast",
+
+    mode:
+      (
+        currentMode==="creative" ||
+        currentMode==="reasoning" ||
+        currentMode==="assistant"
+      )
+      ? "smart"
+      : currentMode
+  };
+}
+
+/* =========================
+   GENERATE
+========================= */
+
+async function generateResponse(forcedText=null){
+
+  if(isGenerating)return;
+
+  const userText =
+    forcedText !== null
+      ? String(forcedText).trim()
+      : messageInput.value.trim();
+
+  if(!userText && selectedFiles.length===0){
+    return;
+  }
+
+  isGenerating=true;
+  sendBtn.disabled=true;
+
+  if(welcome.parentNode===chatInner){
+    welcome.remove();
+  }
+
+  if(userText){
+
+    messages.push({
+      role:"user",
+      content:userText
+    });
+
+    addMessageToDOM("user",userText);
+  }
+
+  messageInput.value="";
+  autoResize();
+
+  const filesForRequest = selectedFiles.slice();
+
+  selectedFiles=[];
+
+  renderFiles();
+
+  const bubble = addMessageToDOM(
+    "assistant",
+    ""
+  );
+
+  bubble.innerHTML =
+    '<div class="typing"><i></i><i></i><i></i></div>';
+
+  controller = new AbortController();
+
+  const payload = buildPayload(userText);
+
+  payload.files = filesForRequest;
+
+  try{
+
+    let reply="";
+
+    try{
+
+      reply = await streamRequest(
+        payload,
+        bubble,
+        controller.signal
+      );
+
+    }catch(streamError){
+
+      console.warn(
+        "Streaming failed, trying normal endpoint:",
+        streamError
+      );
+
+      bubble.innerHTML =
+        '<div class="typing"><i></i><i></i><i></i></div>';
+
+      reply = await normalRequest(
+        payload,
+        controller.signal
+      );
+
+      bubble.innerHTML = formatText(reply);
+    }
+
+    if(!reply){
+      throw new Error("لم تصل إجابة من Sultan AI");
+    }
+
+    messages.push({
+      role:"assistant",
+      content:reply
+    });
+
+    saveMessages();
+
+    updateHistory();
+
+  }catch(error){
+
+    console.error(error);
+
+    const text =
+      error?.name==="AbortError"
+        ? "تم إيقاف التوليد."
+        : "⚠️ "+friendlyClientError(error);
+
+    bubble.textContent=text;
+
+    messages.push({
+      role:"assistant",
+      content:text
+    });
+
+    saveMessages();
+
+  }finally{
+
+    isGenerating=false;
+    sendBtn.disabled=false;
+    controller=null;
+
+    scrollBottom();
+  }
+}
+
+/* =========================
+   STREAM
+========================= */
+
+async function streamRequest(
+  payload,
+  bubble,
+  signal
+){
+
+  const response = await fetch(
+    STREAM_API,
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"text/event-stream"
+      },
+      body:JSON.stringify(payload),
+      signal
+    }
+  );
+
+  if(!response.ok){
+
+    let msg="Streaming request failed";
+
+    try{
+      const data=await response.json();
+      msg=data.error || data.message || msg;
+    }catch(e){}
+
+    const error=new Error(msg);
+    error.status=response.status;
+
+    throw error;
+  }
+
+  const contentType =
+    response.headers.get("content-type") || "";
+
+  if(!contentType.includes("text/event-stream")){
+    throw new Error("الخادم لم يرسل SSE");
+  }
+
+  if(!response.body){
+    throw new Error("Streaming غير مدعوم");
+  }
+
+  const reader=response.body.getReader();
+  const decoder=new TextDecoder("utf-8");
+
+  let buffer="";
+  let fullReply="";
+  let sawDone=false;
+
+  while(true){
+
+    const {value,done}=await reader.read();
+
+    if(done)break;
+
+    buffer += decoder.decode(
+      value,
+      {stream:true}
+    );
+
+    const events=buffer.split(/\r?\n\r?\n/);
+
+    buffer=events.pop() || "";
+
+    for(const event of events){
+
+      const parsed=parseSSEEvent(event);
+
+      if(!parsed)continue;
+
+      const type=parsed.type;
+      const data=parsed.data || {};
+
+      if(type==="meta"){
+        continue;
+      }
+
+      if(type==="status"){
+        continue;
+      }
+
+      if(type==="token"){
+
+        const token =
+          data.text ??
+          data.token ??
+          data.content ??
+          "";
+
+        if(token){
+
+          fullReply += String(token);
+
+          bubble.innerHTML =
+            formatText(fullReply);
+
+          scrollBottom();
+        }
+
+        continue;
+      }
+
+      if(type==="done"){
+
+        sawDone=true;
+
+        const finalText =
+          data.reply ??
+          data.text ??
+          data.content ??
+          "";
+
+        if(finalText){
+
+          fullReply=String(finalText);
+
+          bubble.innerHTML =
+            formatText(fullReply);
+
+        }
+
+        continue;
+      }
+
+      if(type==="error"){
+
+        throw new Error(
+          data.message ||
+          data.error ||
+          "حدث خطأ في الخادم"
+        );
+      }
+    }
+  }
+
+  if(buffer.trim()){
+
+    const parsed=parseSSEEvent(buffer);
+
+    if(parsed){
+
+      const data=parsed.data || {};
+
+      if(parsed.type==="token"){
+
+        const token =
+          data.text ??
+          data.token ??
+          data.content ??
+          "";
+
+        if(token){
+          fullReply+=String(token);
+          bubble.innerHTML=formatText(fullReply);
+        }
+      }
+
+      if(parsed.type==="done"){
+
+        sawDone=true;
+
+        const finalText =
+          data.reply ??
+          data.text ??
+          data.content ??
+          "";
+
+        if(finalText){
+          fullReply=String(finalText);
+          bubble.innerHTML=formatText(fullReply);
+        }
+      }
+
+      if(parsed.type==="error"){
+        throw new Error(
+          data.message ||
+          data.error ||
+          "حدث خطأ في الخادم"
+        );
+      }
+    }
+  }
+
+  if(!fullReply && sawDone){
+    throw new Error("وصل حدث done بدون نص");
+  }
+
+  if(!fullReply){
+    throw new Error("لم تصل إجابة من Sultan AI");
+  }
+
+  return fullReply;
+}
+
+function parseSSEEvent(raw){
+
+  const lines=raw
+    .replace(/\r/g,"")
+    .split("\n");
+
+  let eventType="message";
+  const dataLines=[];
+
+  for(const line of lines){
+
+    if(line.startsWith("event:")){
+      eventType=line.slice(6).trim();
+    }
+
+    if(line.startsWith("data:")){
+      dataLines.push(
+        line.slice(5).trimStart()
+      );
+    }
+  }
+
+  if(dataLines.length===0){
+    return null;
+  }
+
+  const rawData=dataLines.join("\n").trim();
+
+  if(rawData==="[DONE]"){
+    return {
+      type:"done",
+      data:{}
+    };
+  }
+
+  try{
+
+    return {
+      type:eventType,
+      data:JSON.parse(rawData)
+    };
+
+  }catch(e){
+
+    return {
+      type:eventType,
+      data:{
+        text:rawData
+      }
+    };
+  }
+}
+
+/* =========================
+   NORMAL
+========================= */
+
+async function normalRequest(payload,signal){
+
+  const response=await fetch(
+    NORMAL_API,
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(payload),
+      signal
+    }
+  );
+
+  let data=null;
+
+  try{
+    data=await response.json();
+  }catch(e){}
+
+  if(!response.ok){
+
+    const error=new Error(
+      data?.error ||
+      data?.message ||
+      "فشل الطلب"
+    );
+
+    error.status=response.status;
+
+    throw error;
+  }
+
+  const reply =
+    data?.reply ??
+    data?.text ??
+    data?.message ??
+    "";
+
+  if(!reply){
+    throw new Error(
+      "لم تصل إجابة من Sultan AI"
+    );
+  }
+
+  return String(reply);
+}
+
+/* =========================
+   EDIT
+========================= */
+
+function editMessage(index){
+
+  const msg=messages[index];
+
+  if(!msg || msg.role!=="user")return;
+
+  messageInput.value=msg.content || "";
+
+  messages=messages.slice(0,index);
+
+  saveMessages();
+  renderMessages();
+
+  messageInput.focus();
+  autoResize();
+}
+
+window.editMessage=editMessage;
+
+/* =========================
+   INPUT
+========================= */
+
+messageInput.addEventListener(
+  "input",
+  autoResize
 );
 
-console.log(
-  "🌊 Streaming:",
-  STREAM_API
+function autoResize(){
+
+  messageInput.style.height="auto";
+
+  messageInput.style.height =
+    Math.min(
+      messageInput.scrollHeight,
+      160
+    )+"px";
+}
+
+messageInput.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Enter" && !e.shiftKey){
+
+      e.preventDefault();
+
+      generateResponse();
+    }
+  }
 );
 
-console.log(
-  "🤖 Normal API:",
-  NORMAL_API
+sendBtn.addEventListener(
+  "click",
+  ()=>generateResponse()
 );
 
+/* =========================
+   SUGGESTIONS
+========================= */
+
+document.querySelectorAll(".suggestion")
+.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    messageInput.value=btn.textContent.trim();
+
+    autoResize();
+    messageInput.focus();
+
+  });
+
+});
+
+/* =========================
+   THEME
+========================= */
+
+themeBtn.addEventListener("click",()=>{
+
+  document.body.classList.toggle("light");
+
+  const isLight =
+    document.body.classList.contains("light");
+
+  localStorage.setItem(
+    "sultan_ai_theme_v81",
+    isLight ? "light" : "dark"
+  );
+});
+
+function loadTheme(){
+
+  try{
+
+    const theme =
+      localStorage.getItem(
+        "sultan_ai_theme_v81"
+      );
+
+    if(theme==="light"){
+      document.body.classList.add("light");
+    }
+
+  }catch(e){}
+}
+
+/* =========================
+   SIDEBAR MOBILE
+========================= */
+
+menuBtn.addEventListener("click",()=>{
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+});
+
+overlay.addEventListener("click",closeSidebar);
+
+function closeSidebar(){
+
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+}
+
+/* =========================
+   CLEAR
+========================= */
+
+clearBtn.addEventListener("click",()=>{
+
+  if(!messages.length)return;
+
+  const ok=confirm(
+    "هل تريد مسح المحادثة؟"
+  );
+
+  if(!ok)return;
+
+  newChat();
+});
+
+/* =========================
+   HEALTH
+========================= */
+
+async function checkHealth(){
+
+  try{
+
+    healthBtn.textContent="◌";
+
+    const response=await fetch(
+      HEALTH_API,
+      {
+        cache:"no-store"
+      }
+    );
+
+    const data=await response.json();
+
+    if(response.ok && data?.success){
+
+      statusDot.classList.remove("offline");
+
+      statusText.textContent =
+        "Sultan AI متصل";
+
+      healthBtn.textContent="●";
+
+    }else{
+      throw new Error();
+    }
+
+  }catch(e){
+
+    statusDot.classList.add("offline");
+
+    statusText.textContent =
+      "الخادم غير متصل";
+
+    healthBtn.textContent="○";
+  }
+}
+
+healthBtn.addEventListener(
+  "click",
+  checkHealth
+);
+
+/* =========================
+   ERRORS
+========================= */
+
+function friendlyClientError(error){
+
+  const status=error?.status;
+
+  if(status===400){
+    return "الطلب غير صالح. جرّب رسالة أقصر.";
+  }
+
+  if(status===401){
+    return "مفتاح الذكاء الاصطناعي غير مضبوط على الخادم.";
+  }
+
+  if(status===413){
+    return "حجم الطلب كبير جداً. جرّب تقليل الملفات أو حجمها.";
+  }
+
+  if(status===429){
+    return "الطلبات كثيرة حالياً. جرّب بعد قليل.";
+  }
+
+  if(status>=500){
+    return "حدث خطأ في الخادم. جرّب مرة ثانية.";
+  }
+
+  if(error?.message){
+    return error.message;
+  }
+
+  return "حدث خطأ غير متوقع.";
+}
+
+/* =========================
+   INIT
+========================= */
+
+loadTheme();
+loadMode();
+loadMessages();
+renderFiles();
+checkHealth();
+autoResize();
+
+setInterval(
+  checkHealth,
+  60000
+);
+
+window.addEventListener(
+  "online",
+  checkHealth
+);
+
+window.addEventListener(
+  "offline",
+  ()=>{
+    statusDot.classList.add("offline");
+    statusText.textContent="لا يوجد اتصال";
+  }
+);
 </script>
 
 </body>
