@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#0b0d10">
-<meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي متقدم وسريع للبرمجة، البحث، الصور والملفات.">
+<meta name="theme-color" content="#08090c">
+<meta name="description" content="Sultan AI - مساعد ذكاء اصطناعي متقدم وسريع للبرمجة والبحث والصور والملفات.">
 <meta name="robots" content="index,follow">
-<title>Sultan AI V8.3</title>
+<title>Sultan AI V8.3 Premium</title>
 
 <style>
 *{
@@ -14,17 +14,56 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html{
+:root{
+  --bg:#08090c;
+  --bg2:#0d0f13;
+  --panel:#11141a;
+  --panel2:#171b22;
+  --panel3:#1d222b;
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,125,20,.22);
+  --text:#f7f8fa;
+  --muted:#8e96a3;
+
+  --orange:#ff7a18;
+  --orange2:#ff9b4a;
+  --orangeSoft:rgba(255,122,24,.13);
+  --orangeGlow:rgba(255,122,24,.28);
+
+  --danger:#ff5b61;
+  --success:#32d583;
+  --warning:#ffc857;
+
+  --shadow:0 20px 70px rgba(0,0,0,.42);
+  --radius:20px;
+}
+
+body.light{
+  --bg:#f4f5f7;
+  --bg2:#ffffff;
+  --panel:#ffffff;
+  --panel2:#f1f3f6;
+  --panel3:#e8ebef;
+  --border:rgba(0,0,0,.09);
+  --border2:rgba(235,103,0,.25);
+  --text:#111318;
+  --muted:#69717d;
+  --orange:#ec6508;
+  --orange2:#ff7a18;
+  --orangeSoft:rgba(236,101,8,.09);
+  --orangeGlow:rgba(236,101,8,.18);
+  --shadow:0 20px 60px rgba(0,0,0,.10);
+}
+
+html,
+body{
   width:100%;
   height:100%;
-  background:#0b0d10;
+  margin:0;
+  overflow:hidden;
 }
 
 body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
   font-family:
     system-ui,
     -apple-system,
@@ -34,39 +73,7 @@ body{
     sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:background .2s ease,color .2s ease;
-}
-
-:root{
-  --bg:#0b0d10;
-  --bg2:#101318;
-  --panel:#151920;
-  --panel2:#1b2028;
-  --panel3:#222832;
-  --border:#2a3039;
-  --text:#f4f6f8;
-  --muted:#9299a5;
-  --accent:#ffffff;
-  --accentText:#0b0d10;
-  --danger:#ff5f56;
-  --success:#35d07f;
-  --warning:#f5c451;
-  --shadow:0 12px 40px rgba(0,0,0,.28);
-  --radius:18px;
-}
-
-body.light{
-  --bg:#f4f6f8;
-  --bg2:#ffffff;
-  --panel:#ffffff;
-  --panel2:#f0f2f5;
-  --panel3:#e7eaee;
-  --border:#d7dbe1;
-  --text:#111318;
-  --muted:#68707c;
-  --accent:#111318;
-  --accentText:#ffffff;
-  --shadow:0 10px 30px rgba(0,0,0,.10);
+  transition:background .25s ease,color .25s ease;
 }
 
 button,
@@ -80,80 +87,180 @@ button{
   cursor:pointer;
 }
 
+/* =====================================================
+   APP
+===================================================== */
+
 .app{
-  display:flex;
   width:100%;
   height:100%;
+  display:flex;
   position:relative;
+  overflow:hidden;
 }
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+/* =====================================================
+   BACKGROUND
+===================================================== */
 
-.sidebar{
-  width:275px;
-  min-width:275px;
+.main{
+  position:relative;
+  flex:1;
+  min-width:0;
   height:100%;
-  background:var(--bg2);
-  border-left:1px solid var(--border);
   display:flex;
   flex-direction:column;
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(255,122,24,.11),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 100% 70%,
+      rgba(255,122,24,.035),
+      transparent 28%
+    ),
+    var(--bg);
+}
+
+.main::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.25;
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    );
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 80%);
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+  width:285px;
+  min-width:285px;
+  height:100%;
   padding:16px;
+  display:flex;
+  flex-direction:column;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,122,24,.025),
+      transparent 35%
+    ),
+    var(--bg2);
+  border-left:1px solid var(--border);
   position:relative;
-  z-index:20;
+  z-index:50;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:11px;
-  padding:5px 4px 18px;
+  padding:4px 3px 18px;
 }
 
 .logo{
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  background:var(--accent);
-  color:var(--accentText);
+  width:45px;
+  height:45px;
+  border-radius:15px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:900;
-  font-size:21px;
-  box-shadow:var(--shadow);
   flex:none;
+  color:#fff;
+  font-size:21px;
+  font-weight:950;
+  background:
+    linear-gradient(
+      145deg,
+      var(--orange2),
+      var(--orange)
+    );
+  box-shadow:
+    0 8px 30px var(--orangeGlow),
+    inset 0 1px 0 rgba(255,255,255,.3);
+  position:relative;
 }
 
-.brandText{
-  min-width:0;
+.logo::after{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border-radius:18px;
+  border:1px solid rgba(255,122,24,.14);
+  animation:logoPulse 2.8s infinite ease-in-out;
+}
+
+@keyframes logoPulse{
+  0%,100%{opacity:.25;transform:scale(.96)}
+  50%{opacity:.8;transform:scale(1.04)}
 }
 
 .brandTitle{
   font-size:17px;
-  font-weight:850;
-  line-height:1.2;
+  font-weight:900;
 }
 
 .brandVersion{
-  color:var(--muted);
-  font-size:11px;
   margin-top:3px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.premiumBadge{
+  margin-top:5px;
+  display:inline-flex;
+  padding:2px 7px;
+  border-radius:999px;
+  background:var(--orangeSoft);
+  color:var(--orange2);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.5px;
 }
 
 .newChat{
+  min-height:48px;
   width:100%;
-  min-height:47px;
-  border-radius:14px;
-  background:var(--accent);
-  color:var(--accentText);
-  font-weight:800;
+  border-radius:15px;
+  color:#fff;
+  font-weight:850;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:8px;
-  transition:transform .15s ease,opacity .15s ease;
+  background:
+    linear-gradient(
+      135deg,
+      var(--orange2),
+      var(--orange)
+    );
+  box-shadow:0 9px 28px var(--orangeGlow);
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    filter .16s ease;
+}
+
+.newChat:hover{
+  filter:brightness(1.06);
+  box-shadow:0 12px 34px var(--orangeGlow);
+  transform:translateY(-1px);
 }
 
 .newChat:active{
@@ -162,9 +269,9 @@ button{
 
 .sectionTitle{
   color:var(--muted);
-  font-size:11px;
-  font-weight:700;
-  margin:20px 4px 8px;
+  font-size:10px;
+  font-weight:800;
+  margin:21px 5px 9px;
 }
 
 .history{
@@ -175,135 +282,133 @@ button{
 }
 
 .history::-webkit-scrollbar,
-.chat::-webkit-scrollbar{
+.chat::-webkit-scrollbar,
+.codeBlock pre::-webkit-scrollbar{
   width:5px;
+  height:5px;
 }
 
 .history::-webkit-scrollbar-thumb,
-.chat::-webkit-scrollbar-thumb{
-  background:var(--border);
+.chat::-webkit-scrollbar-thumb,
+.codeBlock pre::-webkit-scrollbar-thumb{
+  background:var(--panel3);
   border-radius:20px;
-}
-
-.historyEmpty{
-  color:var(--muted);
-  font-size:12px;
-  text-align:center;
-  padding:25px 10px;
 }
 
 .historyItem{
   width:100%;
+  padding:10px 11px;
+  margin-bottom:4px;
+  border-radius:12px;
   text-align:right;
   background:transparent;
   color:var(--text);
-  border-radius:12px;
-  padding:10px;
-  margin-bottom:4px;
   overflow:hidden;
   white-space:nowrap;
   text-overflow:ellipsis;
-  transition:background .15s ease;
+  font-size:11px;
+  transition:.15s ease;
 }
 
-.historyItem:hover,
-.historyItem.active{
-  background:var(--panel2);
+.historyItem:hover{
+  background:var(--orangeSoft);
+}
+
+.historyEmpty{
+  padding:25px 8px;
+  color:var(--muted);
+  text-align:center;
+  font-size:11px;
 }
 
 .sidebarBottom{
-  border-top:1px solid var(--border);
-  padding-top:12px;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
 }
 
 .sideBtn{
-  min-height:42px;
-  border-radius:12px;
+  min-height:43px;
+  border-radius:13px;
   background:var(--panel);
-  border:1px solid var(--border);
   color:var(--text);
-  font-size:12px;
-  font-weight:700;
+  border:1px solid var(--border);
+  font-size:11px;
+  font-weight:750;
+  transition:.15s ease;
 }
 
 .sideBtn:hover{
-  background:var(--panel2);
+  border-color:var(--border2);
+  background:var(--orangeSoft);
 }
 
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main{
-  min-width:0;
-  flex:1;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  background:
-    radial-gradient(
-      circle at 50% -20%,
-      rgba(255,255,255,.035),
-      transparent 35%
-    ),
-    var(--bg);
-}
+/* =====================================================
+   TOPBAR
+===================================================== */
 
 .topbar{
-  height:66px;
-  min-height:66px;
-  border-bottom:1px solid var(--border);
+  height:68px;
+  min-height:68px;
+  padding:10px 17px;
   display:flex;
   align-items:center;
   gap:10px;
-  padding:10px 16px;
-  background:rgba(11,13,16,.72);
-  backdrop-filter:blur(14px);
+  background:rgba(8,9,12,.72);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   position:relative;
-  z-index:10;
+  z-index:20;
 }
 
 body.light .topbar{
-  background:rgba(255,255,255,.8);
+  background:rgba(255,255,255,.78);
 }
 
 .menuBtn{
   display:none;
   width:42px;
   height:42px;
-  border-radius:12px;
-  background:var(--panel);
+  border-radius:13px;
   color:var(--text);
+  background:var(--panel);
   border:1px solid var(--border);
-  font-size:20px;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
 }
 
 .modeWrap{
   display:flex;
   align-items:center;
   gap:8px;
-  min-width:0;
 }
 
 .modeLabel{
   color:var(--muted);
-  font-size:12px;
-  white-space:nowrap;
+  font-size:11px;
 }
 
 .modeSelect{
+  min-width:170px;
   height:42px;
-  min-width:155px;
   padding:0 12px;
-  border-radius:12px;
-  border:1px solid var(--border);
+  border-radius:13px;
   outline:none;
+  border:1px solid var(--border);
   background:var(--panel);
   color:var(--text);
+  font-size:11px;
+  font-weight:750;
   cursor:pointer;
+  transition:.15s ease;
+}
+
+.modeSelect:hover{
+  border-color:var(--border2);
 }
 
 .topSpacer{
@@ -315,7 +420,7 @@ body.light .topbar{
   align-items:center;
   gap:7px;
   color:var(--muted);
-  font-size:11px;
+  font-size:10px;
 }
 
 .healthDot{
@@ -323,6 +428,7 @@ body.light .topbar{
   height:8px;
   border-radius:50%;
   background:var(--warning);
+  box-shadow:0 0 10px currentColor;
 }
 
 .healthDot.ok{
@@ -335,126 +441,54 @@ body.light .topbar{
 
 .topBtn{
   height:42px;
-  padding:0 13px;
-  border-radius:12px;
-  background:var(--panel);
-  color:var(--text);
-  border:1px solid var(--border);
-  font-size:12px;
-  font-weight:700;
+  padding:0 14px;
+  border-radius:13px;
+  background:var(--orangeSoft);
+  color:var(--orange2);
+  border:1px solid var(--border2);
+  font-size:11px;
+  font-weight:850;
 }
 
-/* =========================================================
+/* =====================================================
    CHAT
-========================================================= */
+===================================================== */
 
 .chat{
   flex:1;
   min-height:0;
   overflow-y:auto;
   overflow-x:hidden;
-  padding:28px 20px 150px;
+  padding:28px 20px 160px;
   scroll-behavior:smooth;
+  position:relative;
+  z-index:2;
 }
 
 .chatInner{
   width:min(950px,100%);
-  margin:0 auto;
+  margin:auto;
 }
 
+/* =====================================================
+   WELCOME
+===================================================== */
+
 .welcome{
-  min-height:calc(100vh - 260px);
+  min-height:calc(100vh - 270px);
   display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
   text-align:center;
   padding:30px 10px;
+  animation:welcomeIn .5s ease both;
 }
 
-.welcomeLogo{
-  width:72px;
-  height:72px;
-  border-radius:23px;
-  background:var(--accent);
-  color:var(--accentText);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:31px;
-  font-weight:950;
-  margin-bottom:20px;
-  box-shadow:0 18px 55px rgba(0,0,0,.25);
-}
-
-.welcome h1{
-  margin:0;
-  font-size:30px;
-  letter-spacing:-.5px;
-}
-
-.welcome p{
-  margin:10px 0 0;
-  color:var(--muted);
-  font-size:14px;
-  max-width:600px;
-  line-height:1.7;
-}
-
-.suggestions{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  width:min(700px,100%);
-  margin-top:27px;
-}
-
-.suggestion{
-  text-align:right;
-  padding:15px;
-  border-radius:15px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--text);
-  min-height:64px;
-  transition:
-    transform .15s ease,
-    background .15s ease,
-    border-color .15s ease;
-}
-
-.suggestion:hover{
-  background:var(--panel2);
-  transform:translateY(-1px);
-}
-
-.suggestionTitle{
-  font-weight:800;
-  font-size:13px;
-}
-
-.suggestionDesc{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:5px;
-}
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-.message{
-  display:flex;
-  gap:12px;
-  margin:0 auto 22px;
-  width:100%;
-  animation:messageIn .18s ease both;
-}
-
-@keyframes messageIn{
+@keyframes welcomeIn{
   from{
     opacity:0;
-    transform:translateY(5px);
+    transform:translateY(12px);
   }
   to{
     opacity:1;
@@ -462,28 +496,208 @@ body.light .topbar{
   }
 }
 
+.orb{
+  width:100px;
+  height:100px;
+  margin-bottom:23px;
+  border-radius:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #ffbd85,
+      var(--orange) 42%,
+      #b63d00 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(255,122,24,.3),
+    0 0 35px rgba(255,122,24,.27),
+    0 25px 70px rgba(0,0,0,.35);
+  animation:orbFloat 4s ease-in-out infinite;
+}
+
+.orb::before,
+.orb::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.orb::before{
+  inset:-13px;
+  border:1px solid rgba(255,122,24,.17);
+  animation:orbRing 3s infinite ease-in-out;
+}
+
+.orb::after{
+  inset:-28px;
+  border:1px solid rgba(255,122,24,.06);
+  animation:orbRing 4.5s infinite reverse ease-in-out;
+}
+
+@keyframes orbFloat{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-7px) rotate(1deg)}
+}
+
+@keyframes orbRing{
+  0%,100%{transform:scale(.96);opacity:.35}
+  50%{transform:scale(1.04);opacity:.9}
+}
+
+.orbCore{
+  color:#fff;
+  font-size:38px;
+  font-weight:950;
+  text-shadow:0 3px 15px rgba(0,0,0,.25);
+}
+
+.welcome h1{
+  margin:0;
+  font-size:31px;
+  font-weight:900;
+  letter-spacing:-.8px;
+}
+
+.gradientText{
+  background:
+    linear-gradient(
+      90deg,
+      var(--text),
+      var(--orange2)
+    );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.welcome p{
+  max-width:620px;
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+}
+
+.capabilities{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:17px;
+}
+
+.capability{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.025);
+  color:var(--muted);
+  font-size:9px;
+}
+
+.suggestions{
+  width:min(720px,100%);
+  margin-top:25px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+.suggestion{
+  min-height:68px;
+  padding:14px;
+  text-align:right;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,122,24,.035),
+      var(--panel)
+    );
+  color:var(--text);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease;
+}
+
+.suggestion:hover{
+  transform:translateY(-2px);
+  border-color:var(--border2);
+  background:var(--orangeSoft);
+  box-shadow:0 12px 35px rgba(0,0,0,.15);
+}
+
+.suggestionTitle{
+  font-size:12px;
+  font-weight:850;
+}
+
+.suggestionDesc{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message{
+  width:100%;
+  display:flex;
+  gap:11px;
+  margin:0 auto 22px;
+  animation:messageIn .22s ease both;
+}
+
 .message.user{
   flex-direction:row-reverse;
 }
 
+@keyframes messageIn{
+  from{
+    opacity:0;
+    transform:translateY(6px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
 .avatar{
-  width:38px;
-  height:38px;
-  min-width:38px;
+  width:39px;
+  min-width:39px;
+  height:39px;
   border-radius:13px;
-  background:var(--panel2);
-  border:1px solid var(--border);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:13px;
-  font-weight:900;
-  color:var(--text);
+  background:var(--panel2);
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:10px;
+  font-weight:950;
 }
 
-.message.user .avatar{
-  background:var(--accent);
-  color:var(--accentText);
+.message.assistant .avatar{
+  color:#fff;
+  background:
+    linear-gradient(
+      145deg,
+      var(--orange2),
+      var(--orange)
+    );
+  border-color:rgba(255,122,24,.35);
+  box-shadow:0 5px 20px var(--orangeGlow);
 }
 
 .messageBody{
@@ -499,20 +713,31 @@ body.light .topbar{
 
 .bubble{
   padding:13px 16px;
-  border-radius:17px;
-  line-height:1.75;
-  font-size:14px;
+  border-radius:18px;
+  line-height:1.78;
+  font-size:13px;
   overflow-wrap:anywhere;
 }
 
 .message.user .bubble{
-  background:var(--accent);
-  color:var(--accentText);
+  color:#fff;
+  background:
+    linear-gradient(
+      135deg,
+      var(--orange2),
+      var(--orange)
+    );
   border-bottom-right-radius:5px;
+  box-shadow:0 7px 25px rgba(255,122,24,.14);
 }
 
 .message.assistant .bubble{
-  background:var(--panel);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.025),
+      var(--panel)
+    );
   border:1px solid var(--border);
   border-bottom-left-radius:5px;
 }
@@ -521,31 +746,29 @@ body.light .topbar{
   display:flex;
   gap:5px;
   margin-top:6px;
-  opacity:.75;
+  opacity:.7;
 }
 
 .actionBtn{
   min-width:31px;
-  height:30px;
+  height:29px;
   padding:0 8px;
   border-radius:9px;
   background:var(--panel2);
-  color:var(--muted);
   border:1px solid var(--border);
-  font-size:11px;
+  color:var(--muted);
+  font-size:9px;
+  transition:.15s ease;
 }
 
 .actionBtn:hover{
-  color:var(--text);
+  color:var(--orange2);
+  border-color:var(--border2);
 }
 
-.message.user .actionBtn{
-  background:var(--panel);
-}
-
-/* =========================================================
-   MARKDOWN-LIKE CONTENT
-========================================================= */
+/* =====================================================
+   MARKDOWN
+===================================================== */
 
 .bubble p{
   margin:0 0 9px;
@@ -566,59 +789,55 @@ body.light .topbar{
 }
 
 .bubble strong{
-  font-weight:850;
+  font-weight:900;
 }
 
 .inlineCode{
-  background:rgba(127,127,127,.16);
-  border:1px solid rgba(127,127,127,.2);
-  border-radius:6px;
   padding:1px 5px;
-  direction:ltr;
-  unicode-bidi:plaintext;
+  border-radius:6px;
+  background:rgba(255,122,24,.08);
+  border:1px solid rgba(255,122,24,.12);
   font-family:
     ui-monospace,
     SFMono-Regular,
     Menlo,
     Consolas,
     monospace;
-  font-size:.92em;
+  font-size:.9em;
+  direction:ltr;
+  unicode-bidi:plaintext;
 }
 
 .codeBlock{
   margin:12px 0 2px;
-  border:1px solid var(--border);
-  border-radius:13px;
   overflow:hidden;
-  background:#0a0c0f;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#08090c;
   direction:ltr;
   text-align:left;
-}
-
-body.light .codeBlock{
-  background:#f0f1f3;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
 }
 
 .codeHeader{
-  height:38px;
+  height:39px;
   padding:0 10px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   border-bottom:1px solid var(--border);
   color:var(--muted);
-  font-size:10px;
-  direction:ltr;
+  font-size:9px;
 }
 
 .copyCode{
   height:27px;
   padding:0 9px;
-  border-radius:7px;
+  border-radius:8px;
   background:var(--panel2);
-  border:1px solid var(--border);
   color:var(--text);
-  font-size:10px;
+  border:1px solid var(--border);
+  font-size:9px;
 }
 
 .codeBlock pre{
@@ -627,7 +846,7 @@ body.light .codeBlock{
   overflow:auto;
   white-space:pre-wrap;
   word-break:break-word;
-  font-size:12px;
+  font-size:11px;
   line-height:1.65;
   font-family:
     ui-monospace,
@@ -637,22 +856,66 @@ body.light .codeBlock{
     monospace;
 }
 
-/* =========================================================
-   TYPING
-========================================================= */
+/* =====================================================
+   COMMAND CENTER
+===================================================== */
+
+.commandCenter{
+  width:min(950px,100%);
+  margin:0 auto 18px;
+  padding:10px;
+  display:none;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:rgba(255,255,255,.018);
+  animation:messageIn .2s ease;
+}
+
+.commandCenter.show{
+  display:grid;
+}
+
+.commandCard{
+  min-height:55px;
+  padding:9px 11px;
+  border-radius:12px;
+  background:var(--panel);
+  border:1px solid var(--border);
+}
+
+.commandLabel{
+  color:var(--muted);
+  font-size:8px;
+}
+
+.commandValue{
+  margin-top:4px;
+  font-size:11px;
+  font-weight:850;
+}
+
+.commandValue.orange{
+  color:var(--orange2);
+}
+
+/* =====================================================
+   TYPING / TOOL ACTIVITY
+===================================================== */
 
 .typing{
+  min-height:25px;
   display:flex;
   align-items:center;
   gap:5px;
-  min-height:25px;
 }
 
 .typing span{
   width:6px;
   height:6px;
   border-radius:50%;
-  background:var(--muted);
+  background:var(--orange2);
   animation:typing 1s infinite ease-in-out;
 }
 
@@ -666,40 +929,37 @@ body.light .codeBlock{
 
 @keyframes typing{
   0%,70%,100%{
+    opacity:.25;
     transform:translateY(0);
-    opacity:.45;
   }
   35%{
-    transform:translateY(-4px);
     opacity:1;
+    transform:translateY(-4px);
   }
 }
 
-/* =========================================================
-   TOOL STATUS
-========================================================= */
-
 .toolStatus{
+  margin-top:8px;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:7px;
   color:var(--muted);
-  font-size:11px;
-  margin-top:8px;
+  font-size:9px;
 }
 
 .toolPulse{
   width:7px;
   height:7px;
   border-radius:50%;
-  background:var(--success);
+  background:var(--orange);
+  box-shadow:0 0 12px var(--orange);
   animation:pulse 1.2s infinite;
 }
 
 @keyframes pulse{
   0%,100%{
-    opacity:.35;
-    transform:scale(.8);
+    opacity:.3;
+    transform:scale(.75);
   }
   50%{
     opacity:1;
@@ -707,9 +967,9 @@ body.light .codeBlock{
   }
 }
 
-/* =========================================================
+/* =====================================================
    COMPOSER
-========================================================= */
+===================================================== */
 
 .composerArea{
   position:absolute;
@@ -718,23 +978,41 @@ body.light .codeBlock{
   bottom:0;
   padding:13px 18px calc(13px + env(safe-area-inset-bottom));
   pointer-events:none;
+  z-index:15;
   background:
     linear-gradient(
       to top,
-      var(--bg) 55%,
+      var(--bg) 58%,
       transparent
     );
 }
 
 .composer{
-  pointer-events:auto;
   width:min(950px,100%);
   margin:auto;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:19px;
-  box-shadow:var(--shadow);
   overflow:hidden;
+  pointer-events:auto;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,122,24,.025),
+      var(--panel)
+    );
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.35),
+    0 0 0 1px rgba(255,255,255,.015);
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.composer:focus-within{
+  border-color:rgba(255,122,24,.32);
+  box-shadow:
+    0 20px 65px rgba(0,0,0,.38),
+    0 0 35px rgba(255,122,24,.055);
 }
 
 .attachments{
@@ -751,15 +1029,15 @@ body.light .codeBlock{
 .fileChip{
   max-width:220px;
   height:31px;
+  padding:0 8px;
   display:flex;
   align-items:center;
   gap:6px;
-  padding:0 8px;
   border-radius:9px;
   background:var(--panel2);
   border:1px solid var(--border);
-  font-size:10px;
   color:var(--text);
+  font-size:9px;
 }
 
 .fileChipName{
@@ -777,8 +1055,8 @@ body.light .codeBlock{
 }
 
 .removeFile:hover{
-  background:var(--panel3);
   color:var(--danger);
+  background:var(--panel3);
 }
 
 .inputRow{
@@ -791,45 +1069,67 @@ body.light .codeBlock{
 .attachBtn,
 .sendBtn{
   width:44px;
-  height:44px;
   min-width:44px;
-  border-radius:13px;
+  height:44px;
+  border-radius:14px;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
 .attachBtn{
+  color:var(--text);
   background:var(--panel2);
   border:1px solid var(--border);
-  color:var(--text);
-  font-size:19px;
+  font-size:17px;
+  transition:.15s ease;
+}
+
+.attachBtn:hover{
+  color:var(--orange2);
+  border-color:var(--border2);
 }
 
 .sendBtn{
-  background:var(--accent);
-  color:var(--accentText);
-  font-size:18px;
-  font-weight:900;
+  color:#fff;
+  background:
+    linear-gradient(
+      145deg,
+      var(--orange2),
+      var(--orange)
+    );
+  box-shadow:0 7px 25px var(--orangeGlow);
+  font-size:17px;
+  font-weight:950;
+  transition:.15s ease;
+}
+
+.sendBtn:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.07);
+}
+
+.sendBtn:active{
+  transform:scale(.96);
 }
 
 .sendBtn.stop{
   background:var(--danger);
-  color:#fff;
+  box-shadow:0 7px 25px rgba(255,91,97,.2);
 }
 
 .textarea{
   flex:1;
   min-width:0;
-  resize:none;
-  max-height:180px;
   min-height:44px;
+  max-height:180px;
   padding:11px 12px;
+  resize:none;
+  outline:none;
   border:0;
-  outline:0;
   background:transparent;
   color:var(--text);
-  font-size:14px;
+  font-size:13px;
   line-height:1.6;
 }
 
@@ -839,19 +1139,18 @@ body.light .codeBlock{
 
 .composerFooter{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   gap:10px;
   padding:0 13px 9px;
   color:var(--muted);
-  font-size:10px;
+  font-size:9px;
 }
 
 .statusText{
   display:flex;
   align-items:center;
   gap:6px;
-  min-width:0;
 }
 
 .statusDot{
@@ -859,50 +1158,51 @@ body.light .codeBlock{
   height:6px;
   border-radius:50%;
   background:var(--success);
+  box-shadow:0 0 8px currentColor;
 }
 
 .charCount{
   white-space:nowrap;
 }
 
-/* =========================================================
-   MOBILE OVERLAY
-========================================================= */
+/* =====================================================
+   OVERLAY
+===================================================== */
 
 .overlay{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.5);
-  z-index:15;
+  background:rgba(0,0,0,.58);
+  backdrop-filter:blur(3px);
+  z-index:40;
 }
 
 .overlay.show{
   display:block;
 }
 
-/* =========================================================
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 .toast{
   position:fixed;
   left:50%;
-  bottom:105px;
-  transform:translate(-50%,20px);
-  background:var(--panel3);
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:10px 15px;
-  border-radius:11px;
-  font-size:12px;
-  box-shadow:var(--shadow);
-  opacity:0;
-  pointer-events:none;
-  transition:.2s ease;
+  bottom:108px;
   z-index:100;
   max-width:90%;
-  text-align:center;
+  padding:10px 15px;
+  border-radius:12px;
+  background:var(--panel3);
+  color:var(--text);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  font-size:10px;
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,15px);
+  transition:.2s ease;
 }
 
 .toast.show{
@@ -910,9 +1210,9 @@ body.light .codeBlock{
   transform:translate(-50%,0);
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:800px){
 
@@ -921,12 +1221,11 @@ body.light .codeBlock{
     right:0;
     top:0;
     bottom:0;
-    width:280px;
-    min-width:280px;
+    width:285px;
+    min-width:285px;
     transform:translateX(105%);
-    transition:transform .22s ease;
-    box-shadow:-20px 0 50px rgba(0,0,0,.3);
-    z-index:30;
+    transition:transform .23s ease;
+    box-shadow:-25px 0 60px rgba(0,0,0,.45);
   }
 
   .sidebar.open{
@@ -935,12 +1234,12 @@ body.light .codeBlock{
 
   .menuBtn{
     display:flex;
-    align-items:center;
-    justify-content:center;
   }
 
   .topbar{
-    padding:10px;
+    height:62px;
+    min-height:62px;
+    padding:9px 10px;
   }
 
   .modeLabel{
@@ -948,58 +1247,68 @@ body.light .codeBlock{
   }
 
   .modeSelect{
-    min-width:125px;
+    min-width:132px;
     height:40px;
   }
 
-  .health{
-    display:none;
-  }
-
+  .health,
   .topBtn{
     display:none;
   }
 
   .chat{
-    padding:18px 11px 145px;
+    padding:18px 10px 148px;
   }
 
   .welcome{
-    min-height:calc(100vh - 235px);
-    padding:20px 5px;
+    min-height:calc(100vh - 230px);
+    padding:20px 4px;
   }
 
-  .welcomeLogo{
-    width:62px;
-    height:62px;
-    border-radius:20px;
-    font-size:26px;
+  .orb{
+    width:78px;
+    height:78px;
+    border-radius:25px;
+  }
+
+  .orbCore{
+    font-size:30px;
   }
 
   .welcome h1{
-    font-size:25px;
+    font-size:24px;
   }
 
   .welcome p{
-    font-size:13px;
+    font-size:12px;
+  }
+
+  .capabilities{
+    gap:5px;
   }
 
   .suggestions{
     grid-template-columns:1fr;
-    margin-top:20px;
+    gap:8px;
+    margin-top:19px;
+  }
+
+  .suggestion{
+    min-height:59px;
+    padding:12px;
   }
 
   .message{
-    gap:8px;
+    gap:7px;
     margin-bottom:18px;
   }
 
   .avatar{
     width:33px;
-    height:33px;
     min-width:33px;
+    height:33px;
     border-radius:11px;
-    font-size:11px;
+    font-size:8px;
   }
 
   .messageBody{
@@ -1008,16 +1317,16 @@ body.light .codeBlock{
 
   .bubble{
     padding:11px 13px;
-    font-size:13px;
+    font-size:12px;
   }
 
   .composerArea{
-    padding-left:8px;
-    padding-right:8px;
+    padding-left:7px;
+    padding-right:7px;
   }
 
   .composer{
-    border-radius:16px;
+    border-radius:17px;
   }
 
   .attachBtn,
@@ -1029,19 +1338,19 @@ body.light .codeBlock{
 
   .textarea{
     min-height:41px;
-    font-size:13px;
+    font-size:12px;
   }
 
-  .composerFooter{
-    padding-bottom:8px;
+  .commandCenter{
+    grid-template-columns:1fr 1fr;
   }
 }
 
 @media(max-width:390px){
 
   .modeSelect{
-    min-width:110px;
-    font-size:11px;
+    min-width:112px;
+    font-size:10px;
   }
 
   .welcome h1{
@@ -1053,10 +1362,6 @@ body.light .codeBlock{
   }
 }
 
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
 @media(prefers-reduced-motion:reduce){
 
   *,
@@ -1064,8 +1369,8 @@ body.light .codeBlock{
   *::after{
     animation-duration:.01ms !important;
     animation-iteration-count:1 !important;
-    scroll-behavior:auto !important;
     transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
   }
 }
 </style>
@@ -1075,534 +1380,425 @@ body.light .codeBlock{
 
 <div class="app">
 
-  <!-- =====================================================
-       SIDEBAR
-  ====================================================== -->
+<aside class="sidebar" id="sidebar">
 
-  <aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="logo">S</div>
 
-    <div class="brand">
-      <div class="logo">S</div>
+    <div>
+      <div class="brandTitle">Sultan AI</div>
+      <div class="brandVersion">V8.3 • Advanced AI</div>
+      <span class="premiumBadge">PREMIUM</span>
+    </div>
+  </div>
 
-      <div class="brandText">
-        <div class="brandTitle">Sultan AI</div>
-        <div class="brandVersion">V8.3 • AI Assistant</div>
-      </div>
+  <button class="newChat" id="newChatBtn">
+    <span>＋</span>
+    <span>محادثة جديدة</span>
+  </button>
+
+  <div class="sectionTitle">المحادثات الأخيرة</div>
+
+  <div class="history" id="history">
+    <div class="historyEmpty">
+      لا توجد محادثات محفوظة
+    </div>
+  </div>
+
+  <div class="sidebarBottom">
+    <button class="sideBtn" id="themeBtn">☀️ الوضع</button>
+    <button class="sideBtn" id="clearBtn">🗑️ مسح</button>
+  </div>
+
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<main class="main">
+
+<header class="topbar">
+
+  <button class="menuBtn" id="menuBtn" aria-label="فتح القائمة">
+    ☰
+  </button>
+
+  <div class="modeWrap">
+    <span class="modeLabel">الوضع</span>
+
+    <select class="modeSelect" id="modeSelect">
+
+      <option value="smart">🧠 Smart — ذكي</option>
+      <option value="fast">⚡ Fast — سريع</option>
+      <option value="deep">🔬 Deep — عميق</option>
+      <option value="code">💻 Code — برمجة</option>
+      <option value="web">🌐 Web — بحث</option>
+      <option value="vision">👁️ Vision — صور</option>
+      <option value="files">📁 Files — ملفات</option>
+
+    </select>
+  </div>
+
+  <div class="topSpacer"></div>
+
+  <div class="health">
+    <span class="healthDot" id="healthDot"></span>
+    <span id="healthText">جاري الفحص...</span>
+  </div>
+
+  <button class="topBtn" id="topNewBtn">
+    ＋ جديد
+  </button>
+
+</header>
+
+<section class="chat" id="chat">
+
+<div class="chatInner" id="chatInner">
+
+  <div class="commandCenter" id="commandCenter">
+
+    <div class="commandCard">
+      <div class="commandLabel">AI MODE</div>
+      <div class="commandValue orange" id="commandMode">SMART</div>
     </div>
 
-    <button class="newChat" id="newChatBtn">
-      <span>＋</span>
-      <span>محادثة جديدة</span>
-    </button>
-
-    <div class="sectionTitle">
-      المحادثات
+    <div class="commandCard">
+      <div class="commandLabel">STATUS</div>
+      <div class="commandValue" id="commandStatus">READY</div>
     </div>
 
-    <div class="history" id="history">
-      <div class="historyEmpty">
-        لا توجد محادثات محفوظة
-      </div>
+    <div class="commandCard">
+      <div class="commandLabel">ENGINE</div>
+      <div class="commandValue">SULTAN CORE</div>
     </div>
 
-    <div class="sidebarBottom">
+  </div>
 
-      <button class="sideBtn" id="themeBtn">
-        ☀️ الوضع
-      </button>
+  <div class="welcome" id="welcome">
 
-      <button class="sideBtn" id="clearBtn">
-        🗑️ مسح
-      </button>
-
+    <div class="orb">
+      <div class="orbCore">S</div>
     </div>
 
-  </aside>
+    <h1>
+      أهلاً بك في
+      <span class="gradientText">Sultan AI</span>
+    </h1>
 
-  <div class="overlay" id="overlay"></div>
+    <p>
+      مساعدك الذكي المتقدم للبرمجة، المعرفة،
+      البحث، الصور والملفات — بواجهة Premium
+      مصممة لتكون سريعة ونظيفة.
+    </p>
 
-  <!-- =====================================================
-       MAIN
-  ====================================================== -->
+    <div class="capabilities">
+      <span class="capability">🧠 Smart AI</span>
+      <span class="capability">⚡ Streaming</span>
+      <span class="capability">💻 Coding</span>
+      <span class="capability">🌐 Web</span>
+      <span class="capability">📁 Files</span>
+    </div>
 
-  <main class="main">
-
-    <header class="topbar">
+    <div class="suggestions">
 
       <button
-        class="menuBtn"
-        id="menuBtn"
-        aria-label="القائمة"
+        class="suggestion"
+        data-prompt="اشرح لي هذا الموضوع بطريقة بسيطة وواضحة مع أمثلة."
       >
-        ☰
+        <div class="suggestionTitle">
+          🧠 شرح أي موضوع
+        </div>
+        <div class="suggestionDesc">
+          شرح مبسط ومنظم مع أمثلة
+        </div>
       </button>
-
-      <div class="modeWrap">
-
-        <span class="modeLabel">
-          الوضع:
-        </span>
-
-        <select
-          class="modeSelect"
-          id="modeSelect"
-          aria-label="وضع الذكاء الاصطناعي"
-        >
-
-          <option value="smart">
-            🧠 Smart — ذكي
-          </option>
-
-          <option value="fast">
-            ⚡ Fast — سريع
-          </option>
-
-          <option value="deep">
-            🔬 Deep — عميق
-          </option>
-
-          <option value="code">
-            💻 Code — برمجة
-          </option>
-
-          <option value="web">
-            🌐 Web — بحث
-          </option>
-
-          <option value="vision">
-            👁️ Vision — صور
-          </option>
-
-          <option value="files">
-            📁 Files — ملفات
-          </option>
-
-        </select>
-
-      </div>
-
-      <div class="topSpacer"></div>
-
-      <div class="health">
-        <span class="healthDot" id="healthDot"></span>
-        <span id="healthText">جاري الفحص...</span>
-      </div>
 
       <button
-        class="topBtn"
-        id="topNewBtn"
+        class="suggestion"
+        data-prompt="ساعدني في كتابة كود احترافي واشرح لي كيف أستخدمه."
       >
-        ＋ جديد
+        <div class="suggestionTitle">
+          💻 البرمجة
+        </div>
+        <div class="suggestionDesc">
+          كتابة وتصحيح وتحسين الأكواد
+        </div>
       </button>
 
-    </header>
-
-    <!-- ===================================================
-         CHAT
-    ==================================================== -->
-
-    <section
-      class="chat"
-      id="chat"
-      aria-live="polite"
-    >
-
-      <div
-        class="chatInner"
-        id="chatInner"
+      <button
+        class="suggestion"
+        data-prompt="ابحث عن أحدث المعلومات المتعلقة بهذا الموضوع وأعطني خلاصة دقيقة."
       >
-
-        <div
-          class="welcome"
-          id="welcome"
-        >
-
-          <div class="welcomeLogo">
-            S
-          </div>
-
-          <h1>
-            كيف فيني ساعدك؟
-          </h1>
-
-          <p>
-            Sultan AI V8.3 — مساعد سريع وذكي
-            للمعرفة، البرمجة، البحث، الصور والملفات.
-          </p>
-
-          <div class="suggestions">
-
-            <button
-              class="suggestion"
-              data-prompt="اشرح لي هذا الموضوع بطريقة بسيطة وواضحة مع أمثلة."
-            >
-              <div class="suggestionTitle">
-                🧠 شرح أي موضوع
-              </div>
-              <div class="suggestionDesc">
-                شرح مبسط ومنظم مع أمثلة
-              </div>
-            </button>
-
-            <button
-              class="suggestion"
-              data-prompt="ساعدني في كتابة كود احترافي واشرح لي كيف أستخدمه."
-            >
-              <div class="suggestionTitle">
-                💻 البرمجة
-              </div>
-              <div class="suggestionDesc">
-                كتابة وتصحيح وتحسين الأكواد
-              </div>
-            </button>
-
-            <button
-              class="suggestion"
-              data-prompt="ابحث عن أحدث المعلومات المتعلقة بهذا الموضوع وأعطني خلاصة دقيقة."
-            >
-              <div class="suggestionTitle">
-                🌐 أحدث المعلومات
-              </div>
-              <div class="suggestionDesc">
-                البحث عن المعلومات الحديثة
-              </div>
-            </button>
-
-            <button
-              class="suggestion"
-              data-prompt="حلل سؤالي بدقة وأعطني أفضل جواب ممكن بشكل مختصر ومفيد."
-            >
-              <div class="suggestionTitle">
-                ⚡ حل سريع وذكي
-              </div>
-              <div class="suggestionDesc">
-                جواب مباشر بدون تعقيد
-              </div>
-            </button>
-
-          </div>
-
+        <div class="suggestionTitle">
+          🌐 أحدث المعلومات
         </div>
-
-      </div>
-
-    </section>
-
-    <!-- ===================================================
-         COMPOSER
-    ==================================================== -->
-
-    <div class="composerArea">
-
-      <div class="composer">
-
-        <div
-          class="attachments"
-          id="attachments"
-        ></div>
-
-        <div class="inputRow">
-
-          <input
-            type="file"
-            id="fileInput"
-            hidden
-            multiple
-            accept="image/*,.txt,.json,.js,.ts,.html,.css,.xml,.md,.csv,.jsx,.tsx,.py,.java,.c,.cpp,.h,.sql,.pdf"
-          >
-
-          <button
-            class="attachBtn"
-            id="attachBtn"
-            aria-label="إرفاق ملف"
-            title="إرفاق ملف"
-          >
-            📎
-          </button>
-
-          <textarea
-            class="textarea"
-            id="messageInput"
-            rows="1"
-            maxlength="12000"
-            placeholder="اكتب رسالتك إلى Sultan AI..."
-            autocomplete="off"
-            spellcheck="true"
-          ></textarea>
-
-          <button
-            class="sendBtn"
-            id="sendBtn"
-            aria-label="إرسال"
-            title="إرسال"
-          >
-            ➤
-          </button>
-
+        <div class="suggestionDesc">
+          البحث عن المعلومات الحديثة
         </div>
+      </button>
 
-        <div class="composerFooter">
-
-          <div class="statusText">
-            <span
-              class="statusDot"
-              id="statusDot"
-            ></span>
-
-            <span id="statusText">
-              Sultan AI جاهز
-            </span>
-          </div>
-
-          <div
-            class="charCount"
-            id="charCount"
-          >
-            0 / 12000
-          </div>
-
+      <button
+        class="suggestion"
+        data-prompt="حلل سؤالي بدقة وأعطني أفضل جواب ممكن بشكل مختصر ومفيد."
+      >
+        <div class="suggestionTitle">
+          ⚡ حل سريع وذكي
         </div>
-
-      </div>
+        <div class="suggestionDesc">
+          جواب مباشر بدون تعقيد
+        </div>
+      </button>
 
     </div>
 
-  </main>
+  </div>
 
 </div>
 
-<div
-  class="toast"
-  id="toast"
-></div>
+</section>
+
+<div class="composerArea">
+
+<div class="composer">
+
+  <div class="attachments" id="attachments"></div>
+
+  <div class="inputRow">
+
+    <input
+      type="file"
+      id="fileInput"
+      hidden
+      multiple
+      accept="image/*,.txt,.json,.js,.ts,.html,.css,.xml,.md,.csv,.jsx,.tsx,.py,.java,.c,.cpp,.h,.sql,.pdf"
+    >
+
+    <button
+      class="attachBtn"
+      id="attachBtn"
+      title="إرفاق ملف"
+    >
+      📎
+    </button>
+
+    <textarea
+      class="textarea"
+      id="messageInput"
+      rows="1"
+      maxlength="12000"
+      placeholder="اكتب رسالتك إلى Sultan AI..."
+      autocomplete="off"
+      spellcheck="true"
+    ></textarea>
+
+    <button
+      class="sendBtn"
+      id="sendBtn"
+      title="إرسال"
+    >
+      ➤
+    </button>
+
+  </div>
+
+  <div class="composerFooter">
+
+    <div class="statusText">
+      <span class="statusDot" id="statusDot"></span>
+      <span id="statusText">Sultan AI جاهز</span>
+    </div>
+
+    <div class="charCount" id="charCount">
+      0 / 12000
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 "use strict";
 
-/* =========================================================
-   SULTAN AI V8.3 FRONTEND
-========================================================= */
+/* =====================================================
+   API
+===================================================== */
 
-const STREAM_API = "/api/chat/stream";
-const NORMAL_API = "/api/chat";
-const HEALTH_API = "/api/health";
+const STREAM_API="/api/chat/stream";
+const NORMAL_API="/api/chat";
+const HEALTH_API="/api/health";
 
-const STORAGE_MESSAGES = "sultan_ai_messages_v83";
-const STORAGE_MODE = "sultan_ai_mode_v83";
-const STORAGE_THEME = "sultan_ai_theme_v83";
-
-const MAX_FILES = 5;
-const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const MAX_TOTAL_FILE_SIZE = 45 * 1024 * 1024;
-const MAX_MESSAGE_CHARS = 12000;
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const sidebar =
-  document.getElementById("sidebar");
-
-const overlay =
-  document.getElementById("overlay");
-
-const menuBtn =
-  document.getElementById("menuBtn");
-
-const newChatBtn =
-  document.getElementById("newChatBtn");
-
-const topNewBtn =
-  document.getElementById("topNewBtn");
-
-const clearBtn =
-  document.getElementById("clearBtn");
-
-const themeBtn =
-  document.getElementById("themeBtn");
-
-const historyEl =
-  document.getElementById("history");
-
-const chat =
-  document.getElementById("chat");
-
-const chatInner =
-  document.getElementById("chatInner");
-
-const welcome =
-  document.getElementById("welcome");
-
-const modeSelect =
-  document.getElementById("modeSelect");
-
-const fileInput =
-  document.getElementById("fileInput");
-
-const attachBtn =
-  document.getElementById("attachBtn");
-
-const attachments =
-  document.getElementById("attachments");
-
-const messageInput =
-  document.getElementById("messageInput");
-
-const sendBtn =
-  document.getElementById("sendBtn");
-
-const statusText =
-  document.getElementById("statusText");
-
-const statusDot =
-  document.getElementById("statusDot");
-
-const charCount =
-  document.getElementById("charCount");
-
-const healthDot =
-  document.getElementById("healthDot");
-
-const healthText =
-  document.getElementById("healthText");
-
-const toast =
-  document.getElementById("toast");
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let messages = [];
-let selectedFiles = [];
-let currentMode = "smart";
-let isGenerating = false;
-let controller = null;
-let toastTimer = null;
-
-/* =========================================================
+/* =====================================================
    STORAGE
-========================================================= */
+===================================================== */
 
-function safeParse(value, fallback) {
+const STORAGE_MESSAGES="sultan_ai_messages_v83";
+const STORAGE_MODE="sultan_ai_mode_v83";
+const STORAGE_THEME="sultan_ai_theme_v83";
 
-  try {
+/* =====================================================
+   LIMITS
+===================================================== */
+
+const MAX_FILES=5;
+const MAX_FILE_SIZE=20*1024*1024;
+const MAX_TOTAL_FILE_SIZE=45*1024*1024;
+const MAX_MESSAGE_CHARS=12000;
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("overlay");
+const menuBtn=document.getElementById("menuBtn");
+
+const newChatBtn=document.getElementById("newChatBtn");
+const topNewBtn=document.getElementById("topNewBtn");
+const clearBtn=document.getElementById("clearBtn");
+const themeBtn=document.getElementById("themeBtn");
+
+const historyEl=document.getElementById("history");
+const chat=document.getElementById("chat");
+const chatInner=document.getElementById("chatInner");
+const welcome=document.getElementById("welcome");
+
+const modeSelect=document.getElementById("modeSelect");
+
+const commandCenter=document.getElementById("commandCenter");
+const commandMode=document.getElementById("commandMode");
+const commandStatus=document.getElementById("commandStatus");
+
+const fileInput=document.getElementById("fileInput");
+const attachBtn=document.getElementById("attachBtn");
+const attachments=document.getElementById("attachments");
+
+const messageInput=document.getElementById("messageInput");
+const sendBtn=document.getElementById("sendBtn");
+
+const statusText=document.getElementById("statusText");
+const statusDot=document.getElementById("statusDot");
+const charCount=document.getElementById("charCount");
+
+const healthDot=document.getElementById("healthDot");
+const healthText=document.getElementById("healthText");
+
+const toast=document.getElementById("toast");
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let messages=[];
+let selectedFiles=[];
+let currentMode="smart";
+let isGenerating=false;
+let controller=null;
+let toastTimer=null;
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+function safeParse(value,fallback){
+  try{
     return JSON.parse(value);
-  } catch {
+  }catch{
     return fallback;
   }
 }
 
-function loadState() {
+function loadState(){
 
-  const savedMessages =
-    safeParse(
-      localStorage.getItem(
-        STORAGE_MESSAGES
-      ),
-      []
-    );
+  const saved=safeParse(
+    localStorage.getItem(STORAGE_MESSAGES),
+    []
+  );
 
-  if (Array.isArray(savedMessages)) {
-    messages =
-      savedMessages
-        .filter(
-          item =>
-            item &&
-            (
-              item.role === "user" ||
-              item.role === "assistant"
-            ) &&
-            typeof item.content === "string"
-        )
-        .slice(-60);
+  if(Array.isArray(saved)){
+    messages=saved
+      .filter(
+        x =>
+          x &&
+          (x.role==="user" || x.role==="assistant") &&
+          typeof x.content==="string"
+      )
+      .slice(-60);
   }
 
-  const savedMode =
-    localStorage.getItem(
-      STORAGE_MODE
-    );
+  const mode=localStorage.getItem(STORAGE_MODE);
 
-  if (
-    savedMode &&
-    [
-      "fast",
-      "smart",
-      "deep",
-      "code",
-      "web",
-      "vision",
-      "files"
-    ].includes(savedMode)
-  ) {
-    currentMode = savedMode;
+  if([
+    "smart",
+    "fast",
+    "deep",
+    "code",
+    "web",
+    "vision",
+    "files"
+  ].includes(mode)){
+    currentMode=mode;
   }
 
-  const savedTheme =
-    localStorage.getItem(
-      STORAGE_THEME
-    );
-
-  if (savedTheme === "light") {
+  if(
+    localStorage.getItem(STORAGE_THEME)==="light"
+  ){
     document.body.classList.add("light");
   }
 
-  modeSelect.value =
-    currentMode;
+  modeSelect.value=currentMode;
 
   renderMessages();
   renderHistory();
+  updateCommandCenter();
 }
 
-function saveMessages() {
+function saveMessages(){
 
-  try {
-
+  try{
     localStorage.setItem(
       STORAGE_MESSAGES,
-      JSON.stringify(
-        messages.slice(-60)
-      )
+      JSON.stringify(messages.slice(-60))
     );
-
-  } catch {}
+  }catch{}
 }
 
-function saveMode() {
+function saveMode(){
 
-  try {
-
+  try{
     localStorage.setItem(
       STORAGE_MODE,
       currentMode
     );
-
-  } catch {}
+  }catch{}
 }
 
-function saveTheme() {
+function saveTheme(){
 
-  try {
-
+  try{
     localStorage.setItem(
       STORAGE_THEME,
-      document.body.classList.contains(
-        "light"
-      )
+      document.body.classList.contains("light")
         ? "light"
         : "dark"
     );
-
-  } catch {}
+  }catch{}
 }
 
-/* =========================================================
-   UI HELPERS
-========================================================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
-function escapeHTML(value) {
+function escapeHTML(value){
 
-  return String(value || "")
+  return String(value||"")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -1610,374 +1806,288 @@ function escapeHTML(value) {
     .replace(/'/g,"&#039;");
 }
 
-function showToast(text) {
+function showToast(text){
 
   clearTimeout(toastTimer);
 
-  toast.textContent =
-    String(text || "");
+  toast.textContent=String(text||"");
 
   toast.classList.add("show");
 
-  toastTimer =
-    setTimeout(
-      () =>
-        toast.classList.remove(
-          "show"
-        ),
-      2600
-    );
+  toastTimer=setTimeout(
+    ()=>{
+      toast.classList.remove("show");
+    },
+    2600
+  );
 }
 
-function setStatus(
-  text,
-  type = "ok"
-) {
+function setStatus(text,type="ok"){
 
-  statusText.textContent =
-    text;
+  statusText.textContent=text;
 
-  statusDot.style.background =
-    type === "error"
-      ? "var(--danger)"
-      : type === "busy"
-        ? "var(--warning)"
-        : "var(--success)";
+  statusDot.style.background=
+    type==="error"
+      ?"var(--danger)"
+      :type==="busy"
+        ?"var(--warning)"
+        :"var(--success)";
+
+  commandStatus.textContent=
+    type==="error"
+      ?"ERROR"
+      :type==="busy"
+        ?"WORKING"
+        :"READY";
 }
 
-function scrollToBottom(
-  smooth = true
-) {
+function updateCommandCenter(){
 
-  requestAnimationFrame(() => {
+  commandMode.textContent=
+    currentMode.toUpperCase();
+}
 
+function scrollToBottom(smooth=true){
+
+  requestAnimationFrame(()=>{
     chat.scrollTo({
-      top: chat.scrollHeight,
-      behavior:
-        smooth
-          ? "smooth"
-          : "auto"
+      top:chat.scrollHeight,
+      behavior:smooth?"smooth":"auto"
     });
-
   });
 }
 
-function updateWelcome() {
+function updateWelcome(){
 
-  welcome.style.display =
+  welcome.style.display=
     messages.length
-      ? "none"
-      : "flex";
+      ?"none"
+      :"flex";
+
+  if(messages.length){
+    commandCenter.classList.add("show");
+  }else{
+    commandCenter.classList.remove("show");
+  }
 }
 
-/* =========================================================
-   MARKDOWN RENDERER
-   Lightweight and safe
-========================================================= */
+/* =====================================================
+   MARKDOWN
+===================================================== */
 
-function renderMarkdown(text) {
+function renderMarkdown(text){
 
-  let source =
-    String(text || "")
-      .replace(/\r\n/g,"\n")
-      .replace(/\r/g,"\n");
+  let source=String(text||"")
+    .replace(/\r\n/g,"\n")
+    .replace(/\r/g,"\n");
 
-  const codeBlocks = [];
+  const codeBlocks=[];
 
-  source =
-    source.replace(
-      /```([\w+-]*)\n?([\s\S]*?)```/g,
-      (_,lang,code) => {
+  source=source.replace(
+    /```([\w+-]*)\n?([\s\S]*?)```/g,
+    (_,lang,code)=>{
+      const id=codeBlocks.length;
 
-        const id =
-          codeBlocks.length;
+      codeBlocks.push({
+        lang:lang||"code",
+        code
+      });
 
-        codeBlocks.push({
-          lang:
-            lang || "code",
-          code
-        });
+      return `@@CODEBLOCK_${id}@@`;
+    }
+  );
 
-        return `@@CODEBLOCK_${id}@@`;
-      }
-    );
+  let html=escapeHTML(source);
 
-  let html =
-    escapeHTML(source);
+  html=html.replace(
+    /`([^`\n]+)`/g,
+    '<span class="inlineCode">$1</span>'
+  );
 
-  html =
-    html.replace(
-      /`([^`\n]+)`/g,
-      '<span class="inlineCode">$1</span>'
-    );
+  html=html.replace(
+    /\*\*([^*\n]+)\*\*/g,
+    "<strong>$1</strong>"
+  );
 
-  html =
-    html.replace(
-      /\*\*([^*\n]+)\*\*/g,
-      "<strong>$1</strong>"
-    );
+  html=html.replace(
+    /__([^_\n]+)__/g,
+    "<strong>$1</strong>"
+  );
 
-  html =
-    html.replace(
-      /__([^_\n]+)__/g,
-      "<strong>$1</strong>"
-    );
+  html=html.replace(
+    /^\s*[-*]\s+(.+)$/gm,
+    "<li>$1</li>"
+  );
 
-  html =
-    html.replace(
-      /^\s*[-*]\s+(.+)$/gm,
-      "<li>$1</li>"
-    );
+  html=html.replace(
+    /(<li>[\s\S]*?<\/li>)/g,
+    "<ul>$1</ul>"
+  );
 
-  html =
-    html.replace(
-      /(<li>[\s\S]*?<\/li>)/g,
-      "<ul>$1</ul>"
-    );
+  html=html.replace(
+    /^\s*\d+\.\s+(.+)$/gm,
+    "<li>$1</li>"
+  );
 
-  html =
-    html.replace(
-      /^\s*\d+\.\s+(.+)$/gm,
-      "<li>$1</li>"
-    );
+  html=html.replace(
+    /@@CODEBLOCK_(\d+)@@/g,
+    (_,index)=>{
 
-  html =
-    html.replace(
-      /@@CODEBLOCK_(\d+)@@/g,
-      (_,index) => {
+      const item=codeBlocks[Number(index)];
 
-        const item =
-          codeBlocks[
-            Number(index)
-          ];
-
-        const code =
-          escapeHTML(
-            item.code
-          );
-
-        return `
-          <div class="codeBlock">
-            <div class="codeHeader">
-              <span>${escapeHTML(item.lang)}</span>
-              <button
-                class="copyCode"
-                data-code="${encodeURIComponent(item.code)}"
-              >
-                نسخ
-              </button>
-            </div>
-            <pre>${code}</pre>
+      return `
+        <div class="codeBlock">
+          <div class="codeHeader">
+            <span>${escapeHTML(item.lang)}</span>
+            <button
+              class="copyCode"
+              data-code="${encodeURIComponent(item.code)}"
+            >
+              نسخ
+            </button>
           </div>
-        `;
+          <pre>${escapeHTML(item.code)}</pre>
+        </div>
+      `;
+    }
+  );
+
+  return html
+    .split(/\n{2,}/)
+    .map(block=>{
+
+      const trimmed=block.trim();
+
+      if(!trimmed)return "";
+
+      if(
+        trimmed.startsWith("<ul>") ||
+        trimmed.startsWith("<ol>") ||
+        trimmed.startsWith("<div class=\"codeBlock\">")
+      ){
+        return trimmed;
       }
-    );
 
-  const blocks =
-    html
-      .split(/\n{2,}/)
-      .map(block => {
-
-        const trimmed =
-          block.trim();
-
-        if (!trimmed) {
-          return "";
-        }
-
-        if (
-          trimmed.startsWith("<ul>") ||
-          trimmed.startsWith("<ol>") ||
-          trimmed.startsWith("<div class=\"codeBlock\">")
-        ) {
-          return trimmed;
-        }
-
-        return `<p>${trimmed.replace(/\n/g,"<br>")}</p>`;
-      })
-      .join("");
-
-  return blocks;
+      return `<p>${trimmed.replace(/\n/g,"<br>")}</p>`;
+    })
+    .join("");
 }
 
-/* =========================================================
-   MESSAGE RENDER
-========================================================= */
+/* =====================================================
+   MESSAGES
+===================================================== */
 
-function createMessageElement(
-  message,
-  index
-) {
+function createMessageElement(message,index){
 
-  const row =
-    document.createElement("div");
+  const row=document.createElement("div");
 
-  row.className =
-    `message ${message.role}`;
+  row.className=`message ${message.role}`;
 
-  const avatar =
-    document.createElement("div");
+  const avatar=document.createElement("div");
 
-  avatar.className =
-    "avatar";
+  avatar.className="avatar";
 
-  avatar.textContent =
-    message.role === "user"
-      ? "أنت"
-      : "S";
+  avatar.textContent=
+    message.role==="user"
+      ?"أنت"
+      :"S";
 
-  const body =
-    document.createElement("div");
+  const body=document.createElement("div");
 
-  body.className =
-    "messageBody";
+  body.className="messageBody";
 
-  const bubble =
-    document.createElement("div");
+  const bubble=document.createElement("div");
 
-  bubble.className =
-    "bubble";
+  bubble.className="bubble";
 
-  if (message.role === "assistant") {
-
-    bubble.innerHTML =
-      renderMarkdown(
-        message.content
-      );
-
-  } else {
-
-    bubble.textContent =
-      message.content;
+  if(message.role==="assistant"){
+    bubble.innerHTML=renderMarkdown(message.content);
+  }else{
+    bubble.textContent=message.content;
   }
 
-  body.appendChild(
-    bubble
-  );
+  body.appendChild(bubble);
 
-  const actions =
-    document.createElement("div");
+  const actions=document.createElement("div");
 
-  actions.className =
-    "messageActions";
+  actions.className="messageActions";
 
-  if (
-    message.role === "assistant"
-  ) {
+  const action=document.createElement("button");
 
-    const copy =
-      document.createElement("button");
+  action.className="actionBtn";
 
-    copy.className =
-      "actionBtn";
+  if(message.role==="assistant"){
 
-    copy.textContent =
-      "نسخ";
+    action.textContent="نسخ";
 
-    copy.addEventListener(
+    action.addEventListener(
       "click",
-      () =>
-        copyText(
-          message.content
-        )
+      ()=>copyText(message.content)
     );
 
-    actions.appendChild(copy);
+  }else{
 
-  } else {
+    action.textContent="تعديل";
 
-    const edit =
-      document.createElement("button");
-
-    edit.className =
-      "actionBtn";
-
-    edit.textContent =
-      "تعديل";
-
-    edit.addEventListener(
+    action.addEventListener(
       "click",
-      () =>
-        editMessage(index)
+      ()=>editMessage(index)
     );
-
-    actions.appendChild(edit);
   }
 
-  body.appendChild(
-    actions
-  );
+  actions.appendChild(action);
+  body.appendChild(actions);
 
-  row.appendChild(
-    avatar
-  );
-
-  row.appendChild(
-    body
-  );
+  row.appendChild(avatar);
+  row.appendChild(body);
 
   return row;
 }
 
-function renderMessages() {
+function renderMessages(){
 
-  chatInner.innerHTML = "";
+  chatInner.innerHTML="";
 
-  chatInner.appendChild(
-    welcome
-  );
+  chatInner.appendChild(commandCenter);
+  chatInner.appendChild(welcome);
 
   messages.forEach(
-    (message,index) => {
-
+    (message,index)=>{
       chatInner.appendChild(
-        createMessageElement(
-          message,
-          index
-        )
+        createMessageElement(message,index)
       );
-
     }
   );
 
   updateWelcome();
 
-  requestAnimationFrame(() => {
-
-    chat.scrollTop =
-      chat.scrollHeight;
-
+  requestAnimationFrame(()=>{
+    chat.scrollTop=chat.scrollHeight;
   });
 }
 
-/* =========================================================
-   TYPING ELEMENT
-========================================================= */
+/* =====================================================
+   TYPING
+===================================================== */
 
-function createTypingElement() {
+function createTypingElement(){
 
-  const row =
-    document.createElement("div");
+  const row=document.createElement("div");
 
-  row.className =
-    "message assistant";
+  row.className="message assistant";
+  row.id="typingMessage";
 
-  row.id =
-    "typingMessage";
-
-  row.innerHTML = `
+  row.innerHTML=`
     <div class="avatar">S</div>
 
     <div class="messageBody">
 
       <div class="bubble">
-
         <div class="typing">
           <span></span>
           <span></span>
           <span></span>
         </div>
-
       </div>
 
       <div class="toolStatus">
@@ -1993,354 +2103,259 @@ function createTypingElement() {
   return row;
 }
 
-function setLiveStatus(text) {
+function setLiveStatus(text){
 
-  const el =
-    document.getElementById(
-      "liveStatus"
-    );
+  const el=document.getElementById("liveStatus");
 
-  if (el) {
-    el.textContent =
-      text;
+  if(el){
+    el.textContent=text;
   }
 }
 
-/* =========================================================
+/* =====================================================
    COPY
-========================================================= */
+===================================================== */
 
-async function copyText(text) {
+async function copyText(text){
 
-  try {
+  try{
 
     await navigator.clipboard.writeText(
-      String(text || "")
+      String(text||"")
     );
 
-    showToast(
-      "تم النسخ ✓"
-    );
+    showToast("تم النسخ ✓");
 
-  } catch {
+  }catch{
 
-    const area =
-      document.createElement("textarea");
+    const area=document.createElement("textarea");
 
-    area.value =
-      String(text || "");
+    area.value=String(text||"");
 
     document.body.appendChild(area);
 
     area.select();
 
-    document.execCommand(
-      "copy"
-    );
+    document.execCommand("copy");
 
     area.remove();
 
-    showToast(
-      "تم النسخ ✓"
-    );
+    showToast("تم النسخ ✓");
   }
 }
 
 document.addEventListener(
   "click",
-  event => {
+  event=>{
 
-    const btn =
-      event.target.closest(
-        ".copyCode"
-      );
+    const btn=event.target.closest(".copyCode");
 
-    if (!btn) {
-      return;
-    }
+    if(!btn)return;
 
-    try {
-
+    try{
       copyText(
-        decodeURIComponent(
-          btn.dataset.code
-        )
+        decodeURIComponent(btn.dataset.code)
       );
-
-    } catch {}
+    }catch{}
   }
 );
 
-/* =========================================================
-   EDIT MESSAGE
-========================================================= */
+/* =====================================================
+   EDIT
+===================================================== */
 
-function editMessage(index) {
+function editMessage(index){
 
-  const item =
-    messages[index];
+  const item=messages[index];
 
-  if (
-    !item ||
-    item.role !== "user"
-  ) {
+  if(!item || item.role!=="user"){
     return;
   }
 
-  const newText =
-    prompt(
-      "عدّل رسالتك:",
-      item.content
-    );
+  const newText=prompt(
+    "عدّل رسالتك:",
+    item.content
+  );
 
-  if (
-    newText === null
-  ) {
-    return;
-  }
+  if(newText===null)return;
 
-  const clean =
-    newText.trim();
+  const clean=newText.trim();
 
-  if (!clean) {
-    return;
-  }
+  if(!clean)return;
 
-  messages =
-    messages.slice(
-      0,
-      index
-    );
+  messages=messages.slice(0,index);
 
   saveMessages();
+
   renderMessages();
 
-  messageInput.value =
-    clean;
+  messageInput.value=clean;
 
   autoResize();
+  updateCharCount();
 
   messageInput.focus();
 }
 
-/* =========================================================
+/* =====================================================
    HISTORY
-========================================================= */
+===================================================== */
 
-function renderHistory() {
+function renderHistory(){
 
-  historyEl.innerHTML = "";
+  historyEl.innerHTML="";
 
-  const userMessages =
-    messages.filter(
-      item =>
-        item.role === "user"
-    );
+  const users=messages.filter(
+    item=>item.role==="user"
+  );
 
-  if (!userMessages.length) {
+  if(!users.length){
 
-    const empty =
-      document.createElement("div");
+    const empty=document.createElement("div");
 
-    empty.className =
-      "historyEmpty";
+    empty.className="historyEmpty";
 
-    empty.textContent =
-      "لا توجد محادثات محفوظة";
+    empty.textContent="لا توجد محادثات محفوظة";
 
-    historyEl.appendChild(
-      empty
-    );
+    historyEl.appendChild(empty);
 
     return;
   }
 
-  userMessages
+  users
     .slice(-25)
     .reverse()
-    .forEach(
-      item => {
+    .forEach(item=>{
 
-        const button =
-          document.createElement("button");
+      const button=document.createElement("button");
 
-        button.className =
-          "historyItem";
+      button.className="historyItem";
 
-        button.textContent =
-          item.content
-            .replace(/\s+/g," ")
-            .slice(0,70);
+      button.textContent=item.content
+        .replace(/\s+/g," ")
+        .slice(0,70);
 
-        button.title =
-          item.content;
+      button.addEventListener(
+        "click",
+        ()=>{
+          messageInput.value=item.content;
+          autoResize();
+          updateCharCount();
+          messageInput.focus();
+          closeSidebar();
+        }
+      );
 
-        button.addEventListener(
-          "click",
-          () => {
-
-            messageInput.value =
-              item.content;
-
-            autoResize();
-
-            messageInput.focus();
-
-            closeSidebar();
-          }
-        );
-
-        historyEl.appendChild(
-          button
-        );
-      }
-    );
+      historyEl.appendChild(button);
+    });
 }
 
-/* =========================================================
+/* =====================================================
    NEW CHAT
-========================================================= */
+===================================================== */
 
-function newChat() {
+function newChat(){
 
-  if (isGenerating) {
+  if(isGenerating){
     stopGeneration();
   }
 
-  messages = [];
-
-  selectedFiles = [];
+  messages=[];
+  selectedFiles=[];
 
   saveMessages();
 
   renderMessages();
   renderFiles();
 
-  messageInput.value =
-    "";
+  messageInput.value="";
 
   autoResize();
-
   updateCharCount();
 
-  setStatus(
-    "Sultan AI جاهز"
-  );
+  setStatus("Sultan AI جاهز");
 
   closeSidebar();
 
   messageInput.focus();
 }
 
-newChatBtn.addEventListener(
-  "click",
-  newChat
-);
+newChatBtn.addEventListener("click",newChat);
+topNewBtn.addEventListener("click",newChat);
 
-topNewBtn.addEventListener(
-  "click",
-  newChat
-);
-
-/* =========================================================
+/* =====================================================
    CLEAR
-========================================================= */
+===================================================== */
 
 clearBtn.addEventListener(
   "click",
-  () => {
-
-    const ok =
-      confirm(
-        "هل تريد مسح المحادثة الحالية؟"
-      );
-
-    if (!ok) {
+  ()=>{
+    if(
+      !confirm("هل تريد مسح المحادثة الحالية؟")
+    ){
       return;
     }
 
     newChat();
 
-    showToast(
-      "تم مسح المحادثة"
-    );
+    showToast("تم مسح المحادثة");
   }
 );
 
-/* =========================================================
+/* =====================================================
    THEME
-========================================================= */
+===================================================== */
 
 themeBtn.addEventListener(
   "click",
-  () => {
+  ()=>{
 
-    document.body.classList.toggle(
-      "light"
-    );
+    document.body.classList.toggle("light");
 
     saveTheme();
 
     showToast(
-      document.body.classList.contains(
-        "light"
-      )
-        ? "تم تفعيل الوضع الفاتح"
-        : "تم تفعيل الوضع الداكن"
+      document.body.classList.contains("light")
+        ?"تم تفعيل الوضع الفاتح"
+        :"تم تفعيل الوضع الداكن"
     );
   }
 );
 
-/* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
-function openSidebar() {
+function openSidebar(){
 
-  sidebar.classList.add(
-    "open"
-  );
-
-  overlay.classList.add(
-    "show"
-  );
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
 }
 
-function closeSidebar() {
+function closeSidebar(){
 
-  sidebar.classList.remove(
-    "open"
-  );
-
-  overlay.classList.remove(
-    "show"
-  );
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
 }
 
-menuBtn.addEventListener(
-  "click",
-  openSidebar
-);
+menuBtn.addEventListener("click",openSidebar);
+overlay.addEventListener("click",closeSidebar);
 
-overlay.addEventListener(
-  "click",
-  closeSidebar
-);
-
-/* =========================================================
-   MODE
-========================================================= */
+/* =====================================================
+   MODES
+===================================================== */
 
 modeSelect.addEventListener(
   "change",
-  () => {
+  ()=>{
 
-    currentMode =
-      modeSelect.value;
+    currentMode=modeSelect.value;
 
     saveMode();
 
-    const labels = {
+    updateCommandCenter();
+
+    const labels={
       fast:"الوضع السريع",
       smart:"الوضع الذكي",
       deep:"الوضع العميق",
@@ -2356,18 +2371,20 @@ modeSelect.addEventListener(
   }
 );
 
-/* =========================================================
+/* =====================================================
    FILES
-========================================================= */
+===================================================== */
 
 attachBtn.addEventListener(
   "click",
-  () => {
+  ()=>{
 
-    if (isGenerating) {
+    if(isGenerating){
+
       showToast(
         "انتظر انتهاء الإجابة أولاً"
       );
+
       return;
     }
 
@@ -2377,30 +2394,23 @@ attachBtn.addEventListener(
 
 fileInput.addEventListener(
   "change",
-  async event => {
+  async event=>{
 
-    const files =
-      Array.from(
-        event.target.files || []
-      );
+    await addFiles(
+      Array.from(event.target.files||[])
+    );
 
-    await addFiles(files);
-
-    fileInput.value = "";
+    fileInput.value="";
   }
 );
 
-async function addFiles(files) {
+async function addFiles(files){
 
-  if (!files.length) {
-    return;
-  }
+  if(!files.length)return;
 
-  if (
-    selectedFiles.length +
-    files.length >
-    MAX_FILES
-  ) {
+  if(
+    selectedFiles.length+files.length>MAX_FILES
+  ){
 
     showToast(
       `الحد الأقصى ${MAX_FILES} ملفات`
@@ -2409,22 +2419,14 @@ async function addFiles(files) {
     return;
   }
 
-  let total =
-    selectedFiles.reduce(
-      (sum,file) =>
-        sum +
-        Number(file.size || 0),
-      0
-    );
+  let total=selectedFiles.reduce(
+    (sum,file)=>sum+Number(file.size||0),
+    0
+  );
 
-  for (
-    const file of files
-  ) {
+  for(const file of files){
 
-    if (
-      file.size >
-      MAX_FILE_SIZE
-    ) {
+    if(file.size>MAX_FILE_SIZE){
 
       showToast(
         `${file.name} أكبر من 20MB`
@@ -2433,11 +2435,9 @@ async function addFiles(files) {
       continue;
     }
 
-    if (
-      total +
-      file.size >
-      MAX_TOTAL_FILE_SIZE
-    ) {
+    if(
+      total+file.size>MAX_TOTAL_FILE_SIZE
+    ){
 
       showToast(
         "تجاوز الحجم الإجمالي المسموح"
@@ -2446,15 +2446,11 @@ async function addFiles(files) {
       break;
     }
 
-    total +=
-      file.size;
+    total+=file.size;
 
-    try {
+    try{
 
-      const data =
-        await fileToDataURL(
-          file
-        );
+      const data=await fileToDataURL(file);
 
       selectedFiles.push({
         name:file.name,
@@ -2463,7 +2459,7 @@ async function addFiles(files) {
         data
       });
 
-    } catch {
+    }catch{
 
       showToast(
         `تعذر قراءة ${file.name}`
@@ -2474,67 +2470,52 @@ async function addFiles(files) {
   renderFiles();
 }
 
-function fileToDataURL(file) {
+function fileToDataURL(file){
 
   return new Promise(
-    (resolve,reject) => {
+    (resolve,reject)=>{
 
-      const reader =
-        new FileReader();
+      const reader=new FileReader();
 
-      reader.onload =
-        () =>
-          resolve(
-            reader.result
-          );
+      reader.onload=()=>{
+        resolve(reader.result);
+      };
 
-      reader.onerror =
-        reject;
+      reader.onerror=reject;
 
-      reader.readAsDataURL(
-        file
-      );
+      reader.readAsDataURL(file);
     }
   );
 }
 
-function renderFiles() {
+function renderFiles(){
 
-  attachments.innerHTML = "";
+  attachments.innerHTML="";
 
-  if (!selectedFiles.length) {
+  if(!selectedFiles.length){
 
-    attachments.classList.remove(
-      "hasFiles"
-    );
+    attachments.classList.remove("hasFiles");
 
     return;
   }
 
-  attachments.classList.add(
-    "hasFiles"
-  );
+  attachments.classList.add("hasFiles");
 
   selectedFiles.forEach(
-    (file,index) => {
+    (file,index)=>{
 
-      const chip =
-        document.createElement("div");
+      const chip=document.createElement("div");
 
-      chip.className =
-        "fileChip";
+      chip.className="fileChip";
 
-      const icon =
-        String(file.type || "")
-          .startsWith("image/")
-          ? "🖼️"
-          : file.name
-              .toLowerCase()
-              .endsWith(".pdf")
-              ? "📕"
-              : "📄";
+      const icon=
+        String(file.type||"").startsWith("image/")
+          ?"🖼️"
+          :file.name.toLowerCase().endsWith(".pdf")
+            ?"📕"
+            :"📄";
 
-      chip.innerHTML = `
+      chip.innerHTML=`
         <span>${icon}</span>
         <span class="fileChipName">
           ${escapeHTML(file.name)}
@@ -2543,74 +2524,56 @@ function renderFiles() {
           class="removeFile"
           type="button"
           data-index="${index}"
-        >
-          ×
-        </button>
+        >×</button>
       `;
 
-      attachments.appendChild(
-        chip
-      );
+      attachments.appendChild(chip);
     }
   );
 }
 
 attachments.addEventListener(
   "click",
-  event => {
+  event=>{
 
-    const btn =
-      event.target.closest(
-        ".removeFile"
-      );
+    const button=event.target.closest(".removeFile");
 
-    if (!btn) {
-      return;
-    }
+    if(!button)return;
 
-    const index =
-      Number(
-        btn.dataset.index
-      );
+    const index=Number(button.dataset.index);
 
-    selectedFiles.splice(
-      index,
-      1
-    );
+    selectedFiles.splice(index,1);
 
     renderFiles();
   }
 );
 
-/* =========================================================
+/* =====================================================
    TEXTAREA
-========================================================= */
+===================================================== */
 
-function autoResize() {
+function autoResize(){
 
-  messageInput.style.height =
-    "auto";
+  messageInput.style.height="auto";
 
-  messageInput.style.height =
+  messageInput.style.height=
     Math.min(
       messageInput.scrollHeight,
       180
-    ) + "px";
+    )+"px";
 }
 
-function updateCharCount() {
+function updateCharCount(){
 
-  const length =
-    messageInput.value.length;
+  const length=messageInput.value.length;
 
-  charCount.textContent =
+  charCount.textContent=
     `${length} / ${MAX_MESSAGE_CHARS}`;
 }
 
 messageInput.addEventListener(
   "input",
-  () => {
-
+  ()=>{
     autoResize();
     updateCharCount();
   }
@@ -2618,112 +2581,81 @@ messageInput.addEventListener(
 
 messageInput.addEventListener(
   "keydown",
-  event => {
+  event=>{
 
-    if (
-      event.key === "Enter" &&
+    if(
+      event.key==="Enter" &&
       !event.shiftKey
-    ) {
+    ){
 
       event.preventDefault();
 
-      if (!isGenerating) {
+      if(!isGenerating){
         generateResponse();
       }
     }
   }
 );
 
-/* =========================================================
+/* =====================================================
    SUGGESTIONS
-========================================================= */
+===================================================== */
 
 document
-  .querySelectorAll(
-    ".suggestion"
-  )
-  .forEach(
-    button => {
+  .querySelectorAll(".suggestion")
+  .forEach(button=>{
 
-      button.addEventListener(
-        "click",
-        () => {
+    button.addEventListener(
+      "click",
+      ()=>{
 
-          messageInput.value =
-            button.dataset.prompt ||
-            "";
+        messageInput.value=
+          button.dataset.prompt||"";
 
-          autoResize();
-          updateCharCount();
+        autoResize();
+        updateCharCount();
 
-          messageInput.focus();
-        }
-      );
-    }
-  );
+        messageInput.focus();
+      }
+    );
+  });
 
-/* =========================================================
-   SSE PARSER
-========================================================= */
+/* =====================================================
+   SSE
+===================================================== */
 
-async function readSSE(
-  response,
-  onEvent
-) {
+async function readSSE(response,onEvent){
 
-  if (!response.body) {
+  if(!response.body){
     throw new Error(
       "Streaming غير متاح."
     );
   }
 
-  const reader =
-    response.body.getReader();
+  const reader=response.body.getReader();
 
-  const decoder =
-    new TextDecoder(
-      "utf-8"
+  const decoder=new TextDecoder("utf-8");
+
+  let buffer="";
+
+  while(true){
+
+    const {value,done}=await reader.read();
+
+    if(done)break;
+
+    buffer+=decoder.decode(
+      value,
+      {stream:true}
     );
 
-  let buffer = "";
+    buffer=buffer.replace(/\r\n/g,"\n");
 
-  while (true) {
+    const events=buffer.split("\n\n");
 
-    const {
-      value,
-      done
-    } =
-      await reader.read();
+    buffer=events.pop()||"";
 
-    if (done) {
-      break;
-    }
-
-    buffer +=
-      decoder.decode(
-        value,
-        {
-          stream:true
-        }
-      );
-
-    buffer =
-      buffer.replace(
-        /\r\n/g,
-        "\n"
-      );
-
-    const events =
-      buffer.split(
-        "\n\n"
-      );
-
-    buffer =
-      events.pop() || "";
-
-    for (
-      const block of events
-    ) {
+    for(const block of events){
 
       parseSSEBlock(
         block,
@@ -2732,10 +2664,9 @@ async function readSSE(
     }
   }
 
-  buffer +=
-    decoder.decode();
+  buffer+=decoder.decode();
 
-  if (buffer.trim()) {
+  if(buffer.trim()){
 
     parseSSEBlock(
       buffer,
@@ -2744,38 +2675,24 @@ async function readSSE(
   }
 }
 
-function parseSSEBlock(
-  block,
-  onEvent
-) {
+function parseSSEBlock(block,onEvent){
 
-  const lines =
-    block.split("\n");
+  const lines=block.split("\n");
 
-  let eventName =
-    "message";
+  let eventName="message";
 
-  const dataLines = [];
+  const dataLines=[];
 
-  for (
-    const line of lines
-  ) {
+  for(const line of lines){
 
-    if (
-      line.startsWith("event:")
-    ) {
+    if(line.startsWith("event:")){
 
-      eventName =
-        line
-          .slice(6)
-          .trim();
+      eventName=line.slice(6).trim();
 
       continue;
     }
 
-    if (
-      line.startsWith("data:")
-    ) {
+    if(line.startsWith("data:")){
 
       dataLines.push(
         line.slice(5).trim()
@@ -2783,61 +2700,37 @@ function parseSSEBlock(
     }
   }
 
-  if (!dataLines.length) {
-    return;
-  }
+  if(!dataLines.length)return;
 
-  const raw =
-    dataLines.join("\n");
+  const raw=dataLines.join("\n");
 
-  if (
-    raw === "[DONE]"
-  ) {
+  if(raw==="[DONE]"){
 
-    onEvent(
-      "done",
-      {
-        success:true
-      }
-    );
+    onEvent("done",{success:true});
 
     return;
   }
 
-  try {
+  try{
 
-    const data =
-      JSON.parse(raw);
+    const data=JSON.parse(raw);
 
-    onEvent(
-      eventName,
-      data
-    );
+    onEvent(eventName,data);
 
-  } catch {
-
-    /* تجاهل event غير صالح */
-  }
+  }catch{}
 }
 
-/* =========================================================
+/* =====================================================
    GENERATE
-========================================================= */
+===================================================== */
 
-async function generateResponse() {
+async function generateResponse(){
 
-  if (isGenerating) {
-    return;
-  }
+  if(isGenerating)return;
 
-  const text =
-    messageInput.value
-      .trim();
+  const text=messageInput.value.trim();
 
-  if (
-    !text &&
-    !selectedFiles.length
-  ) {
+  if(!text && !selectedFiles.length){
 
     showToast(
       "اكتب رسالة أو أرفق ملفاً"
@@ -2848,192 +2741,156 @@ async function generateResponse() {
     return;
   }
 
-  const cleanText =
-    text.slice(
-      0,
-      MAX_MESSAGE_CHARS
-    );
+  const cleanText=text.slice(
+    0,
+    MAX_MESSAGE_CHARS
+  );
 
-  const filesForRequest =
-    selectedFiles.map(
-      file => ({
-        name:file.name,
-        type:file.type,
-        size:file.size,
-        data:file.data
-      })
-    );
+  const filesForRequest=selectedFiles.map(
+    file=>({
+      name:file.name,
+      type:file.type,
+      size:file.size,
+      data:file.data
+    })
+  );
 
-  const userMessage = {
+  const userMessage={
     role:"user",
     content:
       cleanText ||
       "حلل الملفات المرفقة وقدم نتيجة مفيدة."
   };
 
-  messages.push(
-    userMessage
-  );
+  messages.push(userMessage);
 
   saveMessages();
 
   renderMessages();
 
-  const historyForRequest =
-    messages
-      .slice(-12)
-      .map(
-        item => ({
-          role:item.role,
-          content:
-            String(
-              item.content || ""
-            )
-        })
-      );
+  const historyForRequest=messages
+    .slice(-12)
+    .map(
+      item=>({
+        role:item.role,
+        content:String(item.content||"")
+      })
+    );
 
-  messageInput.value =
-    "";
-
-  selectedFiles = [];
+  messageInput.value="";
+  selectedFiles=[];
 
   renderFiles();
 
   autoResize();
   updateCharCount();
 
-  isGenerating = true;
+  isGenerating=true;
 
-  controller =
-    new AbortController();
+  controller=new AbortController();
 
-  sendBtn.classList.add(
-    "stop"
-  );
-
-  sendBtn.textContent =
-    "■";
+  sendBtn.classList.add("stop");
+  sendBtn.textContent="■";
 
   setStatus(
     "Sultan AI يعمل...",
     "busy"
   );
 
-  const typing =
-    createTypingElement();
+  const typing=createTypingElement();
 
-  chatInner.appendChild(
-    typing
-  );
+  chatInner.appendChild(typing);
 
   scrollToBottom();
 
-  let assistantText = "";
-  let gotStreamResponse = false;
-  let finished = false;
+  let assistantText="";
+  let gotStreamResponse=false;
+  let finished=false;
 
-  try {
+  const payload={
+    message:cleanText,
+    messages:historyForRequest,
+    files:filesForRequest,
+    fastMode:currentMode==="fast",
+    mode:currentMode
+  };
 
-    const payload = {
-      message: cleanText,
-      messages: historyForRequest,
-      files: filesForRequest,
-      fastMode:
-        currentMode === "fast",
-      mode: currentMode
-    };
+  try{
 
-    /*
-      Streaming أولاً.
-      إذا فشل، ننتقل تلقائياً إلى
-      /api/chat.
-    */
+    try{
 
-    try {
+      const response=await fetch(
+        STREAM_API,
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:JSON.stringify(payload),
+          signal:controller.signal
+        }
+      );
 
-      const response =
-        await fetch(
-          STREAM_API,
-          {
-            method:"POST",
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
-            body:
-              JSON.stringify(
-                payload
-              ),
-            signal:
-              controller.signal
-          }
-        );
+      if(!response.ok){
 
-      if (!response.ok) {
-
-        let errorText =
+        let errorText=
           "تعذر الاتصال بالخادم.";
 
-        try {
+        try{
 
-          const data =
-            await response.json();
+          const data=await response.json();
 
-          errorText =
-            data.error ||
+          errorText=
+            data.error||
             errorText;
 
-        } catch {}
+        }catch{}
 
-        throw new Error(
-          errorText
-        );
+        throw new Error(errorText);
       }
 
       await readSSE(
         response,
-        (event,data) => {
+        (event,data)=>{
 
-          if (event === "meta") {
+          if(event==="meta"){
 
             setLiveStatus(
-              data.mode === "fast"
-                ? "الوضع السريع يعمل..."
-                : "Sultan AI يحلل طلبك..."
+              data.mode==="fast"
+                ?"الوضع السريع يعمل..."
+                :"Sultan AI يحلل طلبك..."
             );
 
             return;
           }
 
-          if (event === "status") {
+          if(event==="status"){
 
             setLiveStatus(
-              data.text ||
+              data.text||
               "Sultan AI يعمل..."
             );
 
             return;
           }
 
-          if (event === "tool") {
+          if(event==="tool"){
 
             setLiveStatus(
-              data.text ||
+              data.text||
               "Sultan AI يستخدم أدواته..."
             );
 
             return;
           }
 
-          if (event === "token") {
+          if(event==="token"){
 
-            gotStreamResponse =
-              true;
+            gotStreamResponse=true;
 
-            assistantText +=
-              String(
-                data.text || ""
-              );
+            assistantText+=
+              String(data.text||"");
 
             updateTypingMessage(
               assistantText
@@ -3044,19 +2901,17 @@ async function generateResponse() {
             return;
           }
 
-          if (event === "done") {
+          if(event==="done"){
 
-            finished = true;
+            finished=true;
 
-            if (
+            if(
               !assistantText &&
               data.reply
-            ) {
+            ){
 
-              assistantText =
-                String(
-                  data.reply
-                );
+              assistantText=
+                String(data.reply);
 
               updateTypingMessage(
                 assistantText
@@ -3066,25 +2921,20 @@ async function generateResponse() {
             return;
           }
 
-          if (event === "error") {
+          if(event==="error"){
 
             throw new Error(
-              data.error ||
+              data.error||
               "حدث خطأ أثناء التوليد."
             );
           }
         }
       );
 
-      /*
-        إذا وصل نص فعلي من Streaming
-        نعتبر الطلب ناجحاً.
-      */
-
-      if (
+      if(
         gotStreamResponse &&
         assistantText.trim()
-      ) {
+      ){
 
         finishAssistantMessage(
           assistantText
@@ -3093,15 +2943,10 @@ async function generateResponse() {
         return;
       }
 
-      /*
-        أحياناً السيرفر قد يرجع done
-        مع reply بدون token.
-      */
-
-      if (
+      if(
         finished &&
         assistantText.trim()
-      ) {
+      ){
 
         finishAssistantMessage(
           assistantText
@@ -3114,91 +2959,67 @@ async function generateResponse() {
         "لم تصل إجابة من Streaming."
       );
 
-    } catch (streamError) {
+    }catch(streamError){
 
-      if (
-        controller.signal.aborted
-      ) {
+      if(controller.signal.aborted){
         throw streamError;
       }
-
-      /*
-        Fallback إلى endpoint العادي
-      */
 
       setLiveStatus(
         "نحاول الاتصال بالطريقة البديلة..."
       );
 
-      const normalResponse =
-        await fetch(
-          NORMAL_API,
-          {
-            method:"POST",
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
-            body:
-              JSON.stringify(
-                payload
-              ),
-            signal:
-              controller.signal
-          }
-        );
+      const normalResponse=await fetch(
+        NORMAL_API,
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:JSON.stringify(payload),
+          signal:controller.signal
+        }
+      );
 
-      const data =
-        await normalResponse.json()
-          .catch(
-            () => ({})
-          );
+      const data=await normalResponse
+        .json()
+        .catch(()=>({}));
 
-      if (
+      if(
         !normalResponse.ok ||
-        data.success === false
-      ) {
+        data.success===false
+      ){
 
         throw new Error(
-          data.error ||
-          streamError.message ||
+          data.error||
+          streamError.message||
           "تعذر الحصول على إجابة."
         );
       }
 
-      const reply =
-        String(
-          data.reply ||
-          data.text ||
-          data.message ||
-          ""
-        ).trim();
+      const reply=String(
+        data.reply||
+        data.text||
+        data.message||
+        ""
+      ).trim();
 
-      if (!reply) {
+      if(!reply){
 
         throw new Error(
           "لم تصل إجابة من الخادم."
         );
       }
 
-      assistantText =
-        reply;
+      updateTypingMessage(reply);
 
-      updateTypingMessage(
-        assistantText
-      );
-
-      finishAssistantMessage(
-        assistantText
-      );
+      finishAssistantMessage(reply);
     }
 
-  } catch (error) {
+  }catch(error){
 
-    if (
-      error?.name ===
-      "AbortError"
-    ) {
+    if(error?.name==="AbortError"){
 
       removeTypingMessage();
 
@@ -3211,14 +3032,13 @@ async function generateResponse() {
 
     removeTypingMessage();
 
-    const errorMessage =
-      error?.message ||
+    const errorMessage=
+      error?.message||
       "حدث خطأ غير متوقع.";
 
     messages.push({
       role:"assistant",
-      content:
-        `⚠️ ${errorMessage}`
+      content:`⚠️ ${errorMessage}`
     });
 
     saveMessages();
@@ -3230,28 +3050,21 @@ async function generateResponse() {
       "error"
     );
 
-    showToast(
-      errorMessage
-    );
+    showToast(errorMessage);
 
-  } finally {
+  }finally{
 
-    isGenerating = false;
+    isGenerating=false;
 
-    controller = null;
+    controller=null;
 
-    sendBtn.classList.remove(
-      "stop"
-    );
+    sendBtn.classList.remove("stop");
 
-    sendBtn.textContent =
-      "➤";
+    sendBtn.textContent="➤";
 
-    if (
-      !statusText.textContent ||
-      statusText.textContent ===
-        "Sultan AI يعمل..."
-    ) {
+    if(
+      statusText.textContent==="Sultan AI يعمل..."
+    ){
 
       setStatus(
         "Sultan AI جاهز"
@@ -3260,69 +3073,45 @@ async function generateResponse() {
   }
 }
 
-/* =========================================================
-   UPDATE STREAM MESSAGE
-========================================================= */
+/* =====================================================
+   STREAM UI
+===================================================== */
 
-function updateTypingMessage(
-  text
-) {
+function updateTypingMessage(text){
 
-  let row =
-    document.getElementById(
-      "typingMessage"
-    );
+  let row=document.getElementById(
+    "typingMessage"
+  );
 
-  if (!row) {
+  if(!row){
 
-    row =
-      createTypingElement();
+    row=createTypingElement();
 
-    chatInner.appendChild(
-      row
-    );
+    chatInner.appendChild(row);
   }
 
-  const bubble =
-    row.querySelector(
-      ".bubble"
-    );
+  const bubble=row.querySelector(".bubble");
 
-  if (bubble) {
+  if(bubble){
 
-    bubble.innerHTML =
-      renderMarkdown(
-        text
-      );
+    bubble.innerHTML=
+      renderMarkdown(text);
   }
 
-  const typing =
-    row.querySelector(
-      ".typing"
-    );
+  const typing=row.querySelector(".typing");
 
-  if (typing) {
+  if(typing){
     typing.remove();
   }
 }
 
-/* =========================================================
-   FINISH ASSISTANT
-========================================================= */
-
-function finishAssistantMessage(
-  text
-) {
+function finishAssistantMessage(text){
 
   removeTypingMessage();
 
-  const clean =
-    String(text || "")
-      .trim();
+  const clean=String(text||"").trim();
 
-  if (!clean) {
-    return;
-  }
+  if(!clean)return;
 
   messages.push({
     role:"assistant",
@@ -3342,45 +3131,35 @@ function finishAssistantMessage(
   scrollToBottom();
 }
 
-/* =========================================================
-   REMOVE TYPING
-========================================================= */
+function removeTypingMessage(){
 
-function removeTypingMessage() {
+  const row=document.getElementById(
+    "typingMessage"
+  );
 
-  const row =
-    document.getElementById(
-      "typingMessage"
-    );
-
-  if (row) {
+  if(row){
     row.remove();
   }
 }
 
-/* =========================================================
+/* =====================================================
    STOP
-========================================================= */
+===================================================== */
 
-function stopGeneration() {
+function stopGeneration(){
 
-  if (
-    controller
-  ) {
+  if(controller){
 
     controller.abort();
 
-    controller = null;
+    controller=null;
   }
 
-  isGenerating = false;
+  isGenerating=false;
 
-  sendBtn.classList.remove(
-    "stop"
-  );
+  sendBtn.classList.remove("stop");
 
-  sendBtn.textContent =
-    "➤";
+  sendBtn.textContent="➤";
 
   removeTypingMessage();
 
@@ -3391,87 +3170,98 @@ function stopGeneration() {
 
 sendBtn.addEventListener(
   "click",
-  () => {
-
-    if (isGenerating) {
-
+  ()=>{
+    if(isGenerating){
       stopGeneration();
-
-    } else {
-
+    }else{
       generateResponse();
     }
   }
 );
 
-/* =========================================================
+/* =====================================================
    HEALTH
-========================================================= */
+===================================================== */
 
-async function checkHealth() {
+async function checkHealth(){
 
-  try {
+  try{
 
-    const response =
-      await fetch(
-        HEALTH_API,
-        {
-          method:"GET",
-          cache:"no-store"
-        }
-      );
+    const response=await fetch(
+      HEALTH_API,
+      {
+        method:"GET",
+        cache:"no-store"
+      }
+    );
 
-    const data =
-      await response.json();
+    const data=await response.json();
 
-    if (
+    if(
       response.ok &&
       data.configured
-    ) {
+    ){
 
-      healthDot.classList.add(
-        "ok"
-      );
+      healthDot.classList.add("ok");
+      healthDot.classList.remove("bad");
 
-      healthDot.classList.remove(
-        "bad"
-      );
+      healthText.textContent="متصل";
 
-      healthText.textContent =
-        "متصل";
+    }else{
 
-    } else {
+      healthDot.classList.remove("ok");
+      healthDot.classList.add("bad");
 
-      healthDot.classList.remove(
-        "ok"
-      );
-
-      healthDot.classList.add(
-        "bad"
-      );
-
-      healthText.textContent =
-        "غير جاهز";
+      healthText.textContent="غير جاهز";
     }
 
-  } catch {
+  }catch{
 
-    healthDot.classList.remove(
-      "ok"
-    );
+    healthDot.classList.remove("ok");
+    healthDot.classList.add("bad");
 
-    healthDot.classList.add(
-      "bad"
-    );
-
-    healthText.textContent =
-      "غير متصل";
+    healthText.textContent="غير متصل";
   }
 }
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/* =====================================================
+   NETWORK
+===================================================== */
+
+window.addEventListener(
+  "online",
+  ()=>{
+    setStatus("تم الاتصال بالإنترنت");
+    checkHealth();
+  }
+);
+
+window.addEventListener(
+  "offline",
+  ()=>{
+    setStatus(
+      "لا يوجد اتصال بالإنترنت",
+      "error"
+    );
+  }
+);
+
+/* =====================================================
+   VISIBILITY
+===================================================== */
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+    if(!document.hidden){
+      checkHealth();
+    }
+  }
+);
+
+/* =====================================================
+   INIT
+===================================================== */
 
 loadState();
 
@@ -3483,58 +3273,9 @@ updateCharCount();
 
 checkHealth();
 
-/*
-  فحص الخادم كل دقيقة.
-  ما منعمله بشكل سريع حتى ما نزيد
-  الضغط على Render.
-*/
-
 setInterval(
   checkHealth,
   60000
-);
-
-/* =========================================================
-   ONLINE / OFFLINE
-========================================================= */
-
-window.addEventListener(
-  "online",
-  () => {
-
-    setStatus(
-      "تم الاتصال بالإنترنت"
-    );
-
-    checkHealth();
-  }
-);
-
-window.addEventListener(
-  "offline",
-  () => {
-
-    setStatus(
-      "لا يوجد اتصال بالإنترنت",
-      "error"
-    );
-  }
-);
-
-/* =========================================================
-   VISIBILITY
-========================================================= */
-
-document.addEventListener(
-  "visibilitychange",
-  () => {
-
-    if (
-      !document.hidden
-    ) {
-      checkHealth();
-    }
-  }
 );
 
 </script>
